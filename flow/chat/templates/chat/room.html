@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Chat room{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static "chat/style.css" %}">
+{% endblock %}
+
+{% block content %}
+<section class="messages">
+        <ol id="messages"></ol>
+        <fieldset class="input">
+            <input id="text" type="text" size="100"/>
+            <input id="submit" type="button" value="Send"/>
+        </fieldset>
+</section>
+
+<script> 
+    var token = '{{ csrf_token }}'; 
+    var roomName = {{ room_name_json }};
+    var user = '{{ user.username }}';
+</script>
+<script type="text/javascript" src="{% static "chat/datamanager.js" %}"></script>
+<script type="text/javascript" src="{% static "chat/chat.js" %}"></script>
+<script type="text/javascript" src="{% static "chat/room_bindings.js" %}"></script>
+{% endblock %}

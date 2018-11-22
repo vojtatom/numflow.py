@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<section class="block">
+    <h1>Login</h1>
+    <form method="post">
+        {% csrf_token %}
+        <dl>
+        {% for field in form %}
+            
+            <dt>{{ field.label_tag }}</dt>
+            <dd>{{ field }}</dd>
+            {% if field.help_text %}
+              <dd>{{ field.help_text }}</dd>
+            {% endif %}
+            {% for error in field.errors %}
+            <dd class="error">{{ error }}</dd>
+            {% endfor %}
+        {% endfor %}
+        <dd><button type="submit">Login</button></dd>
+        </dl>
+      </form>
+</section>
+{% endblock %} 

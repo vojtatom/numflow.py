@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Flow{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static "visual/index.css" %}">
+{% endblock %}
+
+
+{% block content %}
+<section id="search-section">
+    <form>
+        <div id="search-box">
+            <input type="text" name="search" id="search" placeholder="Search...">
+        </div>
+    </form>
+</section>
+<section id="main"></section>
+
+<script> var token = '{{ csrf_token }}'; </script>
+<script type="text/javascript" src="{% static "visual/datamanager.js" %}"></script>
+<script type="text/javascript" src="{% static "visual/ui_general.js" %}"></script>
+<script type="text/javascript" src="{% static "visual/sidebar.js" %}"></script>
+<script type="text/javascript" src="{% static "visual/dataset_delete.js" %}"></script>
+<script type="text/javascript" src="{% static "visual/dataset_copy.js" %}"></script>
+<script type="text/javascript" src="{% static "visual/dataset_edit.js" %}"></script>
+<script type="text/javascript" src="{% static "visual/dataset.js" %}"></script>
+<script type="text/javascript" src="{% static "visual/ui.js" %}"></script>
+<script type="text/javascript" src="{% static "visual/bindings.js" %}"></script>
+{% endblock %}

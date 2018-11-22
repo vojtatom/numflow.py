@@ -1,0 +1,74 @@
+{% load staticfiles %}
+{% load date_tags %}
+
+{% include "visual/component/sidebar.html" %}
+<div class="box">
+    <h2>Datasets</h2>
+    <ol class="files">
+        <li>
+            <ol class="file titles">
+                <li class="title">title</li>
+                <li class="status">status</li>
+                <li class="time">created</li>
+                <li class="action">actions</li>
+                <li class="action"></li>
+                <li class="action"></li>
+                <li class="action"></li>
+            </ol>
+        </li>
+        {% for dataset in datasets %}
+        <li>
+            <ol class="file dataset" id="{{ dataset.code }}" title="{{ dataset.title }}">
+                <li class="title detail_trigger">{{ dataset.title }}</li>
+                <li class="status detail_trigger">{{ dataset.status }}</li>
+                {% if dataset.time_created|is_today %}
+                    <li class="time detail_trigger">{{ dataset.time_created | date:'H:i' }} today</li>
+                {% else %}
+                    <li class="time detail_trigger">{{ dataset.time_created | date:'d M Y' }}</li>
+                {% endif %}
+                <li class="action dataset_edit" title="edit">
+                    <img src="{% static "visual/icons/pen.svg" %}" alt="edit">
+                </li>
+                <li class="action dataset_copy tooltip" title="copy code">
+                    <span class="tooltiptext">copy code</span>
+                    <img src="{% static "visual/icons/code.svg" %}" alt="copy code">
+                </li>
+                <li class="action dataset_download" title="download">
+                    <img src="{% static "visual/icons/download1.svg" %}" alt="download" title="download">
+                </li>
+                <li class="action dataset_delete" title="delete">
+                    <img src="{% static "visual/icons/delete.svg" %}" alt="delete" >
+                </li>
+            </ol>
+            <div class="dataset_detail">
+                <dl>
+                    <dt>name</dt>
+                    <dd>test</dd>
+                    <dt>name</dt>
+                    <dd>test</dd>
+                </dl>
+            </div>
+        </li>
+        {% empty %}
+            {% include "visual/component/empty.html" %}
+
+        {% endfor %}
+    </ol>
+</div>
+
+<div class="box">
+    <h2>Notebooks</h2>
+    <ol>
+        {% for notebook in notebooks %}
+        <li>
+            <ol class="file">
+                <li class="title">{{ notebook.title }}</li>
+                <li class="action">delete</li>
+            </ol>
+        </li>
+        {% empty %}
+        {% include "visual/component/empty.html" %}
+
+        {% endfor %}
+    </ol>
+</div>

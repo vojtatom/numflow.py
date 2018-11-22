@@ -1,0 +1,311 @@
+#search{
+    background: #222;
+}
+
+#main{
+    display: flex;
+}
+
+@media(max-width: 65em){
+    #main{
+        flex-flow: column;
+    } 
+}
+
+#sidebar{
+    flex: 2 2;
+    box-sizing: border-box;
+    height: calc(100vh - 6em);
+    background: #181818;
+}
+
+.box{
+    flex: 5 2;
+    border-right: 1px solid #222;
+    position: relative;
+    box-sizing: border-box;
+    height: calc(100vh - 6em);
+    overflow-y: auto;
+}
+
+
+@media(max-width: 65em){
+    .box,
+    #sidebar{
+        height: auto;
+    } 
+}
+
+.box::-webkit-scrollbar-track
+{
+	border-radius: 5px;
+}
+
+.box::-webkit-scrollbar
+{
+	width: 5px;
+}
+
+.box::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+.box h2 {
+    margin: 1em;
+}
+
+.empty{
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #444;
+    text-align: center;
+}
+
+.menu{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+.menu li.sidebar_icon{
+    text-transform: uppercase;
+    font-size: 0.8em;
+    padding: 1em 1em;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    color: #777;
+    cursor: pointer;
+}
+
+.menu li.sidebar_icon img{
+    width: 1.5em;
+    display: block;
+    margin-right: 0.5em;
+    filter: brightness(0.2);
+    -webkit-filter: brightness(0.2);
+}
+
+.menu li.sidebar_icon:hover{
+    color: #FFF;
+    background: #222;
+}
+
+.menu li.sidebar_icon:hover img{
+    filter: brightness(1);
+    -webkit-filter: brightness(1);
+}
+
+
+/* FILES LIST */ 
+ol.files{
+    list-style: none;
+    padding: 0;
+}
+
+ol.file{
+    list-style: none;
+    padding: 0 1em;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+}
+
+ol.file:hover{
+    background: #222
+}
+
+ol.file.active{
+    background: #333;
+}
+
+ol.file li {
+    padding: 0.5em 0;
+    box-sizing: border-box;
+}
+
+ol.file li.title,
+ol.file li.input{
+    flex: 5 1;
+}
+
+ol.file li.time {
+    flex: 5 1;
+}
+
+ol.file li.status{
+    flex: 2 1;
+}
+
+ol.file li.input {
+    padding: 0;
+}
+
+
+@media(max-width: 100em){
+    ol.file li.status{
+        display: none;
+    }
+} 
+
+ol.file li.action {
+    flex: 1 1;
+    padding: 0;
+    text-align: center;
+    cursor: pointer;
+}
+
+ol.file:not(.titles) li.action:hover {
+    background: #444;
+}
+
+ol.file li.action img {
+    display: inline-block;
+    width: 1.2em;
+    padding: 0.5em;
+    -webkit-filter: brightness(0.5);
+    filter: brightness(0.5);
+}
+
+ol.file li.action:hover img{
+    -webkit-filter: brightness(1);
+    filter: brightness(1);
+}
+
+ol.file.titles {
+    color: #444;
+}
+
+/* DATASET UPLOAD FORM */
+.widget {
+    list-style: none;
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    text-align: center;
+}
+
+.widget * {
+    width: 100%;
+}
+
+.widget img{
+    height: 0.8em;
+    padding: 1em 0; 
+    display: block;
+}
+
+.widget label:not([for='upload_form_file']){
+    display: none;
+}
+
+.widget label[for='upload_form_file']{
+    display: block;
+    padding: 1em;
+    box-sizing: border-box;
+    cursor: pointer;
+    background: #444;
+    color: #777;
+    white-space: nowrap;
+    text-align: left;
+    font-family: "Courier New", Courier, monospace;
+}
+
+
+.widget label[for='upload_form_file'].selected{
+    color: #FFF;
+}
+
+.widget input#upload_form_file{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+
+#sidebar_upload {
+    display: none;
+}
+
+#sidebar_upload form{
+    width: 100%;
+}
+
+/* TOOLTIP */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 5em;
+    background-color: #444;
+    text-align: center;
+    padding: 0.5em;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -3em;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #444 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* DATASET DETAIL */
+.detail_trigger {
+    cursor: pointer;
+}
+
+.dataset_detail {
+    display: none;
+}
+
+.dataset_detail dl {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-flow: row wrap;
+    background: #222;
+}
+
+.dataset_detail dt,
+.dataset_detail dd {
+    margin: 0;
+    padding: 0.5em 1em;
+    box-sizing: border-box;
+}
+
+.dataset_detail dt {
+    flex: 30%;
+    color: #444;
+}
+
+.dataset_detail dd {
+    flex: 70%
+}

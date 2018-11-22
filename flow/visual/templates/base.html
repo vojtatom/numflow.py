@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width" />
+
+<head>
+	<title>
+		{% block title %}
+		{% endblock %}
+	</title>
+	<meta charset="utf-8" />	
+	<link rel="stylesheet" type="text/css" href="{% static "visual/style.css" %}">
+	{% block head %}
+	{% endblock %}
+</head>
+
+<body>
+	<header>
+		<ul class="nav">
+			<li>FP - 01</li>
+		</ul>
+		<ul class="pro">
+			{% if user.is_authenticated %}
+			<li>{{ user.username }}</li>
+			<li><a href={% url 'visual:logout' %}>logout</a></li>
+			{% endif %}
+		</ul>
+	</header>
+	   {% block content %}
+	   {% endblock %}
+	<footer>
+	</footer>
+</body>
+
+</html>

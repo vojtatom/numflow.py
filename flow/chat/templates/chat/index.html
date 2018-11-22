@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static "chat/style.css" %}">
+{% endblock %}
+
+{% block title %}Flow visual{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Chats</h1>
+    <form action="/chat/" method="post" id="newchat">
+        <dl>
+        {% csrf_token %}
+        <dt>{{ form.users.label_tag }}</dt>
+        <dd>{{ form.users }}</dd>
+        {% if form.users.help_text %}
+            <dd>{{ form.users.help_text }}</dd>
+        {% endif %}
+        {% for error in form.users.errors %}
+            <dd class="error">{{ error }}</dd>
+        {% endfor %}
+
+        <dd>
+            <ul id="listed"></ul>
+            <ul id="selected"></ul>
+        </dd>
+
+        <dt>{{ form.message.label_tag }}</dt>
+        <dd>{{ form.message }}</dd>
+        {% if form.message.help_text %}
+            <dd>{{ form.message.help_text }}</dd>
+        {% endif %}
+        {% for error in form.message.errors %}
+            <dd class="error">{{ error }}</dd>
+        {% endfor %}
+        
+       <dd><button type="submit">Submit</button></dd>
+        </dl>
+    </form>
+
+    <ul class="convos">
+        {% for chat in chats %}
+            <li><a  href="{% url 'chat:room' chat.name %}">
+            {% for user in chat.users.all %}
+                {{ user.username }}
+            {% endfor %}
+            </a></li>
+        {% endfor %}
+    </ul>
+
+    <script> var token = '{{ csrf_token }}'; </script>
+    <script type="text/javascript" src="{% static "chat/datamanager.js" %}"></script>
+    <script type="text/javascript" src="{% static "chat/chat.js" %}"></script>
+    <script type="text/javascript" src="{% static "chat/index_bindings.js" %}"></script>
+</section>
+{% endblock %}
