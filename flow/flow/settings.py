@@ -27,9 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Application data path settings
-DATA_PATH = os.path.join(BASE_DIR, 'data.nosync')
-
 # Application media
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media.nosync')

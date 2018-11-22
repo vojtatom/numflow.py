@@ -1,0 +1,50 @@
+{% load staticfiles %}
+
+{% include "visual/components/sidebar.html" %}
+
+<div class="box">
+    <h2>Datasets</h2>
+    <ol class="files">
+        {% if datasets|length %}
+        <li>
+            <ol class="file titles">
+                <li class="title">title</li>
+                <li class="status">status</li>
+                <li class="time">created</li>
+                <li class="action">actions</li>
+                <li class="action"></li>
+                <li class="action"></li>
+                <li class="action"></li>
+            </ol>
+        </li>
+        {% endif %}
+        {% for dataset in datasets %}
+            {% include "visual/components/dataset_file.html" %}
+        {% empty %}
+            {% include "visual/components/empty.html" %}
+        {% endfor %}
+    </ol>
+</div>
+
+<div class="box">
+    <h2>Notebooks</h2>
+    <ol class="files">
+        {% if notebooks|length %}
+            <li>
+                <ol class="file titles">
+                    <li class="title">title</li>
+                    <li class="time">created</li>
+                    <li class="action">actions</li>
+                    <li class="action"></li>
+                    <li class="action"></li>
+                    <li class="action"></li>
+                </ol>
+            </li>
+            {% endif %}
+        {% for notebook in notebooks %}
+            {% include "visual/components/notebook_file.html" %}
+        {% empty %}
+            {% include "visual/components/empty.html" %}
+        {% endfor %}
+    </ol>
+</div>

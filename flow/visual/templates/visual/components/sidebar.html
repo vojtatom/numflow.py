@@ -1,0 +1,12 @@
+{% load staticfiles %}
+{% with icons='visual/interface/icons/' %}
+
+<div id="sidebar">
+    <ul class="menu">
+        <li class="sidebar_icon" id="sidebar_dataset_icon"><img src="{% static icons|add:'file.svg' %}" alt="dataset">new dataset</li>
+        <li id="sidebar_dataset_upload">{% include "visual/components/upload.html" %}</li>
+        <li class="sidebar_icon" id="sidebar_notebook_icon"><img src="{% static icons|add:'code.svg' %}" alt="notebook">new notebook</li>
+    </ul>
+</div>
+
+{% endwith %}

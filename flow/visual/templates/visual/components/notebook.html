@@ -1,0 +1,23 @@
+{% load staticfiles %}
+{% load date_tags %}
+
+<div class="box">
+	<input id="code" value="{{ code }}" style="display: none"/>
+
+	<h2>Notebook</h2>
+	<form action="">
+		{% csrf_token %}
+		<ul>
+			<li>{{ form.title.label_tag }}{{ form.title }}</li>
+			{% for error in form.title.errors %}
+				<li class="error">{{ error }}</dd>
+			{% endfor %}
+
+			<li>{{ form.data.label_tag }}{{ form.data }}</li>
+			{% for error in form.data.errors %}
+				<li class="error">{{ error }}</dd>
+			{% endfor %}
+			<li><button type="submit">Upload</button></li>
+		</ul>
+	</form>
+</div>

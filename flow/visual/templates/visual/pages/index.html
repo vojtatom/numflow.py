@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Flow{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'visual/interface/style/index.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    {% include "visual/components/search.html" %}
+
+    <section id="main">
+        {% include "visual/components/menu.html" %}
+    </section>
+
+    {% include "visual/components/scripts.html" %}
+    <script type="text/javascript" src="{% static 'visual/interface/bindings/index.js' %}"></script>
+{% endblock %}

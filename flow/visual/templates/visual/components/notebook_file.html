@@ -1,0 +1,38 @@
+{% load staticfiles %}
+{% load date_tags %}
+{% with icons='visual/interface/icons/' %}
+
+<li>
+    <ol class="file notebook" id="{{ notebook.code }}" title="{{ notebook.title }}">
+        <li class="title detail_trigger">{{ notebook.title }}</li>
+        {% if notebook.time_created|is_today %}
+            <li class="time detail_trigger">{{ notebook.time_created | date:'H:i' }} today</li>
+        {% else %}
+            <li class="time detail_trigger">{{ notebook.time_created | date:'d M Y' }}</li>
+        {% endif %}
+        <li class="action open" title="open">
+            <img src="{% static icons|add:'/code_file.svg' %}" alt="edit">
+        </li>
+        <li class="action edit" title="edit">
+            <img src="{% static icons|add:'/pen.svg' %}" alt="edit">
+        </li>
+        <li class="action download" title="download">
+            <a>
+                <img src="{% static icons|add:'/download1.svg' %}" alt="download" title="download">
+            </a>
+        </li>
+        <li class="action delete" title="delete">
+            <img src="{% static icons|add:'/delete.svg' %}" alt="delete" >
+        </li>
+    </ol>
+    <div class="detail">
+        <dl>
+            <dt>name</dt>
+            <dd>test</dd>
+            <dt>name</dt>
+            <dd>test</dd>
+        </dl>
+    </div>
+</li>
+
+{% endwith %}

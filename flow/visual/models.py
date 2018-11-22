@@ -1,6 +1,5 @@
 import json
 import os
-import shutil
 import uuid
 
 from django.conf import settings
@@ -25,15 +24,23 @@ def update_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
     instance.profile.save()
 
+###########################################################################
+
+def directory_path(instance, filename):
+    """
+    Create path for Dataset file
+    """
+
+    extension = filename.split('.')[1]
+    return 'data/{}/raw/raw.{}'.format(str(instance.code), extension)
 
 class Dataset(models.Model):
     title = models.CharField(max_length=255)
     code = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
     time_created = models.DateTimeField(auto_now_add=True)
-    data = models.FileField(upload_to='data/', blank=False)
+    data = models.FileField(upload_to=directory_path, blank=False)
     status = models.IntegerField(default=0)
-
     owners = models.ManyToManyField(User, related_name="owners")
 
     objects = models.Manager()
@@ -49,16 +56,15 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     Deletes file from filesystem
     when corresponding `Dataset` object is deleted.
     """
-    if instance.data:
-        if os.path.isfile(instance.data.path):
-            os.remove(instance.data.path)
-        path = os.path.join(settings.DATA_PATH, str(instance.code))
-        if os.path.isdir(path):
-            shutil.rmtree(path)
 
+    if instance.data and os.path.isfile(instance.data.path):
+        os.remove(instance.data.path)
+
+
+###########################################################################
 
 class Notebook(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, default="New Notebook")
     code = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False)
     time_created = models.DateTimeField(auto_now_add=True)

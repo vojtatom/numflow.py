@@ -8,8 +8,10 @@
 		{% block title %}
 		{% endblock %}
 	</title>
+	{% include "visual/components/favicon.html"%}
+
 	<meta charset="utf-8" />	
-	<link rel="stylesheet" type="text/css" href="{% static "visual/style.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static "visual/interface/style/style.css" %}">
 	{% block head %}
 	{% endblock %}
 </head>
