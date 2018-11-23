@@ -77,7 +77,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    color: #777;
+    color: #EEE;
     cursor: pointer;
 }
 
@@ -277,7 +277,7 @@ ol.file.titles {
     opacity: 1;
 }
 
-/* DATASET DETAIL */
+/* DETAIL */
 .detail_trigger {
     cursor: pointer;
 }

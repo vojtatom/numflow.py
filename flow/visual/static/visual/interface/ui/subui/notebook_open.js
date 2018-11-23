@@ -8,7 +8,8 @@ class UINotebookOpen {
             let code = notebook.id;
 
             DataManager.request({
-                url: '/component/notebook/' + code,
+                method: 'GET',
+                url: '/notebook/' + code,
                 success: (r) => {                   
                     UI.notebook(r);
                 },

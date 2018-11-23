@@ -1,0 +1,10 @@
+form#notebook_form dl.editor dt{
+    display: none;
+}
+
+#notebook_form textarea {
+    height: calc(100vh - 20em);
+    background: #444;
+    color: #FFF;
+    font-family: "Courier New", Courier, monospace;
+}

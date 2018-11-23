@@ -69,7 +69,7 @@ class Notebook(models.Model):
         primary_key=True, default=uuid.uuid4, editable=False)
     time_created = models.DateTimeField(auto_now_add=True)
     time_modified = models.DateTimeField(auto_now=True)
-    data = models.TextField()
+    data = models.TextField(blank=True)
 
     authors = models.ManyToManyField(User, related_name="authors")
 

@@ -4,7 +4,8 @@
 {% block title %}Flow{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{% static 'visual/interface/style/index.css' %}">
+<link rel="stylesheet" href="{% static 'visual/interface/style/index.css' %}">
+<link rel="stylesheet" href="{% static 'visual/interface/style/notebook.css' %}">
 {% endblock %}
 
 
@@ -16,5 +17,5 @@
     </section>
 
     {% include "visual/components/scripts.html" %}
-    <script type="text/javascript" src="{% static 'visual/interface/bindings/notebook.js' %}"></script>
+    <script src="{% static 'visual/interface/bindings/notebook.js' %}"></script>
 {% endblock %}

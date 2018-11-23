@@ -1,13 +1,6 @@
 'use strict';
 
 class DataManager {
-/*     deleteDataset() {
-        this.request(options);
-    } */
-
-    static requestComponent(options){
-        this.request(options);
-    }
 
  /*    requestFrequent(options) {
         if (this.changeTimer !== false)
@@ -16,24 +9,27 @@ class DataManager {
         this.changeTimer = setTimeout(() => {
             return this.request(options);
         }, 300);
-    }
+    }*/
 
     requestJson(options) {
-        options.data = JSON.stringify(options.data)
-        options.success = (response) => {
+        options.success = (response, url) => {
             response = JSON.parse(request.responseText);
-            options.success(response);
-            }
-        options.headers = ['Content-type', 'application/json'];
+            options.success(response, url);
+        }
+
         this.request(options);
-    } */
+    }
 
     static request(options) {
+        if (!('method' in options))
+            options['method'] = 'POST';
+
         let request = new XMLHttpRequest();
         let token = Cookies.get('csrftoken');
 
-        request.open('POST', options.url, true);
+        request.open(options.method, options.url, true);
         request.setRequestHeader('X-CSRFTOKEN', token);
+        request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
         request.onload = function () {
             if (request.status === 200) {
@@ -43,12 +39,15 @@ class DataManager {
             }
         };
 
-        if ("headers" in options)
+        if ('headers' in options)
             request.setRequestHeader(...options.headers);
 
         if('data' in options){
             let data = JSON.stringify(options.data);
+            request.setRequestHeader('Content-type', 'application/json');
             request.send(data);
+        } else if ('form' in options) {
+            request.send(options.form);
         } else {
             request.send();
         }
@@ -60,6 +59,7 @@ class DataManager {
 
         request.open('POST', options.url, true);
         request.setRequestHeader('X-CSRFTOKEN', token);
+        request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
         request.onload = function () {
             if (request.status === 200) {
@@ -69,16 +69,6 @@ class DataManager {
             }
         };
 
-        if ("headers" in options)
-            request.setRequestHeader(...options.headers);
-
         request.send(options.data);
     }
-
-    /*uploadDataset(name, data) {
-        event.preventDefault();
-        let form = document.getElementById('media_upload'); 
-        let formData = new FormData(form);
-        request(formData, '/blog/image-upload/', (r) => { console.log(r)}, (r) => { console.log(r)});
-    }*/
 }

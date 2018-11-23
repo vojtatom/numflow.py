@@ -13,15 +13,17 @@ class UISidebar {
 
         document.getElementById('dataset_upload_form').onsubmit = function(e){
             e.preventDefault();
-            console.log('uploading dataset', e.target);
+            console.log('uploading dataset');
     
             let data = new FormData(e.target);
             DataManager.upload({
-                url: '/dataset/upload',
+                url: '/',
                 data: data,
-                success: (r) => { UI.menu(r, false) },
+                success: (r) => { UI.index(r, false) },
                 fail: (r) => { console.log(r) },
             });
+
+            return false;
         };
 
         document.getElementById('dataset_upload_form_file').onchange = function(e){
@@ -37,10 +39,12 @@ class UISidebar {
 
         document.getElementById('sidebar_notebook_icon').onclick = function(e) {
             DataManager.request({
-                url: '/notebook/create',
+                method: 'GET',
+                url: '/notebook/',
                 success : (r) => { UI.notebook(r); },
                 fail: (r) => { console.log(r); },
             })
         }
+
     }
 }

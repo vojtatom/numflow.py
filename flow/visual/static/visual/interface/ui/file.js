@@ -19,4 +19,14 @@ class UIFile {
         }
     }
 
+    static disableBackups(file) {
+        let backups = [...file.getElementsByClassName('backup')];
+        backups.forEach(element => {
+            element.onclick = function(e) {
+                e.preventDefault();
+                return false;
+            };
+        }); 
+    }
+
 }

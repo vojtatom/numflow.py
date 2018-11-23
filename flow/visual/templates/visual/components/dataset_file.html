@@ -11,8 +11,8 @@
         {% else %}
             <li class="time detail_trigger">{{ dataset.time_created | date:'d M Y' }}</li>
         {% endif %}
-        <li class="action edit" title="edit">
-            <img src="{% static icons|add:'/pen.svg' %}" alt="edit">
+        <li class="action edit" title="rename">
+                <img src="{% static icons|add:'/pen.svg' %}" alt="rename">
         </li>
         <li class="action copy tooltip" title="copy code">
             <span class="tooltiptext">copy code</span>

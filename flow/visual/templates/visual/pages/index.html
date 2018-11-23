@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-{% block title %}Flow{% endblock %}
+{% block title %}Notebook - Flow{% endblock %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{% static 'visual/interface/style/index.css' %}">
+<link rel="stylesheet" href="{% static 'visual/interface/style/notebook.css' %}">
+<link rel="stylesheet" href="{% static 'visual/interface/style/index.css' %}">
 {% endblock %}
 
 
@@ -12,9 +13,9 @@
     {% include "visual/components/search.html" %}
 
     <section id="main">
-        {% include "visual/components/menu.html" %}
+        {% include "visual/components/index.html" %}
     </section>
 
     {% include "visual/components/scripts.html" %}
-    <script type="text/javascript" src="{% static 'visual/interface/bindings/index.js' %}"></script>
+    <script src="{% static 'visual/interface/bindings/index.js' %}"></script>
 {% endblock %}

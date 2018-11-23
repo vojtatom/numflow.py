@@ -1,14 +1,14 @@
 'use strict';
 
 class UI {
-    static menu(element = null, history = true) {
+    static index(element = null, history = true) {
         console.log('loading menu');
 
         if (element !== null) {
             UI.component(element);
 
             if (history){
-                History.addMenuHistory();
+                History.addIndexHistory();
             }
         }
 
@@ -22,7 +22,7 @@ class UI {
 
         let notebooks = [...document.getElementsByClassName('notebook')]
         notebooks.forEach(element => {
-            UINotebook.create(element);
+            UINotebook.createRecord(element);
         });
 
     }
@@ -38,10 +38,12 @@ class UI {
             }
         }
 
+        UINotebook.createForm();
     }
 
     static component(html) {
         let dom = document.getElementById('main');
         dom.innerHTML = html;
     }
+
 }

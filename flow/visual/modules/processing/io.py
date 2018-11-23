@@ -7,7 +7,7 @@ import numpy as np
 from astropy.io import fits
 from django.conf import settings
 
-from ..models import Dataset
+from visual.models import Dataset
 
 
 def check_file(dataset: Dataset):

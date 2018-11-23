@@ -1,155 +1,117 @@
-import json
-
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.utils.safestring import mark_safe
 
-from .forms import RegistrationForm, UploadDatasetForm, NotebookForm
-from .models import Dataset, Notebook
-from .processing import processing
-
-
-def register(request):
-    if request.method == 'POST':
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            email = form.cleaned_data.get('email')
-            user = authenticate(username=username,
-                                password=raw_password, email=email)
-            login(request, user)
-            return redirect('/')
-    else:
-        form = RegistrationForm()
-    return render(request, 'registration/register.html', {'form': form})
+from .modules.views import api, forms, models, renders
 
 
 # PAGES
-
-@login_required
-def page_index(request):
-    datasets = Dataset.objects.filter(owners=request.user)
-    notebooks = Notebook.objects.filter(authors=request.user)
-
-    data = {'notebooks': notebooks, 'datasets': datasets,
-            'form': UploadDatasetForm(label_suffix='')}
-    return render(request, 'visual/pages/index.html', data)
-
-
-@login_required
-def page_notebook(request, code):
-    notebook = Notebook.objects.filter(code=code)
-    if notebook.count() == 1:
-        data = {'form': NotebookForm(
-            instance=notebook[0]), 'code': code}
-        return render(request, 'visual/pages/notebook.html', data)
-    raise Http404('Notebook not found')
-
-
-# MAIN COMPONENTS
-
-
-@login_required
-def menu(request):
-    datasets = Dataset.objects.filter(owners=request.user)
-    notebooks = Notebook.objects.filter(authors=request.user)
-    data = {'notebooks': notebooks, 'datasets': datasets,
-            'form': UploadDatasetForm(label_suffix='')}
-    return render(request, 'visual/components/menu.html', data)
-
-
-@login_required
-def notebook(request, code):
+def register(request):
+    """
+    Register view, creates new user or returns
+    view with register form.
+        :param request: request object
+    """
     if request.method == 'POST':
-        notebook = Notebook.objects.filter(code=code)
-        if notebook.count() == 1:
-            data = {'form': NotebookForm(
-                instance=notebook[0]), 'code': code}
-            return render(request, 'visual/components/notebook.html', data)
-        raise Http404('Notebook not found')
-    return redirect('page_notebook', code=code)
-
-
-# API for REST
+        form, user = forms.save_user(request)
+        if user is None:
+            return render(request, 'registration/register.html', {'form': form})
+        login(request, user)
+        return redirect('/')
+    form = forms.new_user()
+    return render(request, 'registration/register.html', {'form': form})
 
 
 @login_required
-def create_notebook(request):
-    new_notebook = Notebook()
-    new_notebook.save()
-    new_notebook.authors.add(request.user)
-
+def index(request):
+    """
+    Index view, returns page or component if is ajax.
+        :param request: request object
+    """
     if request.method == 'POST':
-        return notebook(request, new_notebook.code)
-    return redirect('visual:notebook', code=str(new_notebook.code))
+        form = forms.save_dataset(request)
+        return renders.index(request, form)
+    return renders.index(request, forms.new_dataset())
 
 
 @login_required
-def upload_dataset(request):
+def notebook(request, code=None):
+    """
+    Notebook view, creates new notebook or opens
+    existing notebook according to code parameter
+    returns page or a component.
+        :param request: request object
+        :param code=None: notebook code, new notebook created on None
+    """
     if request.method == 'POST':
-        form = UploadDatasetForm(request.POST, request.FILES)
-        print(form.is_valid())
-        if form.is_valid():
-            dataset = form.save()
-            dataset.owners.add(request.user)
-            processing.process(dataset)
-            return menu(request)
-    raise Http404('Data corrupted')
+        instance = models.notebook(code)
+        form = forms.save_notebook(request, instance)
+        return renders.notebook(request, form, code)
+
+    if code is None:
+        form, instance = forms.new_notebook(request)
+    else:
+        instance = models.notebook(code)
+        form, instance = forms.get_notebook(instance)
+
+    return renders.notebook(request, form, str(instance.code), code is None)
 
 
+# API CALLS
 @login_required
 def delete_dataset(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        dataset = Dataset.objects.filter(code=data['code'])
-        if dataset.count() == 1:
-            dataset.delete()
-            return HttpResponse('All okay')
-    raise Http404('Dataset does not exist')
+    """
+    Accepts only AJAX POST, deletes dataset
+    according to posted dict in format 
+    { 'code' : <code> }.
+        :param request: request object 
+    """
+    data = api.api_call(request)
+    dataset = models.dataset(data['code'])
+    dataset.delete()
+    return HttpResponse('All okay')
 
 
 @login_required
 def rename_dataset(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        dataset = Dataset.objects.filter(code=data['code'])
-        if dataset.count() == 1:
-            dataset = dataset[0]
-            dataset.title = data['title']
-            dataset.save()
-            return HttpResponse('All okay')
-        raise Http404('Dataset does not exist')
-    raise Http404('Nothing to do')
+    """
+    Accepts only AJAX POST, renames dataset
+    according to posted dict in format 
+    { 'code' : <code>, 'title': <title> }.
+        :param request: request object 
+    """
+    data = api.api_call(request)
+    dataset = models.dataset(data['code'])
+    dataset.title = data['title']
+    dataset.save()
+    return HttpResponse('All okay')
 
 
 @login_required
 def delete_notebook(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        notebook = Notebook.objects.filter(code=data['code'])
-        if notebook.count() == 1:
-            notebook.delete()
-            return HttpResponse('All okay')
-    raise Http404('Dataset does not exist')
+    """
+    Accepts only AJAX POST, deletes notebook
+    according to posted dict in format 
+    { 'code' : <code> }.
+        :param request: request object 
+    """
+    data = api.api_call(request)
+    notebook = models.notebook(data['code'])
+    notebook.delete()
+    return HttpResponse('All okay')
 
 
 @login_required
 def rename_notebook(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        print(data)
-        notebook = Notebook.objects.filter(code=data['code'])
-        if notebook.count() == 1:
-            notebook = notebook[0]
-            notebook.title = data['title']
-            notebook.save()
-            return HttpResponse('All okea')
-        raise Http404('Dataset does not exist')
-    raise Http404('Nothing to do')
-
-
-# DATA FETCH
+    """
+    Accepts only AJAX POST, renames notebook
+    according to posted dict in format 
+    { 'code' : <code>, 'title': <title> }.
+        :param request: request object 
+    """
+    data = api.api_call(request)
+    notebook = models.notebook(data['code'])
+    notebook.title = data['title']
+    notebook.save()
+    return HttpResponse('All okay')

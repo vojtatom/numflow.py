@@ -1,7 +1,7 @@
 import os
 import threading
 
-from ..models import Dataset
+from visual.models import Dataset
 from . import io
 
 def process(dataset: Dataset):
@@ -18,7 +18,7 @@ def process_data(dataset: Dataset):
     """
 
     try:
-        io.checkfile(dataset)
+        io.check_file(dataset)
         dataset.status = 1
     except:
         dataset.status = -1

@@ -1,6 +1,6 @@
 'use strict';
 
 window.onload = function(e){ 
-    UI.menu();
-    History.addMenuHistory();
+    UI.index();
+    History.addIndexHistory();
 };
