@@ -39,6 +39,7 @@ class UI {
         }
 
         UINotebook.createForm();
+        UITerminal.create();
     }
 
     static component(html) {

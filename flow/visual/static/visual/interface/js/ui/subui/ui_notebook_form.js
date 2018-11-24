@@ -11,7 +11,7 @@ class UINotebookForm {
             DataManager.request({
                 url: '/notebook/' + code,
                 form: data,
-                success: (r) => { UI.notebook(r, false) },
+                success: (r) => { /*UI.notebook(r, false)*/ },
                 fail: (r) => { console.log(r) },
             });
 

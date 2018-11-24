@@ -3,8 +3,70 @@ form#notebook_form dl.editor dt{
 }
 
 #notebook_form textarea {
-    height: calc(100vh - 20em);
+    height: calc(100vh - 12em);
     background: #444;
     color: #FFF;
     font-family: "Courier New", Courier, monospace;
 }
+
+#notebook_form dd {
+    margin: 0;
+}
+
+.title_menu {
+    display: flex;
+}
+
+.title_menu input[type="text"] {
+    background: #333;
+}
+
+
+
+
+ol#terminal {
+    list-style: none;
+    padding: 1em 0;
+    margin: 0;
+    font-size: 0.8em;
+    height: calc(100vh - 12em);
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+ol#terminal li.command,
+ol#terminal li.output {
+    font-family: "Courier New", Courier, monospace;
+    padding: 0.5em 1em;
+    box-sizing: border-box;
+}
+
+ol#terminal li.command {
+    color: #777;
+}
+
+ol#terminal li.command::before {
+    content: '>';
+    display: inline-block;
+    padding-right: 1em;
+}
+
+ol#terminal li.output {
+    
+}
+
+form#commandline{
+    display: flex;
+}
+
+input#command {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 0.8em;
+    width: 100%;
+    padding: 1em;
+    box-sizing: border-box;
+    background: #444;
+    border: none;
+    color: #FFF;
+}
+

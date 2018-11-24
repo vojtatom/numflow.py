@@ -1,13 +1,19 @@
 {% load staticfiles %}
 {% load date_tags %}
 
+<div id="sidebar">
+
+</div>
 <div class="box">
 	<input id="code" value="{{ code }}" style="display: none"/>
 	<form method="POST" action="/notebook/{{ code }}" id="notebook_form">
 		{% csrf_token %}
 		<dl class="editor">
 			<dt>{{ form.title.label_tag }}</dt>
-			<dd>{{ form.title }}</dd>
+			<dd class="title_menu">
+				{{ form.title }}
+				<button id="notebook_form_submit" type="submit">Save</button>
+			</dd>
 			{% for error in form.title.errors %}
 				<dd class="error">{{ error }}</dd>
 			{% endfor %}
@@ -16,10 +22,18 @@
 			{% for error in form.data.errors %}
 				<dd class="error">{{ error }}</dd>
 			{% endfor %}
-			<dd>
-				<button id="notebook_form_submit" type="submit">Save</button>
-			</dd>
 		</dl>
 	</form>
 </div>
-<div class="box"></div>
+<div class="box">
+	<ol id="terminal" class="scroll">
+		<li class="command">example command</li>
+		<li class="output">example output</li>
+		<li class="command">example command</li>
+		<li class="output error">example error output</li>
+	</ol>
+	<form action="" id="commandline">
+		<input type="text" name="commandline" id="command" autocomplete="off">
+		<button type="submit">Send</button>
+	</form>
+</div>

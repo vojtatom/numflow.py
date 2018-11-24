@@ -36,22 +36,6 @@
     } 
 }
 
-.box::-webkit-scrollbar-track
-{
-	border-radius: 5px;
-}
-
-.box::-webkit-scrollbar
-{
-	width: 5px;
-}
-
-.box::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-	background-color: rgba(255, 255, 255, 0.3);
-}
-
 .box h2 {
     margin: 1em;
 }
