@@ -34,25 +34,40 @@ ol#terminal {
     box-sizing: border-box;
 }
 
-ol#terminal li.command,
-ol#terminal li.output {
+ol#terminal li{
     font-family: "Courier New", Courier, monospace;
     padding: 0.5em 1em;
     box-sizing: border-box;
+    display: flex
 }
 
-ol#terminal li.command {
+ol#terminal li.command,
+ol#terminal li.savepoint {
     color: #777;
 }
 
 ol#terminal li.command::before {
-    content: '>';
-    display: inline-block;
+    content: '<<<';
+    display: block;
     padding-right: 1em;
+    color: #777;
 }
 
-ol#terminal li.output {
-    
+ol#terminal li.output::before {
+    content: '>>>';
+    display: inline-block;
+    padding-right: 1em;
+    color: rgb(92, 208, 228);
+}
+
+ol#terminal li.output.error::before {
+    color: rgb(201, 55, 55);
+}
+
+ol#terminal li.savepoint::before {
+    content: '\00a0\00a0\00a0';
+    display: inline-block;
+    padding-right: 1em;
 }
 
 form#commandline{

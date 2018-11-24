@@ -5,12 +5,15 @@ class UITerminal {
         let form = document.getElementById('commandline');
         let list = document.getElementById('terminal');
         let input = document.getElementById('command');
+        let data = document.getElementById('notebook_form_data');
+
+        UITerminal.add_command('initializing terminal ui...')
 
         let terminal = new Terminal();
 
         form.onsubmit = function (e) {
             e.preventDefault();
-            terminal.command(input.value);
+            terminal.command(input.value, data.value);
             list.scrollTop = list.scrollHeight;
             return false;
         }
@@ -20,20 +23,25 @@ class UITerminal {
 
     static add_command(text) {
         let list = document.getElementById('terminal');
-
         let command = UICommand.create_command(text);
         list.appendChild(command);
+        list.scrollTop = list.scrollHeight;
 
         let input = document.getElementById('command');
         input.value = '';
+    }
+
+    static add_output(text, status) {
+        let list = document.getElementById('terminal');
+        let command = UICommand.create_output(text, status);
+        list.appendChild(command);
         list.scrollTop = list.scrollHeight;
     }
 
-    static add_output(text) {
+    static add_savepoint(){
         let list = document.getElementById('terminal');
-
-        let command = UICommand.create_output(text);
-        list.appendChild(command);
+        let savepoint = UICommand.create_savepoint();
+        list.appendChild(savepoint);
         list.scrollTop = list.scrollHeight;
     }
 
