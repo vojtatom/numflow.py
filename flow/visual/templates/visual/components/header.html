@@ -1,0 +1,11 @@
+<header>
+    <ul class="nav">
+        <li>FP - 01</li>
+    </ul>
+    <ul class="pro">
+        {% if user.is_authenticated %}
+        <li>{{ user.username }}</li>
+        <li><a href={% url 'visual:logout' %}>logout</a></li>
+        {% endif %}
+    </ul>
+</header>

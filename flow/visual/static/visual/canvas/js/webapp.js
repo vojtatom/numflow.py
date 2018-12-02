@@ -5,6 +5,7 @@ window.onload = function(e) {
     let canvas = document.getElementById('canvas');
     let app = new Canvas(canvas);
     app.init('test-key');
+    app.graphics.resize(window.innerWidth, window.innerHeight);
 
 
     document.onkeydown = function (event) {

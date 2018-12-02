@@ -19,19 +19,23 @@ class Graphics {
 		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
 		//this.gl.blendFuncSeparate(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA, this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
 		
+		this.scene = new Scene(this.gl);
+		this.scene.init();
 	}
 
 	resize(x, y) {
 		this.canvas.width = x;
 		this.canvas.height = y;
-		let aspect = this.canvas.width / this.canvas.height;
 		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
-		this.camera.resize(aspect);
+
+		this.scene.aspect = this.canvas.width / this.canvas.height;
 	}
 
 	render(){
 		this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 		this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT);
+
+		this.scene.render();
 	}
 
     

@@ -1,7 +1,7 @@
 'use strict';
 
 class Primitive {
-    constructor() {
-        
+    constructor(gl) {
+        this.gl = gl;
     }
 }

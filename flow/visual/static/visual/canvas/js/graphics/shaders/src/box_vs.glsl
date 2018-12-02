@@ -12,5 +12,5 @@ uniform mat4 mProj;
 void main()
 {
 	fragColor = vec3(0.64, 1.0, 0.98);
-	gl_Position =  mProj * mView * mWorld * vec4(vertPosition, 1);
+	gl_Position =  mProj * mView * mWorld * vec4(vertPosition, 1.0);
 }

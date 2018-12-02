@@ -14,9 +14,6 @@ class Program {
     }
 
     init(vs, fs) {
-        console.log('vert', vs);
-        console.log('frag', fs);
-
         this.vs = new Shader(this.gl, vs, Shader.type.vertex);
         this.fs = new Shader(this.gl, fs, Shader.type.fragement);
 
@@ -43,29 +40,47 @@ class Program {
         this.program = program;
     }
     
-    getAttributes(attr) {
+    setupAttributes(attr) {
         this.attributes = {};
 
         for(let key in attr){
             this.attributes[key] = this.gl.getAttribLocation(this.program, attr[key]);
+            console.log(this.gl.getError());
         }
 
         this.update('attrs');
     }
 
-    getUniforms(unif) {
+    setupUniforms(unif) {
         this.uniforms = {};
 
         for(let key in unif){
             this.uniforms[key] = this.gl.getUniformLocation(this.program, unif[key]);
+            console.log(this.gl.getError());
         }  
             
         this.update('unifs');
+    }
+
+    bind() {
+        this.gl.useProgram(this.program);
+    }
+
+    unbind() {
+        this.gl.useProgram(null);
     }
 
     update(key){
         this.state[key] = true;
         if (this.state.init && this.state.attrs && this.state.unifs)
             this.loaded = true;
+    }
+
+    get attr() {
+        return this.attributes;
+    }
+
+    get unif() {
+        return this.uniforms;
     }
 }

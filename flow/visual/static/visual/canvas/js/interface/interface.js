@@ -41,13 +41,13 @@ class Interface {
         this.mouse.x = x
         this.mouse.y = y;
 
-        this.app.graphics.rotate(delta_x, delta_y);
+        this.app.graphics.scene.camera.rotate(delta_x, delta_y);
     };
 
     wheel(delta){
         if (delta > 0)
-            this.app.graphics.camera.moveFront(delta);
+            this.app.graphics.scene.camera.moveFront(delta);
 		else
-            this.app.graphics.camera.moveBack(-delta);
+            this.app.graphics.scene.camera.moveBack(-delta);
     }
 }

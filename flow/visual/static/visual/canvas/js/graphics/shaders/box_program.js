@@ -18,22 +18,32 @@ class BoxProgram extends Program {
 
                 BoxProgram.instance = this;
         }
-
+        
         return BoxProgram.instance;
     }
 
     setup(){
-        this.getAttributes({
+        this.setupAttributes({
             position: 'vertPosition',
         });
 
-        this.getUniforms({
+        this.setupUniforms({
             model: 'mWorld',
 			view: 'mView',
 			proj: 'mProj',
         });
+    }
 
-        console.log(this.attributes);
-        console.log(this.uniforms);
+    setAttrs(options) {
+        this.gl.useProgram(this.program);
+        this.gl.enableVertexAttribArray(this.attributes.position);
+        this.gl.vertexAttribPointer(this.attributes.position, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
+        this.gl.useProgram(null);
+    }
+
+    setUnifs(options) {
+        this.gl.uniformMatrix4fv(this.uniforms.model, this.gl.FALSE, options.model);
+        this.gl.uniformMatrix4fv(this.uniforms.view, this.gl.FALSE, options.view);
+        this.gl.uniformMatrix4fv(this.uniforms.proj, this.gl.FALSE, options.projection);
     }
 }

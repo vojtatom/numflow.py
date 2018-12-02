@@ -12,7 +12,7 @@
             <li class="time detail_trigger">{{ dataset.time_created | date:'d M Y' }}</li>
         {% endif %}
         <li class="action edit" title="rename">
-                <img src="{% static icons|add:'/pen.svg' %}" alt="rename">
+                <img src="{% static icons|add:'/edit.svg' %}" alt="rename">
         </li>
         <li class="action copy tooltip" title="copy code">
             <span class="tooltiptext">copy code</span>
@@ -20,7 +20,7 @@
         </li>
         <li class="action download" title="download">
             <a href="{{ dataset.data.url }}" download>
-                <img src="{% static icons|add:'/download1.svg' %}" alt="download" title="download">
+                <img src="{% static icons|add:'/download.svg' %}" alt="download" title="download">
             </a>
         </li>
         <li class="action delete" title="delete">
@@ -29,10 +29,18 @@
     </ol>
     <div class="detail">
         <dl>
-            <dt>name</dt>
-            <dd>test</dd>
-            <dt>name</dt>
-            <dd>test</dd>
+            <dt>created</dt>
+            <dd>
+                {% if dataset.time_created|is_today %}
+                    {{ dataset.time_created | date:'H:i' }} today
+                {% else %}
+                    {{ dataset.time_created | date:'d M Y' }}
+                {% endif %}
+            </dd>
+            <dt>status</dt>
+            <dd>
+                {{ dataset.status }}
+            </dd>
         </dl>
     </div>
 </li>
