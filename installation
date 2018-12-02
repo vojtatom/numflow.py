@@ -8,8 +8,11 @@ make install
 ## when somethign goes wrong 
 #make distclean
 
-#starting server
+#starting server linux
 redis-server --daemonize yes
+
+#starting server mac
+docker run -p 6379:6379 -d redis:2.8
 
 #test running
 redis-cli ping
