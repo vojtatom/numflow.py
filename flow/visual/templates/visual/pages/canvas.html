@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block title %}Notebook - Flow{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'visual/portal/style/canvas.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<canvas id="canvas"></canvas>
+
+{% include "visual/components/scripts_canvas.html" %}
+
+{% endblock %}

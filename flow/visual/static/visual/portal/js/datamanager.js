@@ -2,23 +2,14 @@
 
 class DataManager {
 
- /*    requestFrequent(options) {
-        if (this.changeTimer !== false)
-            clearTimeout(this.changeTimer);
-
-        this.changeTimer = setTimeout(() => {
-            return this.request(options);
-        }, 300);
-    }*/
-
-    requestJson(options) {
-        options.success = (response, url) => {
-            response = JSON.parse(request.responseText);
-            options.success(response, url);
-        }
-
-        this.request(options);
-    }
+    /*    requestFrequent(options) {
+           if (this.changeTimer !== false)
+               clearTimeout(this.changeTimer);
+   
+           this.changeTimer = setTimeout(() => {
+               return this.request(options);
+           }, 300);
+       }*/
 
     static request(options) {
         if (!('method' in options))
@@ -33,7 +24,10 @@ class DataManager {
 
         request.onload = function () {
             if (request.status === 200) {
-                options.success(request.responseText, request.responseURL);
+                let response = request.responseText;
+                if ('decode' in options && options.decode)
+                    response = JSON.parse(response);
+                options.success(response, request.responseURL);
             } else {
                 options.fail(request.responseText);
             }
@@ -42,7 +36,7 @@ class DataManager {
         if ('headers' in options)
             request.setRequestHeader(...options.headers);
 
-        if('data' in options){
+        if ('data' in options) {
             let data = JSON.stringify(options.data);
             request.setRequestHeader('Content-type', 'application/json');
             request.send(data);
@@ -70,5 +64,40 @@ class DataManager {
         };
 
         request.send(options.data);
+    }
+
+    static files(options) {
+        let requests = [];
+
+        for (let file of options.files) {
+            requests.push(DataManager.getPromise(file));
+        }
+
+        Promise.all(requests).then(
+            options.success,
+            options.fail,
+        );
+    }
+
+    static getPromise(url) {
+        return new Promise(function (resolve, reject) {
+            var request = new XMLHttpRequest();
+            request.open('GET', url);
+
+            request.onload = function () {
+                if (request.status == 200) {
+                    resolve(request.response);
+                }
+                else {
+                    reject(Error(request.statusText));
+                }
+            };
+
+            request.onerror = function () {
+                reject(Error("Network Error"));
+            };
+
+            request.send();
+        });
     }
 }

@@ -51,6 +51,7 @@ ol#terminal li.command::before {
     display: block;
     padding-right: 1em;
     color: #777;
+    font-weight: bold;
 }
 
 ol#terminal li.output::before {
@@ -58,6 +59,7 @@ ol#terminal li.output::before {
     display: inline-block;
     padding-right: 1em;
     color: rgb(92, 208, 228);
+    font-weight: bold;
 }
 
 ol#terminal li.output.error::before {

@@ -58,6 +58,9 @@ def notebook(request, code=None):
     return renders.notebook(request, form, str(instance.code), code is None)
 
 
+def canvas(request, code=None):
+    return renders.canvas(request, code)
+
 # API CALLS
 @login_required
 def delete_dataset(request):

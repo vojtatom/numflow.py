@@ -42,3 +42,6 @@ def notebook(request, form, code, is_new_notebook = False):
     if is_new_notebook:
         return redirect('visual:notebook', code=code)
     return render(request, 'visual/pages/notebook.html', data)
+
+def canvas(request, code):
+     return render(request, 'visual/pages/canvas.html', code)
