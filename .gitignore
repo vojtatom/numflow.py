@@ -202,6 +202,9 @@ pip-selfcheck.json
 # End of https://www.gitignore.io/api/python,django,virtualenv,visualstudiocode
 
 
+*.fits
+
+
 # Created by https://www.gitignore.io/api/macos
 # Edit at https://www.gitignore.io/?templates=macos
 
@@ -234,3 +237,62 @@ Temporary Items
 .apdisk
 
 # End of https://www.gitignore.io/api/macos
+
+# Created by https://www.gitignore.io/api/c
+# Edit at https://www.gitignore.io/?templates=c
+
+### C ###
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# End of https://www.gitignore.io/api/c

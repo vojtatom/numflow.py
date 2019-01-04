@@ -10,12 +10,12 @@
 
 No.    Name      Ver    Type        Cards   Dimensions   Format
   0  PRIMARY       1    PrimaryHDU      k   ()      
-  1                1    ImageHDU        c   (N,)         float32  #x component value
-  2                1    ImageHDU        c   (N,)         float32  #y component value
-  3                1    ImageHDU        c   (N,)         float32  #z component value  
-  4                1    ImageHDU        c   (N,)         float32  #x component of location   
-  5                1    ImageHDU        c   (N,)         float32  #y component of location   
-  6                1    ImageHDU        c   (N,)         float32  #z component of location</code>
+  1                1    ImageHDU        c   (x, y, z)    float32  #x component value
+  2                1    ImageHDU        c   (x, y, z)    float32  #y component value
+  3                1    ImageHDU        c   (x, y, z)    float32  #z component value  
+  4                1    ImageHDU        c   (x,)         float32  #x component of location   
+  5                1    ImageHDU        c   (y,)         float32  #y component of location   
+  6                1    ImageHDU        c   (z,)         float32  #z component of location</code>
     <p>...where <code>N</code> is total number of sample points.
     Let <code>F</code> be a vector field and
     let <code>P_i</code> be a point in space with a value <code>[x, y, z]</code>, then <code>V_i</code> is a vector of the vector field <code>F</code> at that point. Using python <code>astropy</code> module, this can be demonstrated as following:</p>
