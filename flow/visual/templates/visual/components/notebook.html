@@ -6,24 +6,7 @@
 </div>
 <div class="box">
 	<input id="code" value="{{ code }}" style="display: none"/>
-	<form method="POST" action="/notebook/{{ code }}" id="notebook_form">
-		{% csrf_token %}
-		<dl class="editor">
-			<dt>{{ form.title.label_tag }}</dt>
-			<dd class="title_menu">
-				{{ form.title }}
-				<button id="notebook_form_submit" type="submit">Save</button>
-			</dd>
-			{% for error in form.title.errors %}
-				<dd class="error">{{ error }}</dd>
-			{% endfor %}
-			<dt>{{ form.data.label_tag }}</dt>
-			<dd>{{ form.data }}</dd>
-			{% for error in form.data.errors %}
-				<dd class="error">{{ error }}</dd>
-			{% endfor %}
-		</dl>
-	</form>
+	<div id="editor"></div>
 </div>
 <div class="box">
 	<ol id="terminal" class="scroll"></ol>

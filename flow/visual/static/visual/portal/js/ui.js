@@ -41,7 +41,7 @@ class UI {
         }
 
         UIHeader.create();
-        UINotebook.createForm();
+        UINotebook.createEditor();
         UITerminal.create();
     }
 

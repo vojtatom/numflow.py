@@ -8,19 +8,8 @@ class UINotebook {
         UIFile.create(notebook);
     }
 
-    static createForm() {
+    static createEditor() {
         let code = document.getElementById('code').value;
-        let form = document.getElementById('notebook_form');
-        UINotebookForm.onsubmit(form, code);
-
-        let manager = new EditorManager();
-        let editor = document.getElementById('notebook_form_data');
-
-        editor.onkeydown = function(e) { 
-            manager.enableTab(editor, e);
-        };
-
-        editor.focus();
-
+        let editor = new Editor();
     }
 }
