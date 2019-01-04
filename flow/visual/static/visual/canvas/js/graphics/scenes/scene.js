@@ -11,6 +11,9 @@ class Scene{
         let box = new Box(this.gl);
         box.init(vec3.fromValues(0, 0, 0), vec3.fromValues(2, 3, 5));
         this.objects.push(box); 
+
+        let stream = new Stream(this.gl);
+        stream.segment([0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 0, 0]);
     }
 
     render(){

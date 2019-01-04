@@ -45,7 +45,6 @@ class Program {
 
         for(let key in attr){
             this.attributes[key] = this.gl.getAttribLocation(this.program, attr[key]);
-            console.log(this.gl.getError());
         }
 
         this.update('attrs');
@@ -56,7 +55,6 @@ class Program {
 
         for(let key in unif){
             this.uniforms[key] = this.gl.getUniformLocation(this.program, unif[key]);
-            console.log(this.gl.getError());
         }  
             
         this.update('unifs');

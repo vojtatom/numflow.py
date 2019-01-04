@@ -10,11 +10,8 @@ class Box extends Primitive {
     init(postion, dimensions) {
         let matrix = mat4.create();
         matrix = mat4.scale(mat4.create(), matrix, dimensions);
-        console.log(matrix);
         matrix = mat4.translate(mat4.create(), matrix, postion);
         this.model = matrix;
-
-        console.log(this.model);
         this.loaded = true;
     }
 
