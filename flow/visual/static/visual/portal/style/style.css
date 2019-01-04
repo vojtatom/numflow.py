@@ -25,7 +25,19 @@ section.block h1 {
 
 h1, h2, h3 {
     text-transform: uppercase;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+h2, h3 {
     font-size: 1em;
+}
+
+* + h2,
+* + h3 {
+    margin-top: 3em;
 }
 
 form dl {
@@ -151,4 +163,20 @@ a:active {
 {
 	border-radius: 10px;
 	background-color: rgba(255, 255, 255, 0.3);
+}
+
+code {
+    background: #222;
+}
+
+p > code {
+    padding: 0.1em 0.5em;
+}
+
+div > code {
+    display: block;
+    padding: 1em;
+    line-height: 1.5em;
+    white-space: pre;
+    font-size: 1.2em;
 }

@@ -36,6 +36,15 @@ def index(request):
 
 
 @login_required
+def docs(request):
+    """
+    Docs view, returns page or component if is ajax.
+        :param request: request object
+    """
+    return renders.docs(request)
+
+
+@login_required
 def notebook(request, code=None):
     """
     Notebook view, creates new notebook or opens

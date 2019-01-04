@@ -43,5 +43,18 @@ def notebook(request, form, code, is_new_notebook = False):
         return redirect('visual:notebook', code=code)
     return render(request, 'visual/pages/notebook.html', data)
 
+
+def docs(request):
+    """
+    Renders docs component or page.
+        :param request: request object
+    """
+
+    if request.is_ajax():
+        return render(request, 'visual/components/docs.html')
+
+    return render(request, 'visual/pages/docs.html')
+
+
 def canvas(request, code):
      return render(request, 'visual/pages/canvas.html', code)

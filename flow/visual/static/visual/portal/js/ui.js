@@ -25,6 +25,8 @@ class UI {
             UINotebook.createRecord(element);
         });
 
+        UIHeader.create();
+
     }
 
     static notebook(element = null, history = true) {
@@ -38,8 +40,24 @@ class UI {
             }
         }
 
+        UIHeader.create();
         UINotebook.createForm();
         UITerminal.create();
+    }
+
+
+    static docs(element = null, history = true) {
+        console.log('loading docs');
+
+        if (element !== null) {
+            UI.component(element);
+
+            if (history){
+                History.addDocsHistory();
+            }
+        }
+
+        UIHeader.create();
     }
 
     static component(html) {

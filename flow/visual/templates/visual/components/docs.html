@@ -1,0 +1,31 @@
+{% load staticfiles %}
+
+
+<div id="docs">
+    <h1>Documentation</h1>
+    <p>Documentation for Flow project - scalable vizualization tool with support for SAGE enviroment.</p>
+    <h2>Dataset format</h2>
+    <p>Prefered upload format is <code>.fits</code> with following structure:</p>
+    <code class="prettyprint">Filename: example.fits
+
+No.    Name      Ver    Type        Cards   Dimensions   Format
+  0  PRIMARY       1    PrimaryHDU      k   ()      
+  1                1    ImageHDU        c   (N,)         float32  #x component value
+  2                1    ImageHDU        c   (N,)         float32  #y component value
+  3                1    ImageHDU        c   (N,)         float32  #z component value  
+  4                1    ImageHDU        c   (N,)         float32  #x component of location   
+  5                1    ImageHDU        c   (N,)         float32  #y component of location   
+  6                1    ImageHDU        c   (N,)         float32  #z component of location</code>
+    <p>...where <code>N</code> is total number of sample points.
+    Let <code>F</code> be a vector field and
+    let <code>P_i</code> be a point in space with a value <code>[x, y, z]</code>, then <code>V_i</code> is a vector of the vector field <code>F</code> at that point. Using python <code>astropy</code> module, this can be demonstrated as following:</p>
+    <code class="prettyprint">from astropy.io import fits
+
+hdul = fits.open('example.fits')
+
+# F(P_i) = V_i
+# i is an index of any sampled point
+
+P_i = [hdul[1].data[i], hdul[2].data[i], hdul[3].data[i]]
+V_i = [hdul[4].data[i], hdul[5].data[i], hdul[6].data[i]]</code>
+</div>

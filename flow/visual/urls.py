@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^notebook/$', views.notebook, name='page_notebook'),
     url(r'^notebook/(?P<code>[^/]+)$', views.notebook, name='page_notebook'),
     url(r'^canvas/$', views.canvas, name='page_canvas'),
+    url(r'^docs/$', views.docs, name='page_docs'),
 ]

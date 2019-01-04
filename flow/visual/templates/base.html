@@ -11,9 +11,15 @@
 	{% include "visual/components/favicon.html"%}
 
 	<meta charset="utf-8" />	
-	<link rel="stylesheet" type="text/css" href="{% static "visual/portal/style/style.css" %}">
+	<link rel="stylesheet" href="{% static 'visual/portal/style/style.css' %}">
+	<link rel="stylesheet" href="{% static 'visual/portal/style/index.css' %}">
+	<link rel="stylesheet" href="{% static 'visual/portal/style/notebook.css' %}">
+	<link rel="stylesheet" href="{% static 'visual/portal/style/docs.css' %}">
+	<link rel="stylesheet" href="{% static 'visual/canvas/style/canvas.css' %}">
 	{% block head %}
 	{% endblock %}
+
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 </head>
 
 <body>

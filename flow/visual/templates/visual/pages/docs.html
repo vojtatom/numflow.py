@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-{% block title %}Notebook - Flow{% endblock %}
+{% block title %}Docs - Flow{% endblock %}
 
 {% block head %}
 {% endblock %}
@@ -12,9 +12,9 @@
     {% include "visual/components/search.html" %}
 
     <section id="main">
-        {% include "visual/components/index.html" %}
+        {% include "visual/components/docs.html" %}
     </section>
 
     {% include "visual/components/scripts.html" %}
-    <script src="{% static 'visual/portal/js/bindings/index.js' %}"></script>
+    <script src="{% static 'visual/portal/js/bindings/docs.js' %}"></script>
 {% endblock %}

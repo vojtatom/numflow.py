@@ -13,6 +13,13 @@ class History {
             call: 'index'
         });
     }
+
+    static addDocsHistory() {
+        let url = History.baseURL() + 'docs/';
+        History.addHistory(url, {
+            call: 'docs'
+        });
+    }
     
     static addNotebookHistory() {
         let code = document.getElementById('code').value;
@@ -52,6 +59,16 @@ window.addEventListener('popstate', function(e) {
             method: 'GET',
             success: (r) => { 
                 UI.notebook(r, false);
+                Cookies.set('flow_page', e.state.url);
+            },
+            fail: (r) => { console.log(r); }
+        });
+    } else if (e.state.call == 'docs'){
+        DataManager.request({
+            url: '/docs/',
+            method: 'GET',
+            success: (r) => { 
+                UI.docs(r, false);
                 Cookies.set('flow_page', e.state.url);
             },
             fail: (r) => { console.log(r); }
