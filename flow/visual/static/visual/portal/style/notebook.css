@@ -1,7 +1,34 @@
+.box.editor {
+    flex: 5 2;
+    border: none;
+}
+
+.box.terminal {
+    flex: 2 1;
+    max-width: 30em;
+    border: none;
+    display: flex;
+    flex-flow: column;
+}
+
+@media(max-width: 65em){
+
+    .box.terminal {
+        max-width: none;
+    }
+}
+
+ /* EDITOR */
+
 #editor {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    position: relative;
+}
+
+#editor:focus {
+    outline: none;
 }
 
 #editorScaled {
@@ -13,6 +40,11 @@
     position: absolute;
     top: 0;
     left: 0;
+    font-size: 0.8em;
+    background: rgb(17, 17, 17, 0.9);
+    width: 100%;
+    padding: 1em 1em;
+
 }
 
 .node-body {
@@ -90,54 +122,94 @@ svg path {
 }
 
 
+/* NOTEBOOK FORM */
 
+.notebook_form {
+    background: #333;
+}
+
+.notebook_form dt{
+    display: none;
+}
+
+.notebook_form dd.title_menu {
+    margin: 0;
+    display: flex;
+}
+
+.notebook_form input[type="text"]{
+    background: none;
+}
+
+.notebook_form button[type="submit"]{
+    background: none;
+    padding: 0.2em 1em;
+    margin: 0.5em 0;
+    border-left: 1px solid #666;
+}
+
+
+/* TERMINAL */
 
 ol#terminal {
     list-style: none;
-    padding: 1em 0;
+    /*padding: 1em 0;*/
+    padding: 0;
     margin: 0;
     font-size: 0.8em;
-    height: calc(100vh - 12em);
+    /*height: calc(100vh - 15em);*/
+    flex: 5 1;
     overflow-x: auto;
     box-sizing: border-box;
+    background: #222;
+}
+
+@media(max-width: 65em){
+
+    ol#terminal {
+        max-height: 15em;
+    }
 }
 
 ol#terminal li{
-    padding: 0.5em 1em;
+    /*padding: 0.5em 1em;*/
+    padding: 0.4em 1em;
     box-sizing: border-box;
-    display: flex
+    display: flex;
+    border-bottom: 1px solid #111;
+    color: #888;
 }
 
-ol#terminal li.command,
+/*ol#terminal li.command,
 ol#terminal li.savepoint {
     color: #777;
-}
+}*/
 
-ol#terminal li.command::before {
+/*ol#terminal li.command::before {
     content: '<<<';
     display: block;
     padding-right: 1em;
     color: #777;
     font-weight: bold;
-}
+}*/
 
-ol#terminal li.output::before {
+/*ol#terminal li.output::before {
     content: '>>>';
     display: inline-block;
     padding-right: 1em;
     color: rgb(92, 208, 228);
     font-weight: bold;
-}
+}*/
 
-ol#terminal li.output.error::before {
+/*ol#terminal li.output.error::before {
     color: rgb(201, 55, 55);
-}
+}*/
 
-ol#terminal li.savepoint::before {
+/*ol#terminal li.savepoint::before {
     content: '\00a0\00a0\00a0';
     display: inline-block;
     padding-right: 1em;
-}
+}*/
 
 form#commandline{
     display: flex;
@@ -151,5 +223,6 @@ input#command {
     background: #444;
     border: none;
     color: #FFF;
+    background: #222;
 }
 

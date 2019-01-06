@@ -289,6 +289,7 @@ class Editor{
         );
 
         console.log(JSON.stringify(nodes));
+        return JSON.stringify(nodes);
     }
 
     deserialize(text) {
@@ -363,6 +364,7 @@ class NodeUI{
     }
 
     static buildStructure(node, nodeElement, structure) {
+        console.log(structure);
         let field, contents, title;
         for (let key in structure) {
             field = document.createElement('div');
@@ -379,6 +381,7 @@ class NodeUI{
                 contents = document.createElement('div');
                 contents.innerHTML = structure[key].value;
             } else if (structure[key].type == 'input'){
+                console.log(key, structure[key].value)
                 contents = document.createElement('input');
                 contents.value = structure[key].value;
                 contents.onmousedown = (e) => {
@@ -527,7 +530,7 @@ class Node{
     }
 
     static deserialize(data, editor) {
-        let node = new Node(data.position.x, data.position.y, editor);
+        let node = new Node(data.position.x, data.position.y, editor, data.structure);
         node.id = data.id;
         return node;
     }

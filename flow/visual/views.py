@@ -101,6 +101,19 @@ def rename_dataset(request):
 
 
 @login_required
+def get_notebook(request):
+    """
+    Accepts only AJAX POST, returns notebook
+    according to posted dict in format 
+    { 'code' : <code> }.
+        :param request: request object 
+    """
+    data = api.api_call(request)
+    notebook = models.notebook(data['code'])
+    return api.notebook_data(notebook)
+
+
+@login_required
 def delete_notebook(request):
     """
     Accepts only AJAX POST, deletes notebook

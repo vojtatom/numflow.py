@@ -30,6 +30,5 @@ class NotebookForm(forms.ModelForm):
         model = Notebook
         fields = ['title', 'data']
         widgets = {
-            'title': forms.TextInput(attrs={'placeholder': 'Title', 'id': 'notebook_form_title'}),
-            'data': forms.Textarea(attrs={'placeholder': 'Here goes your code', 'id': 'notebook_form_data', 'class': 'editor'}),
+            'title': forms.TextInput(attrs={'placeholder': 'Title', 'id': 'notebook_form_title', 'autocomplete': 'off'}),
         }

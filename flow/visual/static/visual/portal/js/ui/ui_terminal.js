@@ -1,11 +1,10 @@
 'use strict';
 
 class UITerminal {
-    static create() {
+    static create(editor) {
         let form = document.getElementById('commandline');
         let list = document.getElementById('terminal');
         let input = document.getElementById('command');
-        let data = document.getElementById('notebook_form_data');
 
         UITerminal.add_command('initializing terminal ui...')
 
@@ -13,7 +12,7 @@ class UITerminal {
 
         form.onsubmit = function (e) {
             e.preventDefault();
-            terminal.command(input.value, data.value);
+            terminal.command(input.value, editor.serialize());
             list.scrollTop = list.scrollHeight;
             return false;
         }

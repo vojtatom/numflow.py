@@ -41,8 +41,8 @@ class UI {
         }
 
         UIHeader.create();
-        UINotebook.createEditor();
-        UITerminal.create();
+        let editor = UINotebook.createEditor();
+        UITerminal.create(editor);
     }
 
 

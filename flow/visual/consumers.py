@@ -38,7 +38,7 @@ class TerminalConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(
             self.terminal_group_name,
             {
-                'type': 'command',
+                'type': 'output', #command
                 'text': command,
                 'sender': self.scope['user'].username,
                 'time': str(datetime.datetime.now()),
@@ -62,6 +62,5 @@ class TerminalConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'type': 'output',
             'text': event['text'],
-            'status': event['status'],
         }))
 
