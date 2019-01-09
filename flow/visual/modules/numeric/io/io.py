@@ -1,10 +1,9 @@
 from scipy.interpolate import RegularGridInterpolator
-from ..cdata import Data
 from .common import open
 from .loader import create, ccreate
 
 
-def cdata(filename: str) -> Data:
+def cdata(filename: str):
     """
     Prepares data object for dataset using dataset.
         :param filename: filename of dataset
@@ -16,7 +15,7 @@ def cdata(filename: str) -> Data:
     return d
 
 
-def data(filename: str) -> list:
+def data(filename: str):
     """
     Prepares data object for dataset using scipy.
         :param filename: filename of dataset

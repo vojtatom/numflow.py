@@ -1,13 +1,13 @@
 import numpy as np
 from astropy.io import fits
-from memory_profiler import profile
 from scipy.interpolate import RegularGridInterpolator
 
-from ..cdata import Data
+from ..cdata import Data as CData
+from ..data import Data as Data
 from .common import ascending, flip, byteorder, memmap, create_rutine
 
 
-#@profile
+
 def create(hdul: fits.HDUList) -> list:
     """
     Creates interpolator from hdul 
@@ -33,10 +33,9 @@ def create(hdul: fits.HDUList) -> list:
 
     interp = RegularGridInterpolator(grid, np.stack(arrays, axis=-1).astype(np.double), fill_value=[0, 0, 0], bounds_error=False)
     minim, maxim = np.array([np.amin(x) for x in grid]), np.array([np.amax(x) for x in grid])
-    return interp, minim, maxim
+    return Data(interp, minim, maxim)
 
 
-#@profile
 def ccreate(hdul: fits.HDUList) -> Data:
     """
     Creates interpolator from hdul 
@@ -44,7 +43,7 @@ def ccreate(hdul: fits.HDUList) -> Data:
     """
 
     grid, flips = create_rutine(hdul)
-    obj = Data(3, 3)
+    obj = CData(3, 3)
 
     for g in grid:
         g = byteorder(g)

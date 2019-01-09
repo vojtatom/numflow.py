@@ -16,6 +16,10 @@
     .box.terminal {
         max-width: none;
     }
+
+    .box.editor {
+        height: 100vh;
+    }
 }
 
  /* EDITOR */
@@ -34,6 +38,7 @@
 #editorScaled {
     width: 100%;
     height: 100%;
+    position: absolute;
 }
 
 #editorMode {
@@ -58,12 +63,21 @@
     display: flex;
 }
 
+.node-field.node-meta {
+    background: #222;
+}
+
 .node-field:first-child input {
     border-top-right-radius: 0.3em;
 }
 
-.node-field:last-child input{
+.node-field.node-meta:last-child .node-field-content,
+.node-field.node-meta:last-child{
     border-bottom-right-radius: 0.3em;
+}
+
+.node-field.node-meta:last-child{
+    border-bottom-left-radius: 0.3em;
 }
 
 .node-field-title {
@@ -72,9 +86,19 @@
     padding: 0.5em;
 }
 
+.node-field.node-meta .node-field-title {
+    color: #888;
+}
+
 .node-field-content {
     width: 200px;  
     padding: 0.5em;
+}
+
+.node-field.node-meta .node-field-content{
+    background: #282828;
+    color: #888;
+    font-style: italic;
 }
 
 input.node-field-content {
@@ -119,6 +143,37 @@ svg path {
 
 #editor.delete svg path{
     stroke-width: 10;
+}
+
+#editorMenu{
+    width: 100%;
+    height: 100%;
+    background: rgb(17, 17, 17, 0.9);
+    position: absolute;
+    padding: 10vh 10vw;
+    box-sizing: border-box;
+}
+
+#editorMenu .category{
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+
+#editorMenu .categoryTitle{
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #888;
+    padding-bottom: 1em;
+}
+
+
+#editorMenu .node{
+    padding: 0.5em 1em;
+    margin: 0 1em 0 0;
+    border-radius: 0.3em;
+    background: #333;
+    display: inline-block;
 }
 
 

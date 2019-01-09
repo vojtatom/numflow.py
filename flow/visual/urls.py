@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^notebook/delete$', views.delete_notebook, name='delete_notebook'),
     url(r'^notebook/rename$', views.rename_notebook, name='rename_notebook'),
     url(r'^notebook/data$', views.get_notebook, name='get_notebook'),
+    url(r'^notebook/editor$', views.editor_nodes, name='editor_nodes'),
 
     ## ADMINISTRATION
     url(r'^login/$', auth_views.LoginView.as_view(), name='login'),

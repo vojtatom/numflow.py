@@ -140,3 +140,13 @@ def rename_notebook(request):
     notebook.title = data['title']
     notebook.save()
     return HttpResponse('All okay')
+
+@login_required
+def editor_nodes(request):
+    """
+    Accepts only AJAX POST, returns dict of nodes.
+        :param request: request object 
+    """
+    data = api.api_call(request)
+    return api.editor_nodes()
+

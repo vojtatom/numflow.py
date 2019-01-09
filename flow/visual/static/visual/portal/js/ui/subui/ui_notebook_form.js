@@ -9,6 +9,7 @@ class UINotebookForm {
 
             let data = new FormData(e.target);
             data.set('data', editor.serialize());
+            
             DataManager.request({
                 url: '/notebook/' + code,
                 form: data,

@@ -11,6 +11,7 @@ def notebook(code):
         return notebooks[0]
     raise Http404('Notebook does not exist!')
 
+
 def dataset(code):
     """
     Gets datset or raises 404.

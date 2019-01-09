@@ -117,6 +117,60 @@ class EditorUI{
     }
 }
 
+class EditorMenuUI {
+    static create(editor, nodesMenu){
+        let menu = document.createElement('div');
+        menu.id = 'editorMenu';
+        menu.style.display = "none";
+
+        editor.area.appendChild(menu);
+        editor.menu = menu;
+
+
+        for (let category in nodesMenu) {
+            let catMenu = document.createElement('div');
+            catMenu.classList.add('category');
+
+            let catTitle = document.createElement('div');
+            catTitle.classList.add('categoryTitle');
+            catTitle.innerHTML = category;
+            catMenu.appendChild(catTitle);
+
+            for(let node in nodesMenu[category]){
+                let nodeMenu = document.createElement('div');
+                nodeMenu.classList.add('node');
+                nodeMenu.innerHTML = node;
+                catMenu.appendChild(nodeMenu);
+
+                nodeMenu.onclick = (e) => {
+                    let pos = editor.mouseCoord(e);
+                    let newNode = new Node(pos.x - 10, pos.y - 10, editor, nodesMenu[category][node]);
+
+                    EditorMenuUI.toggleMenu(editor);
+
+                    editor.addNode(newNode);
+                    newNode.active = true;
+                    editor.setMode(Modes.moveNodes);
+                    e.stopPropagation();
+                }
+            }
+
+            menu.appendChild(catMenu);
+        }
+    }
+
+    static toggleMenu(editor){
+        if (!('menu' in editor))
+            return;
+
+        if (editor.menu.style.display === 'none') {
+            editor.menu.style.display = 'block';
+        } else {
+            editor.menu.style.display = 'none';
+        }
+    }
+}
+
 class Editor{
 
     constructor() {
@@ -143,34 +197,30 @@ class Editor{
 
         
         EditorUI.create(this);
+
         this.applyTransform();
         this.resize();
         this.setMode(Modes.move);
+
+        DataManager.request({
+            url: '/notebook/editor',
+            decode: true,
+            data: {},
+            success: (r) => {
+                EditorMenuUI.create(this, r);
+            },
+            fail: (r) => console.log(r),
+        });
     }
 
     mouseDown(e) {
         this.mouse.down = true;
-        
-        if (this.mode == Modes.select) {
-            this.setMode(Modes.move);
-        }
-
+        this.setMode(Modes.move);
         this.mouse.x = e.clientX;
         this.mouse.y = e.clientY;
     }
 
     mouseUp(e) {
-        if (this.mode == Modes.add) {
-            if (this.mouse.down) {
-                let offsetX = (e.x - this.start.x - this.center.x - this.transform.x) / this.transform.zoom;
-                let offsetY = (e.y - this.start.y -  this.center.y - this.transform.y) / this.transform.zoom;
-                let x = this.center.x + offsetX;
-                let y = this.center.y + offsetY;
-                this.addNode(new Node(x, y, this));
-                this.setMode(Modes.move);
-            }
-        }
-
         this.mouse.down = false;
         this.mouse.dragged = false;
     }
@@ -211,14 +261,17 @@ class Editor{
         const rect = this.area.getBoundingClientRect();
         this.center = { x: this.area.offsetWidth / 2, y: this.area.offsetHeight / 2 };
         this.start = { x: rect.left, y: rect.top };
-        console.log(this.center);
     }
 
     keyPress(e){
         console.log(e.keyCode);
 
         if (e.keyCode == 97){
-            this.setMode(Modes.add);
+            if (this.mode == Modes.add)
+                this.setMode(Modes.move);
+            else 
+                this.setMode(Modes.add);
+            EditorMenuUI.toggleMenu(this);
         } else if (e.keyCode == 109) {
             this.setMode(Modes.move);
         } else if (e.keyCode == 115) {
@@ -232,7 +285,28 @@ class Editor{
         }
     }
 
+    mouseCoord(e) {
+        let offsetX = (e.x - this.start.x - this.center.x - this.transform.x) / this.transform.zoom;
+        let offsetY = (e.y - this.start.y -  this.center.y - this.transform.y) / this.transform.zoom;
+        let x = this.center.x + offsetX;
+        let y = this.center.y + offsetY;
+        return {x: x, y: y};
+    }
+
     setMode(mode){
+
+        // turn off moving nodes when leaving moveNodes mode
+        if (this.mode == Modes.moveNodes){
+            Object.entries(this.nodes).forEach(
+                ([id, node]) => { 
+                    if (node.active) {
+                        node.active = false;
+                    }
+                }
+            );
+        }
+
+
         this.mode = mode;
         this.modeLabel.innerHTML = Modes.title(mode);
         this.area.className = '';
@@ -252,7 +326,6 @@ class Editor{
     connect(node) {
         if (this.connection.outNode == undefined) {
             this.connection.outNode = node;
-            console.log(node);
             return;
         }
 
@@ -261,7 +334,9 @@ class Editor{
         }
 
         if (this.connection.inNode != this.connection.outNode && 
-            !this.connection.inNode.isConnectedTo(this.connection.outNode)){
+            !this.connection.inNode.isConnectedTo(this.connection.outNode) &&
+            this.connection.inNode.isCompatible(this.connection.outNode)){
+
             Connection.create(this.connection.inNode, this.connection.outNode, this);
         }
 
@@ -288,12 +363,18 @@ class Editor{
             }
         );
 
-        console.log(JSON.stringify(nodes));
         return JSON.stringify(nodes);
     }
 
     deserialize(text) {
-        let nodes = JSON.parse(text);
+        let nodes;
+
+        try{
+            nodes = JSON.parse(text);
+        } catch {
+            return;
+        }
+
         for (let node of nodes) {
             this.addNode(Node.deserialize(node, this));
         }
@@ -325,47 +406,51 @@ class Editor{
  * @class NodeUI
  */
 class NodeUI{
-    static create(node, structure) {
+    static create(node) {
         let base = document.createElement('div');
         base.classList.add('node');
         base.style.position = 'absolute';
-
-        let dotIn = document.createElement('div');
-        dotIn.classList.add('node-point-in');
-        base.appendChild(dotIn);
-
-        let dotOut = document.createElement('div');
-        dotOut.classList.add('node-point-out');
-        base.appendChild(dotOut);
-
+        
+        if (node.data.ins.length > 0){
+            let dotIn = document.createElement('div');
+            dotIn.classList.add('node-point-in');
+            base.appendChild(dotIn);
+            
+            dotIn.onmousedown = (e) => {
+                if (node.editor.mode != Modes.connect)
+                node.editor.setMode(Modes.connect);
+                node.mouseDown(e);    
+            };
+        }
+        
+        if (node.data.out.length > 0){
+            let dotOut = document.createElement('div');
+            dotOut.classList.add('node-point-out');
+            base.appendChild(dotOut);
+            
+            dotOut.onmousedown = (e) => {
+                if (node.editor.mode != Modes.connect)
+                node.editor.setMode(Modes.connect);
+                node.mouseDown(e);    
+            };
+        }
+        
         let body = document.createElement('div');
         body.classList.add('node-body');
         base.appendChild(body);
         
         node.baseElement = base;
-
-        dotIn.onmousedown = (e) => {
-            if (node.editor.mode != Modes.connect)
-                node.editor.setMode(Modes.connect);
-            node.mouseDown(e);    
-        };
-
-        dotOut.onmousedown = (e) => {
-            if (node.editor.mode != Modes.connect)
-                node.editor.setMode(Modes.connect);
-            node.mouseDown(e);    
-        };
-
         body.onmousedown = (e) => {
             node.mouseDown(e);    
         };
 
-        NodeUI.buildStructure(node, body, structure);
+        NodeUI.buildStructure(node, body);
     }
 
-    static buildStructure(node, nodeElement, structure) {
-        console.log(structure);
-        let field, contents, title;
+    static buildStructure(node, nodeElement) {
+        let field, contents, title, meta;
+        let structure = node.data.structure;
+
         for (let key in structure) {
             field = document.createElement('div');
             field.classList.add('node-field');
@@ -376,20 +461,22 @@ class NodeUI{
             title.innerHTML = key;
             field.appendChild(title);
 
-
+            //DISPLAY lines
             if (structure[key].type == 'display'){
                 contents = document.createElement('div');
                 contents.innerHTML = structure[key].value;
+
+            //INPUT lines
             } else if (structure[key].type == 'input'){
-                console.log(key, structure[key].value)
                 contents = document.createElement('input');
                 contents.value = structure[key].value;
+                contents.placeholder = 'value';
                 contents.onmousedown = (e) => {
                     e.stopPropagation();
                 };
 
                 let update = (e) => {
-                    node.structure[key].value = e.target.value;
+                    node.data.structure[key].value = e.target.value;
                     e.stopPropagation();
                 };
 
@@ -401,6 +488,44 @@ class NodeUI{
             contents.classList.add('node-field-content');
             field.appendChild(contents);
         }
+
+        // IN TYPES
+        if (node.data.ins.length > 0){
+            meta = node.data.ins.join(', ');
+        } else {
+            meta = 'None';
+        } 
+
+        nodeElement.appendChild(NodeUI.buildMeta('in', meta));
+
+        //OUT TYPES
+        if (node.data.out.length > 0){
+            meta = node.data.out.join(', ');
+        } else {
+            meta = 'None';
+        } 
+
+        nodeElement.appendChild(NodeUI.buildMeta('out', meta));
+    }
+
+    static buildMeta(name, content){
+        let field, contents, title, tmp;
+
+        field = document.createElement('div');
+        field.classList.add('node-field');
+        field.classList.add('node-meta');
+
+        title = document.createElement('div');
+        title.classList.add('node-field-title');
+        title.innerHTML = name;
+        field.appendChild(title);
+
+        contents = document.createElement('div');
+        contents.innerHTML = content;
+        contents.classList.add('node-field-content');
+        field.appendChild(contents);
+
+        return field;
     }
 
 
@@ -422,10 +547,11 @@ class Node{
         return this.element;
     }
 
-    constructor(x, y, editor, structure = {title: {type: 'display', value: 'Empty Node',}, input: {type: 'input', value: 'initial',}, test: {type: 'input', value: 'initial',}}){
+    constructor(x, y, editor, data){
         this.editor = editor;
         this.active = false; 
-        this.structure = structure;
+        this.data = data
+
         this.id = Node.newId;
 
         this.transform = {
@@ -435,7 +561,8 @@ class Node{
 
         this.inConnections = {};
         this.outConnections = {}; 
-        NodeUI.create(this, structure);  
+
+        NodeUI.create(this);  
         this.applyTransform();
     }
 
@@ -444,7 +571,6 @@ class Node{
             this.active = true;
             this.editor.setMode(Modes.moveNodes);
         } else if (this.editor.mode == Modes.moveNodes){
-            this.active = false;
             this.editor.setMode(Modes.select);
         } else if (this.editor.mode == Modes.move) {
             this.active = true;
@@ -514,6 +640,12 @@ class Node{
         return true;
     }
 
+    isCompatible(incomingNode){
+        if (this.data.ins.indexOf(incomingNode.data.out[0]) != -1)
+            return true;
+        return false;
+    }
+
     applyTransform() {
         this.element.style.transform = 'translate(' + this.transform.x + 'px, ' + this.transform.y + 'px)';
     }
@@ -524,13 +656,12 @@ class Node{
             in: Object.keys(this.inConnections),
             out: Object.keys(this.outConnections),
             position: this.transform,
-            values: this.values,
-            structure: this.structure,
+            data: this.data,
         }
     }
 
     static deserialize(data, editor) {
-        let node = new Node(data.position.x, data.position.y, editor, data.structure);
+        let node = new Node(data.position.x, data.position.y, editor, data.data);
         node.id = data.id;
         return node;
     }

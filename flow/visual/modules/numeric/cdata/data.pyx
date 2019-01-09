@@ -74,6 +74,11 @@ cdef class Data:
     @property
     def dim_l(self):
         return self.c.dim_l
+
+
+    @property
+    def type(self):
+        return 'c'
     
 
     cdef int _grid(self, const DTYPE * g, int grid_l):

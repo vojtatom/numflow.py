@@ -1,7 +1,7 @@
 import json
 from django.http import JsonResponse
 from django.core.exceptions import SuspiciousOperation 
-
+from visual.modules.editor import nodes
 
 def api_call(request):
     """
@@ -21,3 +21,10 @@ def notebook_data(notebook):
     Returns json serialized notebook data.
     """
     return JsonResponse({ 'data' : notebook.data })
+
+
+def editor_nodes():
+    """
+    Returns json serialized notebook data.
+    """
+    return JsonResponse(nodes)

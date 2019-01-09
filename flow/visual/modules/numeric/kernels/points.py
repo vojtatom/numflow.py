@@ -39,11 +39,11 @@ class PointsKernel:
         return self._data
 
 
-    #@data.setter
-    def data(self, d, minim, maxim) -> None:
+    @data.setter
+    def data(self, d) -> None:
         self._data = d
-        self._start = minim
-        self._end = maxim
+        self._start = d.grid_min
+        self._end = d.grid_max
         self._auto_sample()
 
 
