@@ -8,7 +8,6 @@ class Node(abc.ABC):
         structure:  { key : { type: 'display'|'input', value: value of the key, ... }}
     """
 
-
     @abc.abstractmethod
     def __init__(self, id, data):
         """

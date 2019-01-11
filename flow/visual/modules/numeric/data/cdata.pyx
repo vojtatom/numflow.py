@@ -1,8 +1,8 @@
 # cython: language_level=3, boundscheck=False
 
 from libc.stdlib cimport malloc, free
-cimport numpy as np
 from cython.operator cimport dereference as deref
+cimport numpy as np
 from ..types cimport DTYPE
 
 import cython
@@ -11,10 +11,11 @@ import numpy as np
 np.import_array()
 
 
-cdef class Data: 
+cdef class CData: 
+    mode = 'c'
 
     def __init__(self, int com, int dim):
-        self.c = <CData *> malloc(sizeof(CData))
+        self.c = <CSData *> malloc(sizeof(CSData))
         self.c.grid = <const DTYPE **> malloc(dim * sizeof(const DTYPE *))
         self.c.comp = <const DTYPE **> malloc(com * sizeof(const DTYPE *))
         self.c.grid_l = <int *> malloc(dim * sizeof(int))
@@ -75,11 +76,6 @@ cdef class Data:
     def dim_l(self):
         return self.c.dim_l
 
-
-    @property
-    def type(self):
-        return 'c'
-    
 
     cdef int _grid(self, const DTYPE * g, int grid_l):
         if self.grid_alloc == self.c.dim_l:

@@ -38,13 +38,14 @@ class TerminalConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(
             self.terminal_group_name,
             {
-                'type': 'output', #command
+                'type': 'command',
                 'text': command,
                 'sender': self.scope['user'].username,
                 'time': str(datetime.datetime.now()),
             }
         )
 
+        ## At this point, check what to do and let it handle the rest.
         await commands.command(self.terminal_group_name, command, data, self.scope['user'].username)
 
 
@@ -56,11 +57,22 @@ class TerminalConsumer(AsyncWebsocketConsumer):
             'text': event['text'],
         }))
 
+
+    # Receive progress from group
+    async def progress(self, event):
+        # Send command to WebSocket
+        await self.send(text_data=json.dumps({
+            'type': 'progress',
+            'text': event['text'],
+        }))
+
+
     # Receive output from group
     async def output(self, event):
         # Send command to WebSocket
         await self.send(text_data=json.dumps({
             'type': 'output',
             'text': event['text'],
+            'status': event['status'],
         }))
 

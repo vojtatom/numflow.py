@@ -1,9 +1,9 @@
 # cython: language_level=3, boundscheck=False, wraparound=False, nonecheck=False, cdivision=True
 
 cimport numpy as np
-from libc.math cimport sqrt
-
 from ..types cimport DTYPE
+
+from libc.math cimport sqrt
 
 cdef DTYPE div(DTYPE a, DTYPE b):
     if a < 0:

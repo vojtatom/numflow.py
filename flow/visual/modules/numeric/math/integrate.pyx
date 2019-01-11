@@ -2,14 +2,13 @@
 
 cimport numpy as np
 from libc.stdlib cimport malloc, realloc, free
-
 from ..types cimport DTYPE
-from ..cdata cimport Data
+from ..data.cdata cimport CData
 from .rk cimport RKSolver, Status
 
 
 
-def solve_ivp(Data data, DTYPE t0, DTYPE t_bound, DTYPE[:,::1] starting_points):
+def solve_ivp(CData data, DTYPE t0, DTYPE t_bound, DTYPE[:,::1] starting_points):
     cdef int points_l = starting_points.shape[0]
     cdef int i
     cdef DTYPE ** ys = <DTYPE **>malloc(points_l * sizeof(DTYPE *))

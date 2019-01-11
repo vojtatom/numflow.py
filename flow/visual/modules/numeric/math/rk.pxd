@@ -1,8 +1,9 @@
 # cython: language_level=3, boundscheck=False
 
 cimport numpy as np
+from ..data.cdata cimport CSData
 from ..types cimport DTYPE
-from ..cdata cimport CData
+
 
 cdef extern from "math.h":
     double nextafter(double start, double to)
@@ -28,7 +29,7 @@ cdef class RKSolver:
     cdef DTYPE   ern
     cdef DTYPE   h_abs
     cdef DTYPE * K
-    cdef CData * cdata
+    cdef CSData * cdata
 
     ### vectors
     cdef DTYPE * y
@@ -40,7 +41,7 @@ cdef class RKSolver:
     cdef DTYPE * ft
     cdef DTYPE * er
 
-    cdef void create(self, CData * cdata, DTYPE t0, DTYPE t_bound)
+    cdef void create(self, CSData * cdata, DTYPE t0, DTYPE t_bound)
 
     cdef void initial_step(self, DTYPE * y0)
 

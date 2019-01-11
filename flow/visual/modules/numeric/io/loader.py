@@ -2,8 +2,7 @@ import numpy as np
 from astropy.io import fits
 from scipy.interpolate import RegularGridInterpolator
 
-from ..cdata import Data as CData
-from ..data import Data as Data
+from ..data import CData, Data
 from .common import ascending, flip, byteorder, memmap, create_rutine
 
 

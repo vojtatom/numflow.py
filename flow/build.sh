@@ -6,7 +6,7 @@ if [ "$1" == "clean" ]
     then
     find . -type d -wholename '*/build' -exec rm -r {} +
     find . -type f -name '*.so' -exec rm {} +
-    find . -type f -name '*.html' -exec rm {} +
+    find ./visual/modules/ -type f -name '*.html' -exec rm {} +
     find . -type f -name '*.c' -exec rm {} +
     find . -type f -name '*.cpp' -exec rm {} +
 elif [ "$1" == "annot" ]

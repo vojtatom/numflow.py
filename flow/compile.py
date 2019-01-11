@@ -18,6 +18,7 @@ def scandir(dir, files=[]):
 # generate an Extension object from its dotted name
 def makeExtension(extName):
     extPath = extName.replace(".", os.path.sep)+".pyx"
+    print('path:', extName, extPath)
     return Extension(
         extName,
         [extPath],
@@ -29,15 +30,15 @@ def makeExtension(extName):
 
 
 # get the list of extensions
-extNames = scandir("numeric")
+extNames = scandir("visual")
 
 # and build up the set of Extension objects
 extensions = [makeExtension(name) for name in extNames]
 
 # finally, we can pass all this to distutils
 setup(
-  name="numeric",
-  packages = ["numeric", "numeric.cdata", "numeric.ckernels"],
+  name="visual",
+  packages = ["visual.modules.numeric", "visual.modules.numeric.data", "visual.modules.numeric.math"],
   ext_modules = extensions,
   cmdclass = {'build_ext': build_ext},
 )

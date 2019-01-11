@@ -4,7 +4,8 @@ from visual.modules.numeric.io import data, cdata
 
 
 class DataNode(Node):
-    structure = {
+    data = {
+        'structure': {
             'title' : {
                 'type': 'display',
                 'value' : 'dataset',
@@ -17,10 +18,12 @@ class DataNode(Node):
                 'type': 'input',
                 'value' : 'scipy',
             },
-        }
+        },
 
-    ins = []
-    out = ['dataset']
+        'ins': [],
+        'out': ['dataset'],
+    }
+    
     title = 'dataset'
     
     def __init__(self, id, data):

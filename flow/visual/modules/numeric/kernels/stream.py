@@ -1,11 +1,8 @@
 import numpy as np
 from scipy.integrate import solve_ivp, RK23
-from memory_profiler import profile
 
-from .. import vectors
-from ..data import Data
-from numba import njit
-
+from ..geometry import vectors
+from ..data import Data, CData
 
 class StreamKernel:
     """

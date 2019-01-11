@@ -1,9 +1,9 @@
 # cython: language_level=3, boundscheck=False, cdivision=True
 
 cimport numpy as np
-from ..cdata cimport Data, CData
-
+from ..data.cdata cimport CData, CSData
 from ..types cimport DTYPE
+
 
 cdef int indices(const DTYPE * grid, int grid_l, DTYPE p, 
                     DTYPE * fac, int * ind)
@@ -18,9 +18,9 @@ cdef int nd_interpolate(int dim_l, int com_l, const DTYPE ** grid,
                     DTYPE * points, int points_l,  
                     DTYPE * output)
 
-cdef DTYPE * co_interpolate(CData * data, DTYPE * points, int points_l, DTYPE * output)
+cdef DTYPE * co_interpolate(CSData * data, DTYPE * points, int points_l, DTYPE * output)
 
-cdef DTYPE * c_interpolate(CData * data, DTYPE * points, 
+cdef DTYPE * c_interpolate(CSData * data, DTYPE * points, 
                     int points_l)
 
 cdef pointer_to_numpy_array(void * ptr, np.npy_intp * size)

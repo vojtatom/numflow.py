@@ -4,9 +4,9 @@ from libc.stdlib cimport malloc, realloc, free
 from libc.math cimport fabs, fmax, fmin, pow
 cimport numpy as np
 cimport cython
-
 from ..types cimport DTYPE
-from ..cdata cimport CData
+
+from ..data.cdata cimport CSData
 from .interpolate cimport co_interpolate
 from .common cimport norm, div
 
@@ -60,10 +60,10 @@ cdef class RKSolver:
             free(self.K)
 
 
-    cdef void create(self, CData * cdata, DTYPE t0, DTYPE t_bound):
+    cdef void create(self, CSData * cdata, DTYPE t0, DTYPE t_bound):
         """
         Create a solver class.
-            :param Data cdata: cdata struct containing info
+            :param CSData cdata: cdata struct containing info
             :param DTYPE t0: initial integration time
             :param DTYPE t_bound: maximal integration time
         """

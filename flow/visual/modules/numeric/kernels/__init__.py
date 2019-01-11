@@ -1,1 +1,2 @@
-from .points import PointsKernel
+from .glyph import GlyphKernel
+from .stream import StreamKernel

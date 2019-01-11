@@ -2,7 +2,7 @@
 
 class UIFile {
     static create(file) {
-        let triggers = [...file.parentElement.parentElement.getElementsByClassName('detail_trigger')];
+        let triggers = [...file.parentElement.parentElement.getElementsByClassName('dtrigger')];
         triggers.forEach(element => {
             element.onclick = UIFile.detail;
         });

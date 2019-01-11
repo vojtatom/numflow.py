@@ -6,7 +6,7 @@ from libc.stdlib cimport malloc, free
 import numpy as np
 
 from ..types cimport DTYPE
-from ..cdata cimport Data, CData
+from ..data.cdata cimport CData, CSData
 from .common cimport div
 
 
@@ -154,12 +154,12 @@ cdef int nd_interpolate(int dim_l, int com_l, const DTYPE ** grid, int * grid_l,
     return 0
 
 
-cdef DTYPE * co_interpolate(CData * data, DTYPE * points, int points_l, DTYPE * output):
+cdef DTYPE * co_interpolate(CSData * data, DTYPE * points, int points_l, DTYPE * output):
     """
     Cython wrapper for nd_interpolate.
     Returns DTYPE pointer.
         
-        :param Data         data:     datastructure to perform interpolation on
+        :param CData         data:     datastructure to perform interpolation on
         :param DTYPE * points:   pointer to the beginning of the numpy array
         :param int          points_l: number of points to interpolate 
         :param DTYPE * output:   allocated output array
@@ -180,12 +180,12 @@ cdef DTYPE * co_interpolate(CData * data, DTYPE * points, int points_l, DTYPE * 
     return output
 
 
-cdef DTYPE * c_interpolate(CData * data, DTYPE * points, int points_l):
+cdef DTYPE * c_interpolate(CSData * data, DTYPE * points, int points_l):
     """
     Cython wrapper for nd_interpolate.
     Returns DTYPE pointer.
         
-        :param Data         data:     datastructure to perform interpolation on
+        :param CData         data:     datastructure to perform interpolation on
         :param DTYPE * points:   pointer to the beginning of the numpy array
         :param int          points_l: number of points to interpolate 
     """
@@ -210,13 +210,13 @@ cdef pointer_to_numpy_array(void * ptr, np.npy_intp * size):
     return arr
 
 
-def interpolate(Data data, DTYPE[:,::1] points):
+def interpolate(CData data, DTYPE[:,::1] points):
     """
     Performs interpolation on supplied data structure.
     Returns np.ndarray with shape (N, comp) where comp 
     is numer of components.
         
-        :param Data              data:   datastructure to perform interpolation on
+        :param CData              data:   datastructure to perform interpolation on
         :param DTYPE[:,::1] points: np.ndarray with shape (N, dim) where dim is numer of dimensions
     """
 

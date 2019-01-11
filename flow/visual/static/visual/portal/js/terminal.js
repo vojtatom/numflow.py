@@ -6,7 +6,7 @@ class Terminal {
         this.waiting = false;
 
         this.socket = this.socket();
-        UITerminal.add_output('terminal initialized with uuid<br>' + this.key, 0);
+        UITerminal.addLine('terminal initialized with uuid<br>' + this.key, 'info', 0);
     }
 
     command(text, data){
@@ -23,14 +23,11 @@ class Terminal {
 
         socket.onmessage = (e) => {
             let data = JSON.parse(e.data);
-            console.log(data);
-
-            if (data.type == 'command'){
-                UITerminal.add_command(data.text);
-            } else {
-                UITerminal.add_output(data.text, data.status);
+            UITerminal.addLine(data.text, data.type, data.status);
+            
+            if (data.type == 'output'){
                 this.waiting = false;
-            }
+            };
         };
 
         return socket;

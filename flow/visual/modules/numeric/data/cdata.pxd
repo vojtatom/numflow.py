@@ -3,19 +3,18 @@
 cimport numpy as np
 from ..types cimport DTYPE
 
-cdef struct s_CData:
+cdef struct s_CSData:
     int dim_l
     int com_l
     int * grid_l   
     const DTYPE ** grid
     const DTYPE ** comp
 
+ctypedef s_CSData CSData
 
-ctypedef s_CData CData
 
-
-cdef class Data:
-    cdef CData * c
+cdef class CData:
+    cdef CSData * c
     cdef int grid_alloc
     cdef int comp_alloc
     cdef object np_grid

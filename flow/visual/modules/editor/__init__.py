@@ -1,24 +1,13 @@
-from .nodes.data import DataNode
+from .nodes import DataNode, PointsNode, GlyphsNode
 
 nodes = {
             'data': { 
-                DataNode.title : { 
-                    'structure': DataNode.structure,
-                    'ins' : DataNode.ins,
-                    'out' : DataNode.out,
-                },
+                DataNode.title : DataNode.data
              },
-            'test' : {
-                'test' : { 
-                    'structure': DataNode.structure,
-                    'ins' : ['dataset', 'sometaing', 'else'],
-                    'out' : ['else'],
-                },
 
-                'test2' : { 
-                    'structure': DataNode.structure,
-                    'ins' : ['sometaing', 'else'],
-                    'out' : ['dataset'],
-                },
-            }
+            'geometry': { 
+                PointsNode.title : PointsNode.data,
+                GlyphsNode.title : GlyphsNode.data
+             }
+
         }

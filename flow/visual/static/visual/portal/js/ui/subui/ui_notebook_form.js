@@ -13,7 +13,7 @@ class UINotebookForm {
             DataManager.request({
                 url: '/notebook/' + code,
                 form: data,
-                success: (r) => { /*UI.notebook(r, false)*/ UITerminal.add_savepoint(); },
+                success: (r) => { UITerminal.addSavepoint(); },
                 fail: (r) => { console.log(r) },
             });
 

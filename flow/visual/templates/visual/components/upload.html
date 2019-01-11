@@ -1,15 +1,17 @@
 {% load staticfiles %}
 <form id="dataset_upload_form" method="post">
     {% csrf_token %}
-    <ul class="widget">
-        <li>{{ form.title.label_tag }}{{ form.title }}</li>
+    <dl>
+        <dt>{{ form.title.label_tag }}</dt>
+        <dd>{{ form.title }}</dd>
         {% for error in form.title.errors %}
-            <li class="error">{{ error }}</dd>
+            <dd class="error">{{ error }}</dd>
         {% endfor %}
-        <li>{{ form.data.label_tag }}{{ form.data }}</li>
+        <dt>{{ form.data.label_tag }}</dt>
+        <dd>{{ form.data }}</dd>
         {% for error in form.data.errors %}
-            <li class="error">{{ error }}</dd>
+            <dd class="error">{{ error }}</dd>
         {% endfor %}
-        <li><button type="submit">Upload</button></li>
-    </ul>
+        <dd><button type="submit">Upload</button></dd>
+    </dl>
 </form>
