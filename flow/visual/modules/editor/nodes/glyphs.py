@@ -14,7 +14,7 @@ class GlyphsNode(Node):
             }
         },
 
-        'ins': ['points', 'dataset'],
+        'in': ['points', 'dataset'],
         'out': ['glyphs'],
     }
     

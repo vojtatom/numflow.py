@@ -20,7 +20,7 @@ class DataNode(Node):
             },
         },
 
-        'ins': [],
+        'in': [],
         'out': ['dataset'],
     }
     

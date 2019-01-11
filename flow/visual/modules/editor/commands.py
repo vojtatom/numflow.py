@@ -3,7 +3,7 @@ import datetime
 from asgiref.sync import async_to_sync, sync_to_async
 from channels.layers import get_channel_layer
 
-from .pipeline import detect_cycles
+from . import pipeline
 
 
 @sync_to_async
@@ -57,7 +57,8 @@ help    show this help
 
 
 def run_command(group, command, data, username):
-    detect_cycles(data)
+    graph = pipeline.load_graph(data)
+    pipeline.detect_cycles(graph)
     send(group, 'No cycles detected', username=username)
 
 

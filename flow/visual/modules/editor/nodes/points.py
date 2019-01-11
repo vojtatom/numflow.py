@@ -48,7 +48,7 @@ class PointsNode(Node):
             },
         },
 
-        'ins': [],        
+        'in': [],        
         'out': ['points'],
     }
 

@@ -3,7 +3,7 @@ import abc
 class Node(abc.ABC):
     """
     Following class properties must be implemented:
-        ins:        { type: { required: True | False }, ... }
+        in:        { type: { required: True | False }, ... }
         out:        type
         structure:  { key : { type: 'display'|'input', value: value of the key, ... }}
     """

@@ -17,7 +17,7 @@ class NodeUI{
         let base = document.createElement('div');
         base.classList.add('node');
         
-        if (node.data.ins.length > 0){
+        if (node.data.in.length > 0){
             let dotIn = document.createElement('div');
             dotIn.classList.add('in');
             base.appendChild(dotIn);
@@ -67,7 +67,6 @@ class NodeUI{
 
             // abjust lower indices:
             let name = key.split('_');
-            console.log(name);
             title.innerHTML = name[0];
             for (let i = 1; i < name.length; ++i){
                 let subs = document.createElement('sub');
@@ -106,8 +105,8 @@ class NodeUI{
         }
 
         // IN TYPES
-        if (node.data.ins.length > 0){
-            meta = node.data.ins.join(', ');
+        if (node.data.in.length > 0){
+            meta = node.data.in.join(', ');
         } else {
             meta = 'None';
         } 

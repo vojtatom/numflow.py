@@ -385,7 +385,7 @@ class Node{
     }
 
     isCompatible(incomingNode){
-        if (this.data.ins.indexOf(incomingNode.data.out[0]) != -1)
+        if (this.data.in.indexOf(incomingNode.data.out[0]) != -1)
             return true;
         return false;
     }
