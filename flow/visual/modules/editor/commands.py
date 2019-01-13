@@ -58,8 +58,11 @@ help    show this help
 
 def run_command(group, command, data, username):
     graph = pipeline.load_graph(data)
-    pipeline.detect_cycles(graph)
-    send(group, 'No cycles detected', username=username)
+    order = pipeline.topological_sort(graph)
+    send(group, 'No cycles detected, computing...', username=username)
+    pipeline.compute(graph, order, lambda m:  send(group, m, username=username))
+
+
 
 
 commands = { 'help': help_command, 'run': run_command }

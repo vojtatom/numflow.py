@@ -41,3 +41,14 @@ class DataNode(Node):
 
     def call(self, indata):
         return self.data
+
+
+    @staticmethod
+    def deserialize(data):
+        parsed = Node.deserialize(data)
+        parsed['data'] = {
+            'code' : data['data']['structure']['code']['value'],
+            'type' : data['data']['structure']['type']['value']
+        }
+        return parsed
+

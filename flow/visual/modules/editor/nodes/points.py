@@ -68,3 +68,15 @@ class PointsNode(Node):
 
     def call(self, indata):
         return self.data
+
+
+    @staticmethod
+    def deserialize(data):
+        parsed = Node.deserialize(data)
+        parsed['data'] = {}
+        for field in ['x_min', 'y_min', 'z_min', 'x_max', 'y_max', 'z_max', 'x_sampling', 'y_sampling', 'z_sampling']:
+            try:
+                parsed['data'][field] = float(data['data']['structure'][field]['value'])
+            except:
+                pass
+        return parsed

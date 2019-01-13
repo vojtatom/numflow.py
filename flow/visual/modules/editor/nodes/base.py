@@ -29,3 +29,12 @@ class Node(abc.ABC):
         """
         pass
 
+    @staticmethod
+    def deserialize(data):
+        parsed = {}
+        parsed['title'] = data['title']
+        parsed['id'] = data['id']
+        parsed['in'] = data['in']
+        parsed['out'] = data['out']
+        return parsed
+

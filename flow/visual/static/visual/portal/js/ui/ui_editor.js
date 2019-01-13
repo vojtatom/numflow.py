@@ -78,7 +78,7 @@ class EditorMenuUI {
 
                 nodeMenu.onclick = (e) => {
                     let pos = editor.mouseCoord(e);
-                    let newNode = new Node(pos.x - 10, pos.y - 10, editor, nodesMenu[category][node]);
+                    let newNode = new Node(pos.x - 10, pos.y - 10, editor, nodesMenu[category][node], node);
 
                     EditorMenuUI.toggleMenu(editor);
 

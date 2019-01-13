@@ -38,4 +38,10 @@ class GlyphsNode(Node):
 
         return  { 'glyphs': glyphs }
 
+    @staticmethod
+    def deserialize(data):
+        parsed = Node.deserialize(data)
+        parsed['data'] = {}
+        return parsed
+
 

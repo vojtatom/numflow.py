@@ -291,10 +291,11 @@ class Node{
         return this.element;
     }
 
-    constructor(x, y, editor, data){
+    constructor(x, y, editor, data, title){
         this.editor = editor;
         this.active = false; 
-        this.data = data
+        this.data = data;
+        this.title = title;
 
         this.id = Node.newId;
 
@@ -397,15 +398,16 @@ class Node{
     serialize(){
         return {
             id: this.id,
-            in: Object.keys(this.inConnections),
-            out: Object.keys(this.outConnections),
+            in: Object.keys(this.inConnections).map(x => parseInt(x)),
+            out: Object.keys(this.outConnections).map(x => parseInt(x)),
             position: this.transform,
+            title: this.title,
             data: this.data,
         }
     }
 
     static deserialize(data, editor) {
-        let node = new Node(data.position.x, data.position.y, editor, data.data);
+        let node = new Node(data.position.x, data.position.y, editor, data.data, data.title);
         node.id = data.id;
         return node;
     }
