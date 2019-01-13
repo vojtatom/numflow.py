@@ -2,7 +2,7 @@ import numpy as np
 from scipy.integrate import solve_ivp, RK23
 
 from ..geometry import vectors
-from ..data import Data, CData
+from ..data import SData, CData
 
 class StreamKernel:
     """
@@ -15,7 +15,7 @@ class StreamKernel:
         :method calculate: perform calculation
     """
 
-    def __init__(self, data: Data) -> None:
+    def __init__(self, data) -> None:
         """
         Initializes kernel to perform calculation on single points.
         Designed for glyph vizualization.

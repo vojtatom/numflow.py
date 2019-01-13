@@ -714,7 +714,6 @@ svg path {
     display: flex;
     border-bottom: 1px solid #111;
     color: #FFF;
-    white-space: pre;
 }
 
 #terminal li.command::before{

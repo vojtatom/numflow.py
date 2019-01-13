@@ -15,7 +15,7 @@ def cdata(filename: str):
     return d
 
 
-def data(filename: str):
+def sdata(filename: str):
     """
     Prepares data object for dataset using scipy.
         :param filename: filename of dataset

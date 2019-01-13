@@ -59,15 +59,14 @@ class PointsNode(Node):
 
         #TODO perform checks...
 
-        start = [data.x_min, data.y_min, data.z_min]
-        end = [data.x_max, data.y_max, data.z_max]
-        sampling = [data.x_sampling, data.y_sampling, data.z_sampling]
-
+        start = [data['x_min'], data['y_min'], data['z_min']]
+        end = [data['x_max'], data['y_max'], data['z_max']]
+        sampling = [int(data['x_sampling']), int(data['y_sampling']), int(data['z_sampling'])]
         self.data = vectors.location(start, end, sampling)
 
 
     def call(self, indata):
-        return self.data
+        return {'points': self.data}
 
 
     @staticmethod

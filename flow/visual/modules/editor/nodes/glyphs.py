@@ -36,7 +36,7 @@ class GlyphsNode(Node):
 
         glyphs = kernel.calculate()
 
-        return  { 'glyphs': glyphs }
+        return  {'glyphs': glyphs}
 
     @staticmethod
     def deserialize(data):

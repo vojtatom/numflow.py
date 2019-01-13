@@ -1,7 +1,9 @@
 import json
 import datetime
+import threading
 
 from channels.db import database_sync_to_async
+from asgiref.sync import async_to_sync, sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 from visual.modules.editor import commands
@@ -44,9 +46,14 @@ class TerminalConsumer(AsyncWebsocketConsumer):
                 'time': str(datetime.datetime.now()),
             }
         )
-
+        
         ## At this point, check what to do and let it handle the rest.
-        await commands.command(self.terminal_group_name, command, data, self.scope['user'].username)
+        #await commands.command(self.terminal_group_name, command, data, self.scope['user'].username)
+        # launch processing in background
+        t = threading.Thread(target=commands.command, args=(self.terminal_group_name, command, data, self.scope['user'].username))
+        t.setDaemon(True)
+        t.start()
+
 
 
     # Receive command from group

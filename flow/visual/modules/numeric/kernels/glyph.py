@@ -3,7 +3,7 @@ import timeit
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
 
-from ..data import Data, CData
+from ..data import SData, CData
 from ..geometry import location
 from ..math import interpolate
 
@@ -74,7 +74,7 @@ class GlyphKernel:
         if self._data.mode == 'c':
             values = interpolate(self._data, self._points)
         else:
-            values = self._data(self._points)
+            values = self._data.data(self._points)
 
         return values
 

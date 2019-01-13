@@ -1,6 +1,6 @@
 
 
-class Data:
+class SData:
     mode = 'scipy'
 
     def __init__(self, data, minimum, maximum):

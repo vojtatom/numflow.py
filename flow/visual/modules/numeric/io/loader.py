@@ -2,12 +2,12 @@ import numpy as np
 from astropy.io import fits
 from scipy.interpolate import RegularGridInterpolator
 
-from ..data import CData, Data
+from ..data import CData, SData
 from .common import ascending, flip, byteorder, memmap, create_rutine
 
 
 
-def create(hdul: fits.HDUList) -> list:
+def create(hdul: fits.HDUList) -> SData:
     """
     Creates interpolator from hdul 
         :param hdul: HDUList of the fits file
@@ -32,10 +32,10 @@ def create(hdul: fits.HDUList) -> list:
 
     interp = RegularGridInterpolator(grid, np.stack(arrays, axis=-1).astype(np.double), fill_value=[0, 0, 0], bounds_error=False)
     minim, maxim = np.array([np.amin(x) for x in grid]), np.array([np.amax(x) for x in grid])
-    return Data(interp, minim, maxim)
+    return SData(interp, minim, maxim)
 
 
-def ccreate(hdul: fits.HDUList) -> Data:
+def ccreate(hdul: fits.HDUList) -> CData:
     """
     Creates interpolator from hdul 
         :param hdul: HDUList of the fits file

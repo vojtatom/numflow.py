@@ -57,7 +57,32 @@ def topological_sort(graph):
             
 
 def compute(graph, order, message):
-    print(graph)
+    data = {}
+    dgraph = {}
+
+    nodes = {
+        DataNode.title: DataNode,
+        GlyphsNode.title: GlyphsNode,
+        PointsNode.title: PointsNode,
+    }
+
+    for node in graph:
+        dgraph[node['id']] = node
+
+    print(order)
+    for node_id in order:
+        node = dgraph[node_id]
+        in_data = {}
+
+        for in_node in node['in']:
+            in_data.update(data[in_node])
+        
+
+        message('Running node #{}: {}'.format(node_id, node['title']))
+        node_obj = nodes[node['title']](node_id, node['data'])
+        data[node_id] = node_obj.call(in_data)
+        print(data)
+
 
 
 

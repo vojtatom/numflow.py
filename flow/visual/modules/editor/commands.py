@@ -1,12 +1,13 @@
 import datetime
 
 from asgiref.sync import async_to_sync, sync_to_async
+from channels.db import database_sync_to_async
 from channels.layers import get_channel_layer
 
 from . import pipeline
+from time import sleep
 
 
-@sync_to_async
 def command(group, command, data, username):
     """
     Executes command and sends response to group.
@@ -61,6 +62,7 @@ def run_command(group, command, data, username):
     order = pipeline.topological_sort(graph)
     send(group, 'No cycles detected, computing...', username=username)
     pipeline.compute(graph, order, lambda m:  send(group, m, username=username))
+    send(group, 'Calculation succesfully finished!', username=username, done=True)
 
 
 

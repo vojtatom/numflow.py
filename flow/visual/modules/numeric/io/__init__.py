@@ -1,1 +1,1 @@
-from .io import data, cdata
+from .io import sdata, cdata

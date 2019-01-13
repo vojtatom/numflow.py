@@ -1,6 +1,6 @@
 from .base import Node
 from ..model import dataset
-from visual.modules.numeric.io import data, cdata
+from visual.modules.numeric.io import sdata, cdata
 
 
 class DataNode(Node):
@@ -35,12 +35,12 @@ class DataNode(Node):
         path = dataset(data['code'])
 
         if data['type'] == 'scipy':
-            self.data = data(path)
+            self.data = sdata(path)
         else:
             self.data = cdata(path)
 
     def call(self, indata):
-        return self.data
+        return {'dataset': self.data}
 
 
     @staticmethod
