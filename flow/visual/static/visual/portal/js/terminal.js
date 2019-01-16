@@ -1,12 +1,12 @@
 'use strict';
 
 class Terminal {
-    constructor(){
-        this.key = uuid();
+    constructor(code){
+        this.code = code;
         this.waiting = false;
 
         this.socket = this.socket();
-        UITerminal.addLine('terminal initialized with uuid<br>' + this.key, 'info', 0);
+        UITerminal.addLine('terminal initialized with uuid<br>' + this.code, 'info', 0);
     }
 
     command(text, data){
@@ -16,10 +16,10 @@ class Terminal {
     }
 
     socket(){
-        console.log('constructing terminal', this.key);
+        console.log('constructing terminal', this.code);
         let socket = new ReconnectingWebSocket(
             'ws://' + window.location.host +
-            '/ws/terminal/' + this.key + '/');
+            '/ws/terminal/' + this.code + '/');
 
         socket.onmessage = (e) => {
             let data = JSON.parse(e.data);

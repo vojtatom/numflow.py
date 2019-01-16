@@ -386,7 +386,15 @@ class Node{
     }
 
     isCompatible(incomingNode){
-        if (this.data.in.indexOf(incomingNode.data.out[0]) != -1)
+        let intersect = function (a, b) {
+            var t;
+            if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+            return a.filter(function (e) {
+                return b.indexOf(e) > -1;
+            });
+        };
+
+        if (intersect(Object.keys(this.data.in), incomingNode.data.out).length > 0)
             return true;
         return false;
     }

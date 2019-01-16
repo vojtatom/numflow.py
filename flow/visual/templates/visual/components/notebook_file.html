@@ -4,11 +4,11 @@
 
 <li>
     <ol class="file notebook" id="{{ notebook.code }}" title="{{ notebook.title }}">
-        <li class="title detail_trigger">{{ notebook.title }}</li>
+        <li class="title dtrigger">{{ notebook.title }}</li>
         {% if notebook.time_created|is_today %}
-            <li class="time detail_trigger">{{ notebook.time_created | date:'H:i' }} today</li>
+            <li class="time dtrigger">{{ notebook.time_created | date:'H:i' }} today</li>
         {% else %}
-            <li class="time detail_trigger">{{ notebook.time_created | date:'d M Y' }}</li>
+            <li class="time dtrigger">{{ notebook.time_created | date:'d M Y' }}</li>
         {% endif %}
         <li class="action open" title="open">
             <img src="{% static icons|add:'/enter.svg' %}" alt="edit">

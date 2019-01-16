@@ -1,6 +1,7 @@
 from .base import Node
 from ..model import dataset
-from visual.modules.numeric.io import sdata, cdata
+from ..exceptions import NodeError
+from visual.modules.numeric.kernels import dataset_kernel
 
 
 class DataNode(Node):
@@ -13,34 +14,44 @@ class DataNode(Node):
             'code' : {
                 'type': 'input',
                 'value' : '',
+                'dynamic' : '/node/dataset',
             },
             'type' : {
-                'type': 'input',
+                'type': 'select',
+                'choices': ['scipy', 'c'],
                 'value' : 'scipy',
             },
         },
 
-        'in': [],
+        'in': {},
         'out': ['dataset'],
     }
     
     title = 'dataset'
+    multiinput = False
     
     def __init__(self, id, data):
-        self.id = id
+        """
+        Inicialize new instance of dataset node.
+            :param id: id of node
+            :param data: dictionary, must contain keys 'code' and 'type'.
+        """   
 
-        #TODO perform checks...
+        self.id = id
+        if 'code' not in data or 'type' not in data:
+            raise NodeError('Dataset node missing value.')
 
         ## get path to dataset
-        path = dataset(data['code'])
+        self._path = dataset(data['code'])
+        self._mode = data['type']
 
-        if data['type'] == 'scipy':
-            self.data = sdata(path)
-        else:
-            self.data = cdata(path)
 
-    def call(self, indata):
-        return {'dataset': self.data}
+    def __call__(self, indata):
+        """
+        Create dataset.
+            :param indata: data coming from connected nodes, can be None here.
+        """   
+        return {'dataset' : dataset_kernel(self._path, self._mode)}
 
 
     @staticmethod

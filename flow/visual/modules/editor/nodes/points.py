@@ -1,7 +1,8 @@
 from .base import Node
 from ..model import dataset
-from visual.modules.numeric.geometry import vectors
+from ..exceptions import NodeError
 
+from visual.modules.numeric.kernels import points_kernel
 
 class PointsNode(Node):
     data = {
@@ -48,25 +49,39 @@ class PointsNode(Node):
             },
         },
 
-        'in': [],        
+        'in': {},        
         'out': ['points'],
     }
 
     title = 'points'
     
     def __init__(self, id, data):
+        """
+        Inicialize new instance of points node.
+            :param id: id of node
+            :param data: dictionary, must contain keys 'x_min', 'y_min', 'z_min', 'x_max', 'y_max', 
+                        'z_max', 'x_sampling', 'y_sampling' and 'z_sampling'
+        """  
         self.id = id
 
-        #TODO perform checks...
+        fields = ['x_min', 'y_min', 'z_min', 'x_max', 'y_max', 
+                  'z_max', 'x_sampling', 'y_sampling', 'z_sampling']
 
-        start = [data['x_min'], data['y_min'], data['z_min']]
-        end = [data['x_max'], data['y_max'], data['z_max']]
-        sampling = [int(data['x_sampling']), int(data['y_sampling']), int(data['z_sampling'])]
-        self.data = vectors.location(start, end, sampling)
+        for field in fields:
+            if field not in data:
+                raise NodeError('In PointsNode missing field {}.'.format(field))
+
+        self._start = [data['x_min'], data['y_min'], data['z_min']]
+        self._end = [data['x_max'], data['y_max'], data['z_max']]
+        self._sampling = [int(data['x_sampling']), int(data['y_sampling']), int(data['z_sampling'])]
 
 
-    def call(self, indata):
-        return {'points': self.data}
+    def __call__(self, indata):
+        """
+        Create np.ndarray of points
+            :param indata: data coming from connected nodes, can be None here.
+        """   
+        return {'points': points_kernel(self._start, self._end, self._sampling)}
 
 
     @staticmethod

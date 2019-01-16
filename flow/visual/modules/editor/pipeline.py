@@ -1,26 +1,20 @@
 import json
 from .exceptions import EditorError
-from .nodes import DataNode, GlyphsNode, PointsNode
-
+from .nodes import DataNode, GlyphsNode, PointsNode, nodes
 
 def load_graph(string_graph):
     """
-    Loads graph 
+    Loads graph, filters data 
         :param string_graph: 
     """
-
-    deserializers = {
-        DataNode.title: DataNode.deserialize,
-        GlyphsNode.title: GlyphsNode.deserialize,
-        PointsNode.title: PointsNode.deserialize,
-    }
     
     graph = json.loads(string_graph)
     parsed_graph = []
     for node in graph:
-        if node['title'] not in deserializers:
+        if node['title'] not in nodes:
             raise EditorError('Unknown type of node while parsing graph')
-        parsed_graph.append(deserializers[node['title']](node))
+
+        parsed_graph.append(nodes[node['title']].deserialize(node))
     return parsed_graph
 
 
@@ -60,28 +54,35 @@ def compute(graph, order, message):
     data = {}
     dgraph = {}
 
-    nodes = {
-        DataNode.title: DataNode,
-        GlyphsNode.title: GlyphsNode,
-        PointsNode.title: PointsNode,
-    }
-
     for node in graph:
         dgraph[node['id']] = node
 
-    print(order)
     for node_id in order:
         node = dgraph[node_id]
         in_data = {}
+        node_class = nodes[node['title']]
 
+        #construct in node dict
         for in_node in node['in']:
-            in_data.update(data[in_node])
-        
+            #each datatype in output of incoming nodes
+            for datatype in data[in_node]:
+                #if node requires this datatype
+                if datatype in node_class.data['in']:
+                    # node can have multiple sources:
+                    if node_class.data['in'][datatype]['multipart']:
+                        if datatype in in_data:
+                            in_data[datatype].append(data[in_node][datatype])
+                        else:
+                            in_data[datatype] = [data[in_node][datatype]]
+                    #or not:
+                    else:
+                        in_data[datatype] = data[in_node][datatype]  
 
         message('Running node #{}: {}'.format(node_id, node['title']))
-        node_obj = nodes[node['title']](node_id, node['data'])
-        data[node_id] = node_obj.call(in_data)
-        print(data)
+        node_obj = node_class(node_id, node['data'])
+        data[node_id] = node_obj(in_data)
+
+    print(data)
 
 
 

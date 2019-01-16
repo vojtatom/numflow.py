@@ -42,8 +42,10 @@ class Dataset(models.Model):
     data = models.FileField(upload_to=directory_path, blank=False)
     status = models.IntegerField(default=0)
     owners = models.ManyToManyField(User, related_name="owners")
+    description = models.TextField(blank=True)
 
     objects = models.Manager()
+
 
 
     def __str__(self):

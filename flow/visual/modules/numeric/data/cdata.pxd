@@ -22,5 +22,5 @@ cdef class CData:
 
     #methods
     cdef int _grid(self, const DTYPE * g, int grid_l)
-
     cdef int _component(self, const DTYPE * c)
+    cpdef interpolate(self, DTYPE[:,::1] points)

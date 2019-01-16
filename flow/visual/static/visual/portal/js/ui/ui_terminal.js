@@ -5,10 +5,11 @@ class UITerminal {
         let form = document.getElementById('commandline');
         let list = document.getElementById('terminal');
         let input = document.getElementById('command');
+        let code = document.getElementById('code').value;
 
         UITerminal.addLine('initializing terminal ui...', 'info')
 
-        let terminal = new Terminal();
+        let terminal = new Terminal(code);
 
         form.onsubmit = function (e) {
             e.preventDefault();

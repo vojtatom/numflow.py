@@ -150,3 +150,19 @@ def editor_nodes(request):
     data = api.api_call(request)
     return api.editor_nodes()
 
+
+#NODES
+@login_required
+def node_dataset(request):
+    """
+    Accepts only AJAX POST, returns dict of nodes.
+        :param request: request object 
+    """
+
+    data = api.api_call(request)
+    try:
+        dataset = models.dataset(data['code'])
+    except:
+        return api.dataset_description(None)
+    return api.dataset_description(dataset)
+

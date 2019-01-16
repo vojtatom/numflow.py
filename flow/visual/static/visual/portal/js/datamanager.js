@@ -2,14 +2,14 @@
 
 class DataManager {
 
-    /*    requestFrequent(options) {
-           if (this.changeTimer !== false)
-               clearTimeout(this.changeTimer);
+    static requestFrequent(options) {
+           if (DataManager.changeTimer !== false)
+               clearTimeout(DataManager.changeTimer);
    
-           this.changeTimer = setTimeout(() => {
-               return this.request(options);
+               DataManager.changeTimer = setTimeout(() => {
+               return DataManager.request(options);
            }, 300);
-       }*/
+       }
 
     static request(options) {
         if (!('method' in options))

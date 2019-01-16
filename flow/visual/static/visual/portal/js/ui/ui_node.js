@@ -17,7 +17,7 @@ class NodeUI{
         let base = document.createElement('div');
         base.classList.add('node');
         
-        if (node.data.in.length > 0){
+        if (Object.keys(node.data.in).length > 0){
             let dotIn = document.createElement('div');
             dotIn.classList.add('in');
             base.appendChild(dotIn);
@@ -54,15 +54,14 @@ class NodeUI{
     }
 
     static buildStructure(node, nodeElement) {
-        let field, contents, title, meta, subs;
         let structure = node.data.structure;
 
         for (let key in structure) {
-            field = document.createElement('div');
+            let field = document.createElement('div');
             field.classList.add('field');
             nodeElement.appendChild(field);
 
-            title = document.createElement('div');
+            let title = document.createElement('div');
             title.classList.add('title');
 
             // abjust lower indices:
@@ -78,35 +77,107 @@ class NodeUI{
 
             //DISPLAY lines
             if (structure[key].type == 'display'){
-                contents = document.createElement('div');
+                let contents = document.createElement('div');
                 contents.innerHTML = structure[key].value;
+
+                contents.classList.add('content');
+                field.appendChild(contents);
 
             //INPUT lines
             } else if (structure[key].type == 'input'){
-                contents = document.createElement('input');
+                let contents = document.createElement('input');
                 contents.value = structure[key].value;
                 contents.placeholder = 'value';
                 contents.onmousedown = (e) => {
                     e.stopPropagation();
                 };
 
+                let dynamicNodeId = key + node.id;
                 let update = (e) => {
                     node.data.structure[key].value = e.target.value;
+                    
+                    if ('dynamic' in structure[key]){
+                        DataManager.requestFrequent({
+                            'url' : structure[key].dynamic,
+                            'data' : {'code': contents.value},
+                            'decode': true,
+                            'success' : (r) => {
+                                let dynamic = document.getElementById(dynamicNodeId);
+                                console.log(dynamic, r);
+                                dynamic.innerHTML = r.description;
+                            },
+                            'fail':  (r) => console.log(r),
+                        })
+                    };
+
                     e.stopPropagation();
                 };
 
                 contents.onkeypress = update;
                 contents.oninput = update;
                 contents.onpaste = update;
+
+                contents.classList.add('content');
+                field.appendChild(contents);
+
+            //SELECT lines
+            } else if (structure[key].type == 'select'){
+                let contents = document.createElement('select');
+                
+                //Create and append the options
+                for (let i = 0; i < structure[key].choices.length; i++) {
+                    let option = document.createElement('option');
+                    option.value = structure[key].choices[i];
+                    option.text = structure[key].choices[i];
+                    contents.appendChild(option);
+                }
+                
+                contents.value = structure[key].value;
+                contents.onchange = (e) => {
+                    node.data.structure[key].value = e.target.value;
+                    e.stopPropagation();
+                };
+
+                let nothing = (e) => {
+                    e.stopPropagation();
+                };
+
+                contents.onmousedown = nothing;
+                contents.onmouseup = nothing;
+
+                contents.classList.add('content');
+                field.appendChild(contents);
             }
             
-            contents.classList.add('content');
-            field.appendChild(contents);
+
+            if ('dynamic' in structure[key]){
+                field = document.createElement('div');
+                field.classList.add('field');
+                field.id = key + node.id;
+                field.classList.add('dynamic');
+                field.innerHTML = 'Waiting for input above.';
+                nodeElement.appendChild(field);
+            }
         }
 
+        let meta;
+
         // IN TYPES
-        if (node.data.in.length > 0){
-            meta = node.data.in.join(', ');
+        console.log(node.data.in, Object.keys(node.data.in).length);
+        if (Object.keys(node.data.in).length > 0){
+            meta = []
+            for(let intype in node.data.in){
+                let text = intype;
+                if(node.data.in[intype].multipart){
+                    text = '[' + text + ']';
+                }
+
+                if(!node.data.in[intype].required){
+                    text = '(' + text + ')';
+                }
+                meta.push(text);
+            }
+            meta = meta.join(', ');
         } else {
             meta = 'None';
         } 

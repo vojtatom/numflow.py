@@ -17,7 +17,7 @@ class Node(abc.ABC):
 
 
     @abc.abstractmethod
-    def call(self, indata):
+    def __call__(self, indata):
         """
         Calls node.
             :param indata: dictionary, where each key

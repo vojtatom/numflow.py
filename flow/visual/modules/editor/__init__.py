@@ -1,6 +1,6 @@
 from .nodes import DataNode, PointsNode, GlyphsNode
 
-nodes = {
+nodes_structure = {
             'data': { 
                 DataNode.title : DataNode.data
              },

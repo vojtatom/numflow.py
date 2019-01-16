@@ -1,7 +1,7 @@
 import json
 from django.http import JsonResponse
 from django.core.exceptions import SuspiciousOperation 
-from visual.modules.editor import nodes
+from visual.modules.editor import nodes_structure
 
 def api_call(request):
     """
@@ -27,4 +27,9 @@ def editor_nodes():
     """
     Returns json serialized notebook data.
     """
-    return JsonResponse(nodes)
+    return JsonResponse(nodes_structure)
+
+def dataset_description(dataset):
+    if dataset is None:
+        return JsonResponse({ 'description' : 'Dataset not found.'})
+    return JsonResponse({ 'description' : dataset.description })

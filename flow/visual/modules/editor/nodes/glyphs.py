@@ -1,8 +1,9 @@
 from .base import Node
 from ..model import dataset
+import numpy as np
 
 from ..exceptions import NodeError
-from visual.modules.numeric.kernels import GlyphKernel
+from visual.modules.numeric.kernels import glyph_kernel
 
 
 class GlyphsNode(Node):
@@ -14,29 +15,56 @@ class GlyphsNode(Node):
             }
         },
 
-        'in': ['points', 'dataset'],
+        'in': {
+            'points': {
+                'required': True,
+                'multipart': True
+            },
+            'dataset': {
+                'required': True,
+                'multipart': False
+            }
+        },
         'out': ['glyphs'],
     }
     
     title = 'glyphs'
     
     def __init__(self, id, data):
+        """
+        Inicialize new instance of glyph node.
+            :param id: id of node
+            :param data: dictionary, can be None here.
+        """   
         self.id = id
 
-        #data should be None?
+    def __call__(self, indata):    
+        """
+        Call glyph kernel and perform interpolation.
+            :param indata: data coming from connected nodes, can be None here.
+        """   
 
-    def call(self, indata):    
-        if not ('dataset' in indata or 'points' in indata):
-            raise NodeError('Both dataset and points are needed for glyphs node.')
+        fields = ['dataset', 'points']
+        for field in fields:
+            if field not in indata:
+                raise NodeError('Glyph node missing input {}.'.format(field))
 
-        kernel = GlyphKernel()
+        values = None
+        points = None
 
-        kernel.data = indata['dataset']
-        kernel.points = indata['points']
+        #interpolate per points group
+        for points_group in indata['points']:
+            out_values = glyph_kernel(indata['dataset'], points_group)
+            
+            if values is None:
+                values = out_values
+                points = points_group
+            else:
+                values = np.append(values, out_values, axis=0)
+                points = np.append(points, points_group, axis=0)
 
-        glyphs = kernel.calculate()
-
-        return  {'glyphs': glyphs}
+        #return all flatenned
+        return {'glyphs' : {'values': values, 'points': points}}
 
     @staticmethod
     def deserialize(data):

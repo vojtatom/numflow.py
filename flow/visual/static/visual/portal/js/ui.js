@@ -12,11 +12,13 @@ class UI {
             }
         }
 
+        console.log('here!');
         //TODO
         UISidebar.create();
 
         let datasets = [...document.getElementsByClassName('dataset')]
         datasets.forEach(element => {
+            console.log(element);
             UIDataset.create(element);
         });
 

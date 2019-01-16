@@ -4,12 +4,12 @@
 
 <li>
     <ol class="file dataset" id="{{ dataset.code }}" title="{{ dataset.title }}">
-        <li class="title detail_trigger">{{ dataset.title }}</li>
-        <li class="status detail_trigger">{{ dataset.status }}</li>
+        <li class="title dtrigger">{{ dataset.title }}</li>
+        <li class="status dtrigger">{{ dataset.status }}</li>
         {% if dataset.time_created|is_today %}
-            <li class="time detail_trigger">{{ dataset.time_created | date:'H:i' }} today</li>
+            <li class="time dtrigger">{{ dataset.time_created | date:'H:i' }} today</li>
         {% else %}
-            <li class="time detail_trigger">{{ dataset.time_created | date:'d M Y' }}</li>
+            <li class="time dtrigger">{{ dataset.time_created | date:'d M Y' }}</li>
         {% endif %}
         <li class="action edit" title="rename">
                 <img src="{% static icons|add:'/edit.svg' %}" alt="rename">
@@ -41,6 +41,8 @@
             <dd>
                 {{ dataset.status }}
             </dd>
+            <dt>description</dt>
+            <dd class="description">{{ dataset.description }}</dd>
         </dl>
     </div>
 </li>
