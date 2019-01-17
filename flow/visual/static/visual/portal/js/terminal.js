@@ -6,7 +6,7 @@ class Terminal {
         this.waiting = false;
 
         this.socket = this.socket();
-        UITerminal.addLine('terminal initialized with uuid<br>' + this.code, 'info', 0);
+        UITerminal.addLine('terminal initialized with uuid<br>' + this.code, 'info');
     }
 
     command(text, data){
@@ -30,6 +30,11 @@ class Terminal {
             };
         };
 
+        socket.onerror = (e) => {
+            UITerminal.addLine('websocket failed to connect!', 'error');
+            //socket.close(1000, 'Closing after failed connection.');
+        };
+
         return socket;
     }
 
@@ -42,7 +47,9 @@ class Terminal {
     }
 
     close(){
-        console.log('closing websocket...');
-        this.socket.close(1000, 'Switching views, therfor closing.');
+        if (this.socket !== null){
+            console.log('closing websocket...');
+            this.socket.close(1000, 'Switching views, therfore closing.');
+        }
     }
 }

@@ -33,7 +33,10 @@ class UITerminal {
             line = UICommand.createProgress(text);
         } else if (type == 'output') {
             line = UICommand.createOutput(text, status);
+        } else if (type == 'error') {
+            line = UICommand.createOutput(text, -1);
         }
+        
         list.appendChild(line);
         list.scrollTop = list.scrollHeight;
 

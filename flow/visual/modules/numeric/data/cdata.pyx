@@ -4,7 +4,8 @@ from libc.stdlib cimport malloc, free
 from cython.operator cimport dereference as deref
 cimport numpy as np
 from ..types cimport DTYPE
-from ..math.interpolate cimport c_interpolate, pointer_to_numpy_array
+from ..math.interpolate cimport c_interpolate
+from ..math.common cimport pointer_to_two_d_numpy_array
 
 import cython
 import numpy as np
@@ -107,7 +108,7 @@ cdef class CData:
         
         dims[0] = points.shape[0]
         dims[1] = self.c.com_l
-        arr = pointer_to_numpy_array(a, dims)
+        arr = pointer_to_two_d_numpy_array(a, dims)
         return arr
 
 

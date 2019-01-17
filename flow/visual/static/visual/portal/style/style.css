@@ -599,13 +599,14 @@ input#dataset_upload_form_file{
     border-top-right-radius: 0.3em;
 }
 
-.node .field.node-meta:last-child .content,
-.node .field.node-meta:last-child{
+.node .field.meta:last-child .content,
+.node .field.meta:last-child{
     border-bottom-right-radius: 0.3em;
 }
 
 .node .field.meta:last-child{
     border-bottom-left-radius: 0.3em;
+
 }
 
 .node .field .title {

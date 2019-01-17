@@ -1,9 +1,16 @@
 # cython: language_level=3, boundscheck=False, wraparound=False, nonecheck=False, cdivision=True
 
 cimport numpy as np
-from ..types cimport DTYPE
+from ..types cimport DTYPE, LONGDTYPE, INTDTYPE
 
 from libc.math cimport sqrt
+
+np.import_array()
+
+
+cdef extern from "numpy/arrayobject.h":
+        void PyArray_ENABLEFLAGS(np.ndarray arr, int flags)
+
 
 cdef DTYPE div(DTYPE a, DTYPE b):
     if a < 0:
@@ -17,19 +24,46 @@ cdef DTYPE div(DTYPE a, DTYPE b):
 
 cdef DTYPE norm(DTYPE * vec, int vec_l):
     cdef int n
-    cdef DTYPE sum = 0
+    cdef LONGDTYPE sum = 0, a, b
     for n in range(vec_l):
-        sum += vec[n] * vec[n]
-    return div(sqrt(sum), sqrt(vec_l))
+        a = vec[n]
+        sum += a * a
+    return sqrt(div(sum, vec_l))
 
 
-cdef DTYPE dot(DTYPE * vec_a, DTYPE * vec_b, int vec_l):
-    cdef DTYPE d = 0.0
+cdef DTYPE dot(DTYPE * vec_a, DTYPE * vec_b, int vec_l, int stride_a, int stride_b):
+    cdef LONGDTYPE d = 0.0, a, b
     cdef int i
-    
     for i in range(vec_l):
-        d += vec_a[i] * vec_b[i]
+        a = vec_a[i * stride_a]
+        b = vec_b[i * stride_b]
+        d += a * b
     return d
 
-#cdef str_vec(DTYPE * vec, int vec_l):
-#    return "[ " + " ".join([str(vec[i]) for i in range(vec_l)]) + " ]"
+
+cdef pointer_to_one_d_numpy_array(void * ptr, np.npy_intp * size):
+    """
+    Creates np.ndarray by encapsulating INTDTYPE * pointer.
+        
+        :param void *        ptr:  INTDTYPE pointer pointing to beginning
+        :param np.npy_intp * size: pointer to 1D array containg info:   
+            size[0] - number of points 
+    """
+
+    cdef np.ndarray[INTDTYPE, ndim=1] arr = np.PyArray_SimpleNewFromData(1, size, np.NPY_INT64, ptr)
+    PyArray_ENABLEFLAGS(arr, np.NPY_ARRAY_OWNDATA)
+    return arr
+
+cdef pointer_to_two_d_numpy_array(void * ptr, np.npy_intp * size):
+    """
+    Creates np.ndarray by encapsulating DTYPE * pointer.
+        
+        :param void *        ptr:  DTYPE pointer pointing to beginning
+        :param np.npy_intp * size: pointer to 2D array containg info:   
+            size[0] - number of points 
+            size[1] - components per point
+    """
+
+    cdef np.ndarray[DTYPE, ndim=2] arr = np.PyArray_SimpleNewFromData(2, size, np.NPY_DOUBLE, ptr)
+    PyArray_ENABLEFLAGS(arr, np.NPY_ARRAY_OWNDATA)
+    return arr

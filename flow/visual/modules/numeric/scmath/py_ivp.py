@@ -25,7 +25,7 @@ def solve_ivp(fun, t_span, y0):
         status = None
         while status is None:
             solver.step()
-            print(solver.y)
+            #print(solver.y)
 
             if solver.status == 'finished':
                 status = 0

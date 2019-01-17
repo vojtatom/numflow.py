@@ -139,7 +139,12 @@ class Editor{
     }
 
     wheel(e){
-        this.transform.zoom = Math.max(0.1, this.transform.zoom + (e.wheelDelta / 10000));
+        let delta = e.wheelDelta / 10000;
+        delta = this.transform.zoom + delta > 0.1 ? delta : 0;
+        let old_zoom = this.transform.zoom;
+        this.transform.zoom = this.transform.zoom + delta;
+        this.transform.x = this.transform.x * (this.transform.zoom / old_zoom);
+        this.transform.y = this.transform.y * (this.transform.zoom / old_zoom);
         this.applyTransform();
         e.preventDefault();
     }
@@ -174,7 +179,7 @@ class Editor{
 
     mouseCoord(e) {
         let offsetX = (e.x - this.start.x - this.center.x - this.transform.x) / this.transform.zoom;
-        let offsetY = (e.y - this.start.y -  this.center.y - this.transform.y) / this.transform.zoom;
+        let offsetY = (e.y - this.start.y - this.center.y - this.transform.y) / this.transform.zoom;
         let x = this.center.x + offsetX;
         let y = this.center.y + offsetY;
         return {x: x, y: y};

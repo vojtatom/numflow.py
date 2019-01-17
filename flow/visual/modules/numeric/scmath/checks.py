@@ -5,6 +5,7 @@ EPS = np.finfo(float).eps
 def rk_check(fun, t0, y0, t_bound, max_step, rtol, atol):
     #check y0
     if y0.ndim != 1:
+        print(y0)
         raise ValueError("`y0` must be 1-dimensional.")
 
     if y0.size == 0:

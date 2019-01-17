@@ -4,13 +4,13 @@ from libc.stdlib cimport malloc, realloc, free
 from libc.math cimport fabs, fmax, fmin, pow
 cimport numpy as np
 cimport cython
-from ..types cimport DTYPE
+from ..types cimport DTYPE, LONGDTYPE
 
 from ..data.cdata cimport CSData
 from .interpolate cimport co_interpolate
 from .common cimport norm, div
 
-### Matrices for 4to order RK step
+### Matrices for 4th order RK step
 cdef DTYPE * A = [1.0 / 5.0, 0.0, 0.0, 0.0, 0.0,
                   3.0 / 40.0, 9.0 / 40.0, 0.0, 0.0, 0.0,
                   44.0 / 45.0, -(56.0 / 15.0), 32.0 / 9.0, 0.0, 0.0,
@@ -25,6 +25,25 @@ cdef DTYPE * E = [-(71.0 / 57600.0), 0.0, 71.0 / 16695.0, -(71.0 / 1920.0), 1725
 cdef DTYPE SAFETY = 0.9 # Multiply steps computed from asymptotic behaviour of errors by this.
 cdef DTYPE MIN_FACTOR = 0.2  # Minimum allowed decrease in a step size.
 cdef DTYPE MAX_FACTOR = 10  # Maximum allowed increase in a step size.
+
+
+#cdef DTYPE dot(DTYPE * vec_a, DTYPE * vec_b, int vec_l, int stride_a, int stride_b):
+#    cdef LONGDTYPE d = 0.0, a, b
+#    cdef int i
+#    for i in range(vec_l):
+#        a = vec_a[i * stride_a]
+#        b = vec_b[i * stride_b]
+#        d += a * b
+#    return d
+
+cdef DTYPE dot(DTYPE * vec_a, DTYPE * vec_b, int vec_l, int stride_a, int stride_b):
+    cdef DTYPE d = 0.0, a, b
+    cdef int i
+    for i in range(vec_l):
+        a = vec_a[i * stride_a]
+        b = vec_b[i * stride_b]
+        d += a * b
+    return d
 
 
 cdef class RKSolver:
@@ -47,7 +66,6 @@ cdef class RKSolver:
         """
         Clean up after yourself!
         """
-
         if self.initialized:
             free(self.y)
             free(self.f)
@@ -86,6 +104,9 @@ cdef class RKSolver:
         self.sc = <DTYPE *>malloc(self.cdata.com_l * sizeof(DTYPE))
         self.er = <DTYPE *>malloc(self.cdata.com_l * sizeof(DTYPE))
         self.K  = <DTYPE *>malloc(self.cdata.com_l * (self.n_stages + 1) * sizeof(DTYPE))
+
+        #print('system init')
+        #sys.stdout.flush()
 
 
     cdef void initial_step(self, DTYPE * y0):
@@ -134,6 +155,9 @@ cdef class RKSolver:
             h1 = pow(div(0.01, fmax(d1, d2)), div(1.0, self.order + 1))
 
         self.h_abs = fmin(100 * h0, h1)
+
+        #print('init step done')
+        #sys.stdout.flush()
 
 
     cdef void step(self):
@@ -216,7 +240,7 @@ cdef class RKSolver:
         cdef int i, j, c
         cdef DTYPE tmp = 0.0
 
-        ### prepare K matrixand init y1 (new_y)
+        ### prepare K matrix and init y1 (new_y)
         for c in range(self.cdata.com_l):
             self.K[0 * self.cdata.com_l + c] = self.f[c]
             self.y1[c] = 0
@@ -226,30 +250,24 @@ cdef class RKSolver:
         for i in range(5):
             ### for each component
             for c in range(self.cdata.com_l):
-                ### each line in K
-                for j in range(i + 1):
-                    tmp += self.K[c + j * self.cdata.com_l] * A[i * 5 + j]
-
+                ### Dot product with transposed K,
+                ### transposition is done using strides
+                tmp = dot(&A[i * 5], &self.K[c], i + 1, 1, self.cdata.com_l)
                 self.yt[c] = tmp * h + self.y[c]
-                ## dotproduct with B, adding things as we go
-                self.y1[c] += self.K[c + i * self.cdata.com_l] * B[i]
-                tmp = 0.0
-
             ### TODO - time interpolation, value = t + c[i] * h
             co_interpolate(self.cdata, self.yt, 1, &self.K[(i + 1) * self.cdata.com_l])
 
-        ### adding last part of dotproduct with B
+        ## dotproduct with B, adding the rest from above
         for c in range(self.cdata.com_l):
-            self.y1[c] = (self.y1[c] + self.K[c + 5 * self.cdata.com_l] * B[5]) * h + self.y[c]
+            self.y1[c] = self.y[c] + h * dot(&self.K[c], B, 6, self.cdata.com_l, 1)
 
         ### TODO - time interpolation, value = t + h
-        ### f1 will bi in K on 6th row
+        ### f1 will be in K on 6th row
         co_interpolate(self.cdata, self.y1, 1, &self.K[6 * self.cdata.com_l])
 
         ### calculate vector error
-        for i in range(8):
-            for c in range(self.cdata.com_l):
-                self.er[c] += self.K[c + i * self.cdata.com_l] * E[i]
+        for c in range(self.cdata.com_l):
+            self.er[c] = dot(&self.K[c], E, 7, self.cdata.com_l, 1)
 
         for c in range(self.cdata.com_l):
             ### scale error vector and copy f1 from K
@@ -261,4 +279,5 @@ cdef class RKSolver:
 
         ### calculate norm of error
         self.ern = norm(self.er, self.cdata.com_l)
+
 

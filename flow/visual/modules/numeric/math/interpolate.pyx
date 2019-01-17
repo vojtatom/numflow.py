@@ -7,15 +7,9 @@ import numpy as np
 
 from ..types cimport DTYPE
 from ..data.cdata cimport CData, CSData
-from .common cimport div
+from .common cimport div, pointer_to_two_d_numpy_array
 
-
-np.import_array()
-
-
-cdef extern from "numpy/arrayobject.h":
-        void PyArray_ENABLEFLAGS(np.ndarray arr, int flags)
-
+#np.import_array()
 
 cdef int indices(const DTYPE * grid, int grid_l, DTYPE p, DTYPE * fac, int * ind):
     """
@@ -194,22 +188,6 @@ cdef DTYPE * c_interpolate(CSData * data, DTYPE * points, int points_l):
     return co_interpolate(data, points, points_l, output)
 
 
-
-cdef pointer_to_numpy_array(void * ptr, np.npy_intp * size):
-    """
-    Creates np.ndarray by encapsulating DTYPE * pointer.
-        
-        :param void *        ptr:  DTYPE pointer pointing to beginning
-        :param np.npy_intp * size: pointer to 2D array containg info:   
-            size[0] - number of points 
-            size[1] - components per point
-    """
-
-    cdef np.ndarray[DTYPE, ndim=2] arr = np.PyArray_SimpleNewFromData(2, size, np.NPY_DOUBLE, ptr)
-    PyArray_ENABLEFLAGS(arr, np.NPY_ARRAY_OWNDATA)
-    return arr
-
-
 def interpolate(CData data, DTYPE[:,::1] points):
     """
     Performs interpolation on supplied data structure.
@@ -228,5 +206,5 @@ def interpolate(CData data, DTYPE[:,::1] points):
     
     dims[0] = points.shape[0]
     dims[1] = data.c.com_l
-    arr = pointer_to_numpy_array(a, dims)
+    arr = pointer_to_two_d_numpy_array(a, dims)
     return arr

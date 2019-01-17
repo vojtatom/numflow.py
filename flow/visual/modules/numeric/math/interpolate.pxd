@@ -22,5 +22,3 @@ cdef DTYPE * co_interpolate(CSData * data, DTYPE * points, int points_l, DTYPE *
 
 cdef DTYPE * c_interpolate(CSData * data, DTYPE * points, 
                     int points_l)
-
-cdef pointer_to_numpy_array(void * ptr, np.npy_intp * size)
