@@ -5,18 +5,36 @@ from libc.stdlib cimport malloc, realloc, free
 from ..types cimport DTYPE, INTDTYPE
 from ..data.cdata cimport CData
 from .rk cimport RKSolver, Status
+from cython.operator cimport dereference as deref
 from .common cimport pointer_to_two_d_numpy_array, pointer_to_one_d_numpy_array
 
 import numpy as np
 from scipy.integrate import solve_ivp
 
 
+cdef int buffers_realloc(DTYPE ** y, DTYPE ** f, int buffer_l):
+    cdef DTYPE * new_y
+    cdef DTYPE * new_f
+
+    #when buffer is full, realloc
+    buffer_l *= 2
+    new_y = <DTYPE *>realloc(<void *>deref(y), buffer_l * sizeof(DTYPE))
+    new_f = <DTYPE *>realloc(<void *>deref(f), buffer_l * sizeof(DTYPE))
+
+    # in case realloc fails here...
+    if new_y == NULL or new_f == NULL:
+        return 0
+    
+    #copy happy pointer
+    y[0] = new_y
+    f[0] = new_f
+
+    return buffer_l  
+
 def cstreamlines(CData data, DTYPE t0, DTYPE t_bound, DTYPE[:,::1] starting_points):
     cdef int points_l = starting_points.shape[0]
     cdef int i, j
     cdef int buffer_l = 100 * data.c.com_l, buffer_u = 0, streamline_l
-    cdef DTYPE * new_y
-    cdef DTYPE * new_v
     cdef DTYPE * y = <DTYPE *>malloc(buffer_l * sizeof(DTYPE))
     cdef DTYPE * f = <DTYPE *>malloc(buffer_l * sizeof(DTYPE))
     cdef INTDTYPE * l = <INTDTYPE *>malloc(points_l * sizeof(INTDTYPE))
@@ -29,7 +47,23 @@ def cstreamlines(CData data, DTYPE t0, DTYPE t_bound, DTYPE[:,::1] starting_poin
     #make streamline from each of the points
     for i in range(points_l):
         solver.initial_step(&starting_points[i, 0])
-        streamline_l = 0
+        streamline_l = 1
+
+        #when buffer is full, realloc
+        if buffer_u == buffer_l:
+            buffer_l = buffers_realloc(&y, &f, buffer_l)
+            # when realloc fails
+            if buffer_l == 0:
+                free(y)
+                free(f)
+                free(l)
+                return None, None, None
+
+        #copy initial points and function values from inside solver
+        for j in range(data.c.com_l):
+            y[buffer_u] = solver.y[j]
+            f[buffer_u] = solver.f[j]
+            buffer_u += 1
         
         #while solver is happy
         while solver.status == Status.ready:
@@ -38,20 +72,13 @@ def cstreamlines(CData data, DTYPE t0, DTYPE t_bound, DTYPE[:,::1] starting_poin
 
             #when buffer is full, realloc
             if buffer_u == buffer_l:
-                buffer_l += 100 * data.c.com_l
-                new_y = <DTYPE *>realloc(<void *>y, buffer_l * sizeof(DTYPE))
-                new_f = <DTYPE *>realloc(<void *>f, buffer_l * sizeof(DTYPE))
-
-                # in case realloc fails here...
-                if new_y == NULL or new_f == NULL:
+                buffer_l = buffers_realloc(&y, &f, buffer_l)
+                # when realloc fails
+                if buffer_l == 0:
                     free(y)
                     free(f)
                     free(l)
-                    return None
-                
-                #copy happy pointer
-                y = new_y
-                f = new_f        
+                    return None, None, None 
 
             #copy points and function values from inside solver
             for j in range(data.c.com_l):

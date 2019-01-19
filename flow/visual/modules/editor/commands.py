@@ -1,11 +1,11 @@
 import datetime
+import sys, os
 
 from asgiref.sync import async_to_sync, sync_to_async
 from channels.db import database_sync_to_async
 from channels.layers import get_channel_layer
 
 from . import pipeline
-from time import sleep
 
 
 def command(group, command, data, username):
@@ -18,6 +18,7 @@ def command(group, command, data, username):
     """
     try:
         if command in commands:
+            print(data)
             commands[command](group, command, data, username)
         else:
             ##command not found
@@ -68,6 +69,3 @@ def run_command(group, command, data, username):
 
 
 commands = { 'help': help_command, 'run': run_command }
-
-
-

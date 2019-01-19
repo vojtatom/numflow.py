@@ -1,4 +1,5 @@
 import abc
+from ..exceptions import NodeError
 
 class Node(abc.ABC):
     """
@@ -9,7 +10,7 @@ class Node(abc.ABC):
     """
 
     @abc.abstractmethod
-    def __init__(self, id, data):
+    def __init__(self, id, data, message):
         """
         Validate supplied parameters, raise exception in case of error.
         """
@@ -17,7 +18,7 @@ class Node(abc.ABC):
 
 
     @abc.abstractmethod
-    def __call__(self, indata):
+    def __call__(self, indata, message):
         """
         Calls node.
             :param indata: dictionary, where each key
@@ -38,3 +39,7 @@ class Node(abc.ABC):
         parsed['out'] = data['out']
         return parsed
 
+    def check_dict(self, fields, data, node_id, node_title):
+        for field in fields:
+            if field not in data:
+                raise NodeError('{} with id {} missing input {}.'.format(node_title.title(), node_id, field))

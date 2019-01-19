@@ -16,7 +16,7 @@ class DataNode(Node):
                 'value' : '',
                 'dynamic' : '/node/dataset',
             },
-            'type' : {
+            'mode' : {
                 'type': 'select',
                 'choices': ['scipy', 'c'],
                 'value' : 'scipy',
@@ -30,23 +30,23 @@ class DataNode(Node):
     title = 'dataset'
     multiinput = False
     
-    def __init__(self, id, data):
+    def __init__(self, id, data, message):
         """
         Inicialize new instance of dataset node.
             :param id: id of node
-            :param data: dictionary, must contain keys 'code' and 'type'.
+            :param data: dictionary, must contain keys 'code' and 'mode'.
         """   
 
         self.id = id
-        if 'code' not in data or 'type' not in data:
-            raise NodeError('Dataset node missing value.')
+        fields = ['code', 'mode']
+        self.check_dict(fields, data, self.id, self.title)
 
         ## get path to dataset
         self._path = dataset(data['code'])
-        self._mode = data['type']
+        self._mode = data['mode']
 
 
-    def __call__(self, indata):
+    def __call__(self, indata, message):
         """
         Create dataset.
             :param indata: data coming from connected nodes, can be None here.
@@ -59,7 +59,7 @@ class DataNode(Node):
         parsed = Node.deserialize(data)
         parsed['data'] = {
             'code' : data['data']['structure']['code']['value'],
-            'type' : data['data']['structure']['type']['value']
+            'mode' : data['data']['structure']['mode']['value']
         }
         return parsed
 

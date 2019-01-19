@@ -79,8 +79,8 @@ def compute(graph, order, message):
                         in_data[datatype] = data[in_node][datatype]  
 
         message('Running node #{}: {}'.format(node_id, node['title']))
-        node_obj = node_class(node_id, node['data'])
-        data[node_id] = node_obj(in_data)
+        node_obj = node_class(node_id, node['data'], message)
+        data[node_id] = node_obj(in_data, message)
 
     print(data)
 

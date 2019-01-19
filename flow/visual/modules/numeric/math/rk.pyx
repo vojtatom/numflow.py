@@ -92,6 +92,7 @@ cdef class RKSolver:
         self.atol = 1e-6
         self.rtol = 1e-3
         self.status = Status.ready
+        self.t0 = t0
         self.t = t0
         self.t_bound = t_bound
         self.direction = 1 if t_bound - t0 > 0 else -1
@@ -112,13 +113,18 @@ cdef class RKSolver:
     cdef void initial_step(self, DTYPE * y0):
         """
         Initial step of integration, sets up internal variables
-        and selects initial step value.
+        and selects initial step value. In case solver was used previously,
+        restarts time and status.
 
             :param DTYPE * y0: starting spatial point 
         """
     
         cdef DTYPE d0, d1, d2, h0
         cdef int c
+
+        ##restarting, just to make sure
+        self.t = self.t0
+        self.status = Status.ready
 
         ### TODO - replace with time interpolation, value t0 (t)
         co_interpolate(self.cdata, y0, 1, self.f)           

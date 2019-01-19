@@ -30,7 +30,7 @@ class GlyphsNode(Node):
     
     title = 'glyphs'
     
-    def __init__(self, id, data):
+    def __init__(self, id, data, message):
         """
         Inicialize new instance of glyph node.
             :param id: id of node
@@ -38,16 +38,14 @@ class GlyphsNode(Node):
         """   
         self.id = id
 
-    def __call__(self, indata):    
+    def __call__(self, indata, message):    
         """
         Call glyph kernel and perform interpolation.
             :param indata: data coming from connected nodes, can be None here.
         """   
 
         fields = ['dataset', 'points']
-        for field in fields:
-            if field not in indata:
-                raise NodeError('Glyph node missing input {}.'.format(field))
+        self.check_dict(fields, indata, self.id, self.title)
 
         values = None
         points = None

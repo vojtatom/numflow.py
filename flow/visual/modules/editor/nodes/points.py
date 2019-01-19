@@ -55,7 +55,7 @@ class PointsNode(Node):
 
     title = 'points'
     
-    def __init__(self, id, data):
+    def __init__(self, id, data, message):
         """
         Inicialize new instance of points node.
             :param id: id of node
@@ -66,17 +66,14 @@ class PointsNode(Node):
 
         fields = ['x_min', 'y_min', 'z_min', 'x_max', 'y_max', 
                   'z_max', 'x_sampling', 'y_sampling', 'z_sampling']
-
-        for field in fields:
-            if field not in data:
-                raise NodeError('In PointsNode missing field {}.'.format(field))
+        self.check_dict(fields, data, self.id, self.title)
 
         self._start = [data['x_min'], data['y_min'], data['z_min']]
         self._end = [data['x_max'], data['y_max'], data['z_max']]
         self._sampling = [int(data['x_sampling']), int(data['y_sampling']), int(data['z_sampling'])]
 
 
-    def __call__(self, indata):
+    def __call__(self, indata, message):
         """
         Create np.ndarray of points
             :param indata: data coming from connected nodes, can be None here.

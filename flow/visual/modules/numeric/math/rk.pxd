@@ -22,6 +22,7 @@ cdef class RKSolver:
     cdef int     status
     cdef int     direction
     cdef int     initialized
+    cdef DTYPE   t0
     cdef DTYPE   t
     cdef DTYPE   t_bound
     cdef DTYPE   rtol

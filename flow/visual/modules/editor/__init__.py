@@ -1,4 +1,4 @@
-from .nodes import DataNode, PointsNode, GlyphsNode
+from .nodes import DataNode, PointsNode, GlyphsNode, StreamlinesNode, VisualNode
 
 nodes_structure = {
             'data': { 
@@ -7,7 +7,12 @@ nodes_structure = {
 
             'geometry': { 
                 PointsNode.title : PointsNode.data,
-                GlyphsNode.title : GlyphsNode.data
+                GlyphsNode.title : GlyphsNode.data,
+                StreamlinesNode.title : StreamlinesNode.data,
+             },
+
+             'display': {
+                 VisualNode.title : VisualNode.data
              }
 
         }

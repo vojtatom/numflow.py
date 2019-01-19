@@ -1,8 +1,8 @@
 import timeit
 
 import numpy as np
-from scipy.integrate import RK23, solve_ivp
 
+from .math import cstreamlines, sstreamlines
 from .data import CData, SData
 from .exceptions import NumericError
 from .io import cdata, sdata
@@ -36,19 +36,19 @@ def points_kernel(start, end, sampling):
     for s, e, n in zip(start, end, sampling):
         spc.append(np.linspace(s, e, n, endpoint=True))
 
-    k = np.array(np.meshgrid(*spc, sparse=False, indexing='ij'))
-    k = np.transpose(k)
-    k = np.reshape(k, (np.prod(sampling), 3))
+    k = np.reshape( \
+            np.transpose( \
+                np.meshgrid(*spc, sparse=False, indexing='ij') \
+                ), (np.prod(sampling), 3) \
+        )
     return k
 
 
-def stream_kernel(data, points, length, mode):
-    interpolator = data.interpolator
-    
+def stream_kernel(data, t_0, t_bound, points, mode):    
     if mode  == 'scipy':
-        raise NumericError('Not implemented.')
+        return sstreamlines(data, t_0, t_bound, points)
     elif mode == 'c':
-        raise NumericError('Not implemented.')
+        return cstreamlines(data, t_0, t_bound, points)
     else:
         raise NumericError('Unknown format.')
 
