@@ -10,7 +10,7 @@ class Node(abc.ABC):
     """
 
     @abc.abstractmethod
-    def __init__(self, id, data, message):
+    def __init__(self, id, data, notebook_code, message):
         """
         Validate supplied parameters, raise exception in case of error.
         """

@@ -50,7 +50,7 @@ class TerminalConsumer(AsyncWebsocketConsumer):
         ## At this point, check what to do and let it handle the rest.
         #await commands.command(self.terminal_group_name, command, data, self.scope['user'].username)
         # launch processing in background
-        t = threading.Thread(target=commands.command, args=(self.terminal_group_name, command, data, self.scope['user'].username))
+        t = threading.Thread(target=commands.command, args=(self.terminal_group_name, self.terminal_name, command, data, self.scope['user'].username))
         t.setDaemon(True)
         t.start()
 

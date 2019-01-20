@@ -30,7 +30,7 @@ class DataNode(Node):
     title = 'dataset'
     multiinput = False
     
-    def __init__(self, id, data, message):
+    def __init__(self, id, data, notebook_code, message):
         """
         Inicialize new instance of dataset node.
             :param id: id of node

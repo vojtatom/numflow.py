@@ -9,7 +9,7 @@ class Stream extends Primitive {
         let t0 = performance.now();
         let points = this.piece(8, 1000);
         let t1 = performance.now();
-        console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
+        console.log("Call to do something took " + (t1 - t0) + " milliseconds.");
         console.log(points);
     }
 
@@ -33,6 +33,11 @@ class Stream extends Primitive {
 
         return {
             points: points,
-            elements: elements};
+            elements: elements
+        };
+    }
+
+    delete(){
+        
     }
 }

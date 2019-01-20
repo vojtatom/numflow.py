@@ -11,7 +11,6 @@ urlpatterns = [
     url(r'^notebook/rename$', views.rename_notebook, name='rename_notebook'),
     url(r'^notebook/data$', views.get_notebook, name='get_notebook'),
     url(r'^notebook/editor$', views.editor_nodes, name='editor_nodes'),
-
     url(r'^node/dataset$', views.node_dataset, name='node_dataset'),
 
     ## ADMINISTRATION

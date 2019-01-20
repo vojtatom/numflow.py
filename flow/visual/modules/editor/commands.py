@@ -8,10 +8,11 @@ from channels.layers import get_channel_layer
 from . import pipeline
 
 
-def command(group, command, data, username):
+def command(group, notebook_code, command, data, username):
     """
     Executes command and sends response to group.
         :param group: channel layers group name
+        :param notebook_code: code of the notebook being executed
         :param command: command to be executed 
         :param data: data of opened notebook
         :param username: author of the command
@@ -19,7 +20,7 @@ def command(group, command, data, username):
     try:
         if command in commands:
             print(data)
-            commands[command](group, command, data, username)
+            commands[command](group, notebook_code, command, data, username)
         else:
             ##command not found
             send(group, 'command not found', 1, username, done=True)
@@ -45,9 +46,7 @@ def send(group, text, status=0, username=None, done=False):
     })
 
 
-
-
-def help_command(group, command, data, username):
+def help_command(group, notebook_code, command, data, username):
     help_text = """usefull commands:
 
 run     run nodes
@@ -58,11 +57,11 @@ help    show this help
 
 
 
-def run_command(group, command, data, username):
+def run_command(group, notebook_code, command, data, username):
     graph = pipeline.load_graph(data)
     order = pipeline.topological_sort(graph)
     send(group, 'No cycles detected, computing...', username=username)
-    pipeline.compute(graph, order, lambda m:  send(group, m, username=username))
+    pipeline.compute(notebook_code, graph, order, lambda m:  send(group, m, username=username))
     send(group, 'Calculation succesfully finished!', username=username, done=True)
 
 

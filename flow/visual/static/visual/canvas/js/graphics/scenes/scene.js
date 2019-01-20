@@ -7,13 +7,24 @@ class Scene{
         this.objects = [];
     }
 
-    init(){
+    init(contents){
+        console.log('loading scene elements');
+        if ('glyphs' in contents){
+            for (let glyphs_group of contents.glyphs){
+                let glyphs = new Glyphs(this.gl);
+                glyphs.init(glyphs_group);
+                console.log(glyphs);
+                this.objects.push(glyphs);
+            }
+        }
+
+        console.log(this.objects);
         let box = new Box(this.gl);
-        box.init(vec3.fromValues(0, 0, 0), vec3.fromValues(2, 3, 5));
-        this.objects.push(box); 
+        box.init(vec3.fromValues(-10, -10, 0), vec3.fromValues(20, 20, 20));
+        this.objects.push(box); /*
 
         let stream = new Stream(this.gl);
-        stream.segment([0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 0, 0]);
+        stream.segment([0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 0, 0]);*/
     }
 
     render(){
@@ -24,5 +35,12 @@ class Scene{
 
     set aspect(a) {
         this.camera.aspect = a;
+    }
+
+    delete() {
+        console.log('deleting scene...');
+        for (let obj of this.objects){
+            obj.delete();
+        }
     }
 }

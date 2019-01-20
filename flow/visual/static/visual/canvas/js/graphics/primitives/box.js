@@ -9,8 +9,8 @@ class Box extends Primitive {
 
     init(postion, dimensions) {
         let matrix = mat4.create();
-        matrix = mat4.scale(mat4.create(), matrix, dimensions);
         matrix = mat4.translate(mat4.create(), matrix, postion);
+        matrix = mat4.scale(mat4.create(), matrix, dimensions);
         this.model = matrix;
         this.loaded = true;
     }
@@ -24,5 +24,9 @@ class Box extends Primitive {
             view: camera.view,
             projection: camera.projection,
         });
+    }
+
+    delete() {
+        
     }
 }

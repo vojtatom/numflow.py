@@ -1,7 +1,8 @@
 from .base import Node
-from ..model import dataset
+from ..model import notebook
 import numpy as np
-
+import json
+import base64
 from ..exceptions import NodeError
 
 
@@ -33,21 +34,61 @@ class VisualNode(Node):
     
     title = 'visual'
     
-    def __init__(self, id, data, message):
+    def __init__(self, id, data, notebook_code, message):
         """
         Inicialize new instance of visual node.
             :param id: id of node
             :param data: dictionary, can be None here.
         """   
         self.id = id
+        self.notebook_code = notebook_code
 
     def __call__(self, indata, message):    
         """
         Send all data via websockets to display clients
             :param indata: data coming from connected nodes.
         """   
-        raise NodeError('Not implemented')
-        #return {}
+
+        def serialize_array(array, dtype):
+                a = np.ascontiguousarray(dtype(array), dtype=dtype)
+                a = base64.b64encode(a.data)
+                return a.decode('utf-8')
+
+        content = {}
+        if 'points' in indata:
+            ### indata['points'] = [array, array, ...]
+            points_encoded = []
+            for points in indata['points']:
+                points_encoded.append(serialize_array(points, np.float64))
+            
+            content['points'] = points_encoded
+
+        if 'glyphs' in indata:
+            ### indata['glyphs'] = [{'points': array, 'values': array}, ...]
+            glyphs_encoded = []
+            for glyphs in indata['glyphs']:
+                glyphs_group = {}
+                glyphs_group['points'] = serialize_array(glyphs['points'], np.float32)
+                glyphs_group['values'] = serialize_array(glyphs['values'], np.float32)
+                glyphs_encoded.append(glyphs_group)
+            
+            content['glyphs'] = glyphs_encoded
+
+        if 'streamlines' in indata:
+            ### indata['streamlines'] = [{'points': array, 'values': array, 'lengths': array}, ...]
+            stream_encoded = []
+            for stream in indata['streamlines']:
+                stream_group = {}
+                stream_group['points'] = serialize_array(stream['points'], np.float32)
+                stream_group['values'] = serialize_array(stream['values'], np.float32)
+                stream_group['lengths'] = serialize_array(stream['lengths'], np.int32)
+                stream_encoded.append(stream_group)
+            
+            content['streamlines'] = stream_encoded
+                
+        n = notebook(self.notebook_code)
+        n.save_output(json.dumps(content, sort_keys=True, indent=4))
+        return {}
 
     @staticmethod
     def deserialize(data):

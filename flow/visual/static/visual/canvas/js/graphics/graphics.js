@@ -3,6 +3,10 @@
 class Graphics {
     constructor(canvas) {
 		this.canvas = canvas;
+		this.scenes = [];
+
+		//active scene
+		this.scene = null;
     }
 
     init() {
@@ -19,8 +23,8 @@ class Graphics {
 		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
 		//this.gl.blendFuncSeparate(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA, this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
 		
-		this.scene = new Scene(this.gl);
-		this.scene.init();
+		//this.scene = new Scene(this.gl);
+		//this.scene.init();
 	}
 
 	resize(x, y) {
@@ -28,15 +32,37 @@ class Graphics {
 		this.canvas.height = y;
 		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 
-		this.scene.aspect = this.canvas.width / this.canvas.height;
+		//setup for each of existing scenes
+		for (let scene of this.scenes){
+			scene.aspect = this.canvas.width / this.canvas.height;
+		}
 	}
 
 	render(){
-		this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-		this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT);
-
-		this.scene.render();
+		if (this.scene !== null){
+			this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+			this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT);
+			this.scene.render();
+		}
 	}
 
-    
+	addScene(scene_contents){
+		let scene = new Scene(this.gl);
+		scene.init(scene_contents);
+		this.scenes.push(scene);
+
+		if (this.scene === null){
+			this.scene = scene;
+		}
+	}
+
+	delete(){
+		//Delete all of the scenes...
+		for (let scene of this.scenes){
+			scene.detele();
+		}
+		
+		this.scene = null
+		this.scenes = [];
+	}
 }

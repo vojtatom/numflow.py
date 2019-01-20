@@ -1,5 +1,4 @@
 from .base import Node
-from ..model import dataset
 import numpy as np
 
 from ..exceptions import NodeError
@@ -30,7 +29,7 @@ class GlyphsNode(Node):
     
     title = 'glyphs'
     
-    def __init__(self, id, data, message):
+    def __init__(self, id, data, notebook_code, message):
         """
         Inicialize new instance of glyph node.
             :param id: id of node

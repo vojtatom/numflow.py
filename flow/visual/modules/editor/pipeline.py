@@ -1,6 +1,7 @@
 import json
 from .exceptions import EditorError
 from .nodes import DataNode, GlyphsNode, PointsNode, nodes
+from .model import notebook
 
 def load_graph(string_graph):
     """
@@ -50,7 +51,9 @@ def topological_sort(graph):
     return order
             
 
-def compute(graph, order, message):
+def compute(notebook_code, graph, order, message):
+    n = notebook(notebook_code)
+    n.clear_output()
     data = {}
     dgraph = {}
 
@@ -79,9 +82,10 @@ def compute(graph, order, message):
                         in_data[datatype] = data[in_node][datatype]  
 
         message('Running node #{}: {}'.format(node_id, node['title']))
-        node_obj = node_class(node_id, node['data'], message)
+        node_obj = node_class(node_id, node['data'], notebook_code, message)
         data[node_id] = node_obj(in_data, message)
-
+    
+    message('<a href="/media/notebook/{}/output.flow" download>download result</a>'.format(notebook_code))
     print(data)
 
 

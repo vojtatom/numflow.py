@@ -1,5 +1,4 @@
 from .base import Node
-from ..model import dataset
 from ..exceptions import NodeError
 
 from visual.modules.numeric.kernels import points_kernel
@@ -55,7 +54,7 @@ class PointsNode(Node):
 
     title = 'points'
     
-    def __init__(self, id, data, message):
+    def __init__(self, id, data, notebook_code, message):
         """
         Inicialize new instance of points node.
             :param id: id of node

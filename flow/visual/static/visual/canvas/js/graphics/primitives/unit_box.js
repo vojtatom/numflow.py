@@ -87,4 +87,8 @@ class UnitBox extends Primitive {
         this.gl.bindVertexArray(null);
         this.program.unbind();
     }
+
+    delete(){
+        console.log('passing delete for singleton unit box...');
+    }
 }

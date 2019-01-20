@@ -854,3 +854,14 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
 .prettyprint{
     overflow: auto;
 }
+
+
+/* FLOW CANVAS */
+#upload-flow {
+    position: absolute;
+    background: #333;
+    padding: 1em;
+    border-radius: 0.3em;
+    margin: 10em calc((100vw - 30em) / 2);
+    max-width: 30em;
+}
