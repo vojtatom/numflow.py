@@ -1,27 +1,92 @@
 'use strict';
 
+class DType {
+	static get int(){
+		return 0;
+	}
+
+	static get float(){
+		return 1;
+	}
+}
+
 class Primitive {
     constructor(gl) {
-        this.gl = gl;
+		this.gl = gl;
+		this.lateLoaded = false;
     }
 
-    static base64tofloat32(data) {
+    static base64tofloat32(data, mode=DType.float) {
 		let blob = window.atob(data);
-		let len = blob.length / Float32Array.BYTES_PER_ELEMENT;
-		let view = new DataView(new ArrayBuffer(Float32Array.BYTES_PER_ELEMENT));
-		let floats = new Float32Array(len);
+		let array;
 
-		for (let p = 0; p < len * 4; p = p + 4) {
-			view.setUint8(0, blob.charCodeAt(p));
-			view.setUint8(1, blob.charCodeAt(p + 1));
-			view.setUint8(2, blob.charCodeAt(p + 2));
-			view.setUint8(3, blob.charCodeAt(p + 3));
-			floats[p / 4] = view.getFloat32(0, true);
+		if (mode === DType.float){
+			let len = blob.length / Float32Array.BYTES_PER_ELEMENT;
+			let view = new DataView(new ArrayBuffer(Float32Array.BYTES_PER_ELEMENT));
+			array = new Float32Array(len);
+	
+			for (let p = 0; p < len * 4; p = p + 4) {
+				view.setUint8(0, blob.charCodeAt(p));
+				view.setUint8(1, blob.charCodeAt(p + 1));
+				view.setUint8(2, blob.charCodeAt(p + 2));
+				view.setUint8(3, blob.charCodeAt(p + 3));
+				array[p / 4] = view.getFloat32(0, true);
+			}
+			view = null;
+
+		} else if (mode === DType.int) {
+			let len = blob.length / Int32Array.BYTES_PER_ELEMENT;
+			let view = new DataView(new ArrayBuffer(Int32Array.BYTES_PER_ELEMENT));
+			array = new Int32Array(len);
+	
+			for (let p = 0; p < len * 4; p = p + 4) {
+				view.setUint8(0, blob.charCodeAt(p));
+				view.setUint8(1, blob.charCodeAt(p + 1));
+				view.setUint8(2, blob.charCodeAt(p + 2));
+				view.setUint8(3, blob.charCodeAt(p + 3));
+				array[p / 4] = view.getInt32(0, true);
+			}
+			view = null;
 		}
 
 		blob = null;
-		view = null;
-		return floats;
+		return array;
+	}
+
+	get isRenderReady(){
+		if (!this.program.loaded){
+			return false;
+		}
+
+		if (!this.loaded){
+			this.init();
+		}
+		
+		return true;
+	}
+
+	isInitReady(data){
+		if (!this.program.loaded && data !== null){
+			this._data = data;
+			this.lateLoaded = true;
+            return false;
+        }
+
+        if (this.program.loaded && this._data !== null){
+			return true;
+		}
+		
+		return false;
+	}
+
+	lateLoadData(data){
+		if (data === null && this.lateLoaded){
+			data = this._data;
+			this._data = null;
+			return data;
+		} else if (data !== null){
+			return data;
+		}
 	}
 
     delete(){

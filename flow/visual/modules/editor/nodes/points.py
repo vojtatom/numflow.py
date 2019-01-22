@@ -49,7 +49,12 @@ class PointsNode(Node):
         },
 
         'in': {},        
-        'out': ['points'],
+        'out': {
+            'points': {
+                'required': True,
+                'multipart': False
+            },
+        },
     }
 
     title = 'points'

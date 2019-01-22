@@ -12,22 +12,15 @@ class Glyphs extends Primitive {
 
     init(data = null){
         //Belated initialization...
-        if (!this.program.loaded){
-            this._data = data;
+        if (!this.isInitReady(data))
             return;
-        }
-
-        if (data === null){
-            data = this._data;
-            this._data = null;
-        }
-
+        data = this.lateLoadData(data);
 
         //Actual initialization
+        //load base64 data
         let positions = Primitive.base64tofloat32(data.points);
         let values = Primitive.base64tofloat32(data.values);
 
-        this.program.bind();
         let vao = this.gl.createVertexArray();
         this.gl.bindVertexArray(vao);
             
@@ -52,7 +45,6 @@ class Glyphs extends Primitive {
         
         this.initLineGlyph();
         this.gl.bindVertexArray(null);
-        this.program.unbind();
 
         //Calculate stats
         let lengths = new Float32Array(values.length / 3);
@@ -63,21 +55,23 @@ class Glyphs extends Primitive {
             lengths[i / 3] =  Math.sqrt(length);
         }
 
-        let delta;
-        if (positions.length > 2){
-            let arr = [positions[3] - positions[0], 
-                        positions[4] - positions[1],
-                        positions[5] - positions[2]];
-            //get smalles NONZERO number
-            delta = Math.min.apply(null, arr.filter(Boolean));
-        } else {
-            delta = 1;
-        }
-
-        this.stats = {
+        console.log(data.meta);
+        this.meta = {
             std: meanAbsoluteDeviation(lengths),
             median: median(lengths),
-            delta: delta,
+            size: data.meta.size,
+            colormap: {
+                sampling: data.meta.colormap.sampling,
+                colors: [
+                    vec4.fromValues(...data.meta.colormap.colors[0]),
+                    vec4.fromValues(...data.meta.colormap.colors[1]),
+                    vec4.fromValues(...data.meta.colormap.colors[2]),
+                    vec4.fromValues(...data.meta.colormap.colors[3]),
+                    vec4.fromValues(...data.meta.colormap.colors[4]),
+                ] 
+            },
+            appearance: Geometry.appearance[data.meta.appearance],
+            scale: Geometry.scale[data.meta.scale],
         }
 
         //Finish up...
@@ -86,81 +80,69 @@ class Glyphs extends Primitive {
     }
 
     initLineGlyph(){
-        let l = 0.1;
-        let m = 1;
+        let lineVert = Geometry.glyphVert;
+        let lineNorm = Geometry.glyphNorm;
 
-        var lineVert = [
-            m, l, l,
-            m, l, 0,
-            0, l, 0,
-            0, l, l,
-            m, 0, l,
-            m, 0, l,
-            0, 0, 0,
-            0, 0, l
-        ];
-
-        var lineInd = [
-            0, 1, 2,
-            0, 2, 3,
-            0, 5, 1,
-            0, 4, 5,
-            4, 6, 5,
-            4, 7, 6,
-            7, 2, 6,
-            7, 3, 2,
-            0, 7, 4,
-            0, 3, 7,
-            5, 2, 1,
-            5, 6, 2,
-        ];
-
-        // init VBO for glyph
-		let vbo = this.gl.createBuffer();
-		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vbo);
+        // init VBO for glyph positions
+		let positions = this.gl.createBuffer();
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positions);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(lineVert), this.gl.STATIC_DRAW);
 
-		// init EBO for glyph
-		let ebo = this.gl.createBuffer();
-		this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, ebo);
-        this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(lineInd), this.gl.STATIC_DRAW);
-        
         this.program.setVertexPositionAttrs();
+
+        // init VBO for glyph normals
+		let normals = this.gl.createBuffer();
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, normals);
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(lineNorm), this.gl.STATIC_DRAW); 
+        
+        this.program.setVertexNormalAttrs();
 		
 		this.buffers['glyph'] = {
-			vbo: vbo,
-			ebo: ebo,
-			size: lineInd.length,
-		};
+			positions: positions,
+			nomrals: normals,
+			size: lineVert.length,
+        };
+        
+        console.log(this.program);
     }
 
-    render(camera){
-        if (!this.program.loaded)
+    render(camera, light){
+        if(!this.isRenderReady)
             return;
-
-        if (!this.loaded)
-            this.init();
 
         this.program.bind();
         this.gl.bindVertexArray(this.buffers.field.vao);
 
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.field.positions);
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.field.values);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.glyph.vbo);
-        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.glyph.ebo);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.glyph.positions);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.glyph.normals);
+        //this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.glyph.ebo);
 
         this.program.setUnifs({
             model: this.model,
             view: camera.view,
             projection: camera.projection,
-            median: this.stats.median,
-            std: this.stats.std,
-            size: this.stats.delta,
-            brightness: 1.0,
-        })
 
-        this.gl.drawElementsInstanced(this.gl.TRIANGLES, this.buffers.glyph.size, this.gl.UNSIGNED_SHORT, 0, this.buffers.field.size);
-        //console.log(this.gl.getError());
+            median: this.meta.median,
+            std: this.meta.std,
+            size: this.meta.size,
+
+            light: light.position,
+            brightness: 1.0,
+            appearance: this.meta.appearance,
+            scale: this.meta.scale,
+
+            colorMapSize: this.meta.colormap.sampling,
+            colorMap0: this.meta.colormap.colors[0],
+            colorMap1: this.meta.colormap.colors[1],
+            colorMap2: this.meta.colormap.colors[2],
+            colorMap3: this.meta.colormap.colors[3],
+            colorMap4: this.meta.colormap.colors[4],
+        });
+
+        this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.buffers.glyph.size / 3, this.buffers.field.size);
+        console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
         this.program.unbind();

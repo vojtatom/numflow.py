@@ -1,15 +1,23 @@
-from .nodes import DataNode, PointsNode, GlyphsNode, StreamlinesNode, VisualNode
+from .nodes import *
 
 nodes_structure = {
             'data': { 
-                DataNode.title : DataNode.data
+                DataNode.title : DataNode.data,
+                PointsNode.title : PointsNode.data,
+                PlaneNode.title : PlaneNode.data
              },
 
             'geometry': { 
-                PointsNode.title : PointsNode.data,
                 GlyphsNode.title : GlyphsNode.data,
                 StreamlinesNode.title : StreamlinesNode.data,
+                LayerNode.title: LayerNode.data,
              },
+
+            'modifications': {
+                ScaleNode.title : ScaleNode.data,
+                TranslateNode.title : TranslateNode.data,
+                ColorNode.title: ColorNode.data
+            },
 
              'display': {
                  VisualNode.title : VisualNode.data

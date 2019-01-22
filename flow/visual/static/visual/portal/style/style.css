@@ -610,7 +610,7 @@ input#dataset_upload_form_file{
 }
 
 .node .field .title {
-    width: 80px;  
+    width: 100px;  
     color: #CCC;
     padding: 0.5em;
 }
@@ -672,6 +672,54 @@ input#dataset_upload_form_file{
     white-space: pre;
     font-size: 0.9em;
     background: #222;
+}
+
+.node .field div.content .colorpicker{
+    background: rgba(102, 102, 102, 0.5);
+    left: 250px;
+    width: 200px;
+    box-sizing: border-box;
+
+}
+
+.node .field div.content .colorpicker label{
+    display: flex;
+    vertical-align: middle;
+}
+
+.node .field div.content .colorpicker div{
+    width: 3em;
+    text-align: center;
+}
+
+.node .field div.content .colorpicker input{
+    margin: 0;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+  
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #444;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #444;
+    cursor: pointer;
 }
 
 .node .in,

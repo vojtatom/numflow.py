@@ -44,9 +44,17 @@ def topological_sort(graph):
 
     order = start_nodes
     for id in order:
+        print('o:', order)
         for neighbour_id in nodes[id]['out']:
-            neighbour_id = neighbour_id
-            if neighbour_id not in order:
+            
+            ### additional chack for requirement satisfication
+            satisfied = True
+            print(nodes[neighbour_id]['in'])
+            for requirements in nodes[neighbour_id]['in']:
+                if requirements not in order:
+                    satisfied = False
+
+            if neighbour_id not in order and satisfied:
                 order.append(neighbour_id)    
     return order
             
@@ -71,15 +79,28 @@ def compute(notebook_code, graph, order, message):
             for datatype in data[in_node]:
                 #if node requires this datatype
                 if datatype in node_class.data['in']:
-                    # node can have multiple sources:
+                    #if node has multipart input
+                    d = data[in_node][datatype]
                     if node_class.data['in'][datatype]['multipart']:
                         if datatype in in_data:
-                            in_data[datatype].append(data[in_node][datatype])
+                            #some nodes have multipart output
+                            if type(d) is list:
+                                in_data[datatype].extend(d)
+                            else:
+                                in_data[datatype].append(d)
                         else:
-                            in_data[datatype] = [data[in_node][datatype]]
+                            if type(d) is list:
+                                in_data[datatype] = d
+                            else:
+                                in_data[datatype] = [d]
                     #or not:
                     else:
+                        if type(d) is list:
+                            raise EditorError('Multipart output into non-multipart input!')
+                        elif datatype in in_data:
+                            raise EditorError('Multiple smae-type inputs into non-multipart input!')
                         in_data[datatype] = data[in_node][datatype]  
+
 
         message('Running node #{}: {}'.format(node_id, node['title']))
         node_obj = node_class(node_id, node['data'], notebook_code, message)

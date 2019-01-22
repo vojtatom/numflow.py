@@ -7,9 +7,9 @@ const SCALE_STEP = 1;
 
 class Camera {
     constructor() {
-        this.position = vec3.fromValues(0, 0, -10);
+        this.position = vec3.fromValues(0, -20, 0);
         this.center = vec3.fromValues(0, 0, 0);
-        this.up = vec3.fromValues(0, 1, 0);
+        this.up = vec3.fromValues(0, 0, 1);
         this.aspect = 1;
     }
 

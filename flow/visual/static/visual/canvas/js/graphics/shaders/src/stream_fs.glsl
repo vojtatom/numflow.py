@@ -5,5 +5,5 @@ varying float sigma;
 
 void main()
 {
-  gl_FragColor = vec4(fragColor, sigma);
+  gl_FragColor = vec4(fragColor, 0.3 + sigma * 0.7);
 }

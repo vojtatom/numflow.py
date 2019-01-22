@@ -16,7 +16,7 @@ class VisualNode(Node):
         },
 
         'in': {
-            'points': {
+            'layer': {
                 'required': False,
                 'multipart': True
             },
@@ -29,7 +29,7 @@ class VisualNode(Node):
                 'multipart': True
             },
         },
-        'out': [],
+        'out': {},
     }
     
     title = 'visual'
@@ -55,13 +55,17 @@ class VisualNode(Node):
                 return a.decode('utf-8')
 
         content = {}
-        if 'points' in indata:
+        if 'layer' in indata:
             ### indata['points'] = [array, array, ...]
-            points_encoded = []
-            for points in indata['points']:
-                points_encoded.append(serialize_array(points, np.float64))
+            layer_encoded = []
+            for layer in indata['layer']:
+                layer_group = {}
+                layer_group['points'] = serialize_array(layer['points'], np.float32)
+                layer_group['values'] = serialize_array(layer['values'], np.float32)
+                layer_group['meta'] = layer['meta']
+                layer_encoded.append(layer_group)
             
-            content['points'] = points_encoded
+            content['layer'] = layer_encoded
 
         if 'glyphs' in indata:
             ### indata['glyphs'] = [{'points': array, 'values': array}, ...]
@@ -70,6 +74,7 @@ class VisualNode(Node):
                 glyphs_group = {}
                 glyphs_group['points'] = serialize_array(glyphs['points'], np.float32)
                 glyphs_group['values'] = serialize_array(glyphs['values'], np.float32)
+                glyphs_group['meta'] = glyphs['meta']
                 glyphs_encoded.append(glyphs_group)
             
             content['glyphs'] = glyphs_encoded
@@ -82,6 +87,7 @@ class VisualNode(Node):
                 stream_group['points'] = serialize_array(stream['points'], np.float32)
                 stream_group['values'] = serialize_array(stream['values'], np.float32)
                 stream_group['lengths'] = serialize_array(stream['lengths'], np.int32)
+                stream_group['meta'] = stream['meta']
                 stream_encoded.append(stream_group)
             
             content['streamlines'] = stream_encoded

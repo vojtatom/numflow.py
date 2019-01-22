@@ -255,7 +255,7 @@ class Editor{
             }
         );
 
-        return JSON.stringify(nodes);
+        return JSON.stringify(nodes, null, 4);
     }
 
     deserialize(text) {
@@ -399,7 +399,7 @@ class Node{
             });
         };
 
-        if (intersect(Object.keys(this.data.in), incomingNode.data.out).length > 0)
+        if (intersect(Object.keys(this.data.in), Object.keys(incomingNode.data.out)).length > 0)
             return true;
         return false;
     }
@@ -422,6 +422,7 @@ class Node{
     static deserialize(data, editor) {
         let node = new Node(data.position.x, data.position.y, editor, data.data, data.title);
         node.id = data.id;
+        Node.id = Math.max(data.id + 1, Node.id);
         return node;
     }
 }

@@ -29,7 +29,7 @@ class NodeUI{
             };
         }
         
-        if (node.data.out.length > 0){
+        if (Object.keys(node.data.out).length > 0){
             let dotOut = document.createElement('div');
             dotOut.classList.add('out');
             base.appendChild(dotOut);
@@ -74,6 +74,32 @@ class NodeUI{
             }
 
             field.appendChild(title);
+
+            let nothing = (e) => {
+                e.stopPropagation();
+            };
+
+            let createSlider = function(value, title, id) {
+                console.log(value);
+                let s = document.createElement('input');
+                s.id = id
+                let label = document.createElement('label');
+                let label_title = document.createElement('div');
+                label.htmlFor = id;
+                label_title.innerText = title;
+                s.type = 'range';
+                s.min = 0;
+                s.max = 1;
+                s.value = value;
+                s.step = 1 / 255;
+                s.classList.add('slider');
+                s.onmousedown = nothing;
+                s.onmouseup = nothing;
+                s.onclick = nothing;
+                label.appendChild(label_title);
+                label.appendChild(s);
+                return {slider: s, label: label};
+            }
 
             //DISPLAY lines
             if (structure[key].type == 'display'){
@@ -138,13 +164,96 @@ class NodeUI{
                     e.stopPropagation();
                 };
 
-                let nothing = (e) => {
-                    e.stopPropagation();
-                };
-
                 contents.onmousedown = nothing;
                 contents.onmouseup = nothing;
 
+                contents.classList.add('content');
+                field.appendChild(contents);
+
+            //Color lines
+            } else if (structure[key].type == 'color'){
+                let contents = document.createElement('div');
+                let cp = document.createElement('div');
+                cp.classList.add('colorpicker');
+
+                let updateFieldColor = function(field, color) {
+
+                    color = 'rgba(' + (color[0] * 255) + ',' + (color[1] * 255) + ',' + (color[2] * 255) + ',' + (color[3]) + ')';
+                    console.log(color);
+                    field.style.backgroundColor = color;
+                }
+
+                //red
+                let r = createSlider(structure[key].value[0], 'r', key + node.id + 'r');
+                r.slider.onchange = (e) => {
+                    node.data.structure[key].value[0] = parseFloat(e.target.value);
+                    updateFieldColor(contents, node.data.structure[key].value);
+                    e.stopPropagation();
+                };
+                cp.appendChild(r.label);
+
+                //green
+                let g = createSlider(structure[key].value[1], 'g', key + node.id + 'g');
+                g.slider.onchange = (e) => {
+                    node.data.structure[key].value[1] = parseFloat(e.target.value);
+                    updateFieldColor(contents, node.data.structure[key].value);
+                    e.stopPropagation();
+                };
+                cp.appendChild(g.label);
+
+                //blue
+                let b = createSlider(structure[key].value[2], 'b', key + node.id + 'b');
+                b.slider.onchange = (e) => {
+                    node.data.structure[key].value[2] = parseFloat(e.target.value);
+                    updateFieldColor(contents, node.data.structure[key].value);
+                    e.stopPropagation();
+                };
+                cp.appendChild(b.label);
+
+                //alpha
+                let a = createSlider(structure[key].value[3], 'a', key + node.id + 'a');
+                a.slider.onchange = (e) => {
+                    node.data.structure[key].value[3] = parseFloat(e.target.value);
+                    updateFieldColor(contents, node.data.structure[key].value);
+                    e.stopPropagation();
+                };
+                cp.appendChild(a.label);
+
+                let toggleCp = (e) => {
+                    let past = cp.style.display;
+
+                    let cps = [...document.getElementsByClassName('colorpicker')];
+                    cps.forEach(element => {
+                        element.style.display = 'none';
+                    });
+
+                    console.log(e);
+                    if (past == 'block'){
+                        cp.style.display = 'none';
+                    } else {
+                        cp.style.display = 'block';
+                    }
+                    e.stopPropagation();
+                }
+
+                //disable cp
+                cp.style.display = 'none';
+
+                //toggles
+                cp.onclick = toggleCp;
+                contents.onclick = toggleCp;
+
+                //disable everything else
+                contents.onmousedown = nothing;
+                contents.onmouseup = nothing;
+                cp.onmousedown = nothing;
+                cp.onmouseup = nothing;
+
+                //update color once
+                updateFieldColor(contents, structure[key].value);
+
+                //append the rest
+                contents.appendChild(cp);
                 contents.classList.add('content');
                 field.appendChild(contents);
             }
@@ -163,7 +272,6 @@ class NodeUI{
         let meta;
 
         // IN TYPES
-        console.log(node.data.in, Object.keys(node.data.in).length);
         if (Object.keys(node.data.in).length > 0){
             meta = []
             for(let intype in node.data.in){
@@ -185,8 +293,20 @@ class NodeUI{
         nodeElement.appendChild(NodeUI.buildMeta('in', meta));
 
         //OUT TYPES
-        if (node.data.out.length > 0){
-            meta = node.data.out.join(', ');
+        if (Object.keys(node.data.out).length > 0){
+            meta = []
+            for(let outtype in node.data.out){
+                let text = outtype;
+                if(node.data.out[outtype].multipart){
+                    text = '[' + text + ']';
+                }
+
+                if(!node.data.out[outtype].required){
+                    text = '(' + text + ')';
+                }
+                meta.push(text);
+            }
+            meta = meta.join(', ');
         } else {
             meta = 'None';
         } 

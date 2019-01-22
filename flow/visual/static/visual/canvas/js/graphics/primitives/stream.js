@@ -5,7 +5,14 @@ class Stream extends Primitive {
         super(gl);
     }
 
-    segment(a_pos, a_vec, b_pos, b_vec) {
+    init(data){
+        let positions = Primitive.base64tofloat32(data.points);
+        let values = Primitive.base64tofloat32(data.values);
+        let lengths = Primitive.base64tofloat32(data.lengths, DType.int);
+        console.log(positions, values, lengths);
+    }
+
+    /*segment(a_pos, a_vec, b_pos, b_vec) {
         let t0 = performance.now();
         let points = this.piece(8, 1000);
         let t1 = performance.now();
@@ -35,6 +42,10 @@ class Stream extends Primitive {
             points: points,
             elements: elements
         };
+    }*/
+
+    render(camera){
+
     }
 
     delete(){

@@ -6,15 +6,15 @@ from ..exceptions import NodeError
 from visual.modules.numeric.kernels import glyph_kernel
 
 
-class GlyphsNode(Node):
+class LayerNode(Node):
     data = {
         'structure': {
             'title' : {
                 'type': 'display',
-                'value' : 'glyphs',
+                'value' : 'layer',
             },
 
-            'size' : {
+            'thickness' : {
                 'type': 'input',
                 'value' : '1',
             },
@@ -33,9 +33,9 @@ class GlyphsNode(Node):
         },
 
         'in': {
-            'points': {
+            'plane': {
                 'required': True,
-                'multipart': True
+                'multipart': False
             },
             'dataset': {
                 'required': True,
@@ -43,14 +43,14 @@ class GlyphsNode(Node):
             }
         },
         'out': {
-            'glyphs': {
+            'layer': {
                 'required': True,
                 'multipart': False
             },
         },
     }
     
-    title = 'glyphs'
+    title = 'layer'
     
     def __init__(self, id, data, notebook_code, message):
         """
@@ -60,9 +60,9 @@ class GlyphsNode(Node):
         """   
         self.id = id
 
-        fields = ['size', 'appearance', 'scale']
+        fields = ['thickness', 'appearance', 'scale']
         self.check_dict(fields, data, self.id, self.title)
-        self._size = data['size']
+        self._thickness = data['thickness']
         self._appearance = data['appearance']
         self._scale = data['scale']
 
@@ -73,41 +73,31 @@ class GlyphsNode(Node):
             :param indata: data coming from connected nodes, can be None here.
         """   
 
-        fields = ['dataset', 'points']
+        fields = ['dataset', 'plane']
         self.check_dict(fields, indata, self.id, self.title)
 
-        values = None
-        points = None
+        values = glyph_kernel(indata['dataset'], indata['plane'])
+        points = indata['plane']
 
-        #interpolate per points group
-        for points_group in indata['points']:
-            out_values = glyph_kernel(indata['dataset'], points_group)
-            
-            if values is None:
-                values = out_values
-                points = points_group
-            else:
-                values = np.append(values, out_values, axis=0)
-                points = np.append(points, points_group, axis=0)
 
-        #glyphs meta... 
+        #layer meta... 
         meta = {
-                'size': self._size,
+                'thickness': self._thickness,
                 'colormap': ColorNode.get_default_cm(),
                 'scale': self._scale,
                 'appearance': self._appearance,
             }
-            
+
         #return all flatenned
-        return {'glyphs' : {'values': values, 'points': points, 'meta': meta}}
+        return {'layer' : {'values': values, 'points': points, 'meta': meta}}
 
     @staticmethod
     def deserialize(data):
         parsed = Node.deserialize(data)
         parsed['data'] = {
-            'size': float(data['data']['structure']['size']['value']),
+            'thickness': float(data['data']['structure']['thickness']['value']),
             'appearance': data['data']['structure']['appearance']['value'],
-            'scale': data['data']['structure']['scale']['value']
+            'scale': data['data']['structure']['scale']['value'],
         }
         return parsed
 

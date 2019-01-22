@@ -21,7 +21,8 @@ class Shader {
 
 		this.gl.compileShader(this.shader);
 		if (!this.gl.getShaderParameter(this.shader, this.gl.COMPILE_STATUS)) {
-			console.error('ERROR compiling shader!', this.gl.getShaderInfoLog(this.shader));
+            console.error('ERROR compiling shader!', this.gl.getShaderInfoLog(this.shader));
+            console.error(this.code);
 			throw 'ERROR compiling shader!';
         }
     }

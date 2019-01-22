@@ -24,11 +24,15 @@ class DataNode(Node):
         },
 
         'in': {},
-        'out': ['dataset'],
+        'out': {
+            'dataset': {
+                'required': True,
+                'multipart': False
+            },
+        },
     }
     
     title = 'dataset'
-    multiinput = False
     
     def __init__(self, id, data, notebook_code, message):
         """

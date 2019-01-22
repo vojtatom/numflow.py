@@ -1,6 +1,7 @@
 from .base import Node
 import numpy as np
 
+from .color import ColorNode
 from ..exceptions import NodeError
 from visual.modules.numeric.kernels import stream_kernel
 
@@ -29,6 +30,22 @@ class StreamlinesNode(Node):
                 'value' : '1',
             },
 
+            'appearance' : {
+                'type': 'select',
+                'choices': ['solid', 'transparent'],
+                'value' : 'solid',
+            },
+
+            'thickness' : {
+                'type': 'input',
+                'value' : '0',
+            },
+
+            'scale' : {
+                'type': 'select',
+                'choices': ['normal', 'log'],
+                'value' : 'normal',
+            },
         },
 
         'in': {
@@ -41,7 +58,12 @@ class StreamlinesNode(Node):
                 'multipart': False
             }
         },
-        'out': ['streamlines'],
+        'out': {
+            'streamlines': {
+                'required': True,
+                'multipart': False
+            },
+        },
     }
     
     title = 'streamlines'
@@ -54,12 +76,16 @@ class StreamlinesNode(Node):
         """   
 
         self.id = id
-        fields = ['mode', 't_0', 't_bound']
+        fields = ['mode', 't_0', 't_bound', 'appearance', 'thickness', 'scale']
         self.check_dict(fields, data, self.id, self.title)
         
         self._t0 = data['t_0']
         self._tbound = data['t_bound']
         self._mode = data['mode']
+        self._appearance = data['appearance']
+        self._thickness = data['thickness']
+        self._scale = data['scale']
+
 
     def __call__(self, indata, message):    
         """
@@ -96,8 +122,15 @@ class StreamlinesNode(Node):
                 values = np.append(values, v, axis=0)
                 lengths = np.append(lengths, l, axis=0)
 
+        meta = {
+            'colormap': ColorNode.get_default_cm(),
+            'appearance': self._appearance,
+            'thickness': self._thickness,
+            'scale': self._scale,
+        }
+
         #return all flatenned
-        return {'streamlines' : {'values': values, 'points': points, 'lengths': lengths}}
+        return {'streamlines' : {'values': values, 'points': points, 'lengths': lengths, 'meta': meta}}
 
     @staticmethod
     def deserialize(data):
@@ -106,6 +139,9 @@ class StreamlinesNode(Node):
             'mode' : data['data']['structure']['mode']['value'],
             't_0' : float(data['data']['structure']['t_0']['value']),
             't_bound' : float(data['data']['structure']['t_bound']['value']),
+            'appearance' : data['data']['structure']['appearance']['value'],
+            'thickness' : float(data['data']['structure']['thickness']['value']),
+            'scale' : data['data']['structure']['scale']['value'],
         }
         return parsed
 

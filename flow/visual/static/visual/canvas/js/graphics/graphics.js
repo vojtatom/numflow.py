@@ -18,6 +18,8 @@ class Graphics {
 			throw 'WebGL 2 not supported';
 		}
 
+		//this.gl.enable(this.gl.DEPTH_TEST);
+		//this.gl.disable(this.gl.BLEND);
 		this.gl.disable(this.gl.DEPTH_TEST);
 		this.gl.enable(this.gl.BLEND);
 		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
@@ -30,8 +32,8 @@ class Graphics {
 	resize(x, y) {
 		this.canvas.width = x;
 		this.canvas.height = y;
-		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 
+		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 		//setup for each of existing scenes
 		for (let scene of this.scenes){
 			scene.aspect = this.canvas.width / this.canvas.height;
@@ -53,6 +55,7 @@ class Graphics {
 
 		if (this.scene === null){
 			this.scene = scene;
+			scene.aspect = this.canvas.width / this.canvas.height;
 		}
 	}
 
