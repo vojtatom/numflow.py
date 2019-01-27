@@ -10,9 +10,9 @@ class Scene{
 
     init(contents){
         console.log('loading scene elements');
-        let box = new Box(this.gl);
+       /* let box = new Box(this.gl);
         box.init(vec3.fromValues(-10, -10, 0), vec3.fromValues(20, 20, 40));
-        this.objects.push(box); 
+        this.objects.push(box); */
         
         if ('glyphs' in contents){
             for (let glyphs_group of contents.glyphs){
@@ -23,14 +23,14 @@ class Scene{
             }
         }
 
-        if ('streamlines' in contents){
+        /*if ('streamlines' in contents){
             for (let stream_group of contents.streamlines){
                 let streams = new Stream(this.gl);
                 streams.init(stream_group);
                 console.log(streams);
                 this.objects.push(streams);
             }
-        }
+        }*/
         /*
 
         let stream = new Stream(this.gl);
@@ -38,9 +38,33 @@ class Scene{
     }
 
     render(){
+        this.gl.enable(this.gl.DEPTH_TEST);
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
+        
+        //bounding boxes...    
         for(let obj of this.objects){
-            obj.render(this.camera, this.light);
+            obj.renderBoundingBox(this.camera, this.light);
         }
+
+        this.gl.disable(this.gl.BLEND);
+
+        for(let obj of this.objects){
+            if (!obj.transparent){
+                obj.render(this.camera, this.light);
+            }
+        }
+
+        //this.gl.disable(this.gl.DEPTH_TEST);
+		this.gl.enable(this.gl.BLEND);
+
+        for(let obj of this.objects){
+            if (obj.transparent){
+                obj.render(this.camera, this.light);
+            }
+        }
+
+        this.camera.frame();
     }
 
     set aspect(a) {

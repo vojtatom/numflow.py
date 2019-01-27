@@ -18,8 +18,8 @@ class Glyphs extends Primitive {
 
         //Actual initialization
         //load base64 data
-        let positions = Primitive.base64tofloat32(data.points);
-        let values = Primitive.base64tofloat32(data.values);
+        let positions = Primitive.base64totype(data.points);
+        let values = Primitive.base64totype(data.values);
 
         let vao = this.gl.createVertexArray();
         this.gl.bindVertexArray(vao);
@@ -74,6 +74,13 @@ class Glyphs extends Primitive {
             scale: Geometry.scale[data.meta.scale],
         }
 
+        //setup transparency
+        this.transparent = (Geometry.appearance[data.meta.appearance] === Geometry.appearance.transparent);
+        console.log(this.transparent);
+
+        //init bounding box
+        this.initBoundingBox(data);
+
         //Finish up...
         this.loaded = true;  
         console.log(this.gl.getError());
@@ -103,7 +110,7 @@ class Glyphs extends Primitive {
 			size: lineVert.length,
         };
         
-        console.log(this.program);
+        //console.log(this.program);
     }
 
     render(camera, light){
@@ -142,7 +149,7 @@ class Glyphs extends Primitive {
         });
 
         this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.buffers.glyph.size / 3, this.buffers.field.size);
-        console.log(this.gl.getError());
+        //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
         this.program.unbind();

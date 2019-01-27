@@ -14,9 +14,10 @@ class Primitive {
     constructor(gl) {
 		this.gl = gl;
 		this.lateLoaded = false;
+		this.transparent = false; 
     }
 
-    static base64tofloat32(data, mode=DType.float) {
+    static base64totype(data, mode=DType.float) {
 		let blob = window.atob(data);
 		let array;
 
@@ -88,6 +89,21 @@ class Primitive {
 			return data;
 		}
 	}
+
+	initBoundingBox(data){
+		if (this.bb === undefined){
+			let box = new Box(this.gl);
+			box.init(data);
+			this.bb = box;
+		}
+	}
+
+	renderBoundingBox(camera, light) {
+        if(!this.isRenderReady)
+            return;
+
+		this.bb.render(camera, light);
+    }
 
     delete(){
         

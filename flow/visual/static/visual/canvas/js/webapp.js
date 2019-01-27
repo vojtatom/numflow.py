@@ -39,31 +39,38 @@ window.onload = function(e) {
 
     document.onkeydown = function (event) {
         app.interface.onKeyDown(event.keyCode);
+        event.stopPropagation();
     };
 
     document.onkeyup = function (event) {
         app.interface.onKeyUp(event.keyCode);
+        event.stopPropagation();
     };
 
-    document.onmousedown = function(event) {
-		app.interface.onMouseDown(event.clientX, event.clientY);
+    canvas.onmousedown = function(event) {
+        app.interface.onMouseDown(event.clientX, event.clientY);
+        event.stopPropagation();
 	};
 
-	document.onmouseup = function(event) {
-		app.interface.onMouseUp(event.clientX, event.clientY);
+	canvas.onmouseup = function(event) {
+        app.interface.onMouseUp(event.clientX, event.clientY);
+        event.stopPropagation();
 	};
 
-	document.onmousemove = function(event) {
-		app.interface.onMouseMove(event.clientX, event.clientY);
+	canvas.onmousemove = function(event) {
+        app.interface.onMouseMove(event.clientX, event.clientY);
+        event.stopPropagation();
     };
 
     window.onresize = function(event) {
-		app.graphics.resize(window.innerWidth, window.innerHeight);
+        app.graphics.resize(window.innerWidth, window.innerHeight);
+        event.stopPropagation();
     };
     
     canvas.onwheel = function(event){
         app.interface.wheel(event.deltaY);
         event.preventDefault();
+        event.stopPropagation();
     };
 
     

@@ -50,9 +50,17 @@ class VisualNode(Node):
         """   
 
         def serialize_array(array, dtype):
-                a = np.ascontiguousarray(dtype(array), dtype=dtype)
-                a = base64.b64encode(a.data)
-                return a.decode('utf-8')
+            a = np.ascontiguousarray(dtype(array), dtype=dtype)
+            a = base64.b64encode(a.data)
+            return a.decode('utf-8')
+
+
+        def boundries(values):
+            bounds = {}
+            start = np.amin(values, axis=0)
+            bounds['start'] = serialize_array(start, np.float32)
+            bounds['dim'] = serialize_array(np.amax(values, axis=0) - start, np.float32)
+            return bounds
 
         content = {}
         if 'layer' in indata:
@@ -63,6 +71,7 @@ class VisualNode(Node):
                 layer_group['points'] = serialize_array(layer['points'], np.float32)
                 layer_group['values'] = serialize_array(layer['values'], np.float32)
                 layer_group['meta'] = layer['meta']
+                layer_group['meta']['bounds'] = boundries(layer['points'])
                 layer_encoded.append(layer_group)
             
             content['layer'] = layer_encoded
@@ -75,6 +84,7 @@ class VisualNode(Node):
                 glyphs_group['points'] = serialize_array(glyphs['points'], np.float32)
                 glyphs_group['values'] = serialize_array(glyphs['values'], np.float32)
                 glyphs_group['meta'] = glyphs['meta']
+                glyphs_group['meta']['bounds'] = boundries(glyphs['points'])
                 glyphs_encoded.append(glyphs_group)
             
             content['glyphs'] = glyphs_encoded
@@ -88,6 +98,7 @@ class VisualNode(Node):
                 stream_group['values'] = serialize_array(stream['values'], np.float32)
                 stream_group['lengths'] = serialize_array(stream['lengths'], np.int32)
                 stream_group['meta'] = stream['meta']
+                stream_group['meta']['bounds'] = boundries(stream['points'])
                 stream_encoded.append(stream_group)
             
             content['streamlines'] = stream_encoded

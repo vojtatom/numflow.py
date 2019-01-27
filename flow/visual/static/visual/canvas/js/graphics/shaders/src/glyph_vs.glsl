@@ -1,4 +1,5 @@
 precision mediump float;
+precision highp int;
 
 //buffer attributes
 attribute vec3 vertPosition;
@@ -76,12 +77,12 @@ vec3 phong(vec3 light, float sigma, vec3 ver_position, vec3 ver_normal){
 
 //implementation for length (not direction!!!)
 vec3 colorfunc(float sigma) {
-	float index = float(colorMapSize) * sigma;
+	float index = float(colorMapSize - 1) * sigma;
 	int low = int(floor(index));
 	int high = int(ceil(index));
 	float factor = index - floor(index);
 
-	return (colorMap[low] * factor + colorMap[high] * (1.0 - factor)).xyz;
+	return (colorMap[low] * (1.0 - factor) + colorMap[high] * factor).xyz;
 }
 
 void main()
@@ -104,12 +105,15 @@ void main()
 
 	//shade
 	if (appearance == 1){
-		//vec3 color = phong(light, sigma, (mWorld * vec4(vertex, 1.0)).xyz, (mWorld * vec4(vertex_normal, 1)).xyz);
-		vec3 color = vec3(1.0);
+		//solid
+		vec3 color = phong(light, sigma, (mWorld * vec4(vertex, 1.0)).xyz, (mWorld * vec4(vertex_normal, 1)).xyz);
 		color *= colorfunc(sigma);
 		fragColor = color;
 	} else {
-		fragColor = colorfunc(sigma);
+		//transparent
+		vec3 color = vec3(1.0);
+		color *= colorfunc(sigma);
+		fragColor = color;
 	}
 
 	gl_Position =  mProj * mView * mWorld * vec4(vertex + glyphPosition, 1.0);

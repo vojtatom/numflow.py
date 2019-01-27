@@ -62,16 +62,9 @@ class UnitBox extends Primitive {
             vao: vao,
             size: boxInd.length,
         };
-
-        this.loaded = true;
     }
 
     render(uniforms) {
-        if (!this.program.loaded)
-            return;
-
-        if (!this.loaded)
-            this.init();
 
         this.program.bind();
 

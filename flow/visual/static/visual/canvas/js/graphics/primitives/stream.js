@@ -6,9 +6,9 @@ class Stream extends Primitive {
     }
 
     init(data){
-        let positions = Primitive.base64tofloat32(data.points);
-        let values = Primitive.base64tofloat32(data.values);
-        let lengths = Primitive.base64tofloat32(data.lengths, DType.int);
+        let positions = Primitive.base64totype(data.points);
+        let values = Primitive.base64totype(data.values);
+        let lengths = Primitive.base64totype(data.lengths, DType.int);
         console.log(positions, values, lengths);
     }
 
