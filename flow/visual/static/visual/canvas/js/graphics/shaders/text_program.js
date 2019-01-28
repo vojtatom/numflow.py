@@ -1,13 +1,13 @@
 'use strict';
 
-class BoxProgram extends Program {
+class TextProgram extends Program {
     constructor(gl) {
-        if(!BoxProgram.instance){
+        if(!TextProgram.instance){
             super(gl);
             DataManager.files({
                 files: [
-                    Shader.dir + 'box_vs.glsl',
-                    Shader.dir + 'box_fs.glsl',
+                    Shader.dir + 'text_vs.glsl',
+                    Shader.dir + 'text_fs.glsl',
                 ],
                 success: (f) => {
                         this.init(...f)
@@ -16,36 +16,51 @@ class BoxProgram extends Program {
                 fail: (r) => { console.error(r); },
                 });
 
-                BoxProgram.instance = this;
+            TextProgram.instance = this;
         }
         
-        return BoxProgram.instance;
+        return TextProgram.instance;
     }
 
     setup(){
         this.setupAttributes({
-            position: 'vertPosition',
+            position: 'position',
+			texcoord: 'texcoord',
         });
 
         this.setupUniforms({
             model: 'mWorld',
 			view: 'mView',
             proj: 'mProj',
-            mode: 'mode',
+            texture: 'texture',
+            
+            billSize: 'billSize',
+            screenSize: 'screenSize',
         });
     }
 
-    setAttrs(options) {
-        //this.gl.useProgram(this.program);
+
+    setAttrsPosition(){
+        this.gl.useProgram(this.program);
         this.gl.enableVertexAttribArray(this.attributes.position);
         this.gl.vertexAttribPointer(this.attributes.position, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
-        //this.gl.useProgram(null);
+        this.gl.useProgram(null);
+    }
+
+    setAttrsTexcoord(){
+        this.gl.useProgram(this.program);
+        this.gl.enableVertexAttribArray(this.attributes.texcoord);
+        this.gl.vertexAttribPointer(this.attributes.texcoord, 2, this.gl.FLOAT, this.gl.FALSE, 2 * Float32Array.BYTES_PER_ELEMENT, 0);
+        this.gl.useProgram(null);
     }
 
     setUnifs(options) {
         this.gl.uniformMatrix4fv(this.uniforms.model, this.gl.FALSE, options.model);
         this.gl.uniformMatrix4fv(this.uniforms.view, this.gl.FALSE, options.view);
         this.gl.uniformMatrix4fv(this.uniforms.proj, this.gl.FALSE, options.projection);
-        this.gl.uniform1i(this.uniforms.mode, options.mode);
+    
+        this.gl.uniform2fv(this.uniforms.billSize, options.size);
+        this.gl.uniform2fv(this.uniforms.screenSize, options.screenSize);
+        this.gl.uniform1i(this.uniforms.texture, options.texture);
     }
 }

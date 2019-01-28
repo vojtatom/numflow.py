@@ -106,13 +106,35 @@ class Geometry{
         return {
             transparent: 0,
             solid: 1,
-        }
+        };
     }
 
     static get scale(){
         return {
             log: 0,
             normal: 1,
-        }
+        };
+    }
+
+    static get unitQuad(){
+        return [
+            -0.5, -0.5, 0,
+            0.5, -0.5, 0,
+            0.5, 0.5, 0,
+            -0.5, -0.5, 0,
+            0.5, 0.5, 0,
+            -0.5, 0.5, 0,
+        ];
+    }
+
+    static get unitQuadTex(){
+        return [
+            0, 1,
+            1, 1,
+            1, 0,
+            0, 1,
+            1, 0,
+            0, 0,
+        ];
     }
 }

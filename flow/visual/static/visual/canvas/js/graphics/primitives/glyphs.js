@@ -4,6 +4,8 @@ class Glyphs extends Primitive {
     constructor(gl) {
         super(gl);
         this.program = new GlyphProgram(gl);
+        this.box = new Box(this.gl);
+
         this.loaded = false;
         this.buffers = {};
 
@@ -55,7 +57,6 @@ class Glyphs extends Primitive {
             lengths[i / 3] =  Math.sqrt(length);
         }
 
-        console.log(data.meta);
         this.meta = {
             std: meanAbsoluteDeviation(lengths),
             median: median(lengths),
@@ -76,7 +77,6 @@ class Glyphs extends Primitive {
 
         //setup transparency
         this.transparent = (Geometry.appearance[data.meta.appearance] === Geometry.appearance.transparent);
-        console.log(this.transparent);
 
         //init bounding box
         this.initBoundingBox(data);
@@ -106,7 +106,7 @@ class Glyphs extends Primitive {
 		
 		this.buffers['glyph'] = {
 			positions: positions,
-			nomrals: normals,
+			normals: normals,
 			size: lineVert.length,
         };
         

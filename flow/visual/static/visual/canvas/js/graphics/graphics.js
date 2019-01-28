@@ -23,6 +23,7 @@ class Graphics {
 		this.gl.disable(this.gl.DEPTH_TEST);
 		this.gl.enable(this.gl.BLEND);
 		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
+		this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
 		//this.gl.blendFuncSeparate(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA, this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
 		
 		//this.scene = new Scene(this.gl);
@@ -36,7 +37,8 @@ class Graphics {
 		this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 		//setup for each of existing scenes
 		for (let scene of this.scenes){
-			scene.aspect = this.canvas.width / this.canvas.height;
+			scene.screen(this.canvas.width, this.canvas.height);
+
 		}
 	}
 
@@ -55,7 +57,7 @@ class Graphics {
 
 		if (this.scene === null){
 			this.scene = scene;
-			scene.aspect = this.canvas.width / this.canvas.height;
+			scene.screen(this.canvas.width, this.canvas.height);
 		}
 	}
 

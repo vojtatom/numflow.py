@@ -6,6 +6,7 @@ class Scene{
         this.camera = new Camera();
         this.light = new Light();
         this.objects = [];
+        this.boxes = [];
     }
 
     init(contents){
@@ -18,8 +19,9 @@ class Scene{
             for (let glyphs_group of contents.glyphs){
                 let glyphs = new Glyphs(this.gl);
                 glyphs.init(glyphs_group);
-                console.log(glyphs);
+                //console.log(glyphs);
                 this.objects.push(glyphs);
+                this.boxes.push(glyphs.box);
             }
         }
 
@@ -37,38 +39,69 @@ class Scene{
         stream.segment([0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 0, 0]);*/
     }
 
+    static restoreBlend(gl){
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+    }
+
     render(){
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
         
-        //bounding boxes...    
-        for(let obj of this.objects){
-            obj.renderBoundingBox(this.camera, this.light);
+        //draw bounding boxes   
+        for(let box of this.boxes){
+            box.render(this.camera, this.light);
         }
 
+        //draw solid objects
         this.gl.disable(this.gl.BLEND);
-
         for(let obj of this.objects){
             if (!obj.transparent){
                 obj.render(this.camera, this.light);
             }
         }
 
-        //this.gl.disable(this.gl.DEPTH_TEST);
+        //draw transparent objects
 		this.gl.enable(this.gl.BLEND);
-
         for(let obj of this.objects){
             if (obj.transparent){
                 obj.render(this.camera, this.light);
             }
         }
 
-        this.camera.frame();
+        //this.gl.disable(this.gl.BLEND);
+
+
+        /*this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        this.gl.clear(this.gl.DEPTH_BUFFER_BIT);*/
+        this.gl.disable(this.gl.DEPTH_TEST);
+        this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
+
+        /*//bounding boxes labels...    
+        for(let box of this.boxes){
+            box.renderFilled(this.camera, this.light);
+            box.renderLabels(this.camera, this.light);
+        }*/
+
+        //bounding boxes labels  
+        for(let box of this.boxes){
+            box.renderLabels(this.camera, this.light);
+        }
+
+        //update camera
+        this.camera.frame(this);
+
+        //check for camera movement
+        if (this.camera.isMoving){
+            for(let box of this.boxes){
+                box.updateEdgeAxis(this.camera);
+            }
+            console.log('camera is moving');
+        }
     }
 
-    set aspect(a) {
-        this.camera.aspect = a;
+    screen(x, y) {
+        this.camera.screen(x, y);
     }
 
     delete() {

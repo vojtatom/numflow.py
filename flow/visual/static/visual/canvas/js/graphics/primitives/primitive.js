@@ -15,6 +15,7 @@ class Primitive {
 		this.gl = gl;
 		this.lateLoaded = false;
 		this.transparent = false; 
+		this._data = null;
     }
 
     static base64totype(data, mode=DType.float) {
@@ -55,15 +56,11 @@ class Primitive {
 	}
 
 	get isRenderReady(){
-		if (!this.program.loaded){
-			return false;
-		}
-
 		if (!this.loaded){
 			this.init();
 		}
 		
-		return true;
+		return this.loaded;
 	}
 
 	isInitReady(data){
@@ -73,7 +70,7 @@ class Primitive {
             return false;
         }
 
-        if (this.program.loaded && this._data !== null){
+        if (this.program.loaded && (this._data !== null || data !== null)){
 			return true;
 		}
 		
@@ -91,19 +88,8 @@ class Primitive {
 	}
 
 	initBoundingBox(data){
-		if (this.bb === undefined){
-			let box = new Box(this.gl);
-			box.init(data);
-			this.bb = box;
-		}
+		this.box.init(data);
 	}
-
-	renderBoundingBox(camera, light) {
-        if(!this.isRenderReady)
-            return;
-
-		this.bb.render(camera, light);
-    }
 
     delete(){
         

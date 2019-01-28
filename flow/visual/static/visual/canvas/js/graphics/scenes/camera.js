@@ -64,13 +64,15 @@ class Camera {
         this.globalFront = vec3.fromValues(0, -50, 0);
         this.globalUp = vec3.fromValues(0, 0, 50);
         this.aspect = 1;
-
+        this.screenX = 1;
+        this.screenY = 1;
+        this.speed = 0.05;
 
         //state
         this.actualPosition = vec3.fromValues(0, -20, 0);
         this.actualUp = vec3.fromValues(0, 0, 1);
         this.actualCenter = vec3.fromValues(0, 0, 0);
-        this.speed = 0.05;
+        
         this.positionMomentum = 0;
         this.centerMomentum = 0;
         this.rotMomentum = 0;
@@ -88,6 +90,17 @@ class Camera {
         vec3.sub(this.frontVector, this.center, this.position);
         return vec3.normalize(this.frontVector, this.frontVector,);
     }
+
+    get screenDim() {
+        return vec2.fromValues(this.screenX, this.screenY);
+    }
+
+    screen(x, y){
+        this.screenX = x;
+        this.screenY = y;
+        this.aspect = x / y;
+    }
+
 
     setPosition(position){
         if (position === CameraPosition.top){
@@ -154,18 +167,18 @@ class Camera {
 
     frame(){
         vec3.sub(this.tmp, this.position, this.actualPosition);
-        this.positionMomentum = Math.min(vec3.length(this.tmp), 2.0);
-        if (this.positionMomentum > 0.001){
-            vec3.scaleAndAdd(this.actualPosition, this.actualPosition, this.tmp, this.speed * this.positionMomentum);
+        this.positionMomentum = Math.min(vec3.length(this.tmp), this.speed * 2.0);
+        if (this.positionMomentum > 0.02){
+            vec3.scaleAndAdd(this.actualPosition, this.actualPosition, this.tmp, this.positionMomentum);
         } else {
             vec3.copy(this.actualPosition, this.position);
             this.positionMomentum = 0;
         }
         
-        this.rotMomentum = Math.min(vec3.angle(this.actualUp, this.up), 3.14);
-        if (this.rotMomentum > 0.001) {
+        this.rotMomentum = Math.min(vec3.angle(this.actualUp, this.up), this.speed * 3.14);
+        if (this.rotMomentum > 0.02) {
             let axis = vec3.cross(this.tmp, this.actualUp, this.up);
-            mat4.fromRotation(this.rotateMatrix, this.speed * this.rotMomentum, axis);
+            mat4.fromRotation(this.rotateMatrix, this.rotMomentum, axis);
             vec3.transformMat4(this.actualUp, this.actualUp, this.rotateMatrix);   
         } else {
             vec3.copy(this.actualUp, this.up);
@@ -173,12 +186,20 @@ class Camera {
         }
 
         vec3.sub(this.tmp, this.center, this.actualCenter);
-        this.centerMomentum = Math.min(vec3.length(this.tmp), 2.0);
-        if (this.centerMomentum > 0.001){
-            vec3.scaleAndAdd(this.actualCenter, this.actualCenter, this.tmp, this.speed * this.centerMomentum);
+        this.centerMomentum = Math.min(vec3.length(this.tmp), this.speed * 2.0);
+        if (this.centerMomentum > 0.02){
+            vec3.scaleAndAdd(this.actualCenter, this.actualCenter, this.tmp, this.centerMomentum);
         } else {
             vec3.copy(this.actualCenter, this.center);
             this.centerMomentum = 0;
         }
+    }
+
+    get isMoving(){
+        if (this.centerMomentum || this.rotMomentum || this.positionMomentum){
+            //console.log(this.centerMomentum, this.rotMomentum, this.positionMomentum);
+            return true;
+        }
+        return false;
     }
 }
