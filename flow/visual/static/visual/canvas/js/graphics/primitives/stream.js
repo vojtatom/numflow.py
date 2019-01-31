@@ -90,8 +90,8 @@ class Stream extends Primitive {
                 finalValue.push(values[tmpoffset] + (values[tmpoffset] - values[tmpoffset - 3]));
             }
 
-            let zeroTime = times[0] + (times[0] - times[1]);
-            let finalTime = times[streamLength - 1] + (times[streamLength - 1] - times[streamLength - 2]);
+            let zeroTime = times[toffset] + (times[toffset] - times[toffset + 1]);
+            let finalTime = times[toffset + streamLength - 1] + (times[toffset + streamLength - 1] - times[toffset + streamLength - 2]);
 
             //console.log(poffset, voffset);
             /*setup each segment with structure:
@@ -194,9 +194,9 @@ class Stream extends Primitive {
 
         //Finish up...
         this.loaded = true;  
-        console.log(this.gl.getError());
-        console.log(this.program);
-        console.log(this.meta);
+        //console.log(this.gl.getError());
+        //console.log(this.program);
+        //console.log(this.meta);
         
     }
 
@@ -204,8 +204,6 @@ class Stream extends Primitive {
         let vert = Geometry.streamVert(sampling, divisions); 
         let norm = Geometry.streamNorm(sampling, divisions);
         let t = Geometry.streamLocalT(sampling, divisions);
-        console.log(norm.length, vert.length);
-       
 
         // init VBO for stream positions
 		let positions = this.gl.createBuffer();
@@ -237,7 +235,6 @@ class Stream extends Primitive {
     }
 
     get ui(){
-        console.log(this.meta, this._data);
         return {
             type: {
                 type: 'display',

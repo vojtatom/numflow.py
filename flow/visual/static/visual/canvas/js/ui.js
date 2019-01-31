@@ -30,7 +30,6 @@ class FlowAppUI {
             this.element = element;
             this.sceneList = sceneList;
             this.sceneElement = sceneElement;
-            console.log(this.element);
             
             this.scenes = [];
             this.selectedScene = 0;

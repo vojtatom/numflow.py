@@ -71,7 +71,6 @@ class Scene{
         }
 
         //draw transparent objects
-        //this.gl.disable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         for(let obj of this.objects){
@@ -79,19 +78,9 @@ class Scene{
                 obj.render(this.camera, this.light);
             }
         }
-        //this.gl.depthMask(true);
 
-        //this.gl.disable(this.gl.BLEND);
-        /*this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-        this.gl.clear(this.gl.DEPTH_BUFFER_BIT);*/
         this.gl.disable(this.gl.DEPTH_TEST);
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
-
-        /*//bounding boxes labels...    
-        for(let box of this.boxes){
-            box.renderFilled(this.camera, this.light);
-            box.renderLabels(this.camera, this.light);
-        }*/
 
         //bounding boxes labels  
         for(let box of this.boxes){
@@ -106,7 +95,7 @@ class Scene{
             for(let box of this.boxes){
                 box.updateEdgeAxis(this.camera);
             }
-            console.log('camera is moving');
+            //console.log('camera is moving');
         }
     }
 

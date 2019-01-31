@@ -153,7 +153,7 @@ class Glyphs extends Primitive {
         });
 
         this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.buffers.glyph.size, this.buffers.field.size);
-        console.log(this.gl.getError());
+        //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
         this.program.unbind();
