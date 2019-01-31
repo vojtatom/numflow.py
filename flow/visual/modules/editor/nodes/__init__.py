@@ -9,6 +9,7 @@ from .color import ColorNode
 from .layer import LayerNode
 from .plane import PlaneNode
 from .glyphgeometry import GlyphGeometryNode
+from .streamgeometry import StreamGeometryNode
 
 
 nodes = {
@@ -22,5 +23,6 @@ nodes = {
         ColorNode.title: ColorNode,
         LayerNode.title: LayerNode,
         PlaneNode.title: PlaneNode,
-        GlyphGeometryNode.title: GlyphGeometryNode
+        GlyphGeometryNode.title: GlyphGeometryNode,
+        StreamGeometryNode.title: StreamGeometryNode,
     }

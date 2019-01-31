@@ -155,7 +155,7 @@ class Geometry{
     }
 
 
-    static streamVert(sampling, divisions = 2){
+    static streamVert(sampling, divisions = 10){
         let vert = [];
 
         for (let i = 0; i < divisions; ++i){
@@ -166,7 +166,7 @@ class Geometry{
     } 
 
 
-    static streamNorm(sampling, divisions = 2){
+    static streamNorm(sampling, divisions = 10){
         let vert = [];
 
         for (let i = 0; i < divisions; ++i){
@@ -177,7 +177,7 @@ class Geometry{
     }
 
 
-    static streamLocalT(sampling, divisions = 2){
+    static streamLocalT(sampling, divisions = 10){
         let vert = [];
         let add = 2 * Math.PI / sampling;
 

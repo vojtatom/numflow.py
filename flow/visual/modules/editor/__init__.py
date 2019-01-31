@@ -18,6 +18,7 @@ nodes_structure = {
                 TranslateNode.title : TranslateNode.data,
                 ColorNode.title: ColorNode.data,
                 GlyphGeometryNode.title: GlyphGeometryNode.data,
+                StreamGeometryNode.title: StreamGeometryNode.data,
             },
 
              'display': {

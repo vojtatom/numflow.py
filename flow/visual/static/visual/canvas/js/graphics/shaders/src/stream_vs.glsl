@@ -97,17 +97,29 @@ vec3 colorfunc(float sigma) {
 	return (colorMap[low] * (1.0 - factor) + colorMap[high] * factor).xyz;
 }
 
-//interpolate using catmull rom spline
-vec3 interpolate(float t, vec3 v0, vec3 v1, vec3 v2,vec3 v3) {
+//interpolate using hermit
+vec3 interpolateVec(float t, vec3 v0, vec3 v1, vec3 vt0,vec3 vt1) {
 
 	vec3 c1, c2, c3, c4;
 
-	c1 =  	         1.0 * v1;
-	c2 = -0.5 * v0            + 0.5 * v2;
-	c3 =  1.0 * v0 - 2.5 * v1 + 2.0 * v2 - 0.5 * v3;
-	c4 = -0.5 * v0 + 1.5 * v1 - 1.5 * v2 + 0.5 * v3;
+	c1 =    1.0 * v0;
+	c2 = 		                + 1.0 * vt0;
+	c3 =  - 3.0 * v0 + 3.0 * v1 - 2.0 * vt0 - 1.0 * vt1;
+	c4 =    2.0 * v0 - 2.0 * v1 + 1.0 * vt0 + 1.0 * vt1;
 
 	return(((c4 * t + c3) * t + c2) * t + c1);
+}	
+
+//interpolate using hermit
+vec3 interpolateNorm(float t, vec3 v0, vec3 v1, vec3 vt0,vec3 vt1) {
+
+	vec3 c1, c2, c3;
+
+	c1 = 		                + 1.0 * vt0;
+	c2 =  - 6.0 * v0 + 6.0 * v1 - 4.0 * vt0 - 2.0 * vt1;
+	c3 =    6.0 * v0 - 6.0 * v1 + 3.0 * vt0 + 3.0 * vt1;
+
+	return ((c3 * t + c2) * t + c1);
 }
 
 //interpolate using catmull rom spline
@@ -132,12 +144,24 @@ void main(){
 		visible = 0.0;
 	}
 
+	vec3 vtan0 = (fieldPosition2 - fieldPosition0) / 2.0;;
+	vec3 vtan1 = (fieldPosition3 - fieldPosition1) / 2.0;
 
-	//mapping vector length according to median value of vector lengths
-	vec3 position = interpolate(t_local, fieldPosition0, fieldPosition1, fieldPosition2, fieldPosition3);
-	vec3 value = interpolate(t_local, fieldValue0, fieldValue1, fieldValue2, fieldValue3);
+	float ltan0 = length(vtan0);
+	float ltan1 = length(vtan1);
 
-	float l = length(value);
+	vec3 tan0 = ltan0 * normalize(fieldValue1);
+	vec3 tan1 = ltan1 * normalize(fieldValue2);
+
+	vec3 position = interpolateVec(t_local, fieldPosition1, fieldPosition2, tan0, tan1);
+	vec3 value = interpolateNorm(t_local, fieldPosition1, fieldPosition2, tan0, tan1);
+
+	float v0 = length(fieldValue0);
+	float v1 = length(fieldValue1);
+	float v2 = length(fieldValue2);
+	float v3 = length(fieldValue3);
+
+	float l = interpolate(t_local, v0, v1, v2, v3);
 	//positive for vector longer than median, normalized by std...
 	float dist = (l - medianSize) / stdSize;
 	//applying sigmoid to transform... 

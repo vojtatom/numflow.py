@@ -134,6 +134,7 @@ class StreamlinesNode(Node):
             't0': self._t0,
             'tbound': self._tbound,
             'sampling': 6,
+            'divisions': 10,
         }
 
         #return all flatenned

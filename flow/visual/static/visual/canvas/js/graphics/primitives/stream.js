@@ -29,6 +29,7 @@ class Stream extends Primitive {
         let segmentsCount = times.length - lengths.length;
         let streamsCount = lengths.length;
         let filled = 0;
+        const segsize = 28;
 
         //console.log(positions, values, times, lengths);
 
@@ -39,11 +40,10 @@ class Stream extends Primitive {
 		let streambuffer = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, streambuffer);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, 
-            segmentsCount * 28 * Float32Array.BYTES_PER_ELEMENT, 
+            segmentsCount * segsize * Float32Array.BYTES_PER_ELEMENT, 
             this.gl.STATIC_DRAW);
 
 
-        const segsize = 28;
         //offset in positions and values array
         let poffset = 0;
         let voffset = 0;
@@ -149,7 +149,7 @@ class Stream extends Primitive {
 
         this.program.setAttrs();
 
-        this.initSegment(data.meta.sampling);
+        this.initSegment(data.meta.sampling, data.meta.divisions);
         this.gl.bindVertexArray(null);
         console.log(this.gl.getError());
 
@@ -173,6 +173,7 @@ class Stream extends Primitive {
             median: median(valueLengths),
             thickness: data.meta.thickness + 1.0,
             sampling: data.meta.sampling,
+            divisions: data.meta.divisions,
             colormap: {
                 sampling: data.meta.colormap.sampling,
                 colors: [
@@ -199,10 +200,10 @@ class Stream extends Primitive {
         
     }
 
-    initSegment(sampling){
-        let vert = Geometry.streamVert(sampling); 
-        let norm = Geometry.streamNorm(sampling);
-        let t = Geometry.streamLocalT(sampling);
+    initSegment(sampling, divisions){
+        let vert = Geometry.streamVert(sampling, divisions); 
+        let norm = Geometry.streamNorm(sampling, divisions);
+        let t = Geometry.streamLocalT(sampling, divisions);
         console.log(norm.length, vert.length);
        
 
@@ -236,10 +237,28 @@ class Stream extends Primitive {
     }
 
     get ui(){
+        console.log(this.meta, this._data);
         return {
             type: {
                 type: 'display',
                 value: 'streamlines',
+            },
+            appearance: {
+                type: 'select',
+                options: ['solid', 'transparent'],
+                callbacks: [
+                    () => {this.meta.appearance = Appearance.solid}, 
+                    () => {this.meta.appearance = Appearance.transparent},
+                ],
+                value: 'meta' in this ? Appearance.encode[this.meta.appearance]: this._data.meta.appearance,
+            },
+            thickenss: {
+                type: 'slider',
+                min: 0.1,
+                max: 10,
+                delta: 0.1,
+                value: 'meta' in this ? this.meta.thickness: this._data.meta.thickness,
+                callback: (value) => { this.meta.thickness = value },
             }
         }
     }
@@ -268,7 +287,7 @@ class Stream extends Primitive {
             light: light.position,
             brightness: 1.0,
             appearance: this.meta.appearance,
-            thickness: 0.1,
+            thickness: 0.1 * this.meta.thickness,
             scale: this.meta.scale,
             time: this.meta.timeLimits,
 
