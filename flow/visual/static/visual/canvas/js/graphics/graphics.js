@@ -20,14 +20,9 @@ class Graphics {
 
 		//this.gl.enable(this.gl.DEPTH_TEST);
 		//this.gl.disable(this.gl.BLEND);
-		this.gl.disable(this.gl.DEPTH_TEST);
-		this.gl.enable(this.gl.BLEND);
-		this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
+		//this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
 		this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
 		//this.gl.blendFuncSeparate(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA, this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
-		
-		//this.scene = new Scene(this.gl);
-		//this.scene.init();
 	}
 
 	resize(x, y) {
@@ -44,21 +39,24 @@ class Graphics {
 
 	render(){
 		if (this.scene !== null){
-			this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-			this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT);
 			this.scene.render();
 		}
 	}
 
-	addScene(scene_contents){
+	addScene(sceneContents){
 		let scene = new Scene(this.gl);
-		scene.init(scene_contents);
+		scene.init(sceneContents);
 		this.scenes.push(scene);
 
 		if (this.scene === null){
 			this.scene = scene;
 			scene.screen(this.canvas.width, this.canvas.height);
 		}
+	}
+
+	displayScene(index){
+		this.scene = this.scenes[index];
+		this.scene.screen(this.canvas.width, this.canvas.height);
 	}
 
 	delete(){

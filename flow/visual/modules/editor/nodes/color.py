@@ -36,9 +36,8 @@ class ColorNode(Node):
                 'value' : [0, 0, 0, 0],
             },
             'color_5' : {
-                'type': 'select',
-                'choices': ['scipy', 'c'],
-                'value' : 'scipy',
+                'type': 'color',
+                'value' : [0, 0, 0, 0],
             },
         },
 
@@ -119,7 +118,12 @@ class ColorNode(Node):
         ### streamlines
         if 'streamlines' in indata:
             for stream_group in indata['streamlines']:
-                new = {'values': stream_group['values'],'points': stream_group['points'], 'lengths': stream_group['lengths']}
+                new = {
+                    'values': stream_group['values'],
+                    'points': stream_group['points'], 
+                    'lengths': stream_group['lengths'],
+                    'times': stream_group['times'],
+                    }
                 meta = copy.deepcopy(stream_group['meta'])
                 meta['colormap'] = colormap
                 new['meta'] = meta

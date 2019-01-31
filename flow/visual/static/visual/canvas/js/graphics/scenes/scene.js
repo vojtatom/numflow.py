@@ -11,6 +11,8 @@ class Scene{
 
     init(contents){
         console.log('loading scene elements');
+        let sceneui = new SceneUI();
+
        /* let box = new Box(this.gl);
         box.init(vec3.fromValues(-10, -10, 0), vec3.fromValues(20, 20, 40));
         this.objects.push(box); */
@@ -22,28 +24,35 @@ class Scene{
                 //console.log(glyphs);
                 this.objects.push(glyphs);
                 this.boxes.push(glyphs.box);
+
+                sceneui.addWidget(new WidgetUI(glyphs.ui));
             }
         }
 
-        /*if ('streamlines' in contents){
+        if ('streamlines' in contents){
             for (let stream_group of contents.streamlines){
                 let streams = new Stream(this.gl);
                 streams.init(stream_group);
-                console.log(streams);
+                //console.log(streams);
                 this.objects.push(streams);
+                this.boxes.push(streams.box);
+
+                sceneui.addWidget(new WidgetUI(streams.ui));
             }
-        }*/
+        }
         /*
 
         let stream = new Stream(this.gl);
         stream.segment([0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 0, 0]);*/
-    }
 
-    static restoreBlend(gl){
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+        //append ui
+        FlowAppUI.addScene(sceneui);
     }
 
     render(){
+        this.gl.clearColor(0.1, 0.1, 0.1, 1.0);
+        this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT);
+            
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.enable(this.gl.BLEND);
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
@@ -52,7 +61,7 @@ class Scene{
         for(let box of this.boxes){
             box.render(this.camera, this.light);
         }
-
+        
         //draw solid objects
         this.gl.disable(this.gl.BLEND);
         for(let obj of this.objects){
@@ -62,16 +71,17 @@ class Scene{
         }
 
         //draw transparent objects
-		this.gl.enable(this.gl.BLEND);
+        //this.gl.disable(this.gl.DEPTH_TEST);
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         for(let obj of this.objects){
             if (obj.transparent){
                 obj.render(this.camera, this.light);
             }
         }
+        //this.gl.depthMask(true);
 
         //this.gl.disable(this.gl.BLEND);
-
-
         /*this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
         this.gl.clear(this.gl.DEPTH_BUFFER_BIT);*/
         this.gl.disable(this.gl.DEPTH_TEST);
@@ -89,7 +99,7 @@ class Scene{
         }
 
         //update camera
-        this.camera.frame(this);
+        this.camera.frame();
 
         //check for camera movement
         if (this.camera.isMoving){

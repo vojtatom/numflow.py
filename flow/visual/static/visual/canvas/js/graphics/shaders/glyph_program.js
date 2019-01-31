@@ -26,8 +26,8 @@ class GlyphProgram extends Program {
         this.setupAttributes({
             position: 'vertPosition',
             normal: 'vertNormal',
-			glyphPos: 'glyphPosition',
-			fieldVal: 'fieldVector',
+			fieldPos: 'fieldPosition',
+			fieldVal: 'fieldValue',
         });
 
         this.setupUniforms({
@@ -57,15 +57,15 @@ class GlyphProgram extends Program {
         });
     }
 
-    setGlyphPositionAttrs(){
+    setFieldPositionAttrs(){
         this.gl.useProgram(this.program);
-        this.gl.enableVertexAttribArray(this.attributes.glyphPos);
-        this.gl.vertexAttribPointer(this.attributes.glyphPos, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
-        this.gl.vertexAttribDivisor(this.attributes.glyphPos, 1);
+        this.gl.enableVertexAttribArray(this.attributes.fieldPos);
+        this.gl.vertexAttribPointer(this.attributes.fieldPos, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
+        this.gl.vertexAttribDivisor(this.attributes.fieldPos, 1);
         this.gl.useProgram(null);
     }
 
-    setValueAttrs(){
+    setFieldValueAttrs(){
         this.gl.useProgram(this.program);
         this.gl.enableVertexAttribArray(this.attributes.fieldVal);
         this.gl.vertexAttribPointer(this.attributes.fieldVal, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);

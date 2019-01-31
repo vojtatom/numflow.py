@@ -14,8 +14,15 @@ class Primitive {
     constructor(gl) {
 		this.gl = gl;
 		this.lateLoaded = false;
-		this.transparent = false; 
 		this._data = null;
+	}
+	
+
+    get transparent() {
+		if (!('meta' in this))
+		return false;
+		
+        return this.meta.appearance === Appearance.transparent;
     }
 
     static base64totype(data, mode=DType.float) {

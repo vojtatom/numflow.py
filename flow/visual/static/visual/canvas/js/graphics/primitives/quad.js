@@ -61,17 +61,13 @@ class Quad extends Primitive {
             textCtx.strokeStyle = 'white';
             textCtx.lineWidth = 5;
             textCtx.clearRect(0, 0, textCtx.canvas.width, textCtx.canvas.height);
-            /*textCtx.beginPath();
-            textCtx.moveTo(width / 2, 0);
-            textCtx.lineTo(width / 2, 10);
-            textCtx.stroke();*/
             textCtx.fillText(text, width / 2, height / 2);
             return textCtx.canvas;
         }
         
 
         // create text texture.
-        let textCanvas = makeTextCanvas(data.value, 200, 50);
+        let textCanvas = makeTextCanvas(data.value.toFixed(2), 200, 50);
         let textWidth  = textCanvas.width;
         let textHeight = textCanvas.height;
         let textTex = this.gl.createTexture();
@@ -89,9 +85,6 @@ class Quad extends Primitive {
         
         this.meta = {
             texture: textTex,
-            axis: data.axis,
-            edge: data.edge,
-            activeEdge: data.activeEdge,
         };
 
         this.loaded = true;
@@ -102,9 +95,6 @@ class Quad extends Primitive {
 
     render(camera, light) {
         if(!this.isRenderReady)
-            return;
-
-        if (this.meta.activeEdge[this.meta.axis] !== this.meta.edge)
             return;
 
         this.program.bind();
@@ -133,6 +123,9 @@ class Quad extends Primitive {
     }
 
     delete() {
-        
+        this.gl.deleteTexture(this.meta.texture);
+        this.gl.deleteBuffer(this.buffers.positions);
+        this.gl.deleteBuffer(this.buffers.texcoord);
+        this.gl.deleteVertexArray(this.buffers.vao);
     }
 }

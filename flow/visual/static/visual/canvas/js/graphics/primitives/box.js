@@ -70,7 +70,9 @@ class Box extends UnitBox {
         this.meta['center'] = vec3.add(vec3.create(), start, halves);
 
         //add labels
-        this.addLabels(5, 5, 10);
+
+        let max = Math.max(dim[0], dim[1], dim[2]);
+        this.addLabels(Math.floor(dim[0] / 20) * 5, Math.floor(dim[1] / 20) * 5, Math.floor(dim[2] / 20) * 5);
 
         this.loaded = true;
     }
@@ -83,8 +85,12 @@ class Box extends UnitBox {
         for (let a in sampling){
             max = this.meta.start[a] + this.meta.dim[a];
             add = this.meta.dim[a] / sampling[a]
-            for (let i = this.meta.start[a]; i <= max; i = i + add){
-                this.addLabel(a, i);
+            if (add == 0){
+                this.addLabel(a, this.meta.start[a]);
+            } else {
+                for (let i = this.meta.start[a]; i <= max; i = i + add){
+                    this.addLabel(a, i);
+                }
             }
         }
 
@@ -94,7 +100,6 @@ class Box extends UnitBox {
         let start = this.meta.start;
         let dim = this.meta.dim;
         let shift = vec3.create();
-        console.log('adding');
 
         for (let i  = 0; i < 4; ++i){
             let position = vec3.create();
@@ -119,11 +124,13 @@ class Box extends UnitBox {
             let quad = new Quad(this.gl);
             quad.init({
                 position: position,
-                axis: axis,
-                edge: i,
-                activeEdge: this.activeEdge,
                 value: value,
             });
+
+            quad.boxMeta = {
+                axis: axis,
+                edge: i,
+            };
             this.labels.push(quad);
 
         }
@@ -185,6 +192,10 @@ class Box extends UnitBox {
 
     renderLabels(camera, light){
         for (let l of this.labels){
+
+            if (this.activeEdge[l.boxMeta.axis] !== l.boxMeta.edge)
+                continue;
+
             l.render(camera, light);
         }
     }

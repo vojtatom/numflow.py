@@ -97,6 +97,7 @@ class VisualNode(Node):
                 stream_group['points'] = serialize_array(stream['points'], np.float32)
                 stream_group['values'] = serialize_array(stream['values'], np.float32)
                 stream_group['lengths'] = serialize_array(stream['lengths'], np.int32)
+                stream_group['times'] = serialize_array(stream['times'], np.float32)
                 stream_group['meta'] = stream['meta']
                 stream_group['meta']['bounds'] = boundries(stream['points'])
                 stream_encoded.append(stream_group)

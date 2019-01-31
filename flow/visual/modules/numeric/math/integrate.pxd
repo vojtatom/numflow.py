@@ -3,4 +3,4 @@
 cimport numpy as np
 from ..types cimport DTYPE
 
-cdef int buffers_realloc(DTYPE ** y, DTYPE ** f, int buffer_l)
+cdef int buffer_realloc(DTYPE ** b, int buffer_l)

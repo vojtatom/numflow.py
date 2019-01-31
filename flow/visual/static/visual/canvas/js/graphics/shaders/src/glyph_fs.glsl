@@ -15,6 +15,6 @@ void main()
   if (appearance == 1){
     gl_FragColor = vec4(fragColor, 1.0);
   } else {
-    gl_FragColor = vec4(fragColor, sigma);
+    gl_FragColor = vec4(fragColor, 0.5 * sigma);
   }
 }

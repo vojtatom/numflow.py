@@ -1,17 +1,22 @@
 from .base import Node
 import numpy as np
+import copy
 
-from .color import ColorNode
 from ..exceptions import NodeError
-from visual.modules.numeric.kernels import glyph_kernel
 
 
-class GlyphsNode(Node):
+class GlyphGeometryNode(Node):
     data = {
         'structure': {
             'title' : {
                 'type': 'display',
-                'value' : 'glyphs',
+                'value' : 'glyph geometry',
+            },
+
+            'geometry' : {
+                'type': 'select',
+                'choices': ['line', 'cone'],
+                'value' : 'line',
             },
 
             'size' : {
@@ -19,38 +24,33 @@ class GlyphsNode(Node):
                 'value' : '1',
             },
 
+            'sampling' : {
+                'type': 'input',
+                'value' : '4',
+            },
+
             'appearance' : {
                 'type': 'select',
                 'choices': ['solid', 'transparent'],
                 'value' : 'solid',
             },
-
-            'scale' : {
-                'type': 'select',
-                'choices': ['normal', 'log'],
-                'value' : 'normal',
-            },
         },
 
         'in': {
-            'points': {
+            'glyphs': {
                 'required': True,
                 'multipart': True
             },
-            'dataset': {
-                'required': True,
-                'multipart': False
-            }
         },
         'out': {
             'glyphs': {
                 'required': True,
-                'multipart': False
+                'multipart': True
             },
         },
     }
     
-    title = 'glyphs'
+    title = 'glyph geometry'
     
     def __init__(self, id, data, notebook_code, message):
         """
@@ -60,11 +60,12 @@ class GlyphsNode(Node):
         """   
         self.id = id
 
-        fields = ['size', 'appearance', 'scale']
+        fields = ['geometry', 'size', 'sampling', 'appearance']
         self.check_dict(fields, data, self.id, self.title)
+        self._geometry = data['geometry']
+        self._sampling = data['sampling']
         self._size = data['size']
         self._appearance = data['appearance']
-        self._scale = data['scale']
 
 
     def __call__(self, indata, message):    
@@ -73,35 +74,29 @@ class GlyphsNode(Node):
             :param indata: data coming from connected nodes, can be None here.
         """   
 
-        fields = ['dataset', 'points']
+        fields = ['glyphs']
         self.check_dict(fields, indata, self.id, self.title)
 
-        values = None
-        points = None
+        transformed_glyphs = []
 
-        #interpolate per points group
-        for points_group in indata['points']:
-            out_values = glyph_kernel(indata['dataset'], points_group)
-            
-            if values is None:
-                values = out_values
-                points = points_group
-            else:
-                values = np.append(values, out_values, axis=0)
-                points = np.append(points, points_group, axis=0)
+        #modify per group
+        for glyphs_group in indata['glyphs']:
+                new = {
+                    'values': glyphs_group['values'],
+                    'points': glyphs_group['points']
+                    }
 
-        #glyphs meta... 
-        meta = {
-                'size': self._size,
-                'sampling': 4,
-                'geometry': 'line',
-                'colormap': ColorNode.get_default_cm(),
-                'scale': self._scale,
-                'appearance': self._appearance,
-            }
-            
+                meta = copy.deepcopy(glyphs_group['meta'])
+                meta['geometry'] = self._geometry
+                meta['sampling'] = self._sampling
+                meta['size'] = self._size
+                meta['appearance'] = self._appearance
+                new['meta'] = meta
+
+                transformed_glyphs.append(new)
+
         #return all flatenned
-        return {'glyphs' : {'values': values, 'points': points, 'meta': meta}}
+        return {'glyphs' : transformed_glyphs}
 
     @staticmethod
     def deserialize(data):
@@ -109,7 +104,8 @@ class GlyphsNode(Node):
         parsed['data'] = {
             'size': float(data['data']['structure']['size']['value']),
             'appearance': data['data']['structure']['appearance']['value'],
-            'scale': data['data']['structure']['scale']['value']
+            'geometry': data['data']['structure']['geometry']['value'],
+            'sampling': int(data['data']['structure']['sampling']['value']),
         }
         return parsed
 

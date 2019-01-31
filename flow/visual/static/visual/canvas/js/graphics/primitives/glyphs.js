@@ -30,13 +30,13 @@ class Glyphs extends Primitive {
 		let positionsVbo = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionsVbo);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, positions, this.gl.STATIC_DRAW);
-        this.program.setGlyphPositionAttrs();
+        this.program.setFieldPositionAttrs();
         
         //glyph values
         let valuesVbo = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, valuesVbo);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, values, this.gl.STATIC_DRAW);    
-        this.program.setValueAttrs();
+        this.program.setFieldValueAttrs();
         
         this.buffers['field'] = {
             positions: positionsVbo,
@@ -45,7 +45,7 @@ class Glyphs extends Primitive {
             size: positions.length / 3,
         };
         
-        this.initLineGlyph();
+        this.initGlyph(data.meta.geometry, data.meta.sampling);
         this.gl.bindVertexArray(null);
 
         //Calculate stats
@@ -61,6 +61,8 @@ class Glyphs extends Primitive {
             std: meanAbsoluteDeviation(lengths),
             median: median(lengths),
             size: data.meta.size,
+            geometry: data.meta.geometry,
+            sampling: data.meta.sampling,
             colormap: {
                 sampling: data.meta.colormap.sampling,
                 colors: [
@@ -71,12 +73,9 @@ class Glyphs extends Primitive {
                     vec4.fromValues(...data.meta.colormap.colors[4]),
                 ] 
             },
-            appearance: Geometry.appearance[data.meta.appearance],
-            scale: Geometry.scale[data.meta.scale],
+            appearance: Appearance.encode[data.meta.appearance],
+            scale: Scale.encode[data.meta.scale],
         }
-
-        //setup transparency
-        this.transparent = (Geometry.appearance[data.meta.appearance] === Geometry.appearance.transparent);
 
         //init bounding box
         this.initBoundingBox(data);
@@ -86,9 +85,15 @@ class Glyphs extends Primitive {
         console.log(this.gl.getError());
     }
 
-    initLineGlyph(){
-        let lineVert = Geometry.glyphVert;
-        let lineNorm = Geometry.glyphNorm;
+    initGlyph(geometry, sampling){
+        let lineVert, lineNorm;
+        if (geometry === 'line'){
+            lineVert = Geometry.glyphVertLine(sampling);
+            lineNorm = Geometry.glyphNormLine(sampling);
+        } else if (geometry === 'cone'){
+            lineVert = Geometry.glyphVertCone(sampling);
+            lineNorm = Geometry.glyphNormCone(sampling); 
+        }
 
         // init VBO for glyph positions
 		let positions = this.gl.createBuffer();
@@ -107,7 +112,7 @@ class Glyphs extends Primitive {
 		this.buffers['glyph'] = {
 			positions: positions,
 			normals: normals,
-			size: lineVert.length,
+			size: lineVert.length / 3,
         };
         
         //console.log(this.program);
@@ -124,7 +129,6 @@ class Glyphs extends Primitive {
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.field.values);
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.glyph.positions);
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.glyph.normals);
-        //this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.glyph.ebo);
 
         this.program.setUnifs({
             model: this.model,
@@ -148,14 +152,44 @@ class Glyphs extends Primitive {
             colorMap4: this.meta.colormap.colors[4],
         });
 
-        this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.buffers.glyph.size / 3, this.buffers.field.size);
-        //console.log(this.gl.getError());
+        this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.buffers.glyph.size, this.buffers.field.size);
+        console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
         this.program.unbind();
     }
 
+    get ui(){
+        return {
+            type: {
+                type: 'display',
+                value: 'glyphs',
+            },
+            appearance: {
+                type: 'select',
+                options: ['solid', 'transparent'],
+                callbacks: [
+                    () => {this.meta.appearance = Appearance.solid}, 
+                    () => {this.meta.appearance = Appearance.transparent},
+                ],
+                value: 'meta' in this ? Appearance.encode[this.meta.appearance]: this._data.meta.appearance,
+            },
+            size: {
+                type: 'slider',
+                min: 0.1,
+                max: 10,
+                delta: 0.1,
+                value: 'meta' in this ? this.meta.size: this._data.meta.size,
+                callback: (value) => { this.meta.size = value },
+            }
+        }
+    }
+
     delete(){
-        
+        this.gl.deleteBuffer(this.buffers.field.positions);
+        this.gl.deleteBuffer(this.buffers.field.values);
+        this.gl.deleteBuffer(this.buffers.glyph.positions);
+        this.gl.deleteBuffer(this.buffers.glyph.normals);
+        this.gl.deleteVertexArray(this.buffers.field.vao);
     }
 }

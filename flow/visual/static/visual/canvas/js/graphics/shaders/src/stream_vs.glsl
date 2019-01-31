@@ -1,33 +1,166 @@
 precision mediump float;
 
-attribute vec3 position;
-attribute float velocity;
+attribute vec3 vertPosition;
+attribute vec3 vertNormal;
+attribute float t_local;
 
-varying vec3 fragColor;
-varying float sigma;
+//per instance
+attribute vec3 fieldPosition0;
+attribute vec3 fieldPosition1;
+attribute vec3 fieldPosition2;
+attribute vec3 fieldPosition3;
+attribute vec3 fieldValue0;
+attribute vec3 fieldValue1;
+attribute vec3 fieldValue2;
+attribute vec3 fieldValue3;
+attribute vec4 t_global;
 
+//matrices
 uniform mat4 mWorld;
 uniform mat4 mView;
 uniform mat4 mProj;
 
-uniform float maxVel;
-uniform float medianVel;
-uniform float absDevVel;
+//stats and scaling
+uniform float medianSize;
+uniform float stdSize;
 
+//modifications
 uniform float brightness;
+uniform float thickness;
+uniform vec3 light;
+/**
+ * 0 - transparent
+ * 1 - solid
+ */
+uniform int appearance;
+uniform int scale;
+uniform vec2 time;
 
-void main()
+//color map
+uniform int colorMapSize;
+uniform vec4 colorMap[5];
+
+//out
+varying vec3 fragColor;
+varying float sigma;
+varying float visible;
+
+
+/**
+ * Create rotation matrix from field vector.
+ * The returned matrix can rotate vector (1, 0, 0)
+ * into the desired setup. Used to rotate glyphs according
+ * to vecotr field
+ */
+mat4 getRotationMat(vec3 value)
 {
+	vec3 unit = vec3(1, 0, 0);
+	vec3 f = normalize(value);
+	vec3 cross = cross(f, unit);
+	vec3 a = normalize(cross);
+	float s = length(cross);
+	float c = dot(f, unit);
+	float oc = 1.0 - c;
 
-    float ratio = velocity / medianVel;
-	sigma = (1.0 / (-ratio - 1.0)  + 1.0);
-	sigma = pow(sigma, brightness);
+	return mat4(oc * a.x * a.x + c,        oc * a.x * a.y - a.z * s,  oc * a.z * a.x + a.y * s,  0.0,
+                oc * a.x * a.y + a.z * s,  oc * a.y * a.y + c,        oc * a.y * a.z - a.x * s,  0.0,
+                oc * a.z * a.x - a.y * s,  oc * a.y * a.z + a.x * s,  oc * a.z * a.z + c,        0.0,
+                0.0,                       0.0,                       0.0,                       1.0);
 
-	float r = pow(sigma, 2.0);
-	float g = pow(sigma, 4.0);
-	float b = pow(ratio + 1.0, -2.0);
+}
 
-	fragColor = vec3(r, g, b);
+/**
+ * Phong
+ */
+vec3 phong(vec3 light, float sigma, vec3 ver_position, vec3 ver_normal){
+    vec3 ret = vec3(0.0);
     
-	gl_Position =  mProj * mView * mWorld * vec4(position, 1);
+    vec3 L = normalize(-light);
+    float NdotL = clamp(dot(normalize(ver_normal), L), 0.0, 1.0);
+   
+   	//ambient
+	ret += vec3(0.3);
+	
+	//diffuse
+    ret += vec3(1.0) * NdotL;
+    
+    return ret;
+}
+
+//implementation for length (not direction!!!)
+vec3 colorfunc(float sigma) {
+	float index = float(colorMapSize - 1) * sigma;
+	int low = int(floor(index));
+	int high = int(ceil(index));
+	float factor = index - floor(index);
+
+	return (colorMap[low] * (1.0 - factor) + colorMap[high] * factor).xyz;
+}
+
+//interpolate using catmull rom spline
+vec3 interpolate(float t, vec3 v0, vec3 v1, vec3 v2,vec3 v3) {
+
+	vec3 c1, c2, c3, c4;
+
+	c1 =  	         1.0 * v1;
+	c2 = -0.5 * v0            + 0.5 * v2;
+	c3 =  1.0 * v0 - 2.5 * v1 + 2.0 * v2 - 0.5 * v3;
+	c4 = -0.5 * v0 + 1.5 * v1 - 1.5 * v2 + 0.5 * v3;
+
+	return(((c4 * t + c3) * t + c2) * t + c1);
+}
+
+//interpolate using catmull rom spline
+float interpolate(float t, float v0, float v1, float v2,float v3) {
+
+	float c1, c2, c3, c4;
+
+	c1 =  	         1.0 * v1;
+	c2 = -0.5 * v0            + 0.5 * v2;
+	c3 =  1.0 * v0 - 2.5 * v1 + 2.0 * v2 - 0.5 * v3;
+	c4 = -0.5 * v0 + 1.5 * v1 - 1.5 * v2 + 0.5 * v3;
+
+	return(((c4 * t + c3) * t + c2) * t + c1);
+}
+
+
+void main(){
+	float t = interpolate(t_local, t_global.x, t_global.y, t_global.z, t_global.w);
+	if (time.x <= t && time.y >= t){
+		visible = 1.0;
+	} else {
+		visible = 0.0;
+	}
+
+
+	//mapping vector length according to median value of vector lengths
+	vec3 position = interpolate(t_local, fieldPosition0, fieldPosition1, fieldPosition2, fieldPosition3);
+	vec3 value = interpolate(t_local, fieldValue0, fieldValue1, fieldValue2, fieldValue3);
+
+	float l = length(value);
+	//positive for vector longer than median, normalized by std...
+	float dist = (l - medianSize) / stdSize;
+	//applying sigmoid to transform... 
+	//sigma \elem [0, 1] is sort of significance value for the vector...?
+	sigma = 1.0 / (1.0 + exp(-dist));
+
+	//transform vertex into place
+	mat4 mField = getRotationMat(value);
+	vec3 vertex = (mField * vec4(vertPosition * thickness, 1.0)).xyz;
+	vec3 vertex_normal = (mField * vec4(vertNormal, 1.0)).xyz;
+
+	//shade
+	if (appearance == 1){
+		//solid
+		vec3 color = phong(light, sigma, (mWorld * vec4(vertex, 1.0)).xyz, (mWorld * vec4(vertex_normal, 1)).xyz);
+		color *= colorfunc(sigma);
+		fragColor = color;
+	} else {
+		//transparent
+		vec3 color = vec3(1.0);
+		color *= colorfunc(sigma);
+		fragColor = color;
+	}
+
+	gl_Position =  mProj * mView * mWorld * vec4(vertex + position, 1.0);
 }

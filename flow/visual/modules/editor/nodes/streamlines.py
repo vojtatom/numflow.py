@@ -84,6 +84,7 @@ class StreamlinesNode(Node):
         self._mode = data['mode']
         self._appearance = data['appearance']
         self._thickness = data['thickness']
+        self._sampling = data['thickness']
         self._scale = data['scale']
 
 
@@ -105,10 +106,11 @@ class StreamlinesNode(Node):
         points = None
         values = None
         lengths = None
+        times = None
 
         #integrate per points group
         for points_group in indata['points']:
-            p, v, l = stream_kernel(indata['dataset'], self._t0, self._tbound, points_group, self._mode)
+            p, v, l, t = stream_kernel(indata['dataset'], self._t0, self._tbound, points_group, self._mode)
             
             if p is None:
                 raise NodeError('Integration failed.')
@@ -117,20 +119,25 @@ class StreamlinesNode(Node):
                 points = p
                 values = v
                 lengths = l
+                times = t
             else:
                 points = np.append(points, p, axis=0)
                 values = np.append(values, v, axis=0)
                 lengths = np.append(lengths, l, axis=0)
+                times = np.append(times, t, axis=0)
 
         meta = {
             'colormap': ColorNode.get_default_cm(),
             'appearance': self._appearance,
             'thickness': self._thickness,
             'scale': self._scale,
+            't0': self._t0,
+            'tbound': self._tbound,
+            'sampling': 6,
         }
 
         #return all flatenned
-        return {'streamlines' : {'values': values, 'points': points, 'lengths': lengths, 'meta': meta}}
+        return {'streamlines' : {'values': values, 'points': points, 'lengths': lengths, 'times': times, 'meta': meta}}
 
     @staticmethod
     def deserialize(data):

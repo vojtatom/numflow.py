@@ -41,7 +41,7 @@ cdef DTYPE dot(DTYPE * vec_a, DTYPE * vec_b, int vec_l, int stride_a, int stride
     return d
 
 
-cdef pointer_to_one_d_numpy_array(void * ptr, np.npy_intp * size):
+cdef pointer_to_int_one_d_numpy_array(void * ptr, np.npy_intp * size):
     """
     Creates np.ndarray by encapsulating INTDTYPE * pointer.
         
@@ -53,6 +53,21 @@ cdef pointer_to_one_d_numpy_array(void * ptr, np.npy_intp * size):
     cdef np.ndarray[INTDTYPE, ndim=1] arr = np.PyArray_SimpleNewFromData(1, size, np.NPY_INT64, ptr)
     PyArray_ENABLEFLAGS(arr, np.NPY_ARRAY_OWNDATA)
     return arr
+
+
+cdef pointer_to_float_one_d_numpy_array(void * ptr, np.npy_intp * size):
+    """
+    Creates np.ndarray by encapsulating INTDTYPE * pointer.
+        
+        :param void *        ptr:  DTYPE pointer pointing to beginning
+        :param np.npy_intp * size: pointer to 1D array containg info:   
+            size[0] - number of points 
+    """
+
+    cdef np.ndarray[DTYPE, ndim=1] arr = np.PyArray_SimpleNewFromData(1, size, np.NPY_DOUBLE, ptr)
+    PyArray_ENABLEFLAGS(arr, np.NPY_ARRAY_OWNDATA)
+    return arr
+
 
 cdef pointer_to_two_d_numpy_array(void * ptr, np.npy_intp * size):
     """

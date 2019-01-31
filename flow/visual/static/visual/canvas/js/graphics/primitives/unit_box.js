@@ -12,14 +12,9 @@ class BoxMode{
 
 class UnitBox extends Primitive {
     constructor(gl) {
-        if(!UnitBox.instance){
-            super(gl);
-            this.program = new BoxProgram(gl);
-            UnitBox.instance = this;
-            this.loaded = false;
-        }
-
-        return UnitBox.instance
+        super(gl);
+        this.program = new BoxProgram(gl);
+        this.loaded = false;
     }
 
     init() {
@@ -132,6 +127,6 @@ class UnitBox extends Primitive {
     }
 
     delete(){
-        console.log('passing delete for singleton unit box...');
+        
     }
 }

@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin-ext');
+
+
+canvas { display:block; }
+
+#flowappui{
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    overflow: scroll;
+    height: 100%;
+    background: rgba(37, 37, 37, 0.7);
+    font-size: 0.8em;
+}
+
+#placeholderui{
+    padding: 0.7em 1em;
+    background: #333;
+    color: #CCC;
+    font-weight: bold;
+    font-size: 0.8em;
+    border-radius: 0.3em;
+    margin: 1em;
+    font-family: 'Open Sans', sans-serif;;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#scene .widget {
+    border-radius: 0.3em;
+    margin: 1em;
+}
+
+#scene .widget:first-child {
+    margin-top: 0;
+}
+
+/*#scene .widget:last-child {
+    margin-bottom: 0;
+}*/
+
+#scene .widget .field {
+    display: flex;
+}
+
+#scene .widget .field .title,
+#scene .widget .field .value,
+#scene .widget .field .meta {
+    padding: 0.5em;
+    box-sizing: border-box;
+}
+
+#scene .widget .field .title{
+    width: 100px; 
+    background: #333;
+}
+
+#scene .widget .field.selected .title{
+   background: #444;
+}
+
+#scene .widget .field .value,
+#scene .widget .field .meta{
+    width: 200px; 
+}
+
+#scene .widget .field .value {
+    background: #444;
+}
+
+#scene .widget .field.selected .value{
+    background: #555;
+ }
+
+#scene .widget .field:first-child .title {
+    border-top-left-radius: 0.3em;
+}
+
+#scene .widget .field:first-child .value{
+    border-top-right-radius: 0.3em;
+}
+
+#scene .widget .field:last-child .value:last-child,
+#scene .widget .field:last-child .meta:last-child{
+    border-bottom-right-radius: 0.3em;
+}
+
+#scene .widget .field:last-child .title{
+    border-bottom-left-radius: 0.3em;
+}
+
+#sceneList {
+    display: flex;
+    border-radius: 0.3em;
+    margin: 1em;
+    justify-content: flex-end;
+}
+
+#sceneList .scene{
+    padding: 0.5em 1em;
+    background: #333;
+    display: inline-block;
+}
+
+#sceneList .scene:last-child{
+    border-top-right-radius: 0.3em;
+    border-bottom-right-radius: 0.3em;
+}
+
+#sceneList .scene:first-child{
+    border-top-left-radius: 0.3em;
+    border-bottom-left-radius: 0.3em;
+}
+
+#sceneList .scene.selected{
+    background: #444;
+}

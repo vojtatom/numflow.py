@@ -13,7 +13,7 @@ class Interface {
 
     onKeyDown(key) {
         this.keys[key] = true;
-        //this.app.pressed(key);
+        this.app.pressed(key);
         console.log(key);
     }
 

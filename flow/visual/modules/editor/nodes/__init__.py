@@ -8,6 +8,7 @@ from .translate import TranslateNode
 from .color import ColorNode
 from .layer import LayerNode
 from .plane import PlaneNode
+from .glyphgeometry import GlyphGeometryNode
 
 
 nodes = {
@@ -20,5 +21,6 @@ nodes = {
         TranslateNode.title: TranslateNode,
         ColorNode.title: ColorNode,
         LayerNode.title: LayerNode,
-        PlaneNode.title: PlaneNode
+        PlaneNode.title: PlaneNode,
+        GlyphGeometryNode.title: GlyphGeometryNode
     }

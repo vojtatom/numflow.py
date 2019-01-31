@@ -101,20 +101,32 @@ class TranslateNode(Node):
         if 'glyphs' in indata:
             for glyphs_group in indata['glyphs']:
                 points, values = transform(glyphs_group, self._transform, self._part)
-                transformed_glyphs.append({'values': values, 'points': points, 'meta': glyphs_group['meta']})
+                transformed_glyphs.append({
+                    'values': values,
+                    'points': points,
+                    'meta': glyphs_group['meta']
+                    })
 
         ### streamlines
         if 'streamlines' in indata:
             for stream_group in indata['streamlines']:
                 points, values = transform(stream_group, self._transform, self._part)
-                transformed_streamlines.append({'values': values, 'points': points, 'lengths': stream_group['lengths'],
-                'meta': stream_group['meta']})
+                transformed_streamlines.append({
+                    'values': stream_group['values'],
+                    'points': stream_group['points'], 
+                    'lengths': stream_group['lengths'],
+                    'times': stream_group['times'],
+                    })
 
         ### layers
         if 'layer' in indata:
             for layer_group in indata['layer']:
                 points, values = transform(layer_group, self._transform, self._part)
-                transformed_layers.append({'values': values, 'points': points, 'meta': layer_group['meta']})
+                transformed_layers.append({
+                    'values': values,
+                    'points': points,
+                    'meta': layer_group['meta']
+                    })
 
         #return all together
         out = {}

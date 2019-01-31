@@ -16,7 +16,8 @@ nodes_structure = {
             'modifications': {
                 ScaleNode.title : ScaleNode.data,
                 TranslateNode.title : TranslateNode.data,
-                ColorNode.title: ColorNode.data
+                ColorNode.title: ColorNode.data,
+                GlyphGeometryNode.title: GlyphGeometryNode.data,
             },
 
              'display': {

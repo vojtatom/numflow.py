@@ -4,8 +4,8 @@ precision highp int;
 //buffer attributes
 attribute vec3 vertPosition;
 attribute vec3 vertNormal;
-attribute vec3 glyphPosition;
-attribute vec3 fieldVector;
+attribute vec3 fieldPosition;
+attribute vec3 fieldValue;
 
 //matrices
 uniform mat4 mWorld;
@@ -44,7 +44,7 @@ varying float sigma;
 mat4 getRotationMat()
 {
 	vec3 unit = vec3(1, 0, 0);
-	vec3 f = normalize(fieldVector);
+	vec3 f = normalize(fieldValue);
 	vec3 cross = cross(f, unit);
 	vec3 a = normalize(cross);
 	float s = length(cross);
@@ -65,10 +65,11 @@ vec3 phong(vec3 light, float sigma, vec3 ver_position, vec3 ver_normal){
     vec3 ret = vec3(0.0);
     
     vec3 L = normalize(-light);
-    float NdotL = clamp(dot(ver_normal, L), 0.0, 1.0);
+    float NdotL = clamp(dot(normalize(ver_normal), L), 0.0, 1.0);
    
    	//ambient
 	ret += vec3(0.3);
+	
 	//diffuse
     ret += vec3(1.0) * NdotL;
     
@@ -88,8 +89,8 @@ vec3 colorfunc(float sigma) {
 void main()
 {	
 	//mapping vector length according to median value of vector lengths
-	float l = length(fieldVector);
-	//positive for vector longer than median, normalized by median...
+	float l = length(fieldValue);
+	//positive for vector longer than median, normalized by std...
 	float dist = (l - medianSize) / stdSize;
 	//applying sigmoid to transform... 
 	//sigma \elem [0, 1] is sort of significance value for the vector...?
@@ -98,9 +99,7 @@ void main()
 
 	//transform glyph vertex into place
 	mat4 mField = getRotationMat();
-	float xCoord = vertPosition.x * magRatio;
-	vec2 yzCoord = vertPosition.yz * magRatio;
-	vec3 vertex = (mField * vec4(xCoord, yzCoord, 1.0)).xyz;
+	vec3 vertex = (mField * vec4(vertPosition * magRatio, 1.0)).xyz;
 	vec3 vertex_normal = (mField * vec4(vertNormal, 1.0)).xyz;
 
 	//shade
@@ -116,5 +115,5 @@ void main()
 		fragColor = color;
 	}
 
-	gl_Position =  mProj * mView * mWorld * vec4(vertex + glyphPosition, 1.0);
+	gl_Position =  mProj * mView * mWorld * vec4(vertex + fieldPosition, 1.0);
 }
