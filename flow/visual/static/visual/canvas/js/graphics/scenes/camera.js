@@ -3,7 +3,7 @@
 const MOVE_STEP = 0.5;
 const ZOOM_STEP = 0.1;
 const ROT_STEP = 0.5;
-const SCALE_STEP = 1;
+const SCALE_STEP = 5;
 
 class CameraPosition {
     static get top() {
@@ -47,11 +47,25 @@ class CameraPosition {
     }
 }
 
+
+class CameraState {
+    static get perspective() {
+        return 0;
+    }
+
+    static get ortho() {
+        return 1;
+    }
+}
+
+
 class Camera {
     constructor() {
         this.position = vec3.fromValues(0, -20, 0);
         this.up = vec3.fromValues(0, 0, 1);
         this.center = vec3.fromValues(0, 0, 0);
+        this.normal = vec3.create();
+        this.scale = 100;
 
         this.viewMatrix = new Float32Array(16);
         this.projectionMatrix = new Float32Array(16);
@@ -72,10 +86,14 @@ class Camera {
         this.actualPosition = vec3.fromValues(0, -20, 0);
         this.actualUp = vec3.fromValues(0, 0, 1);
         this.actualCenter = vec3.fromValues(0, 0, 0);
+        this.actualScale = 100;
         
         this.positionMomentum = 0;
         this.centerMomentum = 0;
         this.rotMomentum = 0;
+        this.scaleMomentum = 0;
+
+        this.mode = CameraState.perspective;
     }
 
     get view() {
@@ -83,7 +101,12 @@ class Camera {
     }
 
     get projection() {
-        return mat4.perspective(this.projectionMatrix, glMatrix.toRadian(45), this.aspect, 0.1, 2000.0);
+        if (this.mode === CameraState.perspective){
+            return mat4.perspective(this.projectionMatrix, glMatrix.toRadian(45), this.aspect, 0.1, 2000.0);
+        } else {
+            return mat4.ortho(this.projectionMatrix, -this.actualScale, this.actualScale, -this.actualScale / this.aspect, this.actualScale / this.aspect, 0.1, 2000.0);
+        }
+
     }
 
     get front() {
@@ -141,13 +164,38 @@ class Camera {
         }
     }
 
+
     moveFront(scale = 1) {
-        vec3.scaleAndAdd(this.position, this.position, this.front, ZOOM_STEP * scale)
+        vec3.scaleAndAdd(this.position, this.position, this.front, ZOOM_STEP * scale);
+        this.scale += SCALE_STEP;
     }
 
+
     moveBack(scale = 1) {
-        vec3.scaleAndAdd(this.position, this.position, this.front, - ZOOM_STEP * scale)
+        vec3.scaleAndAdd(this.position, this.position, this.front, - ZOOM_STEP * scale);
+        this.scale -= SCALE_STEP;
     }
+
+
+    moveLeft(scale = 1) {
+        vec3.sub(this.tmp, this.center, this.position);
+        vec3.cross(this.normal, this.up, this.tmp);
+        vec3.normalize(this.normal, this.normal);
+
+        vec3.scaleAndAdd(this.position, this.position, this.normal, MOVE_STEP * scale);
+        vec3.scaleAndAdd(this.center, this.center, this.normal, MOVE_STEP * scale);
+    }
+
+    moveRight(scale = 1) {
+        vec3.sub(this.tmp, this.center, this.position);
+        vec3.cross(this.normal, this.up, this.tmp);
+        vec3.normalize(this.normal, this.normal);
+        vec3.negate(this.normal, this.normal);
+
+        vec3.scaleAndAdd(this.position, this.position, this.normal, MOVE_STEP * scale);
+        vec3.scaleAndAdd(this.center, this.center, this.normal, MOVE_STEP * scale);
+    }
+
 
     rotate(x, y) {
         let a_x = glMatrix.toRadian(-x) * ROT_STEP;
@@ -193,6 +241,15 @@ class Camera {
             vec3.copy(this.actualCenter, this.center);
             this.centerMomentum = 0;
         }
+
+        this.scaleMomentum = (this.scale - this.actualScale) * this.speed;
+        if (this.scaleMomentum > 0.02){
+            this.actualScale = this.actualScale + (this.scale - this.actualScale) * this.scaleMomentum;
+        } else {
+            this.actualScale = this.scale;
+            this.scaleMomentum = 0;
+        }
+
     }
 
     get isMoving(){
@@ -201,5 +258,14 @@ class Camera {
             return true;
         }
         return false;
+    }
+
+
+    toggleMode(){
+        if (this.mode === CameraState.perspective){
+            this.mode = CameraState.ortho;
+        } else {
+            this.mode = CameraState.perspective;
+        }
     }
 }

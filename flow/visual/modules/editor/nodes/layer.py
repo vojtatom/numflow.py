@@ -76,8 +76,8 @@ class LayerNode(Node):
         fields = ['dataset', 'plane']
         self.check_dict(fields, indata, self.id, self.title)
 
-        values = glyph_kernel(indata['dataset'], indata['plane'])
-        points = indata['plane']
+        values = glyph_kernel(indata['dataset'], indata['plane']['data'])
+        points = indata['plane']['data']
 
 
         #layer meta... 
@@ -86,6 +86,7 @@ class LayerNode(Node):
                 'colormap': ColorNode.get_default_cm(),
                 'scale': self._scale,
                 'appearance': self._appearance,
+                'geometry': indata['plane']['meta'],
             }
 
         #return all flatenned

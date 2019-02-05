@@ -1,4 +1,5 @@
-precision mediump float;
+precision highp float;
+precision highp int;
 
 attribute vec3 vertPosition;
 attribute vec3 vertNormal;

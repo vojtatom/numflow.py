@@ -112,10 +112,11 @@ class ScaleNode(Node):
             for stream_group in indata['streamlines']:
                 points, values = transform(stream_group, self._transform, self._part)
                 transformed_streamlines.append({
-                    'values': stream_group['values'],
-                    'points': stream_group['points'], 
+                    'values': values,
+                    'points': points, 
                     'lengths': stream_group['lengths'],
                     'times': stream_group['times'],
+                    'meta': stream_group['meta']
                     })
 
         ### layers

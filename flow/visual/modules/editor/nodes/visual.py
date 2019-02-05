@@ -64,7 +64,7 @@ class VisualNode(Node):
 
         content = {}
         if 'layer' in indata:
-            ### indata['points'] = [array, array, ...]
+            ### indata['layer'] = [{'points': array, 'values': array}, ...]
             layer_encoded = []
             for layer in indata['layer']:
                 layer_group = {}

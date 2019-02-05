@@ -23,6 +23,10 @@ class SceneUI {
     }
 
     select(indexW, indexF){
+
+        if (this.widgets.length <= indexW)
+            return;
+
         this.selected = indexW;
         this.widgets[this.selected].select(indexF);
     }

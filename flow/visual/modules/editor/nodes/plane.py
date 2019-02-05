@@ -77,6 +77,8 @@ class PlaneNode(Node):
         self._end.insert(index[ax], data['normal_value'])
         self._sampling = [data['sampling_a'], data['sampling_b']]
         self._sampling.insert(index[ax], 1)
+        self._index = index[ax]
+        self._value = data['normal_value']
 
 
     def __call__(self, indata, message):
@@ -84,7 +86,15 @@ class PlaneNode(Node):
         Create np.ndarray of points
             :param indata: data coming from connected nodes, can be None here.
         """   
-        return {'plane': points_kernel(self._start, self._end, self._sampling)}
+        meta = {
+            'normal': self._index,
+            'normal_value': self._value,
+            'start': self._start,
+            'end': self._end,
+            'sampling': self._sampling,
+        }
+
+        return {'plane': {'data': points_kernel(self._start, self._end, self._sampling), 'meta': meta}}
 
 
     @staticmethod

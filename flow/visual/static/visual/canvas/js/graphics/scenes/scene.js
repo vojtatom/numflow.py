@@ -40,6 +40,18 @@ class Scene{
                 sceneui.addWidget(new WidgetUI(streams.ui));
             }
         }
+
+        if ('layer' in contents){
+            for (let layer_group of contents.layer){
+                let layer = new Layer(this.gl);
+                layer.init(layer_group);
+                //console.log(streams);
+                this.objects.push(layer);
+                this.boxes.push(layer.box);
+
+                sceneui.addWidget(new WidgetUI(layer.ui));
+            }
+        }
         /*
 
         let stream = new Stream(this.gl);

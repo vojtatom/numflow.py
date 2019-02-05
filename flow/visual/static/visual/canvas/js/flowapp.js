@@ -42,24 +42,33 @@ class FlowApp {
         }
 
         if (this.interface.keys[87]){
-            this.graphics.scene.camera.setPosition(CameraPosition.rotateUp);
+            if (this.interface.keys[16]){
+                this.graphics.scene.camera.setPosition(CameraPosition.moveUp);
+            } else {
+                this.graphics.scene.camera.setPosition(CameraPosition.rotateUp);
+            }
         }
         if (this.interface.keys[83]){
-            this.graphics.scene.camera.setPosition(CameraPosition.rotateDown);
+            if (this.interface.keys[16]){
+                this.graphics.scene.camera.setPosition(CameraPosition.moveDown);
+            } else {
+                this.graphics.scene.camera.setPosition(CameraPosition.rotateDown);
+            }
         }
 
         if (this.interface.keys[68]){
-            this.graphics.scene.camera.setPosition(CameraPosition.rotateRight);
+            if (this.interface.keys[16]){
+                this.graphics.scene.camera.moveRight();
+            } else {
+                this.graphics.scene.camera.setPosition(CameraPosition.rotateRight);
+            }
         }
         if (this.interface.keys[65]){
-            this.graphics.scene.camera.setPosition(CameraPosition.rotateLeft);
-        }
-
-        if (this.interface.keys[81]){
-            this.graphics.scene.camera.setPosition(CameraPosition.moveUp);
-        }
-        if (this.interface.keys[69]){
-            this.graphics.scene.camera.setPosition(CameraPosition.moveDown);
+            if (this.interface.keys[16]){
+                this.graphics.scene.camera.moveLeft();
+            } else {
+                this.graphics.scene.camera.setPosition(CameraPosition.rotateLeft);
+            }
         }
 
         if (this.interface.keys[72]){
@@ -112,6 +121,10 @@ class FlowApp {
 
         if (key === 77){
             this.ui.toggleMenu();
+        }
+
+        if (key === 80){
+            this.graphics.scene.camera.toggleMode();
         }
     }
 
