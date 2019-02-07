@@ -264,6 +264,18 @@ div > code {
     background: #222;
 }
 
+#sidebar a{
+    color: #FFF;
+    text-decoration: none;
+    width: 100%;
+}
+
+#sidebar .icon a{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
 /* DATASET UPLOAD FORM */
 #dataset_upload_form button{
     width: 100%;

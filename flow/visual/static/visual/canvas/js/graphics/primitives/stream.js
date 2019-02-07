@@ -31,7 +31,7 @@ class Stream extends Primitive {
         let filled = 0;
         const segsize = 28;
 
-        //console.log(positions, values, times, lengths);
+        console.log(positions, values, times, lengths);
 
         let vao = this.gl.createVertexArray();
         this.gl.bindVertexArray(vao);
@@ -255,7 +255,7 @@ class Stream extends Primitive {
                 max: 10,
                 delta: 0.1,
                 value: 'meta' in this ? this.meta.thickness: this._data.meta.thickness,
-                callback: (value) => { this.meta.thickness = value },
+                callback: (value) => { this.meta.thickness = value + 1.0 },
             }
         }
     }

@@ -8,7 +8,7 @@ canvas { display:block; }
     top: 0;
     right: 0;
 
-    overflow: scroll;
+    overflow-y: auto;
     height: 100%;
     background: rgba(37, 37, 37, 0.7);
     font-size: 0.8em;

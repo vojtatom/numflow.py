@@ -14,6 +14,9 @@ uniform mat4 mWorld;
 uniform mat4 mView;
 uniform mat4 mProj;
 
+uniform vec3 cameraPosition;
+
+
 //stats and scaling
 uniform float medianSize;
 uniform float stdSize;
@@ -82,7 +85,18 @@ void main()
 	//shade
 	if (appearance == 1){
 		//solid
-		vec3 color = phong(light, sigma, fieldPosition, normal);
+		
+		vec3 transformed_normal;
+		vec3 camera_vec = cameraPosition - (mWorld * vec4(fieldPosition, 1.0)).xyz;
+		float cosine = dot(normalize(normal), normalize(camera_vec));
+
+		if (cosine < 0.0){
+			transformed_normal = - normal;
+		} else {
+			transformed_normal = normal;
+		}
+
+		vec3 color = phong(light, sigma, fieldPosition, transformed_normal);
 		color *= colorfunc(sigma);
 		fragColor = color;
 	} else {

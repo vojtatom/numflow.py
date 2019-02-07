@@ -1,5 +1,6 @@
 from .base import Node
 import numpy as np
+import copy
 
 from ..exceptions import NodeError
 
@@ -123,10 +124,19 @@ class ScaleNode(Node):
         if 'layer' in indata:
             for layer_group in indata['layer']:
                 points, values = transform(layer_group, self._transform, self._part)
+
+                ### in case of scaling, scale also the meta info value
+                if self._part == 'points':
+                    meta = copy.deepcopy(layer_group['meta'])
+                    transformed = meta['geometry']['normal_value'] * self._transform[meta['geometry']['normal']]
+                    meta['geometry']['normal_value'] = transformed
+                else:
+                    meta = layer_group['meta']
+
                 transformed_layers.append({
                     'values': values,
                     'points': points,
-                    'meta': layer_group['meta']
+                    'meta': meta
                     })
 
         #return all together

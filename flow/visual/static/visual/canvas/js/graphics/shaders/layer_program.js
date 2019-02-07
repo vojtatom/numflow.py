@@ -6,8 +6,8 @@ class LayerProgram extends Program {
             super(gl);
             DataManager.files({
                 files: [
-                    Shader.dir + 'plane_vs.glsl',
-                    Shader.dir + 'plane_fs.glsl',
+                    Shader.dir + 'layer_vs.glsl',
+                    Shader.dir + 'layer_fs.glsl',
                 ],
                 success: (f) => {
                         this.init(...f)
@@ -37,6 +37,8 @@ class LayerProgram extends Program {
             model: 'mWorld',
 			view: 'mView',
             proj: 'mProj',
+
+            cameraPosition: 'cameraPosition',
             
             //stats and scaling
 			median: 'medianSize',
@@ -63,7 +65,6 @@ class LayerProgram extends Program {
         this.gl.useProgram(this.program);
         this.gl.enableVertexAttribArray(this.attributes.fieldPos);
         this.gl.vertexAttribPointer(this.attributes.fieldPos, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
-        this.gl.vertexAttribDivisor(this.attributes.fieldPos, 1);
         this.gl.useProgram(null);
     }
 
@@ -71,7 +72,6 @@ class LayerProgram extends Program {
         this.gl.useProgram(this.program);
         this.gl.enableVertexAttribArray(this.attributes.fieldVal);
         this.gl.vertexAttribPointer(this.attributes.fieldVal, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
-        this.gl.vertexAttribDivisor(this.attributes.fieldVal, 1);
         this.gl.useProgram(null);
     }
 
@@ -81,6 +81,8 @@ class LayerProgram extends Program {
         this.gl.uniformMatrix4fv(this.uniforms.model, this.gl.FALSE, options.model);
         this.gl.uniformMatrix4fv(this.uniforms.view, this.gl.FALSE, options.view);
         this.gl.uniformMatrix4fv(this.uniforms.proj, this.gl.FALSE, options.projection);
+
+        this.gl.uniform3fv(this.uniforms.cameraPosition, options.cameraPosition);
 
         this.gl.uniform1f(this.uniforms.median, options.median);
         this.gl.uniform1f(this.uniforms.std, options.std);

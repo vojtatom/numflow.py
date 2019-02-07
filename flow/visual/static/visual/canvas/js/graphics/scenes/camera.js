@@ -1,9 +1,9 @@
 'use strict';
 
 const MOVE_STEP = 0.5;
-const ZOOM_STEP = 0.1;
 const ROT_STEP = 0.5;
-const SCALE_STEP = 5;
+
+const ZOOM_STEP = 0.001;
 
 class CameraPosition {
     static get top() {
@@ -97,7 +97,15 @@ class Camera {
     }
 
     get view() {
-        return mat4.lookAt(this.viewMatrix, this.actualPosition, this.actualCenter, this.actualUp);
+        if (this.mode === CameraState.perspective){
+            return mat4.lookAt(this.viewMatrix, this.actualPosition, this.actualCenter, this.actualUp);
+        } else {
+            vec3.sub(this.tmp, this.actualPosition, this.actualCenter);
+            vec3.normalize(this.tmp, this.tmp);
+            vec3.scale(this.tmp, this.tmp, 1000);
+            vec3.add(this.tmp, this.actualCenter, this.tmp);
+            return mat4.lookAt(this.viewMatrix, this.tmp, this.actualCenter, this.actualUp);
+        }
     }
 
     get projection() {
@@ -111,11 +119,15 @@ class Camera {
 
     get front() {
         vec3.sub(this.frontVector, this.center, this.position);
-        return vec3.normalize(this.frontVector, this.frontVector,);
+        return vec3.normalize(this.frontVector, this.frontVector);
     }
 
     get screenDim() {
         return vec2.fromValues(this.screenX, this.screenY);
+    }
+
+    get pos() {
+        return this.actualPosition; 
     }
 
     screen(x, y){
@@ -166,14 +178,22 @@ class Camera {
 
 
     moveFront(scale = 1) {
-        vec3.scaleAndAdd(this.position, this.position, this.front, ZOOM_STEP * scale);
-        this.scale += SCALE_STEP;
+        vec3.sub(this.tmp, this.position, this.center);
+        vec3.scale(this.tmp, this.tmp, 1 - (ZOOM_STEP * scale));
+        vec3.add(this.tmp, this.center, this.tmp);
+        vec3.copy(this.position, this.tmp);
+
+        this.scale = this.scale * (1 - (ZOOM_STEP * 0.5 * scale));
     }
 
 
     moveBack(scale = 1) {
-        vec3.scaleAndAdd(this.position, this.position, this.front, - ZOOM_STEP * scale);
-        this.scale -= SCALE_STEP;
+        vec3.sub(this.tmp, this.position, this.center);
+        vec3.scale(this.tmp, this.tmp, 1 + (ZOOM_STEP * scale));
+        vec3.add(this.tmp, this.center, this.tmp);
+        vec3.copy(this.position, this.tmp);
+
+        this.scale = this.scale * (1 + (ZOOM_STEP * 0.5 * scale));
     }
 
 
@@ -253,7 +273,7 @@ class Camera {
     }
 
     get isMoving(){
-        if (this.centerMomentum || this.rotMomentum || this.positionMomentum){
+        if (this.centerMomentum || this.rotMomentum || this.positionMomentum || this.scaleMomentum){
             //console.log(this.centerMomentum, this.rotMomentum, this.positionMomentum);
             return true;
         }

@@ -22,34 +22,36 @@ class Layer extends Primitive {
         //load base64 data
         let positions = Primitive.base64totype(data.points);
         let values = Primitive.base64totype(data.values);
-
-        console.log(positions, values);
-        return;
-
+        let elements = Geometry.layerElements(data.meta.geometry.sampling, data.meta.geometry.normal);
 
         let vao = this.gl.createVertexArray();
         this.gl.bindVertexArray(vao);
             
-        //glyph positions
+        //positions
 		let positionsVbo = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionsVbo);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, positions, this.gl.STATIC_DRAW);
         this.program.setFieldPositionAttrs();
         
-        //glyph values
+        //values
         let valuesVbo = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, valuesVbo);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, values, this.gl.STATIC_DRAW);    
         this.program.setFieldValueAttrs();
-        
-        this.buffers['field'] = {
+
+        //elements
+        let ebo = this.gl.createBuffer();
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, ebo);
+        this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint32Array(elements), this.gl.STATIC_DRAW);
+
+        this.buffers = {
             positions: positionsVbo,
             values: valuesVbo,
+            ebo: ebo,
             vao: vao,
-            size: positions.length / 3,
+            size: elements.length,
         };
         
-        this.initGlyph(data.meta.geometry, data.meta.sampling);
         this.gl.bindVertexArray(null);
 
         //Calculate stats
@@ -64,7 +66,7 @@ class Layer extends Primitive {
         this.meta = {
             std: meanAbsoluteDeviation(lengths),
             median: median(lengths),
-            size: data.meta.size,
+            thickness: data.meta.thickness,
             geometry: data.meta.geometry,
             sampling: data.meta.sampling,
             colormap: {
@@ -77,6 +79,7 @@ class Layer extends Primitive {
                     vec4.fromValues(...data.meta.colormap.colors[4]),
                 ] 
             },
+            normal: [[1, 0, 0], [0, 1, 0], [0, 0, 1]][data.meta.geometry.normal],
             appearance: Appearance.encode[data.meta.appearance],
             scale: Scale.encode[data.meta.scale],
         }
@@ -89,59 +92,29 @@ class Layer extends Primitive {
         console.log(this.gl.getError());
     }
 
-    initGlyph(geometry, sampling){
-        let lineVert, lineNorm;
-        if (geometry === 'line'){
-            lineVert = Geometry.glyphVertLine(sampling);
-            lineNorm = Geometry.glyphNormLine(sampling);
-        } else if (geometry === 'cone'){
-            lineVert = Geometry.glyphVertCone(sampling);
-            lineNorm = Geometry.glyphNormCone(sampling); 
-        }
-
-        // init VBO for glyph positions
-		let positions = this.gl.createBuffer();
-		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positions);
-		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(lineVert), this.gl.STATIC_DRAW);
-
-        this.program.setVertexPositionAttrs();
-
-        // init VBO for glyph normals
-		let normals = this.gl.createBuffer();
-		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, normals);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(lineNorm), this.gl.STATIC_DRAW); 
-        
-        this.program.setVertexNormalAttrs();
-		
-		this.buffers['glyph'] = {
-			positions: positions,
-			normals: normals,
-			size: lineVert.length / 3,
-        };
-        
-        //console.log(this.program);
-    }
-
     render(camera, light){
         if(!this.isRenderReady)
             return;
 
         this.program.bind();
-        this.gl.bindVertexArray(this.buffers.field.vao);
+        this.gl.bindVertexArray(this.buffers.vao);
 
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.field.positions);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.field.values);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.glyph.positions);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.glyph.normals);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.positions);
+        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.values);
+        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.ebo);
 
         this.program.setUnifs({
+            normal: this.meta.normal,
+
             model: this.model,
             view: camera.view,
             projection: camera.projection,
 
+            cameraPosition: camera.pos,
+
             median: this.meta.median,
             std: this.meta.std,
-            size: this.meta.size,
+            thickness: this.meta.thickness,
 
             light: light.position,
             brightness: 1.0,
@@ -156,7 +129,7 @@ class Layer extends Primitive {
             colorMap4: this.meta.colormap.colors[4],
         });
 
-        this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.buffers.glyph.size, this.buffers.field.size);
+        this.gl.drawElements(this.gl.TRIANGLES, this.buffers.size, this.gl.UNSIGNED_INT, 0);
         //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
@@ -178,14 +151,14 @@ class Layer extends Primitive {
                 ],
                 value: 'meta' in this ? Appearance.encode[this.meta.appearance]: this._data.meta.appearance,
             },
-            thickness: {
+            /*thickness: {
                 type: 'slider',
                 min: 0.1,
                 max: 10,
                 delta: 0.1,
                 value: 'meta' in this ? this.meta.thickness: this._data.meta.thickness,
                 callback: (value) => { this.meta.thickness = value },
-            }
+            }*/
         }
     }
 

@@ -71,9 +71,12 @@ class Box extends UnitBox {
 
         //add labels
 
-        let max = Math.max(dim[0], dim[1], dim[2]);
-        this.addLabels(Math.floor(dim[0] / 20) * 5, Math.floor(dim[1] / 20) * 5, Math.floor(dim[2] / 20) * 5);
+        let samples = [];
+        for (let i = 0; i < 3; ++i){
+            samples.push(Math.max(3, Math.min(30, Math.floor(dim[i] / 20) * 5)));
+        }
 
+        this.addLabels(...samples);
         this.loaded = true;
     }
 

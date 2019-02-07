@@ -89,8 +89,6 @@ class PlaneNode(Node):
         meta = {
             'normal': self._index,
             'normal_value': self._value,
-            'start': self._start,
-            'end': self._end,
             'sampling': self._sampling,
         }
 

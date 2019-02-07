@@ -1,9 +1,48 @@
 from .base import Node
 from ..model import notebook
 import numpy as np
+from numpy.linalg import norm
 import json
 import base64
 from ..exceptions import NodeError
+
+
+def cleanup_streamline(streamlines):
+    offset = 0
+    to_delete = []
+    lengths_diff = np.zeros(streamlines['lengths'].shape)
+
+    ### take each streamline
+    for i, streamline_length in enumerate(streamlines['lengths']):
+        local_values = streamlines['values'][offset:offset + streamline_length,:] 
+        norms = norm(local_values, axis=1)
+
+        ### take only those wehre norm is zero
+        delete_index = np.where(norms < 10 ** -5)[0]
+        
+        ### if there are any zero length
+        if delete_index.size > 0:
+            subseq = np.diff(delete_index)
+            subseq = np.insert(subseq, 0, 1)
+            delete_index = delete_index[subseq == 1]
+
+            ### if there are any disposable
+            if delete_index.size > 0:
+                to_delete.extend(offset + delete_index)
+                lengths_diff[i] = delete_index.size
+
+        offset += streamline_length
+
+    return {
+        'points': np.delete(streamlines['points'], to_delete, axis=0),
+        'values': np.delete(streamlines['values'], to_delete, axis=0),
+        'times': np.delete(streamlines['times'], to_delete, axis=0),
+        'lengths': streamlines['lengths'] - lengths_diff,
+        'meta': streamlines['meta'],
+    }
+
+
+
 
 
 class VisualNode(Node):
@@ -93,6 +132,9 @@ class VisualNode(Node):
             ### indata['streamlines'] = [{'points': array, 'values': array, 'lengths': array}, ...]
             stream_encoded = []
             for stream in indata['streamlines']:
+                ##postproc, cleanup zero speeds
+                stream = cleanup_streamline(stream)
+
                 stream_group = {}
                 stream_group['points'] = serialize_array(stream['points'], np.float32)
                 stream_group['values'] = serialize_array(stream['values'], np.float32)
