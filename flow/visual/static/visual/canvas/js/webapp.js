@@ -7,8 +7,13 @@ window.onload = function(e) {
     let uploadForm = document.getElementById('upload-flow');
     
     let app = new FlowApp(canvas);
+    
+    ///IMPORTANT STATIC SETUP!!!!!
+    Shader.dir = '/static/visual/canvas/js/graphics/shaders/src/';
+
     app.init('test-key');
     app.graphics.resize(window.innerWidth, window.innerHeight);
+
 
 
     // File reader and uploader...

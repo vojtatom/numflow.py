@@ -30,8 +30,4 @@ class Shader {
     static get type() {
         return ShaderType;
     }
-
-    static get dir() {
-        return '/static/visual/canvas/js/graphics/shaders/src/';
-    }
 }
