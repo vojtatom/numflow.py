@@ -34,10 +34,21 @@ class WidgetUI {
             }
         }
 
+        widget.style.display = 'none';
+        this.element = widget;
         return widget;
+    }
+
+    get nodenavpoint(){
+        let navpoint = document.createElement('div');
+        navpoint.classList.add('navpoint');
+        this.navpoint = navpoint;
+        return navpoint;
     }
     
     select(index){
+        this.element.style.display = 'block';
+        this.navpoint.classList.add('selected');
         this.fieldElements[this.selected].deselect();
         index = (index + this.fieldElements.length) % this.fieldElements.length;  
         this.fieldElements[index].select();
@@ -53,6 +64,8 @@ class WidgetUI {
     }
     
     deselect(){
+        this.element.style.display = 'none';
+        this.navpoint.classList.remove('selected');
         this.fieldElements[this.selected].deselect();
     }
 

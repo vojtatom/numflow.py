@@ -100,4 +100,8 @@ class DataManager {
             request.send();
         });
     }
+
+    static getIcon(url) {
+        return '/static/visual/canvas/icons/' + url;
+    }
 }

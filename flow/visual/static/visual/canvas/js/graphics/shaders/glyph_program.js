@@ -2,45 +2,39 @@
 
 class GlyphProgram extends Program {
     constructor(gl) {
-        if(!GlyphProgram.instance){
-            super(gl);
-            DataManager.files({
-                files: [
-                    Shader.dir + 'glyph_vs.glsl',
-                    Shader.dir + 'glyph_fs.glsl',
-                ],
-                success: (f) => {
-                        this.init(...f)
-                        this.setup();
-                    },
-                fail: (r) => { console.error(r); },
-                });
-
-            GlyphProgram.instance = this;
-        }
-        
-        return GlyphProgram.instance;
+        super(gl);
+        DataManager.files({
+            files: [
+                Shader.dir + 'glyph_vs.glsl',
+                Shader.dir + 'glyph_fs.glsl',
+            ],
+            success: (f) => {
+                this.init(...f)
+                this.setup();
+            },
+            fail: (r) => { console.error(r); },
+        });
     }
 
-    setup(){
+    setup() {
         this.setupAttributes({
             position: 'vertPosition',
             normal: 'vertNormal',
-			fieldPos: 'fieldPosition',
-			fieldVal: 'fieldValue',
+            fieldPos: 'fieldPosition',
+            fieldVal: 'fieldValue',
         });
 
         this.setupUniforms({
             //matrices
             model: 'mWorld',
-			view: 'mView',
+            view: 'mView',
             proj: 'mProj',
-            
+
             //stats and scaling
-			median: 'medianSize',
-			std: 'stdSize',
+            median: 'medianSize',
+            std: 'stdSize',
             size: 'glyphSize',
-            
+
             //modifications
             light: 'light',
             brightness: 'brightness',
@@ -57,7 +51,7 @@ class GlyphProgram extends Program {
         });
     }
 
-    setFieldPositionAttrs(){
+    setFieldPositionAttrs() {
         this.gl.useProgram(this.program);
         this.gl.enableVertexAttribArray(this.attributes.fieldPos);
         this.gl.vertexAttribPointer(this.attributes.fieldPos, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
@@ -65,7 +59,7 @@ class GlyphProgram extends Program {
         this.gl.useProgram(null);
     }
 
-    setFieldValueAttrs(){
+    setFieldValueAttrs() {
         this.gl.useProgram(this.program);
         this.gl.enableVertexAttribArray(this.attributes.fieldVal);
         this.gl.vertexAttribPointer(this.attributes.fieldVal, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
@@ -73,14 +67,14 @@ class GlyphProgram extends Program {
         this.gl.useProgram(null);
     }
 
-    setVertexPositionAttrs(){
+    setVertexPositionAttrs() {
         this.gl.useProgram(this.program);
         this.gl.enableVertexAttribArray(this.attributes.position);
         this.gl.vertexAttribPointer(this.attributes.position, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
         this.gl.useProgram(null);
     }
 
-    setVertexNormalAttrs(){
+    setVertexNormalAttrs() {
         this.gl.useProgram(this.program);
         this.gl.enableVertexAttribArray(this.attributes.normal);
         this.gl.vertexAttribPointer(this.attributes.normal, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
@@ -100,7 +94,7 @@ class GlyphProgram extends Program {
         this.gl.uniform1f(this.uniforms.brightness, options.brightness);
         this.gl.uniform1i(this.uniforms.appearance, options.appearance);
         this.gl.uniform1i(this.uniforms.scale, options.scale);
-        
+
         this.gl.uniform1i(this.uniforms.colorMapSize, options.colorMapSize);
         this.gl.uniform4fv(this.uniforms.colorMap0, options.colorMap0);
         this.gl.uniform4fv(this.uniforms.colorMap1, options.colorMap1);

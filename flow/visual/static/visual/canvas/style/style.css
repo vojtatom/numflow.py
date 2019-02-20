@@ -5,13 +5,13 @@ canvas { display:block; }
 
 #flowappui{
     position: absolute;
-    top: 0;
-    right: 0;
-
-    overflow-y: auto;
-    height: 100%;
+    bottom: 1em;
+    right: 1em;
     background: rgba(37, 37, 37, 0.7);
-    font-size: 0.8em;
+    padding: 1em;
+    
+    width: 400px;
+    font-size: 1em;
 }
 
 #placeholderui{
@@ -22,11 +22,95 @@ canvas { display:block; }
     font-size: 0.8em;
     border-radius: 0.3em;
     margin: 1em;
-    font-family: 'Open Sans', sans-serif;;
+    font-family: 'Open Sans', sans-serif;
     position: absolute;
-    top: 0;
+    bottom: 0;
     right: 0;
 }
+
+
+/* SCENE LISTS */
+
+#sceneListContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2em;
+}
+
+.canvasIcon {
+    width: 5%;
+    display: block;
+}
+
+.canvasIcon.side {
+    height: 100%;
+}
+
+#sceneList {
+    width: 90%;
+}
+
+
+#sceneList {
+    display: flex;
+    border-radius: 0.3em;
+    margin: 1em;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#sceneList .scene,
+.navpoint{
+    width: 1em;
+    height: 1em;
+    background: #333;
+    display: inline-block;
+    border-radius: 0.5em;
+}
+
+
+#sceneList .scene.selected,
+.navpoint.selected{
+    background: #FFF;
+}
+
+
+.menuLabel{
+    text-align: right;
+}
+
+.menuDescription {
+    color: #AAA;
+    margin-bottom: 2em;
+}
+
+/* STRUCTURE WIDGETS */
+
+#scene {
+    display: flex;
+}
+
+#scenewidgets {
+    width: 90%;
+}
+
+#scenenavpoints {
+    width: 10%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+/*nav */
+
+.widgetnav {
+    margin: 0 auto;
+}
+
+/*widgets */
+
 
 #scene .widget {
     border-radius: 0.3em;
@@ -53,7 +137,7 @@ canvas { display:block; }
 }
 
 #scene .widget .field .title{
-    width: 100px; 
+    width: 40%; 
     background: #333;
 }
 
@@ -63,7 +147,7 @@ canvas { display:block; }
 
 #scene .widget .field .value,
 #scene .widget .field .meta{
-    width: 200px; 
+    width: 60%; 
 }
 
 #scene .widget .field .value {
@@ -89,31 +173,4 @@ canvas { display:block; }
 
 #scene .widget .field:last-child .title{
     border-bottom-left-radius: 0.3em;
-}
-
-#sceneList {
-    display: flex;
-    border-radius: 0.3em;
-    margin: 1em;
-    justify-content: flex-end;
-}
-
-#sceneList .scene{
-    padding: 0.5em 1em;
-    background: #333;
-    display: inline-block;
-}
-
-#sceneList .scene:last-child{
-    border-top-right-radius: 0.3em;
-    border-bottom-right-radius: 0.3em;
-}
-
-#sceneList .scene:first-child{
-    border-top-left-radius: 0.3em;
-    border-bottom-left-radius: 0.3em;
-}
-
-#sceneList .scene.selected{
-    background: #444;
 }

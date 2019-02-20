@@ -2,24 +2,19 @@
 
 class BoxProgram extends Program {
     constructor(gl) {
-        if(!BoxProgram.instance){
-            super(gl);
-            DataManager.files({
-                files: [
-                    Shader.dir + 'box_vs.glsl',
-                    Shader.dir + 'box_fs.glsl',
-                ],
-                success: (f) => {
-                        this.init(...f)
-                        this.setup();
-                    },
-                fail: (r) => { console.error(r); },
-                });
+        super(gl);
+        DataManager.files({
+            files: [
+                Shader.dir + 'box_vs.glsl',
+                Shader.dir + 'box_fs.glsl',
+            ],
+            success: (f) => {
+                    this.init(...f)
+                    this.setup();
+                },
+            fail: (r) => { console.error(r); },
+            });
 
-                BoxProgram.instance = this;
-        }
-        
-        return BoxProgram.instance;
     }
 
     setup(){
@@ -36,10 +31,10 @@ class BoxProgram extends Program {
     }
 
     setAttrs(options) {
-        //this.gl.useProgram(this.program);
+        this.gl.useProgram(this.program);
         this.gl.enableVertexAttribArray(this.attributes.position);
         this.gl.vertexAttribPointer(this.attributes.position, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
-        //this.gl.useProgram(null);
+        this.gl.useProgram(null);
     }
 
     setUnifs(options) {

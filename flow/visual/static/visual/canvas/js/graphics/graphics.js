@@ -18,6 +18,14 @@ class Graphics {
 			throw 'WebGL 2 not supported';
 		}
 
+		this.programs = {
+			box: new BoxProgram(this.gl),
+			glyph: new GlyphProgram(this.gl),
+			layer: new LayerProgram(this.gl),
+			stream: new StreamProgram(this.gl),
+			text: new TextProgram(this.gl),
+		}
+
 		//this.gl.enable(this.gl.DEPTH_TEST);
 		//this.gl.disable(this.gl.BLEND);
 		//this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
@@ -33,7 +41,6 @@ class Graphics {
 		//setup for each of existing scenes
 		for (let scene of this.scenes){
 			scene.screen(this.canvas.width, this.canvas.height);
-
 		}
 	}
 
@@ -43,9 +50,9 @@ class Graphics {
 		}
 	}
 
-	addScene(sceneContents){
+	addScene(sceneContents, ui){
 		let scene = new Scene(this.gl);
-		scene.init(sceneContents);
+		scene.init(sceneContents, ui, this.programs);
 		this.scenes.push(scene);
 
 		if (this.scene === null){
@@ -55,6 +62,7 @@ class Graphics {
 	}
 
 	displayScene(index){
+		console.log('scene', index);
 		this.scene = this.scenes[index];
 		this.scene.screen(this.canvas.width, this.canvas.height);
 	}
@@ -62,10 +70,29 @@ class Graphics {
 	delete(){
 		//Delete all of the scenes...
 		for (let scene of this.scenes){
-			scene.detele();
+			scene.delete();
 		}
 		
 		this.scene = null
 		this.scenes = [];
+	}
+
+
+	rotate(dx, dy){
+		if (this.scene){
+			this.scene.camera.rotate(dx, dy);
+		}
+	}
+
+	moveFront(d){
+		if (this.scene){
+			this.scene.camera.moveFront(d);
+		}
+	}
+
+	moveBack(d){
+		if (this.scene){
+			this.scene.camera.moveBack(d);
+		}
 	}
 }

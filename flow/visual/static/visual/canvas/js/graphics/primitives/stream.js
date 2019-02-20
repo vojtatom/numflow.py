@@ -1,11 +1,11 @@
 'use strict';
 
 class Stream extends Primitive {
-    constructor(gl) {
+    constructor(gl, programs) {
         super(gl);
 
-        this.program = new StreamProgram(gl);
-        this.box = new Box(this.gl);
+        this.program = programs.stream;
+        this.box = new Box(this.gl, programs);
 
         this.loaded = false;
         this.buffers = {};
@@ -31,7 +31,7 @@ class Stream extends Primitive {
         let filled = 0;
         const segsize = 28;
 
-        console.log(positions, values, times, lengths);
+        //console.log(positions, values, times, lengths);
 
         let vao = this.gl.createVertexArray();
         this.gl.bindVertexArray(vao);
@@ -247,7 +247,7 @@ class Stream extends Primitive {
                     () => {this.meta.appearance = Appearance.solid}, 
                     () => {this.meta.appearance = Appearance.transparent},
                 ],
-                value: 'meta' in this ? Appearance.encode[this.meta.appearance]: this._data.meta.appearance,
+                value: 'meta' in this ? Appearance.decode[this.meta.appearance]: this._data.meta.appearance,
             },
             thickenss: {
                 type: 'slider',
@@ -297,13 +297,17 @@ class Stream extends Primitive {
         });
 
         this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.buffers.segment.size, this.buffers.field.size);
-        console.log(this.gl.getError());
+        //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
         this.program.unbind();
     }
 
     delete(){
-        
+        this.gl.deleteBuffer(this.buffers.field.buffer);
+        this.gl.deleteBuffer(this.buffers.segment.positions);
+        this.gl.deleteBuffer(this.buffers.segment.normals);
+        this.gl.deleteBuffer(this.buffers.segment.times);3
+        this.gl.deleteVertexArray(this.buffers.field.vao);
     }
 }

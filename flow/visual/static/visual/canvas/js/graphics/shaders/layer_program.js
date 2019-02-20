@@ -2,32 +2,26 @@
 
 class LayerProgram extends Program {
     constructor(gl) {
-        if(!LayerProgram.instance){
-            super(gl);
-            DataManager.files({
-                files: [
-                    Shader.dir + 'layer_vs.glsl',
-                    Shader.dir + 'layer_fs.glsl',
-                ],
-                success: (f) => {
-                        this.init(...f)
-                        this.setup();
-                    },
-                fail: (r) => { console.error(r); },
-                });
-
-                LayerProgram.instance = this;
-        }
-        
-        return LayerProgram.instance;
+        super(gl);
+        DataManager.files({
+            files: [
+                Shader.dir + 'layer_vs.glsl',
+                Shader.dir + 'layer_fs.glsl',
+            ],
+            success: (f) => {
+                this.init(...f)
+                this.setup();
+            },
+            fail: (r) => { console.error(r); },
+        });
     }
 
-    setup(){
+    setup() {
         this.setupAttributes({
             //position: 'vertPosition',
             //normal: 'vertNormal',
-			fieldPos: 'fieldPosition',
-			fieldVal: 'fieldValue',
+            fieldPos: 'fieldPosition',
+            fieldVal: 'fieldValue',
         });
 
         this.setupUniforms({
@@ -35,16 +29,16 @@ class LayerProgram extends Program {
 
             //matrices
             model: 'mWorld',
-			view: 'mView',
+            view: 'mView',
             proj: 'mProj',
 
             cameraPosition: 'cameraPosition',
-            
+
             //stats and scaling
-			median: 'medianSize',
-			std: 'stdSize',
+            median: 'medianSize',
+            std: 'stdSize',
             thickness: 'thickness',
-            
+
             //modifications
             light: 'light',
             brightness: 'brightness',
@@ -61,14 +55,14 @@ class LayerProgram extends Program {
         });
     }
 
-    setFieldPositionAttrs(){
+    setFieldPositionAttrs() {
         this.gl.useProgram(this.program);
         this.gl.enableVertexAttribArray(this.attributes.fieldPos);
         this.gl.vertexAttribPointer(this.attributes.fieldPos, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
         this.gl.useProgram(null);
     }
 
-    setFieldValueAttrs(){
+    setFieldValueAttrs() {
         this.gl.useProgram(this.program);
         this.gl.enableVertexAttribArray(this.attributes.fieldVal);
         this.gl.vertexAttribPointer(this.attributes.fieldVal, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
@@ -92,7 +86,7 @@ class LayerProgram extends Program {
         this.gl.uniform1f(this.uniforms.brightness, options.brightness);
         this.gl.uniform1i(this.uniforms.appearance, options.appearance);
         this.gl.uniform1i(this.uniforms.scale, options.scale);
-        
+
         this.gl.uniform1i(this.uniforms.colorMapSize, options.colorMapSize);
         this.gl.uniform4fv(this.uniforms.colorMap0, options.colorMap0);
         this.gl.uniform4fv(this.uniforms.colorMap1, options.colorMap1);

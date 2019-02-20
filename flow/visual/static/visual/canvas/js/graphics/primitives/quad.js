@@ -1,9 +1,9 @@
 'use strict';
 
 class Quad extends Primitive {
-    constructor(gl) {
+    constructor(gl, programs) {
         super(gl);
-        this.program = new TextProgram(gl);
+        this.program = programs.text;
         this.loaded = false;
         this.buffers = {};
 

@@ -15,6 +15,10 @@ class Appearance {
             solid: 1,
         };
     }
+
+    static get decode() {
+        return ['transparent', 'solid'];
+    }
 }
 
 
@@ -32,6 +36,10 @@ class Scale {
             log: 0,
             normal: 1,
         };
+    }
+
+    static get decode() {
+        return ['log', 'normal'];
     }
 }
 

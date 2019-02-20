@@ -1,10 +1,10 @@
 'use strict';
 
 class Layer extends Primitive {
-    constructor(gl) {
+    constructor(gl, programs) {
         super(gl);
-        this.program = new LayerProgram(gl);
-        this.box = new Box(this.gl);
+        this.program = programs.layer;
+        this.box = new Box(this.gl, programs);
 
         this.loaded = false;
         this.buffers = {};
@@ -149,7 +149,7 @@ class Layer extends Primitive {
                     () => {this.meta.appearance = Appearance.solid}, 
                     () => {this.meta.appearance = Appearance.transparent},
                 ],
-                value: 'meta' in this ? Appearance.encode[this.meta.appearance]: this._data.meta.appearance,
+                value: 'meta' in this ? Appearance.decode[this.meta.appearance]: this._data.meta.appearance,
             },
             /*thickness: {
                 type: 'slider',
@@ -163,10 +163,9 @@ class Layer extends Primitive {
     }
 
     delete(){
-        this.gl.deleteBuffer(this.buffers.field.positions);
-        this.gl.deleteBuffer(this.buffers.field.values);
-        this.gl.deleteBuffer(this.buffers.glyph.positions);
-        this.gl.deleteBuffer(this.buffers.glyph.normals);
-        this.gl.deleteVertexArray(this.buffers.field.vao);
+        this.gl.deleteBuffer(this.buffers.positions);
+        this.gl.deleteBuffer(this.buffers.values);
+        this.gl.deleteBuffer(this.buffers.ebo);
+        this.gl.deleteVertexArray(this.buffers.vao);
     }
 }

@@ -11,9 +11,9 @@ class BoxMode{
 }
 
 class UnitBox extends Primitive {
-    constructor(gl) {
+    constructor(gl, programs) {
         super(gl);
-        this.program = new BoxProgram(gl);
+        this.program = programs.box;
         this.loaded = false;
     }
 
@@ -127,6 +127,9 @@ class UnitBox extends Primitive {
     }
 
     delete(){
-        
+        this.gl.deleteBuffer(this.buffers.vbo);
+        this.gl.deleteBuffer(this.buffers.ebo);
+        this.gl.deleteBuffer(this.buffers.fillebo);
+        this.gl.deleteVertexArray(this.buffers.vao); 
     }
 }
