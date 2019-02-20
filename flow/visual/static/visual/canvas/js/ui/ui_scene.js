@@ -15,15 +15,38 @@ class SceneUI {
         let scene = document.createElement('div');
         scene.id = 'scene';
 
+        //widgets
+        let scenew = document.createElement('div');
+        scenew.id = 'scenewidgets';
+
+        let up = document.createElement('img');
+        up.src = DataManager.getIcon('up.svg');
+        up.classList.add('widgetnav');
+        up.classList.add('canvasIcon');
+        let down = document.createElement('img');
+        down.src = DataManager.getIcon('down.svg');
+        down.classList.add('widgetnav');
+        down.classList.add('canvasIcon');
+
+        scenew.appendChild(up);
         for (let w of this.widgets){
-            scene.appendChild(w.node);
+            scenew.appendChild(w.node);
         }
+        scenew.appendChild(down);
+        scene.appendChild(scenew);
+
+        //navpoints
+        let scenen = document.createElement('div');
+        scenen.id = 'scenenavpoints';
+        for (let w of this.widgets){
+            scenen.appendChild(w.nodenavpoint);
+        }
+        scene.appendChild(scenen);
 
         return scene;
     }
 
     select(indexW, indexF){
-
         if (this.widgets.length <= indexW)
             return;
 

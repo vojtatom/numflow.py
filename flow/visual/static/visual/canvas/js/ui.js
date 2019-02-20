@@ -3,47 +3,89 @@
 
 class FlowAppUI {
     constructor(canvas){
-        if (!FlowAppUI.instance){
-            this.canvas = canvas;
-            let parent = canvas.parentNode;
+        this.canvas = canvas;
+        let parent = canvas.parentNode;
 
-            let placeholder = document.createElement('div');
-            placeholder.id = 'placeholderui';
-            placeholder.innerHTML = 'M';
-            parent.appendChild(placeholder);
+        let placeholder = document.createElement('div');
+        placeholder.id = 'placeholderui';
+        placeholder.innerHTML = 'M';
+        parent.appendChild(placeholder);
 
-            
-            let element = document.createElement('div');
-            element.id = 'flowappui';
-            parent.appendChild(element);
-            element.style.display = 'none';
-            
-            let sceneList = document.createElement('div');
-            sceneList.id = 'sceneList';
-            element.appendChild(sceneList);
+        
+        let element = document.createElement('div');
+        element.id = 'flowappui';
+        parent.appendChild(element);
+        element.style.display = 'none';
 
-            let sceneElement = document.createElement('div');
-            sceneElement.id = 'sceneElement';
-            element.appendChild(sceneElement);
-            
-            this.placeholder = placeholder;
-            this.element = element;
-            this.sceneList = sceneList;
-            this.sceneElement = sceneElement;
-            
-            this.scenes = [];
-            this.selectedScene = 0;
-            this.active = 0;
+        //scenes label
+        let sceneLabel = document.createElement('div');
+        sceneLabel.id = 'sceneLabel';
+        sceneLabel.innerHTML = 'scenes';
+        sceneLabel.classList.add('menuLabel');
+        element.appendChild(sceneLabel);
 
-            this.menuVisible = false;
-            FlowAppUI.instance = this;
-        }
+        // scenes nav description
+        let sceneDesc = document.createElement('div');
+        sceneDesc.id = 'sceneNavDesc';
+        sceneDesc.innerHTML = 'shift + arrows to move, enter to select';
+        sceneDesc.classList.add('menuLabel');
+        sceneDesc.classList.add('menuDescription');
+        element.appendChild(sceneDesc);
 
-        return FlowAppUI.instance;
-    }
+        let sceneListContainer = document.createElement('div');
+        sceneListContainer.id = 'sceneListContainer';
+        element.appendChild(sceneListContainer);
 
-    static addScene(scene){
-        FlowAppUI.instance.addScene(scene);
+        //nav
+        let sceneListLeft = document.createElement('img');
+        sceneListLeft.id = 'sceneListLeft';
+        sceneListLeft.src = DataManager.getIcon('left.svg');
+        sceneListLeft.classList.add('canvasIcon');
+        sceneListLeft.classList.add('side');
+        sceneListContainer.appendChild(sceneListLeft);
+        
+        //list
+        let sceneList = document.createElement('div');
+        sceneList.id = 'sceneList';
+        sceneListContainer.appendChild(sceneList);
+
+        //nav
+        let sceneListRight = document.createElement('img');
+        sceneListRight.id = 'sceneListRight';
+        sceneListRight.src = DataManager.getIcon('right.svg');
+        sceneListRight.classList.add('canvasIcon');
+        sceneListRight.classList.add('side');
+        sceneListContainer.appendChild(sceneListRight);
+
+        //elements label
+        let elementsLabel = document.createElement('div');
+        elementsLabel.id = 'sceneLabel';
+        elementsLabel.innerHTML = 'scene elements';
+        elementsLabel.classList.add('menuLabel');
+        element.appendChild(elementsLabel);
+
+        //elements nav description
+        let elementsDesc = document.createElement('div');
+        elementsDesc.id = 'sceneNavDesc';
+        elementsDesc.innerHTML = 'up/down arrows to move, left/right to change';
+        elementsDesc.classList.add('menuLabel');
+        elementsDesc.classList.add('menuDescription');
+        element.appendChild(elementsDesc);
+
+        let sceneElement = document.createElement('div');
+        sceneElement.id = 'sceneElement';
+        element.appendChild(sceneElement);
+        
+        this.placeholder = placeholder;
+        this.element = element;
+        this.sceneList = sceneList;
+        this.sceneElement = sceneElement;
+        
+        this.scenes = [];
+        this.selectedScene = 0;
+        this.active = 0;
+
+        this.menuVisible = false;
     }
 
     addScene(scene){
@@ -52,12 +94,7 @@ class FlowAppUI {
         let sceneCard = document.createElement('div');
         sceneCard.id = 'scene' + (this.scenes.length - 1);
         sceneCard.classList.add('scene');
-        sceneCard.innerHTML = (this.scenes.length - 1);
         this.sceneList.appendChild(sceneCard);
-    }
-
-    static displayScene(index){
-        FlowAppUI.instance.displayScene(index);
     }
 
     displayScene(index){
@@ -176,5 +213,12 @@ class FlowAppUI {
         while (this.sceneList.firstChild) {
             this.sceneList.removeChild(this.sceneList.firstChild);
         }
+
+        this.scenes = [];
+    }
+
+    resize(x, y){
+        this.element.style.fontSize = ((Math.log(x / 1080) / 10) + 1) + 'em';
+        this.element.style.width = ((Math.log(x / 1080) / 10) * 400 + 400) + 'px';
     }
 }

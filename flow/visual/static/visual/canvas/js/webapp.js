@@ -68,7 +68,7 @@ window.onload = function(e) {
     };
 
     window.onresize = function(event) {
-        app.graphics.resize(window.innerWidth, window.innerHeight);
+        app.resize(window.innerWidth, window.innerHeight);
         event.stopPropagation();
     };
     

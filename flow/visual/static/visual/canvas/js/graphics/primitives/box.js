@@ -1,10 +1,12 @@
 'use strict';
 
 class Box extends UnitBox {
-    constructor(gl) {
-        super(gl);
+    constructor(gl, programs) {
+        super(gl, programs);
         this.labels = [];
         this.loaded = false;
+
+        this.programs = programs;
         this.activeEdge = {
             0: 0,
             1: 0,
@@ -124,7 +126,7 @@ class Box extends UnitBox {
             shift[axis] = 0;
             vec3.scaleAndAdd(position, position, shift, 1 / vec3.len(shift)); 
 
-            let quad = new Quad(this.gl);
+            let quad = new Quad(this.gl, this.programs);
             quad.init({
                 position: position,
                 value: value,
@@ -204,6 +206,9 @@ class Box extends UnitBox {
     }
 
     delete() {
-        
+        super.delete();
+        for (let label of this.labels){
+            label.delete();
+        }
     }
 }

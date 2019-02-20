@@ -21,7 +21,7 @@ class FlowApp {
         //allocate new scenes
         for (let scene_id in contents) {
             console.log('loading scene', scene_id);
-            this.graphics.addScene(contents[scene_id]);
+            this.graphics.addScene(contents[scene_id], this.ui);
         }
 
         //none was allocated so has to be first scene
@@ -74,6 +74,11 @@ class FlowApp {
         if (this.interface.keys[72]){
             this.graphics.scene.camera.setPosition(CameraPosition.origin);
         }
+    }
+
+    resize(x, y){
+        this.graphics.resize(x, y);
+        this.ui.resize(x, y);
     }
 
     pressed(key){

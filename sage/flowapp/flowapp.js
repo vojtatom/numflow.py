@@ -66,7 +66,7 @@ var flowapp = SAGE2_App.extend({
 		DataManager.request({
 			filename: data.clientInput,
 			success: (r) => { this.app.load(JSON.parse(r)); },
-			fail: (r) => { console.log(d); },
+			fail: (r) => { console.log(r); },
 		});
 	},
 
@@ -118,7 +118,7 @@ var flowapp = SAGE2_App.extend({
 
 
         app.init('test-key');
-        app.graphics.resize(this.element.width, this.element.height);
+        app.resize(this.element.width, this.element.height);
         this.app = app;
         this.loaded = true;
 	},
@@ -154,7 +154,7 @@ var flowapp = SAGE2_App.extend({
 	 */
 	resize: function(date) {
 		this.loaded = false;
-		this.app.graphics.resize(this.element.width, this.element.height);
+		this.app.resize(this.element.width, this.element.height);
 		this.loaded = true;
 	},
 
@@ -194,4 +194,8 @@ var flowapp = SAGE2_App.extend({
 			this.app.interface.onMouseMove(position.x, position.y);
 		}
 	},
+
+	close: function(){
+		console.log('app is closing?');
+	}
 });

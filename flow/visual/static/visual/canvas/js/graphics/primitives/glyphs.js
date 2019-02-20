@@ -1,10 +1,10 @@
 'use strict';
 
 class Glyphs extends Primitive {
-    constructor(gl) {
+    constructor(gl, programs) {
         super(gl);
-        this.program = new GlyphProgram(gl);
-        this.box = new Box(this.gl);
+        this.program = programs.glyph;
+        this.box = new Box(gl, programs);
 
         this.loaded = false;
         this.buffers = {};
@@ -172,7 +172,7 @@ class Glyphs extends Primitive {
                     () => {this.meta.appearance = Appearance.solid}, 
                     () => {this.meta.appearance = Appearance.transparent},
                 ],
-                value: 'meta' in this ? Appearance.encode[this.meta.appearance]: this._data.meta.appearance,
+                value: 'meta' in this ? Appearance.decode[this.meta.appearance]: this._data.meta.appearance,
             },
             size: {
                 type: 'slider',

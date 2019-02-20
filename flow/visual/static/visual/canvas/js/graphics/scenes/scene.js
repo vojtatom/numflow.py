@@ -9,7 +9,7 @@ class Scene{
         this.boxes = [];
     }
 
-    init(contents){
+    init(contents, ui, programs){
         console.log('loading scene elements');
         let sceneui = new SceneUI();
 
@@ -19,7 +19,7 @@ class Scene{
         
         if ('glyphs' in contents){
             for (let glyphs_group of contents.glyphs){
-                let glyphs = new Glyphs(this.gl);
+                let glyphs = new Glyphs(this.gl, programs);
                 glyphs.init(glyphs_group);
                 //console.log(glyphs);
                 this.objects.push(glyphs);
@@ -31,7 +31,7 @@ class Scene{
 
         if ('streamlines' in contents){
             for (let stream_group of contents.streamlines){
-                let streams = new Stream(this.gl);
+                let streams = new Stream(this.gl, programs);
                 streams.init(stream_group);
                 //console.log(streams);
                 this.objects.push(streams);
@@ -43,7 +43,7 @@ class Scene{
 
         if ('layer' in contents){
             for (let layer_group of contents.layer){
-                let layer = new Layer(this.gl);
+                let layer = new Layer(this.gl, programs);
                 layer.init(layer_group);
                 //console.log(streams);
                 this.objects.push(layer);
@@ -58,7 +58,7 @@ class Scene{
         stream.segment([0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 0, 0]);*/
 
         //append ui
-        FlowAppUI.addScene(sceneui);
+        ui.addScene(sceneui);
     }
 
     render(){
