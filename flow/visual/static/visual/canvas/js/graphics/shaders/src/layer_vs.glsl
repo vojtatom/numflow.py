@@ -36,6 +36,10 @@ uniform int scale;
 uniform int colorMapSize;
 uniform vec4 colorMap[5];
 
+//scale and shift
+uniform float scaleFactor;
+uniform vec3 shift;
+
 //out
 varying vec3 fragColor;
 varying float sigma;
@@ -59,7 +63,6 @@ vec3 phong(vec3 light, float sigma, vec3 ver_position, vec3 ver_normal){
     return ret;
 }
 
-
 //implementation for length (not direction!!!)
 vec3 colorfunc(float sigma) {
 	float index = float(colorMapSize - 1) * sigma;
@@ -71,23 +74,33 @@ vec3 colorfunc(float sigma) {
 }
 
 
-void main()
-{	
-	//mapping vector length according to median value of vector lengths
-	float l = length(fieldValue);
+vec3 scaleshift(vec3 position) {
+	return (position - shift) * scaleFactor;
+}
+
+
+float significance(float l) {
 	//positive for vector longer than median, normalized by std...
 	float dist = (l - medianSize) / stdSize;
 	//applying sigmoid to transform... 
 	//sigma \elem [0, 1] is sort of significance value for the vector...?
-	sigma = 1.0 / (1.0 + exp(-dist));
-	//float magRatio = glyphSize * sigma;
+	return 1.0 / (1.0 + exp(-dist));
+}
+
+
+void main()
+{	
+	sigma = significance(length(fieldValue));
+
+	//perform shift
+	vec3 shiftPosition = scaleshift(fieldPosition);
 
 	//shade
 	if (appearance == 1){
 		//solid
 		
 		vec3 transformed_normal;
-		vec3 camera_vec = cameraPosition - (mWorld * vec4(fieldPosition, 1.0)).xyz;
+		vec3 camera_vec = cameraPosition - (mWorld * vec4(shiftPosition, 1.0)).xyz;
 		float cosine = dot(normalize(normal), normalize(camera_vec));
 
 		if (cosine < 0.0){
@@ -96,15 +109,18 @@ void main()
 			transformed_normal = normal;
 		}
 
-		vec3 color = phong(light, sigma, fieldPosition, transformed_normal);
+		vec3 color = phong(light, sigma, shiftPosition, transformed_normal);
 		color *= colorfunc(sigma);
 		fragColor = color;
+
 	} else {
+
 		//transparent
 		vec3 color = vec3(1.0);
 		color *= colorfunc(sigma);
 		fragColor = color;
+
 	}
 
-	gl_Position =  mProj * mView * mWorld * vec4(fieldPosition, 1.0);
+	gl_Position =  mProj * mView * mWorld * vec4(shiftPosition, 1.0);
 }

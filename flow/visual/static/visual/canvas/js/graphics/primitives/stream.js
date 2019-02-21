@@ -169,8 +169,8 @@ class Stream extends Primitive {
         }
 
         this.meta = {
-            std: meanAbsoluteDeviation(valueLengths),
-            median: median(valueLengths),
+            stats: data.stats.values,
+
             thickness: data.meta.thickness + 1.0,
             sampling: data.meta.sampling,
             divisions: data.meta.divisions,
@@ -187,6 +187,9 @@ class Stream extends Primitive {
             appearance: Appearance.encode[data.meta.appearance],
             scale: Scale.encode[data.meta.scale],
             timeLimits: [data.meta.t0, data.meta.tbound],
+
+            scaleFactor: data.stats.points.scale_factor,
+            shift: data.stats.points.center,
         }
 
         //init bounding box
@@ -277,8 +280,8 @@ class Stream extends Primitive {
             view: camera.view,
             projection: camera.projection,
 
-            median: this.meta.median,
-            std: this.meta.std,
+            median: this.meta.stats.xyz.median,
+            std: this.meta.stats.xyz.std,
             thickness: this.meta.thickness,
 
             light: light.position,
@@ -294,6 +297,9 @@ class Stream extends Primitive {
             colorMap2: this.meta.colormap.colors[2],
             colorMap3: this.meta.colormap.colors[3],
             colorMap4: this.meta.colormap.colors[4],
+
+            scaleFactor: this.meta.scaleFactor,
+            shift: this.meta.shift,
         });
 
         this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.buffers.segment.size, this.buffers.field.size);

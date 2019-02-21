@@ -67,7 +67,8 @@ class Quad extends Primitive {
         
 
         // create text texture.
-        let textCanvas = makeTextCanvas(data.value.toFixed(2), 200, 50);
+        let value = data.value < 100 ? data.value.toFixed(2) : data.value.toExponential(3);
+        let textCanvas = makeTextCanvas(value, 200, 50);
         let textWidth  = textCanvas.width;
         let textHeight = textCanvas.height;
         let textTex = this.gl.createTexture();

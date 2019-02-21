@@ -2,6 +2,8 @@
 
 cd "$(dirname "$0")"
 
+BUILD_DIR="./visual/static/visual/build"
+
 OUTPUT_WEB="./visual/static/visual/build/web.js"
 OUTPUT_SAGE="../sage/flowapp/scripts/scripts.js"
 SAGEDIR="../sage/"
@@ -88,6 +90,9 @@ read -r -d '' SHADERSLIST << EOM
 EOM
 
 
+if [ ! -d "$BUILD_DIR" ]; then
+    mkdir "$BUILD_DIR"
+fi
 
 ### BUILD WEB APP
 touch $OUTPUT_TMP

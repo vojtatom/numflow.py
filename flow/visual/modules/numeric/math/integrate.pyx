@@ -132,18 +132,17 @@ def cstreamlines(CData data, DTYPE t0, DTYPE t_bound, DTYPE[:,::1] starting_poin
 
 
 def sstreamlines(data, t0, t_bound, starting_points):
-    interpolator = data.interpolator
     positions = None
     times = None
-    lengths = np.empty((starting_points.shape[0],))
+    lengths = np.empty((starting_points.shape[0],), dtype=np.int)
 
     if data.mode == 'c':
         ### needs integration of parameter t...
         def interpolate(t, y):
-            return interpolator(np.array([y,]))[0]
+            return data.interpolator(np.array([y,]))[0]
     elif data.mode == 'scipy':
         def interpolate(t, y):
-            return interpolator(y)
+            return data.interpolator(y)
     
     
     for i in range(starting_points.shape[0]):
@@ -158,5 +157,7 @@ def sstreamlines(data, t0, t_bound, starting_points):
 
         lengths[i] = sol.t.shape[0]
 
-    values = interpolator(positions)
+    values = data.interpolator(positions)
+    
+    del interpolate
     return positions, values, lengths, times

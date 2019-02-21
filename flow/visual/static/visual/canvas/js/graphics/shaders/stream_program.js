@@ -60,6 +60,10 @@ class StreamProgram extends Program {
             colorMap2: 'colorMap[2]',
             colorMap3: 'colorMap[3]',
             colorMap4: 'colorMap[4]',
+
+            //scale and shift
+            scaleFactor: 'scaleFactor',
+            shift: 'shift',
         });
     }
 
@@ -175,5 +179,8 @@ class StreamProgram extends Program {
         this.gl.uniform4fv(this.uniforms.colorMap2, options.colorMap2);
         this.gl.uniform4fv(this.uniforms.colorMap3, options.colorMap3);
         this.gl.uniform4fv(this.uniforms.colorMap4, options.colorMap4);
+
+        this.gl.uniform3fv(this.uniforms.shift, options.shift);
+        this.gl.uniform1f(this.uniforms.scaleFactor, options.scaleFactor);
     }
 }

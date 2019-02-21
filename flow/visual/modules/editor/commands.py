@@ -26,6 +26,7 @@ def command(group, notebook_code, command, data, username):
             send(group, 'command not found', 1, username, done=True)
     except Exception as e:
         send(group, str(e), status=1, username=username, done=True)
+        raise e
 
 
 def send(group, text, status=0, username=None, done=False):

@@ -55,17 +55,10 @@ class Layer extends Primitive {
         this.gl.bindVertexArray(null);
 
         //Calculate stats
-        let lengths = new Float32Array(values.length / 3);
-
-        for (let i = 0; i < values.length; i += 3){
-            let length = values[i] * values[i] + values[i + 1] * values[i + 1] + values[i + 2] * values[i + 2];
-            length = length;
-            lengths[i / 3] =  Math.sqrt(length);
-        }
 
         this.meta = {
-            std: meanAbsoluteDeviation(lengths),
-            median: median(lengths),
+            stats: data.stats.values,
+            
             thickness: data.meta.thickness,
             geometry: data.meta.geometry,
             sampling: data.meta.sampling,
@@ -82,6 +75,9 @@ class Layer extends Primitive {
             normal: [[1, 0, 0], [0, 1, 0], [0, 0, 1]][data.meta.geometry.normal],
             appearance: Appearance.encode[data.meta.appearance],
             scale: Scale.encode[data.meta.scale],
+            
+            scaleFactor: data.stats.points.scale_factor,
+            shift: data.stats.points.center,
         }
 
         //init bounding box
@@ -112,8 +108,8 @@ class Layer extends Primitive {
 
             cameraPosition: camera.pos,
 
-            median: this.meta.median,
-            std: this.meta.std,
+            median: this.meta.stats.xyz.median,
+            std: this.meta.stats.xyz.std,
             thickness: this.meta.thickness,
 
             light: light.position,
@@ -127,10 +123,13 @@ class Layer extends Primitive {
             colorMap2: this.meta.colormap.colors[2],
             colorMap3: this.meta.colormap.colors[3],
             colorMap4: this.meta.colormap.colors[4],
+
+            scaleFactor: this.meta.scaleFactor,
+            shift: this.meta.shift,
         });
 
         this.gl.drawElements(this.gl.TRIANGLES, this.buffers.size, this.gl.UNSIGNED_INT, 0);
-        //console.log(this.gl.getError());
+        console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
         this.program.unbind();

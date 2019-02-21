@@ -13,6 +13,12 @@ class Scene{
         console.log('loading scene elements');
         let sceneui = new SceneUI();
 
+        contents.stats.points.center = Primitive.base64totype(contents.stats.points.center);
+        contents.stats.points.min = Primitive.base64totype(contents.stats.points.min);
+        contents.stats.points.max = Primitive.base64totype(contents.stats.points.max);
+        console.log(contents.stats);
+
+
        /* let box = new Box(this.gl);
         box.init(vec3.fromValues(-10, -10, 0), vec3.fromValues(20, 20, 40));
         this.objects.push(box); */
@@ -32,6 +38,7 @@ class Scene{
         if ('streamlines' in contents){
             for (let stream_group of contents.streamlines){
                 let streams = new Stream(this.gl, programs);
+                stream_group.stats = contents.stats;
                 streams.init(stream_group);
                 //console.log(streams);
                 this.objects.push(streams);
@@ -44,6 +51,7 @@ class Scene{
         if ('layer' in contents){
             for (let layer_group of contents.layer){
                 let layer = new Layer(this.gl, programs);
+                layer_group.stats = contents.stats;
                 layer.init(layer_group);
                 //console.log(streams);
                 this.objects.push(layer);
