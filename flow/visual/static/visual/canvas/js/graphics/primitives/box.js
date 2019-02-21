@@ -18,16 +18,23 @@ class Box extends UnitBox {
         //Belated initialization...
         if (!this.isInitReady(data))
             return;
+
         data = this.lateLoadData(data);
         super.init(data);
 
         let start = Primitive.base64totype(data.meta.bounds.start);
+        vec3.sub(start, start, data.stats.points.center);
+        vec3.scale(start, start, data.stats.points.scale_factor);
+
         let dim = Primitive.base64totype(data.meta.bounds.dim);
+        vec3.scale(dim, dim, data.stats.points.scale_factor);
 
         //meta to be used later
         this.meta = {
             start: start,
             dim: dim,
+            labelStart: Primitive.base64totype(data.meta.bounds.start),
+            labelDim: Primitive.base64totype(data.meta.bounds.dim),
         }
 
         //model matrix
@@ -72,42 +79,56 @@ class Box extends UnitBox {
         this.meta['center'] = vec3.add(vec3.create(), start, halves);
 
         //add labels
-
-        let samples = [];
+        let sampling = [];
+        
         for (let i = 0; i < 3; ++i){
-            samples.push(Math.max(3, Math.min(30, Math.floor(dim[i] / 20) * 5)));
+            sampling.push(Math.max(3, Math.min(30, Math.floor(dim[i] / 40) * 5)));
         }
 
-        this.addLabels(...samples);
+        this.addLabels(sampling);
         this.loaded = true;
     }
 
-    addLabels(x, y, z){
-        let sampling = [x, y, z];
-        let max, add;
 
+    addLabels(sampling){
+        let max, addPosition, addLabelValue;
 
-        for (let a in sampling){
-            max = this.meta.start[a] + this.meta.dim[a];
-            add = this.meta.dim[a] / sampling[a]
-            if (add == 0){
-                this.addLabel(a, this.meta.start[a]);
+        for (let axisIndex in sampling){
+            max = this.meta.start[axisIndex] + this.meta.dim[axisIndex];
+            
+            //space
+            addPosition = this.meta.dim[axisIndex] / sampling[axisIndex];
+            //text
+            addLabelValue = this.meta.labelDim[axisIndex] / sampling[axisIndex];
+            
+            let pos = this.meta.start[axisIndex];
+            let labelValue = this.meta.labelStart[axisIndex];
+
+            if (addPosition == 0){
+                //in case it has 0 width
+                this.addLabel(axisIndex, pos, labelValue);
             } else {
-                for (let i = this.meta.start[a]; i <= max; i = i + add){
-                    this.addLabel(a, i);
+                //non zero width
+                while (pos <= max){
+                    this.addLabel(axisIndex, pos, labelValue);
+                    pos += addPosition;
+                    labelValue += addLabelValue;
                 }
             }
+
+
         }
 
     }
 
-    addLabel(axis, value){
+    addLabel(axis, value, labelValue){
         let start = this.meta.start;
         let dim = this.meta.dim;
         let shift = vec3.create();
 
         for (let i  = 0; i < 4; ++i){
             let position = vec3.create();
+
             if (axis == 0){
                 position[0] = value;
                 position[1] = i % 2             ? start[1] : start[1] + dim[1]; 
@@ -129,13 +150,14 @@ class Box extends UnitBox {
             let quad = new Quad(this.gl, this.programs);
             quad.init({
                 position: position,
-                value: value,
+                value: labelValue,
             });
 
             quad.boxMeta = {
                 axis: axis,
                 edge: i,
             };
+
             this.labels.push(quad);
 
         }

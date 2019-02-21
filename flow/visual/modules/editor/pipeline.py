@@ -1,4 +1,6 @@
 import json
+import gc
+
 from .exceptions import EditorError
 from .nodes import DataNode, GlyphsNode, PointsNode, nodes
 from .model import notebook
@@ -107,7 +109,9 @@ def compute(notebook_code, graph, order, message):
         data[node_id] = node_obj(in_data, message)
     
     message('<a href="/media/notebook/{}/output.flow" download>download result</a>'.format(notebook_code))
-    print(data)
+    
+    del data, dgraph
+    gc.collect()
 
 
 

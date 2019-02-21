@@ -41,6 +41,10 @@ uniform vec2 time;
 uniform int colorMapSize;
 uniform vec4 colorMap[5];
 
+//scale and shift
+uniform float scaleFactor;
+uniform vec3 shift;
+
 //out
 varying vec3 fragColor;
 varying float sigma;
@@ -96,6 +100,18 @@ vec3 colorfunc(float sigma) {
 	float factor = index - floor(index);
 
 	return (colorMap[low] * (1.0 - factor) + colorMap[high] * factor).xyz;
+}
+
+vec3 scaleshift(vec3 position) {
+	return (position - shift) * scaleFactor;
+}
+
+float significance(float l) {
+	//positive for vector longer than median, normalized by std...
+	float dist = (l - medianSize) / stdSize;
+	//applying sigmoid to transform... 
+	//sigma \elem [0, 1] is sort of significance value for the vector...?
+	return 1.0 / (1.0 + exp(-dist));
 }
 
 //interpolate using hermit
@@ -162,12 +178,8 @@ void main(){
 	float v2 = length(fieldValue2);
 	float v3 = length(fieldValue3);
 
-	float l = interpolate(t_local, v0, v1, v2, v3);
-	//positive for vector longer than median, normalized by std...
-	float dist = (l - medianSize) / stdSize;
-	//applying sigmoid to transform... 
-	//sigma \elem [0, 1] is sort of significance value for the vector...?
-	sigma = 1.0 / (1.0 + exp(-dist));
+	float l = interpolate(t_local, v0, v1, v2, v3);	
+	sigma = significance(l);
 
 	//transform vertex into place
 	mat4 mField = getRotationMat(value);
@@ -187,5 +199,5 @@ void main(){
 		fragColor = color;
 	}
 
-	gl_Position =  mProj * mView * mWorld * vec4(vertex + position, 1.0);
+	gl_Position =  mProj * mView * mWorld * vec4(vertex + scaleshift(position), 1.0);
 }
