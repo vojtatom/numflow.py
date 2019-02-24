@@ -13,7 +13,7 @@ class StreamGeometryNode(Node):
                 'value' : 'streamline geometry',
             },
 
-            'thickness' : {
+            'size' : {
                 'type': 'input',
                 'value' : '1',
             },
@@ -49,6 +49,12 @@ class StreamGeometryNode(Node):
         },
     }
     
+    parsing = {
+       'size' :  lambda x: float(x),
+       'sampling' : lambda x: int(x),
+       'divisions' : lambda x: int(x),
+    }
+
     title = 'stream geometry'
     
     def __init__(self, id, data, notebook_code, message):
@@ -59,10 +65,10 @@ class StreamGeometryNode(Node):
         """   
         self.id = id
 
-        fields = ['thickness', 'sampling',  'divisions', 'appearance']
+        fields = ['size', 'sampling',  'divisions', 'appearance']
         self.check_dict(fields, data, self.id, self.title)
         self._sampling = data['sampling']
-        self._thickness = data['thickness']
+        self._size = data['size']
         self._divisions = data['divisions']
         self._appearance = data['appearance']
 
@@ -89,7 +95,7 @@ class StreamGeometryNode(Node):
 
                 meta = copy.deepcopy(stream_group['meta'])
                 meta['sampling'] = self._sampling
-                meta['thickness'] = self._thickness
+                meta['size'] = self._size
                 meta['divisions'] = self._divisions
                 meta['appearance'] = self._appearance
                 new['meta'] = meta
@@ -98,16 +104,4 @@ class StreamGeometryNode(Node):
 
         #return all flatenned
         return {'streamlines' : transformed_streams}
-
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {
-            'thickness': float(data['data']['structure']['thickness']['value']),
-            'appearance': data['data']['structure']['appearance']['value'],
-            'divisions': data['data']['structure']['divisions']['value'],
-            'sampling': int(data['data']['structure']['sampling']['value']),
-        }
-        return parsed
-
 

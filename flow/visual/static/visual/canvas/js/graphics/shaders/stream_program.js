@@ -116,9 +116,10 @@ class StreamProgram extends MethodProgram {
                 size: 4,
                 divisor: 1,
             },
-        ]
+        ];
 
         for (let attr of attrs) {
+            console.log(attr);
             this.bindAttribute(attr);
         }
 
@@ -150,7 +151,7 @@ class StreamProgram extends MethodProgram {
     bindAttrTime() {
         this.gl.useProgram(this.program);
         this.bindAttribute({
-            attribute: this.attributes.time,
+            attribute: this.attributes.tLocal,
             size: 1,
             stride: 1 * Float32Array.BYTES_PER_ELEMENT,
             offfset: 0,

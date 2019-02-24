@@ -70,6 +70,10 @@ class ColorNode(Node):
             }
         },
     }
+
+    parsing = {
+        'sampling' : lambda x : int(x),
+    }
     
     title = 'color'
     
@@ -160,18 +164,4 @@ class ColorNode(Node):
                         [0, 0, 0, 1],
                         ]
                 }
-
-
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {
-            'sampling': int(data['data']['structure']['sampling']['value'])
-        }
-        for field in ['color_0', 'color_1', 'color_2', 'color_3', 'color_4']:
-            try:
-                parsed['data'][field] = data['data']['structure'][field]['value']
-            except:
-                pass
-        return parsed
 

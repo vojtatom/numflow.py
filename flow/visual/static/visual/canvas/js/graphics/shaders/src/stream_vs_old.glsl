@@ -1,9 +1,6 @@
 precision highp float;
 precision highp int;
 
-
-/***** STREAM SHADER ******/
-
 attribute vec3 vertPosition;
 attribute vec3 vertNormal;
 attribute float t_local;
@@ -19,31 +16,26 @@ attribute vec3 fieldValue2;
 attribute vec3 fieldValue3;
 attribute vec4 t_global;
 
-/***** UNIFORMS ******/
-
-//modifications
-uniform float size;
-uniform vec2 time;
-
-/*** COMMON UNIFORMS ***/
 //matrices
 uniform mat4 mWorld;
 uniform mat4 mView;
 uniform mat4 mProj;
 
-//world settings
-uniform vec3 light;
-
-//stats
-uniform float minSize;
-uniform float maxSize;
-uniform float meanSize;
+//stats and scaling
 uniform float medianSize;
 uniform float stdSize;
 
-//geometry
-uniform int appearance; /* 0 - transparent, 1 - solid */
+//modifications
 uniform float brightness;
+uniform float size;
+uniform vec3 light;
+/**
+ * 0 - transparent
+ * 1 - solid
+ */
+uniform int appearance;
+uniform int scale;
+uniform vec2 time;
 
 //color map
 uniform int colorMapSize;
@@ -52,8 +44,6 @@ uniform vec4 colorMap[5];
 //scale and shift
 uniform float scaleFactor;
 uniform vec3 shift;
-/*** END COMMON UNIFORMS ***/
-
 
 //out
 varying vec3 fragColor;
@@ -67,10 +57,10 @@ varying float visible;
  * into the desired setup. Used to rotate glyphs according
  * to vecotr field
  */
-mat4 getRotationMat(vec3 vector)
+mat4 getRotationMat(vec3 value)
 {
 	vec3 unit = vec3(1, 0, 0);
-	vec3 f = normalize(vector);
+	vec3 f = normalize(value);
 	vec3 cross = cross(f, unit);
 	vec3 a = normalize(cross);
 	float s = length(cross);
@@ -102,9 +92,7 @@ vec3 phong(vec3 light, float sigma, vec3 ver_position, vec3 ver_normal){
     return ret;
 }
 
-/**
- * Get color from colormap
- */
+//implementation for length (not direction!!!)
 vec3 colorfunc(float sigma) {
 	float index = float(colorMapSize - 1) * sigma;
 	int low = int(floor(index));
@@ -114,16 +102,10 @@ vec3 colorfunc(float sigma) {
 	return (colorMap[low] * (1.0 - factor) + colorMap[high] * factor).xyz;
 }
 
-/**
- * Space shift and scale
- */
 vec3 scaleshift(vec3 position) {
 	return (position - shift) * scaleFactor;
 }
 
-/**
- * Calculate significance
- */
 float significance(float l) {
 	//positive for vector longer than median, normalized by std...
 	float dist = (l - medianSize) / stdSize;
@@ -172,29 +154,22 @@ float interpolate(float t, float v0, float v1, float v2,float v3) {
 
 
 void main(){
-	//interpolate corresponding time factor (streamline parameter)
 	float t = interpolate(t_local, t_global.x, t_global.y, t_global.z, t_global.w);
-
-	//setup correct visibility factor
 	if (time.x <= t && time.y >= t){
 		visible = 1.0;
 	} else {
 		visible = 0.0;
 	}
 
-	//tangent vectors
-	vec3 vtan0 = (fieldPosition2 - fieldPosition0) / 2.0;
+	vec3 vtan0 = (fieldPosition2 - fieldPosition0) / 2.0;;
 	vec3 vtan1 = (fieldPosition3 - fieldPosition1) / 2.0;
 
-	//tangent lengths
 	float ltan0 = length(vtan0);
 	float ltan1 = length(vtan1);
 
-	//construct tangents
 	vec3 tan0 = ltan0 * normalize(fieldValue1);
 	vec3 tan1 = ltan1 * normalize(fieldValue2);
 
-	//interpolate actual values from precalculated local points
 	vec3 position = interpolateVec(t_local, fieldPosition1, fieldPosition2, tan0, tan1);
 	vec3 value = interpolateNorm(t_local, fieldPosition1, fieldPosition2, tan0, tan1);
 
@@ -203,29 +178,26 @@ void main(){
 	float v2 = length(fieldValue2);
 	float v3 = length(fieldValue3);
 
-	//interpolate vector length
 	float l = interpolate(t_local, v0, v1, v2, v3);	
 	sigma = significance(l);
 
 	//transform vertex into place
 	mat4 mField = getRotationMat(value);
-	vec4 vertex = mWorld * mField * vec4(vertPosition * size, 1.0);
-	vertex = vertex + vec4(scaleshift(position), 0.0);
-	vec4 vertex_normal = mWorld * mField * vec4(vertNormal, 1.0);
-	
+	vec3 vertex = (mField * vec4(vertPosition * size, 1.0)).xyz;
+	vec3 vertex_normal = (mField * vec4(vertNormal, 1.0)).xyz;
+
 	//shade
-	vec3 color;
 	if (appearance == 1){
-		color = phong(light, sigma, vertex.xyz, vertex_normal.xyz);
+		//solid
+		vec3 color = phong(light, sigma, (mWorld * vec4(vertex, 1.0)).xyz, (mWorld * vec4(vertex_normal, 1)).xyz);
+		color *= colorfunc(sigma);
+		fragColor = color;
 	} else {
-		color = vec3(1.0);
+		//transparent
+		vec3 color = vec3(1.0);
+		color *= colorfunc(sigma);
+		fragColor = color;
 	}
 
-	//rest of the coloring
-	color *= colorfunc(sigma);
-	color *= brightness;
-	fragColor = color;
-
-	//finalize transformation
-	gl_Position =  mProj * mView * vertex;
+	gl_Position =  mProj * mView * mWorld * vec4(vertex + scaleshift(position), 1.0);
 }

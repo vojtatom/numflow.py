@@ -1,6 +1,9 @@
 precision highp float;
 precision highp int;
 
+
+/***** STREAM SHADER ******/
+
 attribute vec3 vertPosition;
 attribute vec3 vertNormal;
 attribute float t_local;
@@ -19,7 +22,7 @@ attribute vec4 t_global;
 /***** UNIFORMS ******/
 
 //modifications
-uniform int size;
+uniform float size;
 uniform vec2 time;
 
 /*** COMMON UNIFORMS ***/
@@ -35,7 +38,7 @@ uniform vec3 light;
 uniform float minSize;
 uniform float maxSize;
 uniform float meanSize;
-uniform float medainSize;
+uniform float medianSize;
 uniform float stdSize;
 
 //geometry
@@ -180,7 +183,7 @@ void main(){
 	}
 
 	//tangent vectors
-	vec3 vtan0 = (fieldPosition2 - fieldPosition0) / 2.0;;
+	vec3 vtan0 = (fieldPosition2 - fieldPosition0) / 2.0;
 	vec3 vtan1 = (fieldPosition3 - fieldPosition1) / 2.0;
 
 	//tangent lengths

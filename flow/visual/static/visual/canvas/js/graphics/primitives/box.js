@@ -197,20 +197,17 @@ class Box extends UnitBox {
         if(!this.isRenderReady)
             return;
 
-        super.render({
-            model: this.model,
-            view: camera.view,
-            projection: camera.projection,
-        });
+        super.render(camera, light);
     }
 
     renderLabels(camera, light){
-        for (let l of this.labels){
+        for (let lable of this.labels){
 
-            if (this.activeEdge[l.boxMeta.axis] !== l.boxMeta.edge)
+            if (this.activeEdge[lable.boxMeta.axis] !== lable.boxMeta.edge)
                 continue;
 
-            l.render(camera, light);
+                lable.render(camera, light);
+            //console.log('rendering', 'axis', lable.boxMeta.axis, 'edge', this.activeEdge[lable.boxMeta.axis]);
         }
     }
 

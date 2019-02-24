@@ -24,12 +24,6 @@ class GlyphsNode(Node):
                 'choices': ['solid', 'transparent'],
                 'value' : 'solid',
             },
-
-            'scale' : {
-                'type': 'select',
-                'choices': ['normal', 'log'],
-                'value' : 'normal',
-            },
         },
 
         'in': {
@@ -49,6 +43,10 @@ class GlyphsNode(Node):
             },
         },
     }
+
+    parsing = {
+       'size' :  lambda x: float(x),
+    }
     
     title = 'glyphs'
     
@@ -60,11 +58,10 @@ class GlyphsNode(Node):
         """   
         self.id = id
 
-        fields = ['size', 'appearance', 'scale']
+        fields = ['size', 'appearance']
         self.check_dict(fields, data, self.id, self.title)
         self._size = data['size']
         self._appearance = data['appearance']
-        self._scale = data['scale']
 
 
     def __call__(self, indata, message):    
@@ -96,21 +93,9 @@ class GlyphsNode(Node):
                 'sampling': 4,
                 'geometry': 'line',
                 'colormap': ColorNode.get_default_cm(),
-                'scale': self._scale,
                 'appearance': self._appearance,
             }
             
         #return all flatenned
         return {'glyphs' : {'values': values, 'points': points, 'meta': meta}}
-
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {
-            'size': float(data['data']['structure']['size']['value']),
-            'appearance': data['data']['structure']['appearance']['value'],
-            'scale': data['data']['structure']['scale']['value']
-        }
-        return parsed
-
 

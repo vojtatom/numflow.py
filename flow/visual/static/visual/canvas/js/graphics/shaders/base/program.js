@@ -21,6 +21,8 @@ class Program {
             mat4: this.gl.uniformMatrix4fv,
         }
 
+        this.uniforms = {};
+
         this.loaded = false;
     }
 
@@ -62,7 +64,6 @@ class Program {
     }
 
     setupUniforms(unif) {
-        this.uniforms = {};
 
         for(let key in unif){
             this.uniforms[key] = {
@@ -75,6 +76,8 @@ class Program {
     }
 
     bindAttribute(set){
+        //console.log(set);
+
         this.gl.enableVertexAttribArray(set.attribute);
         this.gl.vertexAttribPointer(set.attribute, set.size, this.gl.FLOAT, this.gl.FALSE, set.stride, set.offset);
         if ('divisor' in set){
@@ -85,10 +88,12 @@ class Program {
 
     bindUniforms(options) {
         for(let key in this.uniforms){
-            if (this.uniforms[key].assignFunction == this.GLType.mat4){
-                this.uniforms[key].assignFunction(this.uniforms[key].location, this.gl.FALSE, options[key]);
+            if (this.uniforms[key].assignFunction === this.GLType.mat4){
+                //console.log(key, options[key]);
+                this.uniforms[key].assignFunction.apply(this.gl, [this.uniforms[key].location, this.gl.FALSE, options[key]]);
             } else {
-                this.uniforms[key].assignFunction(this.uniforms[key].location, options[key]);
+                //console.log(key, options[key]);
+                this.uniforms[key].assignFunction.apply(this.gl, [this.uniforms[key].location, options[key]]);
             }
         }
     }

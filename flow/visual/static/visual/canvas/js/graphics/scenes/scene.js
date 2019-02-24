@@ -26,6 +26,7 @@ class Scene{
         if ('glyphs' in contents){
             for (let glyphs_group of contents.glyphs){
                 let glyphs = new Glyphs(this.gl, programs);
+                glyphs_group.stats = contents.stats;
                 glyphs.init(glyphs_group);
                 //console.log(glyphs);
                 this.objects.push(glyphs);

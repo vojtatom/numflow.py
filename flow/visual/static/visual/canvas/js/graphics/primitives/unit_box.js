@@ -34,7 +34,7 @@ class UnitBox extends Primitive {
             2, 6,
         ];
 
-        var fullBoxInd = [
+        /*var fullBoxInd = [
             6, 5, 4,
             6, 4, 7,
             5, 1, 0,
@@ -47,59 +47,41 @@ class UnitBox extends Primitive {
             7, 0, 3,
             2, 1, 5,
             2, 5, 6,
-        ];
+        ];*/
 
         // init VBO
         let vbo = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, vbo);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(boxVert), this.gl.STATIC_DRAW);
+        this.addBufferVBO(vbo);
 
         // init EBO
         let ebo = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, ebo);
         this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(boxInd), this.gl.STATIC_DRAW);
-
-        // init full EBO
-        let fillebo = this.gl.createBuffer();
-        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, fillebo);
-        this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(fullBoxInd), this.gl.STATIC_DRAW);
+        this.addBufferEBO(ebo);
 
         //init VAO
         let vao = this.gl.createVertexArray();
         this.gl.bindVertexArray(vao);
-        this.program.setAttrs();
+        this.addBufferVAO(vao);
+        this.program.bindAttrPosition();
         this.gl.bindVertexArray(null);
-        
-        this.buffers = {
-            vbo: vbo,
-            ebo: ebo,
-            fillebo: fillebo,
-            vao: vao,
-            size: boxInd.length,
-            fillsize: fullBoxInd.length,
-        };
+            
+        this.sizes.instanceSize = boxInd.length;
     }
 
     render(camera, light) {
         this.program.bind();
+        this.bindBuffersAndTextures();
 
-        this.gl.bindVertexArray(this.buffers.vao);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.vbo);
-        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.ebo);
+        let uniforms = this.uniformDict(camera, light);
+        this.program.bindUniforms(uniforms);
 
-        this.program.bindUniforms(uniforms)
-
-        this.gl.drawElements(this.gl.LINES, this.buffers.size, this.gl.UNSIGNED_SHORT, 0);
+        this.gl.drawElements(this.gl.LINES, this.sizes.instanceSize, this.gl.UNSIGNED_SHORT, 0);
         //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
         this.program.unbind();
-    }
-
-    delete(){
-        this.gl.deleteBuffer(this.buffers.vbo);
-        this.gl.deleteBuffer(this.buffers.ebo);
-        this.gl.deleteBuffer(this.buffers.fillebo);
-        this.gl.deleteVertexArray(this.buffers.vao); 
     }
 }

@@ -36,15 +36,9 @@ class StreamlinesNode(Node):
                 'value' : 'solid',
             },
 
-            'thickness' : {
+            'size' : {
                 'type': 'input',
                 'value' : '0',
-            },
-
-            'scale' : {
-                'type': 'select',
-                'choices': ['normal', 'log'],
-                'value' : 'normal',
             },
         },
 
@@ -65,6 +59,12 @@ class StreamlinesNode(Node):
             },
         },
     }
+
+    parsing = {
+        't_0' : lambda x: float(x),
+        't_bound' : lambda x: float(x),
+        'size' : lambda x: float(x),
+    }
     
     title = 'streamlines'
     
@@ -76,16 +76,14 @@ class StreamlinesNode(Node):
         """   
 
         self.id = id
-        fields = ['mode', 't_0', 't_bound', 'appearance', 'thickness', 'scale']
+        fields = ['mode', 't_0', 't_bound', 'appearance', 'size']
         self.check_dict(fields, data, self.id, self.title)
         
         self._t0 = data['t_0']
         self._tbound = data['t_bound']
         self._mode = data['mode']
         self._appearance = data['appearance']
-        self._thickness = data['thickness']
-        self._sampling = data['thickness']
-        self._scale = data['scale']
+        self._size = data['size']
 
 
     def __call__(self, indata, message):    
@@ -129,8 +127,7 @@ class StreamlinesNode(Node):
         meta = {
             'colormap': ColorNode.get_default_cm(),
             'appearance': self._appearance,
-            'thickness': self._thickness,
-            'scale': self._scale,
+            'size': self._size,
             't0': self._t0,
             'tbound': self._tbound,
             'sampling': 6,
@@ -140,17 +137,5 @@ class StreamlinesNode(Node):
         #return all flatenned
         return {'streamlines' : {'values': values, 'points': points, 'lengths': lengths, 'times': times, 'meta': meta}}
 
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {
-            'mode' : data['data']['structure']['mode']['value'],
-            't_0' : float(data['data']['structure']['t_0']['value']),
-            't_bound' : float(data['data']['structure']['t_bound']['value']),
-            'appearance' : data['data']['structure']['appearance']['value'],
-            'thickness' : float(data['data']['structure']['thickness']['value']),
-            'scale' : data['data']['structure']['scale']['value'],
-        }
-        return parsed
 
 

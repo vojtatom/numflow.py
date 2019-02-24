@@ -9,15 +9,15 @@ class Appearance {
         return 0;
     }
 
-    static get encode() {
+    static encode(a) {
         return {
             transparent: 0,
             solid: 1,
-        };
+        }[a];
     }
 
-    static get decode() {
-        return ['transparent', 'solid'];
+    static decode(a) {
+        return ['transparent', 'solid'][a];
     }
 }
 
@@ -31,15 +31,15 @@ class Scale {
         return 1;
     }
 
-    static get encode() {
+    static encode(a) {
         return {
             log: 0,
             normal: 1,
-        };
+        }[a];
     }
 
-    static get decode() {
-        return ['log', 'normal'];
+    static decode(a) {
+        return ['log', 'normal'][a];
     }
 }
 
@@ -60,17 +60,17 @@ class CoordMode {
         return 3;
     }
 
-    static get encode() {
+    static encode(a) {
         return {
             xyz: 0,
             x: 1,
             y: 2,
             z: 3,
-        };
+        }[a];
     }
 
-    static get decode() {
-        return ['xyz', 'x', 'y', 'z'];
+    static decode(a) {
+        return ['xyz', 'x', 'y', 'z'][a];
     }
 }
 

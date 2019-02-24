@@ -56,14 +56,3 @@ class DataNode(Node):
             :param indata: data coming from connected nodes, can be None here.
         """   
         return {'dataset' : dataset_kernel(self._path, self._mode)}
-
-
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {
-            'code' : data['data']['structure']['code']['value'],
-            'mode' : data['data']['structure']['mode']['value']
-        }
-        return parsed
-

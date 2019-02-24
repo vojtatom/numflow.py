@@ -1,5 +1,6 @@
 from .base import Node
 import numpy as np
+import copy
 
 from ..exceptions import NodeError
 
@@ -58,6 +59,12 @@ class TranslateNode(Node):
                 'multipart': True
             },
         },
+    }
+
+    parsing = {
+        'x_translate': lambda x: float(x),
+        'y_translate': lambda x: float(x),
+        'z_translate': lambda x: float(x),
     }
     
     title = 'translate'
@@ -147,16 +154,5 @@ class TranslateNode(Node):
         if len(transformed_layers) > 0:
             out['layer'] = transformed_layers
         return out
-
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {
-            'x_translate': float(data['data']['structure']['x_translate']['value']),
-            'y_translate': float(data['data']['structure']['y_translate']['value']),
-            'z_translate': float(data['data']['structure']['z_translate']['value']),
-            'part': data['data']['structure']['part']['value'],
-        }
-        return parsed
 
 

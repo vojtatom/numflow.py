@@ -57,6 +57,18 @@ class PointsNode(Node):
         },
     }
 
+    parsing = {
+        'x_min': lambda x: float(x),
+        'y_min': lambda x: float(x),
+        'z_min': lambda x: float(x),
+        'x_max': lambda x: float(x),
+        'y_max': lambda x: float(x),
+        'z_max': lambda x: float(x),
+        'x_sampling': lambda x: float(x),
+        'y_sampling': lambda x: float(x),
+        'z_sampling': lambda x: float(x),
+    }
+
     title = 'points'
     
     def __init__(self, id, data, notebook_code, message):
@@ -83,15 +95,3 @@ class PointsNode(Node):
             :param indata: data coming from connected nodes, can be None here.
         """   
         return {'points': points_kernel(self._start, self._end, self._sampling)}
-
-
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {}
-        for field in ['x_min', 'y_min', 'z_min', 'x_max', 'y_max', 'z_max', 'x_sampling', 'y_sampling', 'z_sampling']:
-            try:
-                parsed['data'][field] = float(data['data']['structure'][field]['value'])
-            except:
-                pass
-        return parsed

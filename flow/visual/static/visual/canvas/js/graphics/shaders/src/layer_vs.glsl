@@ -1,6 +1,10 @@
 precision mediump float;
 precision highp int;
 
+
+/***** LAYER SHADER ******/
+
+
 //buffer attributes
 //attribute vec3 vertPosition;
 //attribute vec3 vertNormal;
@@ -26,7 +30,7 @@ uniform vec3 light;
 uniform float minSize;
 uniform float maxSize;
 uniform float meanSize;
-uniform float medainSize;
+uniform float medianSize;
 uniform float stdSize;
 
 //geometry

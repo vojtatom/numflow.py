@@ -61,6 +61,7 @@ class Glyphs extends MethodPrimitive {
         //Finish up...
         this.loaded = true;  
         //console.log(this.gl.getError());
+        console.log(this.program);
     }
 
     initGlyph(geometry, sampling){
@@ -102,7 +103,7 @@ class Glyphs extends MethodPrimitive {
         
         //create uniforms
         let uniforms = this.uniformDict(camera, light, CoordMode.decode(this.meta.mode));
-        this.program.setUnifs(uniforms);
+        this.program.bindUniforms(uniforms);
 
         this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.sizes.instanceSize, this.sizes.instances);
         //console.log(this.gl.getError());
@@ -124,7 +125,7 @@ class Glyphs extends MethodPrimitive {
                     () => {this.meta.appearance = Appearance.solid}, 
                     () => {this.meta.appearance = Appearance.transparent},
                 ],
-                value: 'meta' in this ? Appearance.decode[this.meta.appearance]: this._data.meta.appearance,
+                value: 'meta' in this ? Appearance.decode(this.meta.appearance): this._data.meta.appearance,
             },
             size: {
                 type: 'slider',
