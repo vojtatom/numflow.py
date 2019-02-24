@@ -85,11 +85,11 @@ class WidgetUI {
         return this.selected === this.fieldElements.length - 1;
     }
 
-    nextValue(){
-        this.fieldElements[this.selected].next();
+    nextValue(alternative){
+        this.fieldElements[this.selected].next(alternative);
     }
 
-    previousValue(){
-        this.fieldElements[this.selected].previous();
+    previousValue(alternative){
+        this.fieldElements[this.selected].previous(alternative);
     }
 }

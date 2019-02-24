@@ -178,18 +178,18 @@ class FlowAppUI {
         }
     }
 
-    nextValue(){
+    nextValue(alternative){
         if (!this.menuVisible)
             return;
 
-        this.scenes[this.active].nextValue();
+        this.scenes[this.active].nextValue(alternative);
     }
 
-    previousValue(){
+    previousValue(alternative){
         if (!this.menuVisible)
             return;
 
-        this.scenes[this.active].previousValue();
+        this.scenes[this.active].previousValue(alternative);
     }
 
     toggleMenu(){

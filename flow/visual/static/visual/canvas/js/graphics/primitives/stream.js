@@ -156,8 +156,11 @@ class Stream extends MethodPrimitive {
         //meta and stats
         this.metaFromData(data.meta, data.stats);
         this.appendMeta({
-            size: data.meta.size + 1.0,
+            size: data.meta.size,
             time: [data.meta.t0, data.meta.tbound],
+            t0: data.meta.t0,
+            tbound: data.meta.tbound,
+            culling: true,
         });
 
         //init bounding box
@@ -165,70 +168,11 @@ class Stream extends MethodPrimitive {
 
         //Finish up...
         this.loaded = true;  
-        console.log(this.gl.getError());
-        console.log(this.program);
-        console.log(this.meta);
+        //console.log(this.gl.getError());
+        //console.log(this.program);
+        //console.log(this.meta);
 
-        console.log(this.buffers);
-
-        /*let getProgramInfo = function(gl, program) {
-            var result = {
-                attributes: [],
-                uniforms: [],
-                attributeCount: 0,
-                uniformCount: 0
-            },
-                activeUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS),
-                activeAttributes = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
-        
-            // Taken from the WebGl spec:
-            // http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14
-            var enums = {
-                0x8B50: 'FLOAT_VEC2',
-                0x8B51: 'FLOAT_VEC3',
-                0x8B52: 'FLOAT_VEC4',
-                0x8B53: 'INT_VEC2',
-                0x8B54: 'INT_VEC3',
-                0x8B55: 'INT_VEC4',
-                0x8B56: 'BOOL',
-                0x8B57: 'BOOL_VEC2',
-                0x8B58: 'BOOL_VEC3',
-                0x8B59: 'BOOL_VEC4',
-                0x8B5A: 'FLOAT_MAT2',
-                0x8B5B: 'FLOAT_MAT3',
-                0x8B5C: 'FLOAT_MAT4',
-                0x8B5E: 'SAMPLER_2D',
-                0x8B60: 'SAMPLER_CUBE',
-                0x1400: 'BYTE',
-                0x1401: 'UNSIGNED_BYTE',
-                0x1402: 'SHORT',
-                0x1403: 'UNSIGNED_SHORT',
-                0x1404: 'INT',
-                0x1405: 'UNSIGNED_INT',
-                0x1406: 'FLOAT'
-            };
-        
-            // Loop through active uniforms
-            for (var i=0; i < activeUniforms; i++) {
-                var uniform = gl.getActiveUniform(program, i);
-                uniform.typeName = enums[uniform.type];
-                result.uniforms.push(uniform);
-                result.uniformCount += uniform.size;
-            }
-        
-            // Loop through active attributes
-            for (var i=0; i < activeAttributes; i++) {
-                var attribute = gl.getActiveAttrib(program, i);
-                attribute.typeName = enums[attribute.type];
-                result.attributes.push(attribute);
-                result.attributeCount += attribute.size;
-            }
-        
-            return result;
-        }
-
-        console.table(getProgramInfo(this.gl, this.program.program).uniforms);*/
-        
+        //console.log(this.buffers);
     }
 
     initSegment(sampling, divisions){
@@ -264,6 +208,13 @@ class Stream extends MethodPrimitive {
         if(!this.isRenderReady)
             return;
 
+        let culling = this.meta.culling;
+        console.log(culling);
+        if (culling){
+            this.gl.enable(this.gl.CULL_FACE);
+            this.gl.cullFace(this.gl.BACK);
+        }
+
         this.program.bind();
         this.bindBuffersAndTextures();
 
@@ -273,13 +224,20 @@ class Stream extends MethodPrimitive {
 
         //console.log(this.sizes.instanceSize, this.sizes.instances);
         this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.sizes.instanceSize, this.sizes.instances);
-        console.log(this.gl.getError());
+        //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
         this.program.unbind();
+
+        if (culling){
+            this.gl.disable(this.gl.CULL_FACE);
+        }
     }
 
     get ui(){
+        let t0 = 'meta' in this ? this.meta.t0: this._data.meta.t0;
+        let tbound = 'meta' in this ? this.meta.tbound: this._data.meta.tbound;
+
         return {
             type: {
                 type: 'display',
@@ -294,13 +252,46 @@ class Stream extends MethodPrimitive {
                 ],
                 value: 'meta' in this ? Appearance.decode(this.meta.appearance): this._data.meta.appearance,
             },
+            culling: {
+                type: 'select',
+                options: ['on', 'off'],
+                callbacks: [
+                    () => {this.meta.culling = true}, 
+                    () => {this.meta.culling = false},
+                ],
+                value: 'on',
+            },
             size: {
                 type: 'slider',
                 min: 0.01,
                 max: 10,
                 delta: 0.01,
                 value: 'meta' in this ? this.meta.size: this._data.meta.size,
-                callback: (value) => { this.meta.size = value + 1.0 },
+                callback: (value) => { this.meta.size = value },
+            },
+            t_start: {
+                type: 'slider',
+                min: t0,
+                max: tbound,
+                delta:  (tbound - t0) / 1000,
+                value: t0,
+                callback: (value) => { this.meta.time[0] = value },
+            },
+            t_end: {
+                type: 'slider',
+                min: t0,
+                max: tbound,
+                delta:  (tbound - t0) / 1000,
+                value: tbound,
+                callback: (value) => { this.meta.time[1] = value },
+            },
+            brightness: {
+                type: 'slider',
+                min: 0,
+                max: 2,
+                delta:  0.01,
+                value: 1,
+                callback: (value) => { this.meta.brightness = value },
             }
         }
     }

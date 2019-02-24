@@ -15,7 +15,7 @@ uniform int appearance;
 void main()
 {
     //should be 1.0 but on some nvidia cards that seems not to be exactly the value
-    if (visible < 0.5)
+    if (visible < 0.9)
         discard; 
 
     if (appearance == 0){

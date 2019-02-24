@@ -105,7 +105,8 @@ class FlowApp {
             if (this.interface.keys[16]){
                 this.ui.nextScene();
             } else {
-                this.ui.nextValue();
+                //parameter if ctrl is pressed
+                this.ui.nextValue(this.interface.keys[17]);
             }
         }
 
@@ -114,7 +115,7 @@ class FlowApp {
             if (this.interface.keys[16]){
                 this.ui.previousScene();
             } else {
-                this.ui.previousValue();
+                this.ui.previousValue(this.interface.keys[17]);
             }
         }
 
