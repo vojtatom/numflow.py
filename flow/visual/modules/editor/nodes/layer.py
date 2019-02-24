@@ -14,21 +14,10 @@ class LayerNode(Node):
                 'value' : 'layer',
             },
 
-            'thickness' : {
-                'type': 'input',
-                'value' : '1',
-            },
-
             'appearance' : {
                 'type': 'select',
                 'choices': ['solid', 'transparent'],
                 'value' : 'solid',
-            },
-
-            'scale' : {
-                'type': 'select',
-                'choices': ['normal', 'log'],
-                'value' : 'normal',
             },
         },
 
@@ -49,6 +38,8 @@ class LayerNode(Node):
             },
         },
     }
+
+    parsing = {}
     
     title = 'layer'
     
@@ -60,11 +51,9 @@ class LayerNode(Node):
         """   
         self.id = id
 
-        fields = ['thickness', 'appearance', 'scale']
+        fields = ['appearance']
         self.check_dict(fields, data, self.id, self.title)
-        self._thickness = data['thickness']
         self._appearance = data['appearance']
-        self._scale = data['scale']
 
 
     def __call__(self, indata, message):    
@@ -82,24 +71,12 @@ class LayerNode(Node):
 
         #layer meta... 
         meta = {
-                'thickness': self._thickness,
                 'colormap': ColorNode.get_default_cm(),
-                'scale': self._scale,
                 'appearance': self._appearance,
                 'geometry': indata['plane']['meta'],
             }
 
         #return all flatenned
         return {'layer' : {'values': values, 'points': points, 'meta': meta}}
-
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {
-            'thickness': float(data['data']['structure']['thickness']['value']),
-            'appearance': data['data']['structure']['appearance']['value'],
-            'scale': data['data']['structure']['scale']['value'],
-        }
-        return parsed
 
 

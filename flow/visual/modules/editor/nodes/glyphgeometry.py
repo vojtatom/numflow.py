@@ -49,6 +49,11 @@ class GlyphGeometryNode(Node):
             },
         },
     }
+
+    parsing = {
+       'size' :  lambda x: float(x),
+       'sampling' : lambda x: int(x),
+    }
     
     title = 'glyph geometry'
     
@@ -97,16 +102,4 @@ class GlyphGeometryNode(Node):
 
         #return all flatenned
         return {'glyphs' : transformed_glyphs}
-
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {
-            'size': float(data['data']['structure']['size']['value']),
-            'appearance': data['data']['structure']['appearance']['value'],
-            'geometry': data['data']['structure']['geometry']['value'],
-            'sampling': int(data['data']['structure']['sampling']['value']),
-        }
-        return parsed
-
 

@@ -8,8 +8,6 @@ class Stream extends MethodPrimitive {
         this.box = new Box(this.gl, programs);
 
         this.loaded = false;
-        this.buffers = {};
-
         this.model = mat4.create();
     }
 
@@ -35,6 +33,7 @@ class Stream extends MethodPrimitive {
 
         let vao = this.gl.createVertexArray();
         this.gl.bindVertexArray(vao);
+        this.addBufferVAO(vao);
             
         //glyph positions
 		let streambuffer = this.gl.createBuffer();
@@ -42,6 +41,7 @@ class Stream extends MethodPrimitive {
         this.gl.bufferData(this.gl.ARRAY_BUFFER, 
             segmentsCount * segsize * Float32Array.BYTES_PER_ELEMENT, 
             this.gl.STATIC_DRAW);
+        this.addBufferVBO(streambuffer);
 
 
         //offset in positions and values array
@@ -147,59 +147,87 @@ class Stream extends MethodPrimitive {
             buffer = null;
         }
 
-        this.program.setAttrs();
+        this.program.bindAttrBigBuffer();
+        this.sizes.instances = segmentsCount;
 
         this.initSegment(data.meta.sampling, data.meta.divisions);
         this.gl.bindVertexArray(null);
-        console.log(this.gl.getError());
-
-        this.buffers['field'] = {
-            buffer: streambuffer,
-            vao: vao,
-            size: segmentsCount,
-        };
-
-        //Calculate stats
-        let valueLengths = new Float32Array(values.length / 3);
-
-        for (let i = 0; i < values.length; i += 3){
-            let length = values[i] * values[i] + values[i + 1] * values[i + 1] + values[i + 2] * values[i + 2];
-            length = length;
-            valueLengths[i / 3] =  Math.sqrt(length);
-        }
-
-        this.meta = {
-            stats: data.stats.values,
-
-            thickness: data.meta.thickness + 1.0,
-            sampling: data.meta.sampling,
-            divisions: data.meta.divisions,
-            colormap: {
-                sampling: data.meta.colormap.sampling,
-                colors: [
-                    vec4.fromValues(...data.meta.colormap.colors[0]),
-                    vec4.fromValues(...data.meta.colormap.colors[1]),
-                    vec4.fromValues(...data.meta.colormap.colors[2]),
-                    vec4.fromValues(...data.meta.colormap.colors[3]),
-                    vec4.fromValues(...data.meta.colormap.colors[4]),
-                ] 
-            },
-            appearance: Appearance.encode[data.meta.appearance],
-            scale: Scale.encode[data.meta.scale],
-            timeLimits: [data.meta.t0, data.meta.tbound],
-
-            scaleFactor: data.stats.points.scale_factor,
-            shift: data.stats.points.center,
-        }
+        
+        //meta and stats
+        this.metaFromData(data.meta, data.stats);
+        this.appendMeta({
+            size: data.meta.size + 1.0,
+            time: [data.meta.t0, data.meta.tbound],
+        });
 
         //init bounding box
         this.initBoundingBox(data);
 
         //Finish up...
         this.loaded = true;  
-        //console.log(this.gl.getError());
-        //console.log(this.program);
-        //console.log(this.meta);
+        console.log(this.gl.getError());
+        console.log(this.program);
+        console.log(this.meta);
+
+        console.log(this.buffers);
+
+        /*let getProgramInfo = function(gl, program) {
+            var result = {
+                attributes: [],
+                uniforms: [],
+                attributeCount: 0,
+                uniformCount: 0
+            },
+                activeUniforms = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS),
+                activeAttributes = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
+        
+            // Taken from the WebGl spec:
+            // http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.14
+            var enums = {
+                0x8B50: 'FLOAT_VEC2',
+                0x8B51: 'FLOAT_VEC3',
+                0x8B52: 'FLOAT_VEC4',
+                0x8B53: 'INT_VEC2',
+                0x8B54: 'INT_VEC3',
+                0x8B55: 'INT_VEC4',
+                0x8B56: 'BOOL',
+                0x8B57: 'BOOL_VEC2',
+                0x8B58: 'BOOL_VEC3',
+                0x8B59: 'BOOL_VEC4',
+                0x8B5A: 'FLOAT_MAT2',
+                0x8B5B: 'FLOAT_MAT3',
+                0x8B5C: 'FLOAT_MAT4',
+                0x8B5E: 'SAMPLER_2D',
+                0x8B60: 'SAMPLER_CUBE',
+                0x1400: 'BYTE',
+                0x1401: 'UNSIGNED_BYTE',
+                0x1402: 'SHORT',
+                0x1403: 'UNSIGNED_SHORT',
+                0x1404: 'INT',
+                0x1405: 'UNSIGNED_INT',
+                0x1406: 'FLOAT'
+            };
+        
+            // Loop through active uniforms
+            for (var i=0; i < activeUniforms; i++) {
+                var uniform = gl.getActiveUniform(program, i);
+                uniform.typeName = enums[uniform.type];
+                result.uniforms.push(uniform);
+                result.uniformCount += uniform.size;
+            }
+        
+            // Loop through active attributes
+            for (var i=0; i < activeAttributes; i++) {
+                var attribute = gl.getActiveAttrib(program, i);
+                attribute.typeName = enums[attribute.type];
+                result.attributes.push(attribute);
+                result.attributeCount += attribute.size;
+            }
+        
+            return result;
+        }
+
+        console.table(getProgramInfo(this.gl, this.program.program).uniforms);*/
         
     }
 
@@ -211,30 +239,44 @@ class Stream extends MethodPrimitive {
         // init VBO for stream positions
 		let positions = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positions);
-		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vert), this.gl.STATIC_DRAW);
-
-        this.program.setVertexPositionAttrs();
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vert), this.gl.STATIC_DRAW);
+        this.addBufferVBO(positions);
+        this.program.bindAttrPosition();
 
         // init VBO for stream normals
 		let normals = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, normals);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(norm), this.gl.STATIC_DRAW); 
-        
-        this.program.setVertexNormalAttrs();
+        this.addBufferVBO(normals);
+        this.program.bindAttrNormal();
 
         // init VBO for stream local time
 		let times = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, times);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(t), this.gl.STATIC_DRAW); 
+        this.addBufferVBO(times);
+        this.program.bindAttrTime();
 
-        this.program.setVertexTimeAttrs();
-		
-		this.buffers['segment'] = {
-			positions: positions,
-            normals: normals,
-            times: times,
-			size: vert.length / 3,
-        };
+        this.sizes.instanceSize = vert.length / 3;
+    }
+
+    render(camera, light){
+        if(!this.isRenderReady)
+            return;
+
+        this.program.bind();
+        this.bindBuffersAndTextures();
+
+        let uniforms = this.uniformDict(camera, light);
+        //console.log(uniforms);
+        this.program.bindUniforms(uniforms);
+
+        //console.log(this.sizes.instanceSize, this.sizes.instances);
+        this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.sizes.instanceSize, this.sizes.instances);
+        console.log(this.gl.getError());
+
+        this.gl.bindVertexArray(null);
+        this.program.unbind();
     }
 
     get ui(){
@@ -250,70 +292,16 @@ class Stream extends MethodPrimitive {
                     () => {this.meta.appearance = Appearance.solid}, 
                     () => {this.meta.appearance = Appearance.transparent},
                 ],
-                value: 'meta' in this ? Appearance.decode[this.meta.appearance]: this._data.meta.appearance,
+                value: 'meta' in this ? Appearance.decode(this.meta.appearance): this._data.meta.appearance,
             },
-            thickenss: {
+            size: {
                 type: 'slider',
-                min: 0.1,
+                min: 0.01,
                 max: 10,
-                delta: 0.1,
-                value: 'meta' in this ? this.meta.thickness: this._data.meta.thickness,
-                callback: (value) => { this.meta.thickness = value + 1.0 },
+                delta: 0.01,
+                value: 'meta' in this ? this.meta.size: this._data.meta.size,
+                callback: (value) => { this.meta.size = value + 1.0 },
             }
         }
-    }
-
-    render(camera, light){
-        if(!this.isRenderReady)
-            return;
-
-        this.program.bind();
-        this.gl.bindVertexArray(this.buffers.field.vao);
-
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.field.streambuffer);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.segment.positions);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.segment.normals);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.segment.times);
-
-        this.program.setUnifs({
-            model: this.model,
-            view: camera.view,
-            projection: camera.projection,
-
-            median: this.meta.stats.xyz.median,
-            std: this.meta.stats.xyz.std,
-            thickness: this.meta.thickness,
-
-            light: light.position,
-            brightness: 1.0,
-            appearance: this.meta.appearance,
-            thickness: 0.1 * this.meta.thickness,
-            scale: this.meta.scale,
-            time: this.meta.timeLimits,
-
-            colorMapSize: this.meta.colormap.sampling,
-            colorMap0: this.meta.colormap.colors[0],
-            colorMap1: this.meta.colormap.colors[1],
-            colorMap2: this.meta.colormap.colors[2],
-            colorMap3: this.meta.colormap.colors[3],
-            colorMap4: this.meta.colormap.colors[4],
-
-            scaleFactor: this.meta.scaleFactor,
-            shift: this.meta.shift,
-        });
-
-        this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.buffers.segment.size, this.buffers.field.size);
-        //console.log(this.gl.getError());
-
-        this.gl.bindVertexArray(null);
-        this.program.unbind();
-    }
-
-    delete(){
-        this.gl.deleteBuffer(this.buffers.field.buffer);
-        this.gl.deleteBuffer(this.buffers.segment.positions);
-        this.gl.deleteBuffer(this.buffers.segment.normals);
-        this.gl.deleteBuffer(this.buffers.segment.times);3
-        this.gl.deleteVertexArray(this.buffers.field.vao);
     }
 }

@@ -61,6 +61,12 @@ class ScaleNode(Node):
         },
     }
     
+    parsing = {
+        'x_scale': lambda x: float(x),
+        'y_scale': lambda x: float(x),
+        'z_scale': lambda x: float(x),
+    }
+
     title = 'scale'
     
     def __init__(self, id, data, notebook_code, message):
@@ -149,17 +155,5 @@ class ScaleNode(Node):
             out['layer'] = transformed_layers
 
         return out
-
-
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {
-            'x_scale': float(data['data']['structure']['x_scale']['value']),
-            'y_scale': float(data['data']['structure']['y_scale']['value']),
-            'z_scale': float(data['data']['structure']['z_scale']['value']),
-            'part': data['data']['structure']['part']['value'],
-        }
-        return parsed
 
 

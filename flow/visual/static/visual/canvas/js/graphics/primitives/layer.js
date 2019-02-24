@@ -7,8 +7,6 @@ class Layer extends MethodPrimitive {
         this.box = new Box(this.gl, programs);
 
         this.loaded = false;
-        this.buffers = {};
-
         this.model = mat4.create();
     }
 
@@ -34,14 +32,14 @@ class Layer extends MethodPrimitive {
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionsVbo);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, positions, this.gl.STATIC_DRAW);
         this.addBufferVBO(positionsVbo);
-        this.program.setFieldPositionAttrs();
+        this.program.bindAttrPosition();
         
         //values
         let valuesVbo = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, valuesVbo);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, values, this.gl.STATIC_DRAW);    
         this.addBufferVBO(valuesVbo);
-        this.program.setFieldValueAttrs();
+        this.program.bindAttrValue();
 
         //elements
         let ebo = this.gl.createBuffer();
@@ -75,7 +73,7 @@ class Layer extends MethodPrimitive {
 
         let uniforms = this.uniformDict(camera, light);
         uniforms['cameraPosition'] = camera.pos;
-        this.program.setUnifs(uniforms);
+        this.program.bindUniforms(uniforms);
 
         this.gl.drawElements(this.gl.TRIANGLES, this.sizes.instanceSize, this.gl.UNSIGNED_INT, 0);
         //console.log(this.gl.getError());
@@ -97,15 +95,8 @@ class Layer extends MethodPrimitive {
                     () => {this.meta.appearance = Appearance.solid}, 
                     () => {this.meta.appearance = Appearance.transparent},
                 ],
-                value: 'meta' in this ? Appearance.decode[this.meta.appearance]: this._data.meta.appearance,
+                value: 'meta' in this ? Appearance.decode(this.meta.appearance): this._data.meta.appearance,
             },
         }
-    }
-
-    delete(){
-        this.gl.deleteBuffer(this.buffers.positions);
-        this.gl.deleteBuffer(this.buffers.values);
-        this.gl.deleteBuffer(this.buffers.ebo);
-        this.gl.deleteVertexArray(this.buffers.vao);
     }
 }

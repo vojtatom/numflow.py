@@ -36,23 +36,23 @@ class MethodProgram extends Program {
             },
 
             //stats
-            min: {
+            minSize: {
                 name: 'minSize',
                 type: this.GLType.float,
             },
-            max: {
+            maxSize: {
                 name: 'maxSize',
                 type: this.GLType.float,   
             },
-            median: {
+            medianSize: {
                 name: 'medianSize',
                 type: this.GLType.float,
             },
-            mean: {
+            meanSize: {
                 name: 'meanSize',
                 type: this.GLType.float,
             },
-            std: {
+            stdSize: {
                 name: 'stdSize',
                 type: this.GLType.float,
             },

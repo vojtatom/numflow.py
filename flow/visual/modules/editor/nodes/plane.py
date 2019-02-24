@@ -1,6 +1,6 @@
 from .base import Node
 from ..exceptions import NodeError
-
+import numpy as np
 from visual.modules.numeric.kernels import points_kernel
 
 class PlaneNode(Node):
@@ -54,6 +54,16 @@ class PlaneNode(Node):
         },
     }
 
+    parsing = {
+        'norm_value': lambda x: float(x),
+        'a_start': lambda x: float(x),
+        'b_start': lambda x: float(x),
+        'a_end': lambda x: float(x),
+        'b_end': lambda x: float(x),
+        'a_sampling': lambda x: int(x),
+        'b_sampling': lambda x: int(x),
+    }
+
     title = 'plane'
     
     def __init__(self, id, data, notebook_code, message):
@@ -64,21 +74,21 @@ class PlaneNode(Node):
         """  
         self.id = id
 
-        fields = ['normal', 'normal_value', 'start_a', 'start_b', 'end_a', 
-                'end_b', 'sampling_a', 'sampling_b']
+        fields = ['norm_axis', 'norm_value', 'a_start', 'b_start', 'a_end', 
+                'b_end', 'a_sampling', 'b_sampling']
         self.check_dict(fields, data, self.id, self.title)
 
         index = {'x': 0, 'y': 1, 'z': 2} 
-        ax = data['normal'][0]
+        ax = data['norm_axis'][0]
 
-        self._start = [data['start_a'], data['start_b']]
-        self._start.insert(index[ax], data['normal_value'])
-        self._end = [data['end_a'], data['end_b']]
-        self._end.insert(index[ax], data['normal_value'])
-        self._sampling = [data['sampling_a'], data['sampling_b']]
+        self._start = [data['a_start'], data['b_start']]
+        self._start.insert(index[ax], data['norm_value'])
+        self._end = [data['a_end'], data['b_end']]
+        self._end.insert(index[ax], data['norm_value'])
+        self._sampling = [data['a_sampling'], data['b_sampling']]
         self._sampling.insert(index[ax], 1)
         self._index = index[ax]
-        self._value = data['normal_value']
+        self._value = data['norm_value']
 
 
     def __call__(self, indata, message):
@@ -93,19 +103,3 @@ class PlaneNode(Node):
         }
 
         return {'plane': {'data': points_kernel(self._start, self._end, self._sampling), 'meta': meta}}
-
-
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {
-            'normal': data['data']['structure']['norm_axis']['value'],
-            'normal_value': float(data['data']['structure']['norm_value']['value']),
-            'start_a': float(data['data']['structure']['a_start']['value']),
-            'start_b': float(data['data']['structure']['b_start']['value']),
-            'end_a': float(data['data']['structure']['a_end']['value']),
-            'end_b': float(data['data']['structure']['b_end']['value']),
-            'sampling_a': int(data['data']['structure']['a_sampling']['value']),
-            'sampling_b': int(data['data']['structure']['b_sampling']['value']),
-        }
-        return parsed

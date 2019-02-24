@@ -9,6 +9,9 @@ class Node(abc.ABC):
         structure:  { key : { type: 'display'|'input', value: value of the key, ... }}
     """
 
+    structure = {}
+    parsing = {}
+
     @abc.abstractmethod
     def __init__(self, id, data, notebook_code, message):
         """
@@ -30,14 +33,24 @@ class Node(abc.ABC):
         """
         pass
 
-    @staticmethod
-    def deserialize(data):
+    @classmethod
+    def deserialize(cls, data):
+        print('running deser')
         parsed = {}
         parsed['title'] = data['title']
         parsed['id'] = data['id']
         parsed['in'] = data['in']
         parsed['out'] = data['out']
+        parsed['data'] = {}
+
+        for field in cls.data['structure']:
+            if field in cls.parsing:
+                parsed['data'][field] = cls.parsing[field](data['data']['structure'][field]['value'])
+            else:
+                parsed['data'][field] = data['data']['structure'][field]['value']
+            print('deser', field) 
         return parsed
+
 
     def check_dict(self, fields, data, node_id, node_title):
         for field in fields:

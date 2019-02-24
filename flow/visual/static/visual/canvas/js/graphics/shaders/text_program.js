@@ -55,8 +55,8 @@ class TextProgram extends Program {
         this.gl.useProgram(this.program);
         this.bindAttribute({
             attribute: this.attributes.texcoord,
-            size: 3,
-            stride: 3 * Float32Array.BYTES_PER_ELEMENT,
+            size: 2,
+            stride: 2 * Float32Array.BYTES_PER_ELEMENT,
             offfset: 0,
         });        
         this.gl.useProgram(null);

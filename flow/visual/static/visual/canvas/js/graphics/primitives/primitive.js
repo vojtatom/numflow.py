@@ -126,6 +126,10 @@ class Primitive {
 		this.buffers.ebo = buffer;
 	}
 
+	addTexture(texture) {
+		this.textures.push(texture);
+	}
+
 	bindBuffersAndTextures(){
 		this.gl.bindVertexArray(this.buffers.vao);
 
@@ -152,12 +156,12 @@ class Primitive {
 	}
 
 	uniformDict(camera, light){
-		return {
+		return Object.assign({}, this.meta, {
 			model: this.model,
 			view: camera.view,
-			projection: camera.projection,
-			light: light,
-		}
+			proj: camera.projection,
+			light: light.pos,
+		});
 	}
 
 	//RESOURCES DELETE

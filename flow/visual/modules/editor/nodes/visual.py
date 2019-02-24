@@ -74,6 +74,10 @@ class VisualNode(Node):
         },
         'out': {},
     }
+
+    parsing = {
+       'width_max' :  lambda x: float(x),
+    }
     
     title = 'visual'
     
@@ -222,13 +226,5 @@ class VisualNode(Node):
         n.save_output(json.dumps(content, sort_keys=True, indent=4))
         
         return {}
-
-    @staticmethod
-    def deserialize(data):
-        parsed = Node.deserialize(data)
-        parsed['data'] = {
-            'width_max': float(data['data']['structure']['width_max']['value'])
-        }
-        return parsed
 
 
