@@ -90,11 +90,11 @@ class SceneUI {
         this.widgets[this.selected].previousField();
     }
 
-    nextValue(){
-        this.widgets[this.selected].nextValue();
+    nextValue(alternative){
+        this.widgets[this.selected].nextValue(alternative);
     }
 
-    previousValue(){
-        this.widgets[this.selected].previousValue();
+    previousValue(alternative){
+        this.widgets[this.selected].previousValue(alternative);
     }
 }

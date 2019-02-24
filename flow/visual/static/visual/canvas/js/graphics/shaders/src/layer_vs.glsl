@@ -94,10 +94,11 @@ vec3 scaleshift(vec3 position) {
  */
 float significance(float l) {
 	//positive for vector longer than median, normalized by std...
-	float dist = (l - medianSize) / stdSize;
+	//float dist = (l - medianSize) / stdSize;
 	//applying sigmoid to transform... 
 	//sigma \elem [0, 1] is sort of significance value for the vector...?
-	return 1.0 / (1.0 + exp(-dist));
+	//return 1.0 / (1.0 + exp(-dist));
+	return (l - minSize) / (maxSize - minSize);
 }
 
 /**

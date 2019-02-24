@@ -103,14 +103,16 @@ class SliderFieldUI extends FieldUI{
         return this.element;
     }
 
-    next(){
-        this.value = Math.min(this.value + this.data.delta, this.data.max);
+    next(alternative){
+        let delta = alternative ? this.data.delta * 10 : this.data.delta;
+        this.value = Math.min(this.value + delta, this.data.max);
         this.display.innerHTML = this.value.toFixed(3);
         this.data.callback(this.value);
     }
 
-    previous(){
-        this.value = Math.max(this.value - this.data.delta, this.data.min);
+    previous(alternative){
+        let delta = alternative ? this.data.delta * 10 : this.data.delta;
+        this.value = Math.max(this.value - delta, this.data.min);
         this.display.innerHTML = this.value.toFixed(3);
         this.data.callback(this.value);
     }

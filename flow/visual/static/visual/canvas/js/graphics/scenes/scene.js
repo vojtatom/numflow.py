@@ -90,19 +90,18 @@ class Scene{
                 obj.render(this.camera, this.light);
             }
         }
-
+        
         //draw transparent objects
         this.gl.enable(this.gl.BLEND);
-        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
         for(let obj of this.objects){
             if (obj.transparent){
                 obj.render(this.camera, this.light);
             }
         }
-
-        this.gl.disable(this.gl.DEPTH_TEST);
+        
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
-
+        this.gl.disable(this.gl.DEPTH_TEST);
         //bounding boxes labels  
         for(let box of this.boxes){
             box.renderLabels(this.camera, this.light);

@@ -67,14 +67,14 @@ class Geometry{
         }
 
         for (let i = 0; i < 2 * Math.PI; i += add){
-            vert.push(0, size * Math.cos(i), size * Math.sin(i));
             vert.push(0, size * Math.cos(i + add), size * Math.sin(i + add));
+            vert.push(0, size * Math.cos(i), size * Math.sin(i));
             vert.push(0, 0, 0);
         }
 
         for (let i = 0; i < 2 * Math.PI; i += add){
-            vert.push(size * height, size * Math.cos(i + add), size * Math.sin(i + add));
             vert.push(size * height, size * Math.cos(i), size * Math.sin(i));
+            vert.push(size * height, size * Math.cos(i + add), size * Math.sin(i + add));
             vert.push(size * height, 0, 0);
         }
 
