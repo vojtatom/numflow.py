@@ -1,15 +1,5 @@
 'use strict';
 
-class BoxMode{
-    static get wireframe() {
-        return 0;
-    }
-
-    static get filled() {
-        return 1;
-    }
-}
-
 class UnitBox extends Primitive {
     constructor(gl, programs) {
         super(gl);
@@ -90,36 +80,16 @@ class UnitBox extends Primitive {
         };
     }
 
-    render(uniforms) {
-        uniforms['mode'] = BoxMode.wireframe;
-
+    render(camera, light) {
         this.program.bind();
 
         this.gl.bindVertexArray(this.buffers.vao);
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.vbo);
         this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.ebo);
 
-        this.program.setUnifs(uniforms)
+        this.program.bindUniforms(uniforms)
 
         this.gl.drawElements(this.gl.LINES, this.buffers.size, this.gl.UNSIGNED_SHORT, 0);
-        //console.log(this.gl.getError());
-
-        this.gl.bindVertexArray(null);
-        this.program.unbind();
-    }
-
-    renderFilled(uniforms) {
-        uniforms['mode'] = BoxMode.filled;
-
-        this.program.bind();
-
-        this.gl.bindVertexArray(this.buffers.vao);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.vbo);
-        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.fillebo);
-
-        this.program.setUnifs(uniforms)
-
-        this.gl.drawElements(this.gl.TRIANGLES, this.buffers.fillsize, this.gl.UNSIGNED_SHORT, 0);
         //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);

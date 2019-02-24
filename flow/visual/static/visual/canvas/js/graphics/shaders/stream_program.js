@@ -1,6 +1,6 @@
 'use strict';
 
-class StreamProgram extends Program {
+class StreamProgram extends MethodProgram {
     constructor(gl) {
         super(gl);
         DataManager.files({
@@ -35,152 +35,127 @@ class StreamProgram extends Program {
             tGlobal: 't_global',
         });
 
+        this.commonUniforms();
         this.setupUniforms({
-            //matrices
-            model: 'mWorld',
-            view: 'mView',
-            proj: 'mProj',
-
-            //stats and scaling
-            median: 'medianSize',
-            std: 'stdSize',
-
-            //modifications
-            light: 'light',
-            brightness: 'brightness',
-            thickness: 'thickness',
-            appearance: 'appearance',
-            scale: 'scale',
-            time: 'time',
-
-            //colormap
-            colorMapSize: 'colorMapSize',
-            colorMap0: 'colorMap[0]',
-            colorMap1: 'colorMap[1]',
-            colorMap2: 'colorMap[2]',
-            colorMap3: 'colorMap[3]',
-            colorMap4: 'colorMap[4]',
-
-            //scale and shift
-            scaleFactor: 'scaleFactor',
-            shift: 'shift',
+            size: {
+                name: 'size',
+                type: this.GLType.float,
+            },
+            time: {
+                name: 'time',
+                type: this.GLType.vec2,
+            },
+            
         });
     }
 
 
-    setAttrs() {
+    bindAttrBigBuffer() {
         this.gl.useProgram(this.program);
-
         let attrs = [
             {
-                attr: this.attributes.fieldPos0,
+                attribute: this.attributes.fieldPos0,
                 stride: 28 * Float32Array.BYTES_PER_ELEMENT,
                 offset: 0,
                 size: 3,
+                divisor: 1,
             },
             {
-                attr: this.attributes.fieldPos1,
+                attribute: this.attributes.fieldPos1,
                 stride: 28 * Float32Array.BYTES_PER_ELEMENT,
                 offset: 3 * Float32Array.BYTES_PER_ELEMENT,
                 size: 3,
+                divisor: 1,
             },
             {
-                attr: this.attributes.fieldPos2,
+                attribute: this.attributes.fieldPos2,
                 stride: 28 * Float32Array.BYTES_PER_ELEMENT,
                 offset: 6 * Float32Array.BYTES_PER_ELEMENT,
                 size: 3,
+                divisor: 1,
             },
             {
-                attr: this.attributes.fieldPos3,
+                attribute: this.attributes.fieldPos3,
                 stride: 28 * Float32Array.BYTES_PER_ELEMENT,
                 offset: 9 * Float32Array.BYTES_PER_ELEMENT,
                 size: 3,
+                divisor: 1,
             },
             {
-                attr: this.attributes.fieldVal0,
+                attribute: this.attributes.fieldVal0,
                 stride: 28 * Float32Array.BYTES_PER_ELEMENT,
                 offset: 12 * Float32Array.BYTES_PER_ELEMENT,
                 size: 3,
+                divisor: 1,
             },
             {
-                attr: this.attributes.fieldVal1,
+                attribute: this.attributes.fieldVal1,
                 stride: 28 * Float32Array.BYTES_PER_ELEMENT,
                 offset: 15 * Float32Array.BYTES_PER_ELEMENT,
                 size: 3,
+                divisor: 1,
             },
             {
-                attr: this.attributes.fieldVal2,
+                attribute: this.attributes.fieldVal2,
                 stride: 28 * Float32Array.BYTES_PER_ELEMENT,
                 offset: 18 * Float32Array.BYTES_PER_ELEMENT,
                 size: 3,
+                divisor: 1,
             },
             {
-                attr: this.attributes.fieldVal3,
+                attribute: this.attributes.fieldVal3,
                 stride: 28 * Float32Array.BYTES_PER_ELEMENT,
                 offset: 21 * Float32Array.BYTES_PER_ELEMENT,
                 size: 3,
+                divisor: 1,
             },
             {
-                attr: this.attributes.tGlobal,
+                attribute: this.attributes.tGlobal,
                 stride: 28 * Float32Array.BYTES_PER_ELEMENT,
                 offset: 24 * Float32Array.BYTES_PER_ELEMENT,
                 size: 4,
+                divisor: 1,
             },
         ]
 
         for (let attr of attrs) {
-            this.gl.enableVertexAttribArray(attr.attr);
-            this.gl.vertexAttribPointer(attr.attr, attr.size, this.gl.FLOAT, this.gl.FALSE, attr.stride, attr.offset);
-            this.gl.vertexAttribDivisor(attr.attr, 1);
+            this.bindAttribute(attr);
         }
 
         this.gl.useProgram(null);
     }
 
-    setVertexPositionAttrs() {
+    bindAttrPosition() {
         this.gl.useProgram(this.program);
-        this.gl.enableVertexAttribArray(this.attributes.position);
-        this.gl.vertexAttribPointer(this.attributes.position, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
+        this.bindAttribute({
+            attribute: this.attributes.position,
+            size: 3,
+            stride: 3 * Float32Array.BYTES_PER_ELEMENT,
+            offfset: 0,
+        });
         this.gl.useProgram(null);
     }
 
-    setVertexNormalAttrs() {
+    bindAttrNormal() {
         this.gl.useProgram(this.program);
-        this.gl.enableVertexAttribArray(this.attributes.normal);
-        this.gl.vertexAttribPointer(this.attributes.normal, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
+        this.bindAttribute({
+            attribute: this.attributes.normal,
+            size: 3,
+            stride: 3 * Float32Array.BYTES_PER_ELEMENT,
+            offfset: 0,
+        });
         this.gl.useProgram(null);
     }
 
-    setVertexTimeAttrs() {
+    bindAttrTime() {
         this.gl.useProgram(this.program);
-        this.gl.enableVertexAttribArray(this.attributes.tLocal);
-        this.gl.vertexAttribPointer(this.attributes.tLocal, 1, this.gl.FLOAT, this.gl.FALSE, 1 * Float32Array.BYTES_PER_ELEMENT, 0);
+        this.bindAttribute({
+            attribute: this.attributes.time,
+            size: 1,
+            stride: 1 * Float32Array.BYTES_PER_ELEMENT,
+            offfset: 0,
+        });
         this.gl.useProgram(null);
     }
 
-    setUnifs(options) {
-        this.gl.uniformMatrix4fv(this.uniforms.model, this.gl.FALSE, options.model);
-        this.gl.uniformMatrix4fv(this.uniforms.view, this.gl.FALSE, options.view);
-        this.gl.uniformMatrix4fv(this.uniforms.proj, this.gl.FALSE, options.projection);
-
-        this.gl.uniform1f(this.uniforms.median, options.median);
-        this.gl.uniform1f(this.uniforms.std, options.std);
-
-        this.gl.uniform3fv(this.uniforms.light, options.light);
-        this.gl.uniform1f(this.uniforms.brightness, options.brightness);
-        this.gl.uniform1i(this.uniforms.appearance, options.appearance);
-        this.gl.uniform1f(this.uniforms.thickness, options.thickness);
-        this.gl.uniform2fv(this.uniforms.time, options.time);
-        this.gl.uniform1i(this.uniforms.scale, options.scale);
-
-        this.gl.uniform1i(this.uniforms.colorMapSize, options.colorMapSize);
-        this.gl.uniform4fv(this.uniforms.colorMap0, options.colorMap0);
-        this.gl.uniform4fv(this.uniforms.colorMap1, options.colorMap1);
-        this.gl.uniform4fv(this.uniforms.colorMap2, options.colorMap2);
-        this.gl.uniform4fv(this.uniforms.colorMap3, options.colorMap3);
-        this.gl.uniform4fv(this.uniforms.colorMap4, options.colorMap4);
-
-        this.gl.uniform3fv(this.uniforms.shift, options.shift);
-        this.gl.uniform1f(this.uniforms.scaleFactor, options.scaleFactor);
-    }
 }

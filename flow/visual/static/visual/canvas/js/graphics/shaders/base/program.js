@@ -10,6 +10,17 @@ class Program {
             unifs: false,
         }
 
+        this.GLType = {
+            float: this.gl.uniform1f,
+            int: this.gl.uniform1i,
+            
+            vec2: this.gl.uniform2fv,
+            vec3: this.gl.uniform3fv, 
+            vec4: this.gl.uniform4fv,
+            
+            mat4: this.gl.uniformMatrix4fv,
+        }
+
         this.loaded = false;
     }
 
@@ -54,10 +65,49 @@ class Program {
         this.uniforms = {};
 
         for(let key in unif){
-            this.uniforms[key] = this.gl.getUniformLocation(this.program, unif[key]);
+            this.uniforms[key] = {
+                location: this.gl.getUniformLocation(this.program, unif[key].name),
+                assignFunction: unif[key].type,
+            } 
         }  
             
         this.update('unifs');
+    }
+
+    bindAttribute(set){
+        this.gl.enableVertexAttribArray(set.attribute);
+        this.gl.vertexAttribPointer(set.attribute, set.size, this.gl.FLOAT, this.gl.FALSE, set.stride, set.offset);
+        if ('divisor' in set){
+            this.gl.vertexAttribDivisor(set.attribute, set.divisor);
+        }
+    }
+
+
+    bindUniforms(options) {
+        for(let key in this.uniforms){
+            if (this.uniforms[key].assignFunction == this.GLType.mat4){
+                this.uniforms[key].assignFunction(this.uniforms[key].location, this.gl.FALSE, options[key]);
+            } else {
+                this.uniforms[key].assignFunction(this.uniforms[key].location, options[key]);
+            }
+        }
+    }
+
+    commonUniforms() {
+        this.setupUniforms({
+            model: {
+                name: 'mWorld',
+                type: this.GLType.mat4,
+            },
+			view: {
+                name: 'mView',
+                type: this.GLType.mat4,   
+            },
+            proj: {
+                name: 'mProj',
+                type: this.GLType.mat4,
+            },
+        });
     }
 
     bind() {
@@ -72,13 +122,5 @@ class Program {
         this.state[key] = true;
         if (this.state.init && this.state.attrs && this.state.unifs)
             this.loaded = true;
-    }
-
-    get attr() {
-        return this.attributes;
-    }
-
-    get unif() {
-        return this.uniforms;
     }
 }

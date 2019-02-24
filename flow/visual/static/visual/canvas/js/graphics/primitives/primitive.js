@@ -15,13 +15,27 @@ class Primitive {
 		this.gl = gl;
 		this.lateLoaded = false;
 		this._data = null;
+		
+		//store buffers for auto delete and auto binding
+		this.buffers = {
+			vao : undefined,
+			ebo : undefined,
+			vbo: [],
+		};
+
+		//store textures for auto delete and autobinding
+		this.textures = [];
+
+		//draw sizes...
+		this.sizes = {
+			instances: 1,
+			instanceSize: 1,
+		};
 	}
-	
 
     get transparent() {
 		if (!('meta' in this))
-		return false;
-		
+			return false;
         return this.meta.appearance === Appearance.transparent;
     }
 
@@ -62,6 +76,7 @@ class Primitive {
 		return array;
 	}
 
+	//INIT MANAGEMENT
 	get isRenderReady(){
 		if (!this.loaded){
 			this.init();
@@ -94,11 +109,71 @@ class Primitive {
 		}
 	}
 
+	//BUFFERS MANAGEMENT
 	initBoundingBox(data){
 		this.box.init(data);
 	}
 
+	addBufferVAO(buffer){
+		this.buffers.vao = buffer;
+	}
+
+	addBufferVBO(buffer){
+		this.buffers.vbo.push(buffer);
+	}
+
+	addBufferEBO(buffer){
+		this.buffers.ebo = buffer;
+	}
+
+	bindBuffersAndTextures(){
+		this.gl.bindVertexArray(this.buffers.vao);
+
+		for (let buffer of this.buffers.vbo){
+			this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffer);
+		}
+		
+		if (this.buffers.ebo !== undefined) {
+			this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.buffers.ebo);
+		}
+
+		for (let texture of this.textures){
+			this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+		}
+	}
+
+	//META INFO MANAGEMENT
+	metaFromData(meta, stats){
+		this.meta = {};
+	}
+
+	appendMeta(options){
+		this.meta = Object.assign({}, this.meta, options);
+	}
+
+	uniformDict(camera, light){
+		return {
+			model: this.model,
+			view: camera.view,
+			projection: camera.projection,
+			light: light,
+		}
+	}
+
+	//RESOURCES DELETE
     delete(){
-        
+		for (let texture of this.textures){
+			this.gl.deleteTexture(this.gl.TEXTURE_2D, texture);
+		}
+
+		for (let buffer of this.buffers.vbo){
+			this.gl.deleteBuffer(buffer);
+		}
+		
+		if (this.buffers.ebo !== undefined) {
+			this.gl.deleteBuffer(this.buffers.ebo);
+		}
+
+        this.gl.deleteVertexArray(this.buffers.vao);
     }
 }

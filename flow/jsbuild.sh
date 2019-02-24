@@ -49,13 +49,16 @@ read -r -d '' CANVASLIST << EOM
 ./visual/static/visual/canvas/js/graphics/shaders/base/shader_type.js
 ./visual/static/visual/canvas/js/graphics/shaders/base/shader.js
 ./visual/static/visual/canvas/js/graphics/shaders/base/program.js
+./visual/static/visual/canvas/js/graphics/shaders/base/methodprogram.js
 ./visual/static/visual/canvas/js/graphics/shaders/box_program.js
 ./visual/static/visual/canvas/js/graphics/shaders/glyph_program.js
 ./visual/static/visual/canvas/js/graphics/shaders/stream_program.js
 ./visual/static/visual/canvas/js/graphics/shaders/text_program.js
 ./visual/static/visual/canvas/js/graphics/shaders/layer_program.js
+./visual/static/visual/canvas/js/graphics/primitives/classes.js
 ./visual/static/visual/canvas/js/graphics/primitives/geometry.js
 ./visual/static/visual/canvas/js/graphics/primitives/primitive.js
+./visual/static/visual/canvas/js/graphics/primitives/methodprimitive.js
 ./visual/static/visual/canvas/js/graphics/primitives/unit_box.js
 ./visual/static/visual/canvas/js/graphics/primitives/stream.js
 ./visual/static/visual/canvas/js/graphics/primitives/box.js

@@ -1,6 +1,6 @@
 'use strict';
 
-class Stream extends Primitive {
+class Stream extends MethodPrimitive {
     constructor(gl, programs) {
         super(gl);
 

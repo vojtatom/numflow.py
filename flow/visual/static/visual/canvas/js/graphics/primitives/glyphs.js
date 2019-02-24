@@ -1,13 +1,12 @@
 'use strict';
 
-class Glyphs extends Primitive {
+class Glyphs extends MethodPrimitive {
     constructor(gl, programs) {
         super(gl);
+        
         this.program = programs.glyph;
         this.box = new Box(gl, programs);
-
         this.loaded = false;
-        this.buffers = {};
 
         this.model = mat4.create();
     }
@@ -23,70 +22,50 @@ class Glyphs extends Primitive {
         let positions = Primitive.base64totype(data.points);
         let values = Primitive.base64totype(data.values);
 
+        //init VAO
         let vao = this.gl.createVertexArray();
         this.gl.bindVertexArray(vao);
-            
+        this.addBufferVAO(vao);
+    
         //glyph positions
 		let positionsVbo = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionsVbo);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, positions, this.gl.STATIC_DRAW);
-        this.program.setFieldPositionAttrs();
-        
+        this.addBufferVBO(positionsVbo);
+        this.program.bindAttrFieldPosition();
+ 
         //glyph values
         let valuesVbo = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, valuesVbo);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, values, this.gl.STATIC_DRAW);    
-        this.program.setFieldValueAttrs();
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, values, this.gl.STATIC_DRAW);  
+        this.addBufferVBO(valuesVbo);  
+        this.program.bindAttrFieldValue();
+
+        //sizes setup
+        this.sizes.instances = positions.length / 3;
         
-        this.buffers['field'] = {
-            positions: positionsVbo,
-            values: valuesVbo,
-            vao: vao,
-            size: positions.length / 3,
-        };
-        
+        //init glyph
         this.initGlyph(data.meta.geometry, data.meta.sampling);
         this.gl.bindVertexArray(null);
 
-        //Calculate stats
-        let lengths = new Float32Array(values.length / 3);
-
-        for (let i = 0; i < values.length; i += 3){
-            let length = values[i] * values[i] + values[i + 1] * values[i + 1] + values[i + 2] * values[i + 2];
-            length = length;
-            lengths[i / 3] =  Math.sqrt(length);
-        }
-
-        this.meta = {
-            std: meanAbsoluteDeviation(lengths),
-            median: median(lengths),
+        //setup class meta info
+        this.metaFromData(data.meta, data.stats);
+        this.appendMeta({
             size: data.meta.size,
-            geometry: data.meta.geometry,
-            sampling: data.meta.sampling,
-            colormap: {
-                sampling: data.meta.colormap.sampling,
-                colors: [
-                    vec4.fromValues(...data.meta.colormap.colors[0]),
-                    vec4.fromValues(...data.meta.colormap.colors[1]),
-                    vec4.fromValues(...data.meta.colormap.colors[2]),
-                    vec4.fromValues(...data.meta.colormap.colors[3]),
-                    vec4.fromValues(...data.meta.colormap.colors[4]),
-                ] 
-            },
-            appearance: Appearance.encode[data.meta.appearance],
-            scale: Scale.encode[data.meta.scale],
-        }
+            mode: CoordMode.encode('xyz'),
+        });
 
         //init bounding box
         this.initBoundingBox(data);
 
         //Finish up...
         this.loaded = true;  
-        console.log(this.gl.getError());
+        //console.log(this.gl.getError());
     }
 
     initGlyph(geometry, sampling){
         let lineVert, lineNorm;
+
         if (geometry === 'line'){
             lineVert = Geometry.glyphVertLine(sampling);
             lineNorm = Geometry.glyphNormLine(sampling);
@@ -99,22 +78,18 @@ class Glyphs extends Primitive {
 		let positions = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positions);
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(lineVert), this.gl.STATIC_DRAW);
-
-        this.program.setVertexPositionAttrs();
+        this.addBufferVBO(positions);
+        this.program.bindAttrVertexPosition();
 
         // init VBO for glyph normals
 		let normals = this.gl.createBuffer();
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, normals);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(lineNorm), this.gl.STATIC_DRAW); 
+        this.addBufferVBO(normals);
+        this.program.bindAttrVertexNormal();
         
-        this.program.setVertexNormalAttrs();
-		
-		this.buffers['glyph'] = {
-			positions: positions,
-			normals: normals,
-			size: lineVert.length / 3,
-        };
-        
+        //sizes setup
+        this.sizes.instanceSize = lineVert.length / 3;
         //console.log(this.program);
     }
 
@@ -123,36 +98,13 @@ class Glyphs extends Primitive {
             return;
 
         this.program.bind();
-        this.gl.bindVertexArray(this.buffers.field.vao);
+        this.bindBuffersAndTextures();
+        
+        //create uniforms
+        let uniforms = this.uniformDict(camera, light, CoordMode.decode(this.meta.mode));
+        this.program.setUnifs(uniforms);
 
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.field.positions);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.field.values);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.glyph.positions);
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.buffers.glyph.normals);
-
-        this.program.setUnifs({
-            model: this.model,
-            view: camera.view,
-            projection: camera.projection,
-
-            median: this.meta.median,
-            std: this.meta.std,
-            size: this.meta.size,
-
-            light: light.position,
-            brightness: 1.0,
-            appearance: this.meta.appearance,
-            scale: this.meta.scale,
-
-            colorMapSize: this.meta.colormap.sampling,
-            colorMap0: this.meta.colormap.colors[0],
-            colorMap1: this.meta.colormap.colors[1],
-            colorMap2: this.meta.colormap.colors[2],
-            colorMap3: this.meta.colormap.colors[3],
-            colorMap4: this.meta.colormap.colors[4],
-        });
-
-        this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.buffers.glyph.size, this.buffers.field.size);
+        this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.sizes.instanceSize, this.sizes.instances);
         //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
@@ -183,13 +135,5 @@ class Glyphs extends Primitive {
                 callback: (value) => { this.meta.size = value },
             }
         }
-    }
-
-    delete(){
-        this.gl.deleteBuffer(this.buffers.field.positions);
-        this.gl.deleteBuffer(this.buffers.field.values);
-        this.gl.deleteBuffer(this.buffers.glyph.positions);
-        this.gl.deleteBuffer(this.buffers.glyph.normals);
-        this.gl.deleteVertexArray(this.buffers.field.vao);
     }
 }
