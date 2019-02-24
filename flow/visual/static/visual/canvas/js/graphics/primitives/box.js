@@ -191,8 +191,6 @@ class Box extends UnitBox {
 
             this.activeEdge[ax] = parseInt(second);
         }
-
-        //console.log(this.activeEdge);
     }
 
     render(camera, light) {
@@ -200,17 +198,6 @@ class Box extends UnitBox {
             return;
 
         super.render({
-            model: this.model,
-            view: camera.view,
-            projection: camera.projection,
-        });
-    }
-
-    renderFilled(camera, light) {
-        if(!this.isRenderReady)
-            return;
-
-        super.renderFilled({
             model: this.model,
             view: camera.view,
             projection: camera.projection,

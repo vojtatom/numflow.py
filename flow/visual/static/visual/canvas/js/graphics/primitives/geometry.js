@@ -1,49 +1,5 @@
 'use strict';
 
-class Appearance {
-    static get solid() {
-        return 1;
-    }
-
-    static get transparent() {
-        return 0;
-    }
-
-    static get encode() {
-        return {
-            transparent: 0,
-            solid: 1,
-        };
-    }
-
-    static get decode() {
-        return ['transparent', 'solid'];
-    }
-}
-
-
-class Scale {
-    static get log() {
-        return 0;
-    }
-
-    static get normal() {
-        return 1;
-    }
-
-    static get encode() {
-        return {
-            log: 0,
-            normal: 1,
-        };
-    }
-
-    static get decode() {
-        return ['log', 'normal'];
-    }
-}
-
-
 class Geometry{
     static glyphVertCone(sampling = 10){
         let vert = [];
@@ -224,7 +180,6 @@ class Geometry{
         return elements;
 
     }
-
 
     static get unitQuad(){
         return [

@@ -14,7 +14,6 @@ class BoxProgram extends Program {
                 },
             fail: (r) => { console.error(r); },
             });
-
     }
 
     setup(){
@@ -22,25 +21,17 @@ class BoxProgram extends Program {
             position: 'vertPosition',
         });
 
-        this.setupUniforms({
-            model: 'mWorld',
-			view: 'mView',
-            proj: 'mProj',
-            mode: 'mode',
-        });
+        this.commonUniforms();
     }
 
-    setAttrs(options) {
+    bindAttrPosition(options) {
         this.gl.useProgram(this.program);
-        this.gl.enableVertexAttribArray(this.attributes.position);
-        this.gl.vertexAttribPointer(this.attributes.position, 3, this.gl.FLOAT, this.gl.FALSE, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
+        this.bindAttribute({
+            attribute: this.attributes.position,
+            size: 3,
+            stride: 3 * Float32Array.BYTES_PER_ELEMENT,
+            offset: 0,
+        });
         this.gl.useProgram(null);
-    }
-
-    setUnifs(options) {
-        this.gl.uniformMatrix4fv(this.uniforms.model, this.gl.FALSE, options.model);
-        this.gl.uniformMatrix4fv(this.uniforms.view, this.gl.FALSE, options.view);
-        this.gl.uniformMatrix4fv(this.uniforms.proj, this.gl.FALSE, options.projection);
-        this.gl.uniform1i(this.uniforms.mode, options.mode);
     }
 }

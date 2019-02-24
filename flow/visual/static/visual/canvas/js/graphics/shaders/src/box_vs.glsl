@@ -3,16 +3,13 @@ precision highp int;
 
 attribute vec3 vertPosition;
 
-varying vec3 fragColor;
 
 uniform mat4 mWorld;
 uniform mat4 mView;
 uniform mat4 mProj;
 
-/* 0 - wireframe
-   1 - filled
-*/
-uniform int mode;
+
+varying vec3 fragColor;
 
 void main()
 {

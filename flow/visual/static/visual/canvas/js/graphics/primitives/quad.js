@@ -122,11 +122,4 @@ class Quad extends Primitive {
         this.gl.bindTexture(this.gl.TEXTURE_2D, null);
         this.program.unbind();
     }
-
-    delete() {
-        this.gl.deleteTexture(this.meta.texture);
-        this.gl.deleteBuffer(this.buffers.positions);
-        this.gl.deleteBuffer(this.buffers.texcoord);
-        this.gl.deleteVertexArray(this.buffers.vao);
-    }
 }
