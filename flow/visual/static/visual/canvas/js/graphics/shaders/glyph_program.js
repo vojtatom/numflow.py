@@ -29,7 +29,7 @@ class GlyphProgram extends MethodProgram {
             size: {
                 name: 'size',
                 type: this.GLType.float,
-            },
+            }
         });
     }
 

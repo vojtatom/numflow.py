@@ -6,7 +6,6 @@ class Scene{
         this.camera = new Camera();
         this.light = new Light();
         this.objects = [];
-        this.boxes = [];
     }
 
     init(contents, ui, programs){
@@ -30,7 +29,6 @@ class Scene{
                 glyphs.init(glyphs_group);
                 //console.log(glyphs);
                 this.objects.push(glyphs);
-                this.boxes.push(glyphs.box);
 
                 sceneui.addWidget(new WidgetUI(glyphs.ui));
             }
@@ -43,7 +41,6 @@ class Scene{
                 streams.init(stream_group);
                 //console.log(streams);
                 this.objects.push(streams);
-                this.boxes.push(streams.box);
 
                 sceneui.addWidget(new WidgetUI(streams.ui));
             }
@@ -56,7 +53,6 @@ class Scene{
                 layer.init(layer_group);
                 //console.log(streams);
                 this.objects.push(layer);
-                this.boxes.push(layer.box);
 
                 sceneui.addWidget(new WidgetUI(layer.ui));
             }
@@ -79,8 +75,8 @@ class Scene{
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
         
         //draw bounding boxes   
-        for(let box of this.boxes){
-            box.render(this.camera, this.light);
+        for(let obj of this.objects){
+            obj.renderBox(this.camera, this.light);
         }
         
         //draw solid objects
@@ -102,9 +98,10 @@ class Scene{
         
         this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
         this.gl.disable(this.gl.DEPTH_TEST);
+        
         //bounding boxes labels  
-        for(let box of this.boxes){
-            box.renderLabels(this.camera, this.light);
+        for(let obj of this.objects){
+            obj.renderLabels(this.camera, this.light);
         }
 
         //update camera
@@ -112,8 +109,8 @@ class Scene{
 
         //check for camera movement
         if (this.camera.isMoving){
-            for(let box of this.boxes){
-                box.updateEdgeAxis(this.camera);
+            for(let obj of this.objects){
+                obj.updateEdgeAxis(this.camera);
             }
             //console.log('camera is moving');
         }

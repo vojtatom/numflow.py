@@ -18,8 +18,9 @@ def create(hdul: fits.HDUList) -> SData:
     for i in range(1, 4):
         data = hdul[i].data
 
-        if not flips[i - 1]:
-            data = np.flip(data, axis=2)
+        for ax in range(0, 3):
+            if not flips[ax]:
+                data = np.flip(data, axis=ax)
 
         fd = data #byteorder(data)
         #fd = memmap(fd)
@@ -51,8 +52,9 @@ def ccreate(hdul: fits.HDUList) -> CData:
 
     for i in range(1, 4):
         data = hdul[i].data
-        if not flips[i - 1]:
-            data = np.flip(data, axis=2)
+        for ax in range(0, 3):
+            if not flips[ax]:
+                data = np.flip(data, axis=ax)
 
         fd = byteorder(data).astype(np.double)
         fd = np.ascontiguousarray(fd, dtype=np.float)

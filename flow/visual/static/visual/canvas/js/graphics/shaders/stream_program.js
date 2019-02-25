@@ -119,7 +119,6 @@ class StreamProgram extends MethodProgram {
         ];
 
         for (let attr of attrs) {
-            console.log(attr);
             this.bindAttribute(attr);
         }
 
