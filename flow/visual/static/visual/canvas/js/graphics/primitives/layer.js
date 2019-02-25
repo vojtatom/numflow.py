@@ -54,6 +54,7 @@ class Layer extends MethodPrimitive {
         this.metaFromData(data.meta, data.stats);
         this.appendMeta({
             normal: [[1, 0, 0], [0, 1, 0], [0, 0, 1]][data.meta.geometry.normal],
+            mode: CoordMode.encode('xyz'),
         });
 
         //init bounding box
@@ -68,12 +69,16 @@ class Layer extends MethodPrimitive {
         if(!this.isRenderReady)
             return;
 
+        if(!this.meta.visible)
+            return;
+
         this.program.bind();
         this.bindBuffersAndTextures();
 
-        let uniforms = this.uniformDict(camera, light);
+        let uniforms = this.uniformDict(camera, light, this.meta.mode);
         uniforms['cameraPosition'] = camera.pos;
         this.program.bindUniforms(uniforms);
+        
 
         this.gl.drawElements(this.gl.TRIANGLES, this.sizes.instanceSize, this.gl.UNSIGNED_INT, 0);
         //console.log(this.gl.getError());
@@ -83,7 +88,7 @@ class Layer extends MethodPrimitive {
     }
 
     get ui(){
-        return {
+        return Object.assign({}, {
             type: {
                 type: 'display',
                 value: 'plane',
@@ -97,6 +102,6 @@ class Layer extends MethodPrimitive {
                 ],
                 value: 'meta' in this ? Appearance.decode(this.meta.appearance): this._data.meta.appearance,
             },
-        }
+        }, super.ui);
     }
 }

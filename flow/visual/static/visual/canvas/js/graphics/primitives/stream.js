@@ -161,6 +161,7 @@ class Stream extends MethodPrimitive {
             t0: data.meta.t0,
             tbound: data.meta.tbound,
             culling: true,
+            mode: CoordMode.xyz,
         });
 
         //init bounding box
@@ -208,8 +209,11 @@ class Stream extends MethodPrimitive {
         if(!this.isRenderReady)
             return;
 
+        if(!this.meta.visible)
+            return;
+
         let culling = this.meta.culling;
-        console.log(culling);
+
         if (culling){
             this.gl.enable(this.gl.CULL_FACE);
             this.gl.cullFace(this.gl.BACK);
@@ -218,7 +222,7 @@ class Stream extends MethodPrimitive {
         this.program.bind();
         this.bindBuffersAndTextures();
 
-        let uniforms = this.uniformDict(camera, light);
+        let uniforms = this.uniformDict(camera, light, this.meta.mode);
         //console.log(uniforms);
         this.program.bindUniforms(uniforms);
 
@@ -238,7 +242,7 @@ class Stream extends MethodPrimitive {
         let t0 = 'meta' in this ? this.meta.t0: this._data.meta.t0;
         let tbound = 'meta' in this ? this.meta.tbound: this._data.meta.tbound;
 
-        return {
+        return Object.assign({}, {
             type: {
                 type: 'display',
                 value: 'streamlines',
@@ -285,14 +289,6 @@ class Stream extends MethodPrimitive {
                 value: tbound,
                 callback: (value) => { this.meta.time[1] = value },
             },
-            brightness: {
-                type: 'slider',
-                min: 0,
-                max: 2,
-                delta:  0.01,
-                value: 1,
-                callback: (value) => { this.meta.brightness = value },
-            }
-        }
+        }, super.ui);
     }
 }

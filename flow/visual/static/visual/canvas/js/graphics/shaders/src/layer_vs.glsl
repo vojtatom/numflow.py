@@ -36,6 +36,7 @@ uniform float stdSize;
 //geometry
 uniform int appearance; /* 0 - transparent, 1 - solid */
 uniform float brightness;
+uniform int mode;
 
 //color map
 uniform int colorMapSize;
@@ -119,10 +120,26 @@ vec3 transform_normal(vec4 shiftPosition) {
 	return transformed_normal;
 }
 
+float applyModeLength(vec3 value){
+	if (mode == 0) {
+		return length(value);
+	}
+
+	if (mode == 1) {
+		return value.x;
+	}
+	if (mode == 2) {
+		return value.y;
+	}
+	if (mode == 3) {
+		return value.z;
+	}
+}
+
 
 void main(){	
 	//calculate vector significance
-	sigma = significance(length(fieldValue));
+	sigma = significance(applyModeLength(fieldValue));
 
 	//shift position of the vertex
 	vec4 shiftPosition = mWorld * vec4(scaleshift(fieldPosition), 1.0);
@@ -140,6 +157,12 @@ void main(){
 	color *= colorfunc(sigma);
 	color *= brightness;
 	fragColor = color;
+
+	if (sigma < 0.0){
+		fragColor = vec3(1.0, 0.0, 0.0);
+	} else if (sigma > 1.0) {
+		fragColor = vec3(0.0, 0.0, 1.0);
+	}
 
 	//finalize transformation
 	gl_Position =  mProj * mView * shiftPosition;

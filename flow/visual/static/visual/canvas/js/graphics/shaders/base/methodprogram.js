@@ -83,6 +83,11 @@ class MethodProgram extends Program {
                 name: 'appearance',
                 type: this.GLType.int,
             },
+
+            mode: {
+                name: 'mode',
+                type: this.GLType.int,
+            },
         });
     }
 }

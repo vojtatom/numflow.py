@@ -72,6 +72,7 @@ class Camera {
         this.rotateMatrix = new Float32Array(16);
         this.frontVector = new Float32Array(3);
         this.tmp = new Float32Array(3);
+        this.tmp2 = new Float32Array(3);
 
         //constatnts
         this.globalSide = vec3.fromValues(50, 0, 0);
@@ -139,61 +140,92 @@ class Camera {
 
     setPosition(position){
         if (position === CameraPosition.top){
+            
+            let length = vec3.dist(this.position, this.center);
+            this.globalUp[2] = Math.max(1.0, length);
             vec3.add(this.position, this.center, this.globalUp);
             this.up = vec3.fromValues(0, 1, 0);
+
         } else if (position === CameraPosition.front){
+
+            let length = vec3.dist(this.position, this.center);
+            this.globalFront[1] = Math.min(-1.0, -length);
             vec3.add(this.position, this.center, this.globalFront);
             this.up = vec3.fromValues(0, 0, 1);
+
         } else if (position === CameraPosition.side){
+            
+            let length = vec3.dist(this.position, this.center);
+            this.globalSide[0] = Math.max(1.0, length);
             vec3.add(this.position, this.center, this.globalSide);
             this.up = vec3.fromValues(0, 0, 1);
+
         } else if (position === CameraPosition.rotateUp || position === CameraPosition.rotateDown) {
+            
             let angle = (position === CameraPosition.rotateUp) ? glMatrix.toRadian(1) : glMatrix.toRadian(-1);
-            let front = vec3.sub(vec3.create(), this.center, this.position);
+            
+            vec3.sub(this.tmp2, this.center, this.position);
             let axes_x = vec3.cross(this.tmp, this.up, this.front);
-            mat4.rotate(this.rotateMatrix, mat4.create(), angle, axes_x);
-            vec3.transformMat4(front, front, this.rotateMatrix);
-            vec3.add(this.position, this.center, vec3.negate(front, front))
+            
+            mat4.fromRotation(this.rotateMatrix, angle, axes_x);
+            vec3.transformMat4(this.tmp2, this.tmp2, this.rotateMatrix);
+            vec3.add(this.position, this.center, vec3.negate(this.tmp2, this.tmp2))
             vec3.transformMat4(this.up, this.up, this.rotateMatrix);
+        
         } else if (position === CameraPosition.rotateRight || position === CameraPosition.rotateLeft) {
             let angle = position === CameraPosition.rotateRight ? glMatrix.toRadian(1) : glMatrix.toRadian(-1);
-            let front = vec3.sub(vec3.create(), this.center, this.position);
+            
+            vec3.sub(this.tmp2, this.center, this.position);
             let axes_y = this.globalUp;
-            mat4.rotate(this.rotateMatrix, mat4.create(), angle, axes_y);
-            vec3.transformMat4(front, front, this.rotateMatrix);
-            vec3.add(this.position, this.center, vec3.negate(front, front))
+            
+            mat4.fromRotation(this.rotateMatrix, angle, axes_y);
+            vec3.transformMat4(this.tmp2, this.tmp2, this.rotateMatrix);
+            vec3.add(this.position, this.center, vec3.negate(this.tmp2, this.tmp2))
             vec3.transformMat4(this.up, this.up, this.rotateMatrix);
+        
         } else if (position === CameraPosition.moveUp){
+
             vec3.add(this.position, this.position, this.up);
             vec3.add(this.center, this.center, this.up);
+
         } else if (position === CameraPosition.moveDown){
+
             vec3.add(this.position, this.position, vec3.negate(this.tmp, this.up));
             vec3.add(this.center, this.center, vec3.negate(this.tmp, this.up));
+
         } else if (position === CameraPosition.origin){
+
             this.position = vec3.fromValues(0, -20, 0);
             this.up = vec3.fromValues(0, 0, 1);
             this.center = vec3.fromValues(0, 0, 0);
+
         }
     }
 
 
     moveFront(scale = 1) {
-        vec3.sub(this.tmp, this.position, this.center);
-        vec3.scale(this.tmp, this.tmp, 1 - (ZOOM_STEP * scale));
-        vec3.add(this.tmp, this.center, this.tmp);
-        vec3.copy(this.position, this.tmp);
+        if (this.mode === CameraState.perspective){
+            vec3.sub(this.tmp, this.position, this.center);
+            vec3.scale(this.tmp, this.tmp, 1 - (ZOOM_STEP * scale));
+            vec3.add(this.tmp, this.center, this.tmp);
+            vec3.copy(this.position, this.tmp);
+        } else {
+            this.scale = this.scale * (1 - (ZOOM_STEP * 0.5 * scale));
+        }
 
-        this.scale = this.scale * (1 - (ZOOM_STEP * 0.5 * scale));
     }
 
 
     moveBack(scale = 1) {
-        vec3.sub(this.tmp, this.position, this.center);
-        vec3.scale(this.tmp, this.tmp, 1 + (ZOOM_STEP * scale));
-        vec3.add(this.tmp, this.center, this.tmp);
-        vec3.copy(this.position, this.tmp);
+        if (this.mode === CameraState.perspective){
+            vec3.sub(this.tmp, this.position, this.center);
+            vec3.scale(this.tmp, this.tmp, 1 + (ZOOM_STEP * scale));
+            vec3.add(this.tmp, this.center, this.tmp);
+            vec3.copy(this.position, this.tmp);
+        } else {
+            this.scale = this.scale * (1 + (ZOOM_STEP * 0.5 * scale));
+        }
 
-        this.scale = this.scale * (1 + (ZOOM_STEP * 0.5 * scale));
     }
 
 

@@ -31,7 +31,7 @@ class LayerProgram extends MethodProgram {
             cameraPosition: {
                 name: 'cameraPosition',
                 type: this.GLType.vec3,
-            },
+            }
         });
     }
 

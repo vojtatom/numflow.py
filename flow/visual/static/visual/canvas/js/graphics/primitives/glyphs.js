@@ -98,11 +98,15 @@ class Glyphs extends MethodPrimitive {
         if(!this.isRenderReady)
             return;
 
+        if(!this.meta.visible)
+            return;
+
         this.program.bind();
         this.bindBuffersAndTextures();
         
         //create uniforms
-        let uniforms = this.uniformDict(camera, light, CoordMode.decode(this.meta.mode));
+        let uniforms = this.uniformDict(camera, light, this.meta.mode);
+        //console.log(uniforms);
         this.program.bindUniforms(uniforms);
 
         this.gl.drawArraysInstanced(this.gl.TRIANGLES, 0, this.sizes.instanceSize, this.sizes.instances);
@@ -113,7 +117,7 @@ class Glyphs extends MethodPrimitive {
     }
 
     get ui(){
-        return {
+        return Object.assign({}, {
             type: {
                 type: 'display',
                 value: 'glyphs',
@@ -131,10 +135,10 @@ class Glyphs extends MethodPrimitive {
                 type: 'slider',
                 min: 0.1,
                 max: 10,
-                delta: 0.1,
+                delta: 0.01,
                 value: 'meta' in this ? this.meta.size: this._data.meta.size,
                 callback: (value) => { this.meta.size = value },
-            }
-        }
+            },
+        }, super.ui);
     }
 }

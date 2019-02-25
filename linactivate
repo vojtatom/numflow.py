@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+
+. ./env/bin/activate
+
+redis-server --daemonize yes
+
+cd flow
+./build.sh
+./jsbuild.sh
+python manage.py runserver

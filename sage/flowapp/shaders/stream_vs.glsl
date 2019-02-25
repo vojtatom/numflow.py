@@ -44,6 +44,7 @@ uniform float stdSize;
 //geometry
 uniform int appearance; /* 0 - transparent, 1 - solid */
 uniform float brightness;
+uniform int mode;
 
 //color map
 uniform int colorMapSize;
@@ -94,7 +95,7 @@ vec3 phong(vec3 light, float sigma, vec3 ver_position, vec3 ver_normal){
     float NdotL = clamp(dot(normalize(ver_normal), L), 0.0, 1.0);
    
    	//ambient
-	ret += vec3(0.3);
+	ret += vec3(0.5);
 	
 	//diffuse
     ret += vec3(1.0) * NdotL;
@@ -126,10 +127,12 @@ vec3 scaleshift(vec3 position) {
  */
 float significance(float l) {
 	//positive for vector longer than median, normalized by std...
-	float dist = (l - medianSize) / stdSize;
+	//float dist = (l - medianSize) / stdSize;
 	//applying sigmoid to transform... 
 	//sigma \elem [0, 1] is sort of significance value for the vector...?
-	return 1.0 / (1.0 + exp(-dist));
+	//return 1.0 / (1.0 + exp(-dist));
+
+	return (l - minSize) / (maxSize - minSize);
 }
 
 //interpolate using hermit
@@ -170,6 +173,22 @@ float interpolate(float t, float v0, float v1, float v2,float v3) {
 	return(((c4 * t + c3) * t + c2) * t + c1);
 }
 
+float applyModeLength(vec3 value){
+	if (mode == 0) {
+		return length(value);
+	}
+
+	if (mode == 1) {
+		return value.x;
+	}
+	if (mode == 2) {
+		return value.y;
+	}
+	if (mode == 3) {
+		return value.z;
+	}
+}
+
 
 void main(){
 	//interpolate corresponding time factor (streamline parameter)
@@ -198,10 +217,10 @@ void main(){
 	vec3 position = interpolateVec(t_local, fieldPosition1, fieldPosition2, tan0, tan1);
 	vec3 value = interpolateNorm(t_local, fieldPosition1, fieldPosition2, tan0, tan1);
 
-	float v0 = length(fieldValue0);
-	float v1 = length(fieldValue1);
-	float v2 = length(fieldValue2);
-	float v3 = length(fieldValue3);
+	float v0 = applyModeLength(fieldValue0);
+	float v1 = applyModeLength(fieldValue1);
+	float v2 = applyModeLength(fieldValue2);
+	float v3 = applyModeLength(fieldValue3);
 
 	//interpolate vector length
 	float l = interpolate(t_local, v0, v1, v2, v3);	

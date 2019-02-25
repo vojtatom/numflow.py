@@ -33,6 +33,7 @@ uniform float stdSize;
 //geometry
 uniform int appearance; /* 0 - transparent, 1 - solid */
 uniform float brightness;
+uniform int mode;
 
 //color map
 uniform int colorMapSize;
@@ -81,7 +82,7 @@ vec3 phong(vec3 light, float sigma, vec3 ver_position, vec3 ver_normal){
     float NdotL = clamp(dot(normalize(ver_normal), L), 0.0, 1.0);
    
    	//ambient
-	ret += vec3(0.3);
+	ret += vec3(0.5);
 	
 	//diffuse
     ret += vec3(1.0) * NdotL;
@@ -113,15 +114,34 @@ vec3 scaleshift(vec3 position) {
  */
 float significance(float l) {
 	//positive for vector longer than median, normalized by std...
-	float dist = (l - medianSize) / stdSize;
+	//float dist = (l - medianSize) / stdSize;
 	//applying sigmoid to transform... 
 	//sigma \elem [0, 1] is sort of significance value for the vector...?
-	return 1.0 / (1.0 + exp(-dist));
+	//return 1.0 / (1.0 + exp(-dist));
+
+	return (l - minSize) / (maxSize - minSize);
+}
+
+
+float applyModeLength(vec3 value){
+	if (mode == 0) {
+		return length(value);
+	}
+
+	if (mode == 1) {
+		return value.x;
+	}
+	if (mode == 2) {
+		return value.y;
+	}
+	if (mode == 3) {
+		return value.z;
+	}
 }
 
 void main(){	
 	//mapping vector length according to median value of vector lengths
-	sigma = significance(length(fieldValue));
+	sigma = significance(applyModeLength(fieldValue));
 
 	//transform glyph vertex into place
 	mat4 mField = getRotationMat(fieldValue);
