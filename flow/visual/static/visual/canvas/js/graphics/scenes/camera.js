@@ -61,7 +61,7 @@ class CameraState {
 
 class Camera {
     constructor() {
-        this.position = vec3.fromValues(0, -20, 0);
+        this.position = vec3.fromValues(0, -200, 0);
         this.up = vec3.fromValues(0, 0, 1);
         this.center = vec3.fromValues(0, 0, 0);
         this.normal = vec3.create();
@@ -84,7 +84,7 @@ class Camera {
         this.speed = 0.05;
 
         //state
-        this.actualPosition = vec3.fromValues(0, -20, 0);
+        this.actualPosition = vec3.fromValues(0, -200, 0);
         this.actualUp = vec3.fromValues(0, 0, 1);
         this.actualCenter = vec3.fromValues(0, 0, 0);
         this.actualScale = 100;
