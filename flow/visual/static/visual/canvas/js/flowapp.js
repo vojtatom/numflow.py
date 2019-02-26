@@ -106,7 +106,7 @@ class FlowApp {
                 this.ui.nextScene();
             } else {
                 //parameter if alt is pressed
-                this.ui.nextValue(this.interface.keys[225]);
+                this.ui.nextValue(this.interface.keys[225] || this.interface.keys[18]);
             }
         }
 
