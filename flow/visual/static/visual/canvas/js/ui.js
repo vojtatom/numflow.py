@@ -218,7 +218,7 @@ class FlowAppUI {
     }
 
     resize(x, y){
-        this.element.style.fontSize = ((Math.log(x / 1080) / 10) + 1) + 'em';
-        this.element.style.width = ((Math.log(x / 1080) / 10) * 400 + 400) + 'px';
+        this.element.style.fontSize = (((y / 1400) - 1) + 1) + 'em';
+        this.element.style.width = (((y / 1400) - 1) * 400 + 400) + 'px';
     }
 }

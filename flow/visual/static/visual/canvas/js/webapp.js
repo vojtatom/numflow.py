@@ -12,7 +12,7 @@ window.onload = function(e) {
     Shader.dir = '/static/visual/canvas/js/graphics/shaders/src/';
 
     app.init('test-key');
-    app.graphics.resize(window.innerWidth, window.innerHeight);
+    app.resize(window.innerWidth, window.innerHeight);
 
 
 
