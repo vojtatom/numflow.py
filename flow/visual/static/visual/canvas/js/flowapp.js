@@ -31,6 +31,29 @@ class FlowApp {
     render() {
         this.graphics.render();
 
+        if (this.interface.keys[67]){
+            //67 = c 
+            this.interface.keys[67] = false;
+            this.canvas.toBlob(function(blob) {
+                // Function to download data to a file
+                let file = blob;
+                if (window.navigator.msSaveOrOpenBlob) // IE10+
+                    window.navigator.msSaveOrOpenBlob(file, filename);
+                else { // Others
+                    let a = document.createElement("a"),
+                            url = URL.createObjectURL(file);
+                    a.href = url;
+                    a.download = 'flowimage.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(function() {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);  
+                    }, 0); 
+                }
+            });
+        }
+
         if (this.interface.keys[84]){
             this.graphics.scene.camera.setPosition(CameraPosition.top);
         }

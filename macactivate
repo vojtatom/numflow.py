@@ -11,10 +11,12 @@ then
 	cd flow
 	./build.sh
 	./jsbuild.sh
+	python manage.py collectstatic
+	chmod -R a+r ./visual/static 
 else 
 	cd flow
+	python manage.py collectstatic
 fi
 
-chmod -R a+r ./visual/static 
-python manage.py collectstatic
-python manage.py runserver 0.0.0.0:8000 --insecure
+#python manage.py runserver 0.0.0.0:8000 #--insecure
+daphne -b 0.0.0.0 -p 8000 flow.asgi:application

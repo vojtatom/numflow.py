@@ -31,6 +31,43 @@ class FlowApp {
     render() {
         this.graphics.render();
 
+        if (this.interface.keys[67]){
+            this.interface.keys[67] = false;
+            //67 = c 
+            console.log('image saved!!');
+            //let img = this.canvas.toDataURL("image/png");
+
+            //document.write('<img src="'+img+'"/>');
+            //let data = this.canvas.toDataURL('image/png');
+            //let win = window.open();
+
+            //let img = document.createElement('img');
+            //img.src = data;
+            //var url = data.replace(/^data:image\/[^;]+/, 'data:application/octet-stream');
+            //window.open(url);
+            
+            this.canvas.toBlob(function(blob) {
+                // Function to download data to a file
+                let file = blob;
+                if (window.navigator.msSaveOrOpenBlob) // IE10+
+                    window.navigator.msSaveOrOpenBlob(file, filename);
+                else { // Others
+                    let a = document.createElement("a"),
+                            url = URL.createObjectURL(file);
+                    a.href = url;
+                    a.download = 'floaw.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(function() {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);  
+                    }, 0); 
+                }
+            });
+
+            //win.document.write('<img src="'+ data +'"/>');
+        }
+
         if (this.interface.keys[84]){
             this.graphics.scene.camera.setPosition(CameraPosition.top);
         }
@@ -106,7 +143,7 @@ class FlowApp {
                 this.ui.nextScene();
             } else {
                 //parameter if alt is pressed
-                this.ui.nextValue(this.interface.keys[225]);
+                this.ui.nextValue(this.interface.keys[225] || this.interface.keys[18]);
             }
         }
 
@@ -115,7 +152,7 @@ class FlowApp {
             if (this.interface.keys[16]){
                 this.ui.previousScene();
             } else {
-                this.ui.previousValue(this.interface.keys[225]);
+                this.ui.previousValue(this.interface.keys[225] || this.interface.keys[18]);
             }
         }
 
