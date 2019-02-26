@@ -76,8 +76,6 @@ var flowapp = SAGE2_App.extend({
 	*/
 	initFlowApp: function() {
         let canvas = this.element;
-        let app = new FlowApp(canvas);
-
         Shader.dir = this.resrcPath + '/shaders/';
 
         //getting files from local fs
@@ -116,7 +114,12 @@ var flowapp = SAGE2_App.extend({
             });
         };
 
+        let path = this.resrcPath;
+        DataManager.getIcon = function(url) {
+        	return path + '/icons/' + url;
+        };
 
+        let app = new FlowApp(canvas);
         app.init('test-key');
         app.resize(this.element.width, this.element.height);
         this.app = app;
