@@ -115,7 +115,7 @@ class FlowApp {
             if (this.interface.keys[16]){
                 this.ui.previousScene();
             } else {
-                this.ui.previousValue(this.interface.keys[225]);
+                this.ui.previousValue(this.interface.keys[225] || this.interface.keys[18]);
             }
         }
 
