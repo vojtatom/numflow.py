@@ -136,7 +136,7 @@ rm $OUTPUT_TMP
 echo "$EXTERNALSLIST" | xargs cp -ut "../sage/flowapp/scripts/"
 echo "$SHADERSLIST" | xargs cp -ut "../sage/flowapp/shaders/"
 
-cp -r "./visual/static/visual/canvas/icons/" "../sage/flowapp/"
+cp -r "./visual/static/visual/canvas/icons" "../sage/flowapp"
 
 cd $SAGEDIR
 zip -r flowapp.zip flowapp

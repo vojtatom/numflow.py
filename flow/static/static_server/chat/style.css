@@ -1,0 +1,87 @@
+#messages{
+    list-style: none;
+    height: calc(100vh - 10em);
+    overflow-y: scroll;
+    padding: 0;
+    margin: 0 0 1em 0;
+}
+
+
+#messages::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+}
+
+#messages::-webkit-scrollbar
+{
+	width: 10px;
+}
+
+#messages::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: #f0f0f0;
+}
+#messages > li {
+    margin: 1em;
+}
+
+#messages ul {
+    padding: 0;
+    list-style: none;
+}
+
+#messages ul li.sender {
+    font-size: 0.7em;
+    font-weight: bold;
+}
+
+#messages ul li.text {
+    background: #F0F0F0;
+    display: inline-block;
+    padding: 0.25em 1em;
+    border-radius: 1em;
+    margin: 0.2em 0;
+    max-width: 75%;
+}
+
+#messages ul li.time {
+    font-size: 0.5em;
+}
+
+#messages li.sent {
+   text-align: right;
+}
+
+#messages li.sent ul li.text {
+    background: rgb(221, 246, 255);
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+fieldset input[type="text"]{
+    padding: 0.5em;
+    box-sizing: border-box;
+    border: none;
+    background: #F0F0F0;
+    float: left;
+    width: calc(100% - 5em);
+}
+
+fieldset input[type="button"]{
+    padding: 0.5em;
+    box-sizing: border-box;
+    border: none;
+    background: #DDD;
+    float: left;
+    width: 5em;
+}
+
+label {
+    display: none;
+}

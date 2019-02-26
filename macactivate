@@ -1,0 +1,20 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+
+. ./env/bin/activate
+
+if [ "$1" == "all" ]
+then
+	docker run -p 6379:6379 -d redis:2.8
+
+	cd flow
+	./build.sh
+	./jsbuild.sh
+else 
+	cd flow
+fi
+
+chmod -R a+r ./visual/static 
+python manage.py collectstatic
+python manage.py runserver 0.0.0.0:8000 --insecure
