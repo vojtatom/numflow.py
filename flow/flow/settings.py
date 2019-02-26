@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'k=nh47b(2pomh*syeu7v@)7s!pqvekp+xi7u_84!&9^o5dafzq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application media
 MEDIA_URL = '/media/'
@@ -134,6 +134,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/static_local'), )
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/static_server')
 
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/'
