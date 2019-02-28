@@ -78,9 +78,13 @@ window.onload = function(e) {
         event.stopPropagation();
     };
 
+    let last = 0;
     
-    var loop = function(){
+    var loop = function(time){
 		app.render();
+        console.log(time, time - last);
+        last = time;
+
 		requestAnimationFrame(loop);
 	}
 

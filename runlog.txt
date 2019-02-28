@@ -1,0 +1,507 @@
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+
+0 static files copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 244 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 243 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 243 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+
+0 static files copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 244 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 243 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+
+0 static files copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 244 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 243 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+
+0 static files copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 244 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 243 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+
+0 static files copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 244 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 243 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 243 unmodified.
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 40%)
+updating: flowapp/shaders/text_vs.glsl (deflated 50%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 40%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 62%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/left.svg (deflated 40%)
