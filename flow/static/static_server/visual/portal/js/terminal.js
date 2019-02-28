@@ -17,9 +17,10 @@ class Terminal {
 
     socket(){
         console.log('constructing terminal', this.code);
+        let url = window.location.host.split(':');
         let socket = new ReconnectingWebSocket(
-            'ws://' + window.location.host +
-            '/ws/terminal/' + this.code + '/');
+            'ws://' + url[0] +
+            ':9000/ws/terminal/' + this.code + '/');
 
         socket.onmessage = (e) => {
             let data = JSON.parse(e.data);

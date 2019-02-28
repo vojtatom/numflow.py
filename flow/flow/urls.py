@@ -22,6 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/', include(('chat.urls', 'chat'), namespace='chat')),
     path('', include(('visual.urls', 'visual'), namespace='visual')),
-] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] # +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 #url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root' : settings.STATIC_ROOT}),
