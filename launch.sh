@@ -35,7 +35,7 @@ task_finished(){
 
 build_and_run_base(){
     task_started "c build"
-    "$DIR"/build.sh
+    "$DIR"/build.sh >> runlog.txt 2>&1
     task_finished
 
     task_started "redis"
@@ -50,12 +50,12 @@ run_nginx(){
 }
 
 run_common(){
-    task_started "collect static"
-    python "$DIR"/manage.py collectstatic --noinput >> runlog.txt 2>&1
-    task_finished
-
     task_started "jsbuild"
     "$DIR"/jsbuild.sh >> runlog.txt 2>&1
+    task_finished
+    
+    task_started "collect static"
+    python "$DIR"/manage.py collectstatic --noinput >> runlog.txt 2>&1
     task_finished
 
     cd "$DIR"
