@@ -120,9 +120,10 @@ var flowapp = SAGE2_App.extend({
         };
 
         let app = new FlowApp(canvas);
-        app.init('test-key');
+        app.init();
         app.resize(this.element.width, this.element.height);
-        this.app = app;
+		this.app = app;
+		this.lastRefresh = Date.now();
         this.loaded = true;
 	},
 
@@ -134,6 +135,8 @@ var flowapp = SAGE2_App.extend({
 	 */
 	load: function(state, date) {
 		/* TODO */
+		//console.log(state, date);
+		this.app.setState(state);
 	},
 
 	/**
@@ -146,6 +149,11 @@ var flowapp = SAGE2_App.extend({
 		if (this.loaded === false || this.loaded === undefined)
 			return;
 
+		if (Date.now() - this.lastRefresh > 3000){
+			this.app.setState(this.state.appState);
+			this.lastRefresh = Date.now();
+		}
+		
 		this.app.render();
 	},
 
@@ -175,30 +183,37 @@ var flowapp = SAGE2_App.extend({
 	event: function(eventType, position, user_id, data, date) {
 		if (eventType === "specialKey" && data.state === "down") {
             this.app.interface.onKeyDown(data.code);
+			this.state.appState = this.app.getState();
         }
 
 		if (eventType === "specialKey" && data.state === "up") {
 			this.app.interface.onKeyUp(data.code);
+			this.state.appState = this.app.getState();
 		}
 
 		if (eventType === "pointerScroll") {
-			this.app.interface.wheel(data.wheelDelta);		
+			this.app.interface.wheel(data.wheelDelta);
+			this.state.appState = this.app.getState();	
 		}
 
 		if (eventType === "pointerPress" && data.button === "left") {    
-            this.app.interface.onMouseDown(position.x, position.y);
+			this.app.interface.onMouseDown(position.x, position.y);
+			this.state.appState = this.app.getState();
 		}
 
 		if (eventType === "pointerRelease" && data.button === "left") {
 			this.app.interface.onMouseUp(position.x, position.y);
+			this.state.appState = this.app.getState();
 		}
 
 		if (eventType === "pointerMove") {
 			this.app.interface.onMouseMove(position.x, position.y);
+			this.state.appState = this.app.getState();
 		}
 	},
 
-	close: function(){
-		console.log('app is closing?');
+	quit: function(){
+		console.log('app is closing...');
+		this.app.quit();
 	}
 });

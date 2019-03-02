@@ -1,4 +1,4 @@
-precision highp float;
+precision mediump float;
 precision highp int;
 
 
@@ -49,6 +49,7 @@ uniform int mode;
 //color map
 uniform int colorMapSize;
 uniform vec4 colorMap[5];
+uniform float farplane;
 
 //scale and shift
 uniform float scaleFactor;
@@ -174,32 +175,18 @@ float interpolate(float t, float v0, float v1, float v2,float v3) {
 }
 
 float applyModeLength(vec3 value){
-	if (mode == 0) {
-		return length(value);
-	}
-
-	if (mode == 1) {
-		return value.x;
-	}
-	if (mode == 2) {
-		return value.y;
-	}
-	if (mode == 3) {
-		return value.z;
-	}
+	float val = float(mode == 0) * length(value);
+	val += float(mode == 1) * value.x;
+	val += float(mode == 2) * value.y;
+	val += float(mode == 3) * value.z;
+	return val;
 }
 
 
 void main(){
 	//interpolate corresponding time factor (streamline parameter)
 	float t = interpolate(t_local, t_global.x, t_global.y, t_global.z, t_global.w);
-
-	//setup correct visibility factor
-	if (time.x <= t && time.y >= t){
-		visible = 1.0;
-	} else {
-		visible = 0.0;
-	}
+	visible = float(time.x <= t && time.y >= t);
 
 	//tangent vectors
 	vec3 vtan0 = (fieldPosition2 - fieldPosition0) / 2.0;
@@ -233,18 +220,17 @@ void main(){
 	vec4 vertex_normal = mWorld * mField * vec4(vertNormal, 1.0);
 	
 	//shade
-	vec3 color;
-	if (appearance == 1){
-		color = phong(light, sigma, vertex.xyz, vertex_normal.xyz);
-	} else {
-		color = vec3(1.0);
-	}
+	vec3 color = float(appearance == 1) * phong(light, sigma, vertex.xyz, vertex_normal.xyz);
+	color += float(appearance == 0) * vec3(1.0);
 
 	//rest of the coloring
 	color *= colorfunc(sigma);
 	color *= brightness;
-	fragColor = color;
 
 	//finalize transformation
 	gl_Position =  mProj * mView * vertex;
+	
+	//check for depth drawing
+	color += float(appearance == 2) * vec3(1.0 - gl_Position.z / farplane);
+	fragColor = color;
 }

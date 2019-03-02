@@ -12,7 +12,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.room_group_name = self.room_name
 
 
-        print(self.room_group_name)
+        #print(self.room_group_name)
 
         # Join room group
         await self.channel_layer.group_add(
@@ -34,7 +34,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         
-        print(self.room_group_name, self.scope['user'], message)
+        #print(self.room_group_name, self.scope['user'], message)
 
         await self.create_chat_message(message, self.scope['user'], self.room_group_name)
 

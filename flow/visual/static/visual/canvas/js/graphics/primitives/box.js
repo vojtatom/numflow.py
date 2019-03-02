@@ -206,7 +206,7 @@ class Box extends UnitBox {
             if (this.activeEdge[lable.boxMeta.axis] !== lable.boxMeta.edge)
                 continue;
 
-                lable.render(camera, light);
+            lable.render(camera, light);
             //console.log('rendering', 'axis', lable.boxMeta.axis, 'edge', this.activeEdge[lable.boxMeta.axis]);
         }
     }

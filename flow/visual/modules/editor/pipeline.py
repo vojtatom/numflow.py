@@ -46,12 +46,10 @@ def topological_sort(graph):
 
     order = start_nodes
     for id in order:
-        print('o:', order)
         for neighbour_id in nodes[id]['out']:
             
             ### additional chack for requirement satisfication
             satisfied = True
-            print(nodes[neighbour_id]['in'])
             for requirements in nodes[neighbour_id]['in']:
                 if requirements not in order:
                     satisfied = False

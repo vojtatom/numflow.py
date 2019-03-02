@@ -41,10 +41,12 @@ uniform int mode;
 //color map
 uniform int colorMapSize;
 uniform vec4 colorMap[5];
+uniform float farplane;
 
 //scale and shift
 uniform float scaleFactor;
 uniform vec3 shift;
+
 /*** END COMMON UNIFORMS ***/
 
 //out
@@ -106,34 +108,21 @@ float significance(float l) {
  * Transform normal according to point of view
  */
 vec3 transform_normal(vec4 shiftPosition) {
-	vec3 transformed_normal;
 	vec3 camera_vec = cameraPosition - shiftPosition.xyz;
 	float cosine = dot(normalize(normal), normalize(camera_vec));
 
 	//check form which angle is the cammera looking
-	if (cosine < 0.0){
-		transformed_normal = -normal;
-	} else {
-		transformed_normal = normal;
-	}
-
+	vec3 transformed_normal = float(cosine < 0.0) * -normal;
+	transformed_normal += float(cosine >= 0.0) * normal;
 	return transformed_normal;
 }
 
 float applyModeLength(vec3 value){
-	if (mode == 0) {
-		return length(value);
-	}
-
-	if (mode == 1) {
-		return value.x;
-	}
-	if (mode == 2) {
-		return value.y;
-	}
-	if (mode == 3) {
-		return value.z;
-	}
+	float val = float(mode == 0) * length(value);
+	val += float(mode == 1) * value.x;
+	val += float(mode == 2) * value.y;
+	val += float(mode == 3) * value.z;
+	return val;
 }
 
 
@@ -142,28 +131,21 @@ void main(){
 	sigma = significance(applyModeLength(fieldValue));
 
 	//shift position of the vertex
-	vec4 shiftPosition = mWorld * vec4(scaleshift(fieldPosition), 1.0);
+	vec4 vertex = mWorld * vec4(scaleshift(fieldPosition), 1.0);
 
 	//shade
-	vec3 color;
-	if (appearance == 1){
-		vec3 transformed_normal = transform_normal(shiftPosition);
-		color = phong(light, sigma, shiftPosition.xyz, transformed_normal);
-	} else {
-		color = vec3(1.0);
-	}
+	vec3 transformed_normal = transform_normal(vertex);
+	vec3 color = float(appearance == 1) * phong(light, sigma, vertex.xyz, transformed_normal);
+	color += float(appearance == 0) * vec3(1.0);
 
 	//rest of the coloring
 	color *= colorfunc(sigma);
 	color *= brightness;
-	fragColor = color;
-
-	if (sigma < 0.0){
-		fragColor = vec3(1.0, 0.0, 0.0);
-	} else if (sigma > 1.0) {
-		fragColor = vec3(0.0, 0.0, 1.0);
-	}
 
 	//finalize transformation
-	gl_Position =  mProj * mView * shiftPosition;
+	gl_Position =  mProj * mView * vertex;
+	
+	//check for depth drawing
+	color += float(appearance == 2) * vec3(1.0 - gl_Position.z / farplane);
+	fragColor = color;
 }

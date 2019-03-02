@@ -40,6 +40,13 @@ class MethodPrimitive extends Primitive {
         this.box.render(camera, light);
     }
 
+    renderDepth(camera, light){
+		let appearanceSetting = this.meta.appearance;
+        this.meta.appearance = Appearance.depth;
+        this.render(camera, light);
+        this.meta.appearance = appearanceSetting;
+	}
+
     renderLabels(camera, light){
         if (!this.meta.visible || !this.meta.boxVisible || !this.meta.lablesVisible)
             return;

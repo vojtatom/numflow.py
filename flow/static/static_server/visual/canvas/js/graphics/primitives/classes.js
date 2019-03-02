@@ -9,15 +9,20 @@ class Appearance {
         return 0;
     }
 
+    static get depth() {
+        return 2;
+    }
+
     static encode(a) {
         return {
             transparent: 0,
             solid: 1,
+            depth: 2,
         }[a];
     }
 
     static decode(a) {
-        return ['transparent', 'solid'][a];
+        return ['transparent', 'solid', 'depth'][a];
     }
 }
 

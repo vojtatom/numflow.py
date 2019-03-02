@@ -19,7 +19,7 @@ def command(group, notebook_code, command, data, username):
     """
     try:
         if command in commands:
-            print(data)
+            #print(data)
             commands[command](group, notebook_code, command, data, username)
         else:
             ##command not found
@@ -47,6 +47,22 @@ def send(group, text, status=0, username=None, done=False):
     })
 
 
+def canvas_update(group, notebook_code, username=None):
+    """
+    Sends text to layers group with status.
+        :param group: channel layers group name
+        :param notebook_code: updated notebook code
+        :param username: author of the command
+    """
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(group, {
+        'type': 'update',
+        'url': '/media/notebook/{}/output.flow'.format(notebook_code),
+        'sender': username,
+        'time': str(datetime.datetime.now()),
+    })
+
+
 def help_command(group, notebook_code, command, data, username):
     help_text = """usefull commands:
 
@@ -57,14 +73,13 @@ help    show this help
     send(group, help_text, username=username, done=True)
 
 
-
 def run_command(group, notebook_code, command, data, username):
     graph = pipeline.load_graph(data)
     order = pipeline.topological_sort(graph)
     send(group, 'No cycles detected, computing...', username=username)
     pipeline.compute(notebook_code, graph, order, lambda m:  send(group, m, username=username))
     send(group, 'Calculation succesfully finished!', username=username, done=True)
-
+    canvas_update(group, notebook_code, username=username)
 
 
 

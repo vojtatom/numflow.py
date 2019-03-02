@@ -87,6 +87,15 @@ stop(){
         sudo pkill python
         task_finished
     fi
+
+    KILLCHECK=`pgrep daphne | wc -l`
+    if [ $KILLCHECK -ne 0 ]
+	then
+	
+	task_started "additional daphne cleanup"
+	sudo pkill daphne
+	task_finished
+    fi
 }
 
 

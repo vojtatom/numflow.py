@@ -161,6 +161,7 @@ class Primitive {
 			view: camera.view,
 			proj: camera.projection,
 			light: light.pos,
+			farplane: camera.farplane,
 		});
 	}
 

@@ -21,6 +21,11 @@
                 <img src="{% static icons|add:'/download.svg' %}" alt="download" title="download">
             </a>
         </li>
+        <li class="action canvas" title="canvas">
+            <a href="/canvas/{{ notebook.code }}">
+                <img src="{% static icons|add:'/3d.svg' %}" alt="canvas" title="canvas">
+            </a>
+        </li>
         <li class="action delete" title="delete">
             <img src="{% static icons|add:'/delete.svg' %}" alt="delete" >
         </li>

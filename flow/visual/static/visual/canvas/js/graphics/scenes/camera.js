@@ -95,6 +95,9 @@ class Camera {
         this.scaleMomentum = 0;
 
         this.mode = CameraState.perspective;
+
+        this.sceneChanged = true;
+        this.farplane = 200.0;
     }
 
     get view() {
@@ -111,9 +114,9 @@ class Camera {
 
     get projection() {
         if (this.mode === CameraState.perspective){
-            return mat4.perspective(this.projectionMatrix, glMatrix.toRadian(45), this.aspect, 0.1, 2000.0);
+            return mat4.perspective(this.projectionMatrix, glMatrix.toRadian(45), this.aspect, 0.1, this.farplane);
         } else {
-            return mat4.ortho(this.projectionMatrix, -this.actualScale, this.actualScale, -this.actualScale / this.aspect, this.actualScale / this.aspect, 0.1, 2000.0);
+            return mat4.ortho(this.projectionMatrix, -this.actualScale, this.actualScale, -this.actualScale / this.aspect, this.actualScale / this.aspect, 0.1, 10 * this.farplane);
         }
 
     }
@@ -135,6 +138,7 @@ class Camera {
         this.screenX = x;
         this.screenY = y;
         this.aspect = x / y;
+        this.sceneChanged = true;
     }
 
 
@@ -294,7 +298,7 @@ class Camera {
             this.centerMomentum = 0;
         }
 
-        this.scaleMomentum = (this.scale - this.actualScale) * this.speed;
+        this.scaleMomentum = Math.abs(this.scale - this.actualScale) * this.speed;
         if (this.scaleMomentum > 0.02){
             this.actualScale = this.actualScale + (this.scale - this.actualScale) * this.scaleMomentum;
         } else {
@@ -305,11 +309,21 @@ class Camera {
     }
 
     get isMoving(){
+
         if (this.centerMomentum || this.rotMomentum || this.positionMomentum || this.scaleMomentum){
             //console.log(this.centerMomentum, this.rotMomentum, this.positionMomentum);
             return true;
         }
         return false;
+    }
+
+    get needsRender(){
+        if (this.sceneChanged){
+            this.sceneChanged = false;
+            return true;
+        }
+
+        return this.isMoving
     }
 
 
@@ -319,5 +333,24 @@ class Camera {
         } else {
             this.mode = CameraState.perspective;
         }
+    }
+
+    getState(){
+        return {
+            position: vec3.clone(this.position),
+            up: vec3.clone(this.up),
+            center: vec3.clone(this.center),
+            normal: vec3.clone(this.normal),
+            scale: this.scale,
+        }
+    }
+
+    setState(state){
+        console.log(state);
+        vec3.copy(this.position, state.position);
+        vec3.copy(this.up, state.up);
+        vec3.copy(this.center, state.center);
+        vec3.copy(this.normal, state.normal);
+        this.scale = state.scale;
     }
 }

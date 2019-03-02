@@ -83,3 +83,20 @@ class TerminalConsumer(AsyncWebsocketConsumer):
             'status': event['status'],
         }))
 
+    # Receive output from group
+    async def canvas(self, event):
+        # Send command to WebSocket
+        await self.send(text_data=json.dumps({
+            'type': 'canvas',
+            'text': event['text'],
+            'status': event['status'],
+        }))
+
+        # Receive output from group
+    async def update(self, event):
+        # Send command to WebSocket
+        await self.send(text_data=json.dumps({
+            'type': 'update',
+            'url': event['url'],
+        }))
+

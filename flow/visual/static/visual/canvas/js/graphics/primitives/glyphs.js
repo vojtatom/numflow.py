@@ -61,7 +61,6 @@ class Glyphs extends MethodPrimitive {
         //Finish up...
         this.loaded = true;  
         //console.log(this.gl.getError());
-        console.log(this.program);
     }
 
     initGlyph(geometry, sampling){
@@ -101,7 +100,7 @@ class Glyphs extends MethodPrimitive {
         if(!this.meta.visible)
             return;
 
-        this.program.bind();
+        //this.program.bind();
         this.bindBuffersAndTextures();
         
         //create uniforms
@@ -113,7 +112,7 @@ class Glyphs extends MethodPrimitive {
         //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
-        this.program.unbind();
+        //this.program.unbind();
     }
 
     get ui(){

@@ -72,7 +72,7 @@ class Layer extends MethodPrimitive {
         if(!this.meta.visible)
             return;
 
-        this.program.bind();
+        //this.program.bind();
         this.bindBuffersAndTextures();
 
         let uniforms = this.uniformDict(camera, light, this.meta.mode);
@@ -84,7 +84,7 @@ class Layer extends MethodPrimitive {
         //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
-        this.program.unbind();
+        //this.program.unbind();
     }
 
     get ui(){

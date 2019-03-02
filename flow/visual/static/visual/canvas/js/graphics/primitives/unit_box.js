@@ -72,7 +72,7 @@ class UnitBox extends Primitive {
     }
 
     render(camera, light) {
-        this.program.bind();
+        //this.program.bind();
         this.bindBuffersAndTextures();
 
         let uniforms = this.uniformDict(camera, light);
@@ -82,6 +82,6 @@ class UnitBox extends Primitive {
         //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
-        this.program.unbind();
+        //this.program.unbind();
     }
 }

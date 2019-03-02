@@ -57,4 +57,4 @@ def docs(request):
 
 
 def canvas(request, code):
-     return render(request, 'visual/pages/canvas.html', code)
+     return render(request, 'visual/pages/canvas.html')

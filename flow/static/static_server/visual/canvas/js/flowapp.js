@@ -8,64 +8,103 @@ class FlowApp {
         this.ui = new FlowAppUI(canvas);
     }
 
-    init(key) {
-        this.key = key;
+    init(code = null) {
+        this.code = code;
         this.graphics.init();
+
+        if (code !== null){
+            let getData = (url) => {
+                this.ui.updateStatus('loading model from server...');
+                DataManager.request({
+                    method: 'GET',
+                    url: url ? url : '/media/notebook/' + this.code + '/output.flow',
+                    decode: true,
+                    success: (contents) => { 
+                        this.load(contents);
+                        this.ui.updateStatus('model loaded');
+                    },
+                    fail: (r) => { 
+                        console.error(r); 
+                        this.ui.updateStatus('there is no model to be loaded');
+                    }
+                })
+            }
+
+            console.log('notebook', code);
+
+            let url = window.location.host.split(':');
+            let socket = new ReconnectingWebSocket(
+                'ws://' + url[0] +
+                ':9000/ws/terminal/' + this.code + '/');
+
+            socket.onmessage = (e) => {
+                let data = JSON.parse(e.data);
+                if (data.type === 'update'){
+                    getData(data.url);
+                }
+            };
+
+            socket.onerror = (e) => {
+                console.error(e);
+            };
+
+            getData();
+        } else {
+            this.ui.updateStatus('waiting for model file from user');
+        }
+
     }
 
     load(contents){
         //delete all previously allocated buffers and data etc.
+        this.ui.updateStatus('deleting old graphics');
         this.graphics.delete();
         this.ui.delete();
 
         //allocate new scenes
+        this.ui.updateStatus('loading new models');
         for (let scene_id in contents) {
             console.log('loading scene', scene_id);
             this.graphics.addScene(contents[scene_id], this.ui);
         }
 
         //none was allocated so has to be first scene
-		this.ui.displayScene(0); //zero as first scene
+        this.ui.displayScene(0); //zero as first scene
+        this.ui.updateStatus('model loaded');
     }
 
     render() {
         this.graphics.render();
 
         if (this.interface.keys[67]){
-            this.interface.keys[67] = false;
-            //67 = c 
-            console.log('image saved!!');
-            //let img = this.canvas.toDataURL("image/png");
-
-            //document.write('<img src="'+img+'"/>');
-            //let data = this.canvas.toDataURL('image/png');
-            //let win = window.open();
-
-            //let img = document.createElement('img');
-            //img.src = data;
-            //var url = data.replace(/^data:image\/[^;]+/, 'data:application/octet-stream');
-            //window.open(url);
+            //setup canvas
+            this.ui.updateStatus('rendering and saving image...');
+            this.canvas.width = '3840px';
+            this.canvas.height = '2160px';
+            this.graphics.resize(3840, 2160);
+            this.graphics.render();
             
-            this.canvas.toBlob(function(blob) {
-                // Function to download data to a file
-                let file = blob;
-                if (window.navigator.msSaveOrOpenBlob) // IE10+
-                    window.navigator.msSaveOrOpenBlob(file, filename);
-                else { // Others
-                    let a = document.createElement("a"),
-                            url = URL.createObjectURL(file);
-                    a.href = url;
-                    a.download = 'floaw.png';
-                    document.body.appendChild(a);
-                    a.click();
-                    setTimeout(function() {
-                        document.body.removeChild(a);
-                        window.URL.revokeObjectURL(url);  
-                    }, 0); 
-                }
-            });
 
-            //win.document.write('<img src="'+ data +'"/>');
+            //67 = c 
+            this.interface.keys[67] = false;
+            this.saveCanvas('flowimage.png');
+        }
+
+        if (this.interface.keys[86]){
+            //setup canvas
+            this.ui.updateStatus('rendering and saving images...');
+            this.canvas.width = '3840px';
+            this.canvas.height = '2160px';
+            this.graphics.resize(3840, 2160);
+            
+            //86 = v
+            this.interface.keys[86] = false;
+            
+            this.graphics.renderColor();
+            this.saveCanvas('color.png');
+
+            this.graphics.renderDepth();
+            this.saveCanvas('depth.png');
         }
 
         if (this.interface.keys[84]){
@@ -113,7 +152,38 @@ class FlowApp {
         }
     }
 
+    saveCanvas(name){
+        this.canvas.toBlob((blob) => {
+            // Function to download data to a file
+            let file = blob;
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, filename);
+            else { // Others
+                let a = document.createElement("a"),
+                        url = URL.createObjectURL(file);
+                a.href = url;
+                a.download = name;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);  
+
+                    this.canvas.width = '100%';
+                    this.canvas.height = '100%';
+                    this.graphics.resize(this.dim.x, this.dim.y);
+                    this.ui.updateStatus('image saved');
+                }, 0); 
+            }
+        });
+    }
+
     resize(x, y){
+        this.dim = {
+            x: x,
+            y: y,
+        };
+
         this.graphics.resize(x, y);
         this.ui.resize(x, y);
     }
@@ -169,6 +239,22 @@ class FlowApp {
         if (key === 80){
             this.graphics.scene.camera.toggleMode();
         }
+
+        this.graphics.scene.camera.sceneChanged = true;
+    }
+
+    getState(){
+        console.log('getting state...');
+        return this.graphics.getState();
+    }
+
+    setState(state){
+        console.log('setting state...');
+        return this.graphics.setState(state);
+    }
+
+    quit(){
+        this.graphics.delete(true);
     }
 
     

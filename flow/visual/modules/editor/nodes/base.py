@@ -35,7 +35,6 @@ class Node(abc.ABC):
 
     @classmethod
     def deserialize(cls, data):
-        print('running deser')
         parsed = {}
         parsed['title'] = data['title']
         parsed['id'] = data['id']
@@ -48,7 +47,6 @@ class Node(abc.ABC):
                 parsed['data'][field] = cls.parsing[field](data['data']['structure'][field]['value'])
             else:
                 parsed['data'][field] = data['data']['structure'][field]['value']
-            print('deser', field) 
         return parsed
 
 
