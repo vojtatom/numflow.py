@@ -10,12 +10,18 @@ window.onload = function(e) {
     
     ///IMPORTANT STATIC SETUP!!!!!
     Shader.dir = '/static/visual/canvas/js/graphics/shaders/src/';
-
-    app.init('test-key');
+    
+    let path = window.location.href.split('/');
+    let code = path[path.length - 1];
+    
+    if (code !== 'canvas' && code !== ''){
+        app.init(code);
+        uploadForm.style.display = 'none';
+    } else {
+        app.init();
+    }
     app.resize(window.innerWidth, window.innerHeight);
-
-
-
+    
     // File reader and uploader...
     let handleFiles = function (file) {
         file = file[0];
@@ -82,7 +88,7 @@ window.onload = function(e) {
     
     var loop = function(time){
 		app.render();
-        console.log(time, time - last);
+        //console.log(time, time - last);
         last = time;
 
 		requestAnimationFrame(loop);

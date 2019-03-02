@@ -93,7 +93,7 @@ class Quad extends Primitive {
         if(!this.isRenderReady)
             return;
 
-        this.program.bind();
+        //this.program.bind();
         this.bindBuffersAndTextures();
 
         let uniforms = this.uniformDict(camera, light);
@@ -106,6 +106,6 @@ class Quad extends Primitive {
 
         this.gl.bindVertexArray(null);
         this.gl.bindTexture(this.gl.TEXTURE_2D, null);
-        this.program.unbind();
+        //this.program.unbind();
     }
 }

@@ -219,7 +219,7 @@ class Stream extends MethodPrimitive {
             this.gl.cullFace(this.gl.BACK);
         }
 
-        this.program.bind();
+        //this.program.bind();
         this.bindBuffersAndTextures();
 
         let uniforms = this.uniformDict(camera, light, this.meta.mode);
@@ -231,7 +231,7 @@ class Stream extends MethodPrimitive {
         //console.log(this.gl.getError());
 
         this.gl.bindVertexArray(null);
-        this.program.unbind();
+        //this.program.unbind();
 
         if (culling){
             this.gl.disable(this.gl.CULL_FACE);

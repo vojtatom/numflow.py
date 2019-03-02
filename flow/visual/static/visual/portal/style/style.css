@@ -118,6 +118,7 @@ header {
     margin: 0;
     padding: 1em 1em;
 
+    border-bottom: 1px solid #222;
     justify-content: space-between;
     display: flex;
 }
@@ -199,7 +200,7 @@ div > code {
 #sidebar{
     flex: 2 2;
     box-sizing: border-box;
-    height: calc(100vh - 6em);
+    height: calc(100vh - 3em);
     background: #181818;
 }
 
@@ -208,7 +209,7 @@ div > code {
     border-right: 1px solid #222;
     position: relative;
     box-sizing: border-box;
-    height: calc(100vh - 5.7em);
+    height: calc(100vh - 3em);
     overflow-y: auto;
 }
 

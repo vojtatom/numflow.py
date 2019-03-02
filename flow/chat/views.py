@@ -27,7 +27,7 @@ def index(request):
             
             rooms = Chatroom.objects.filter(users__in=users)
             rooms = rooms.annotate(num_users=Count('users')).filter(num_users=users.count())
-            print(rooms, Count(rooms))
+            #print(rooms, Count(rooms))
 
             if not rooms.exists():
                 rooms = Chatroom()
@@ -38,7 +38,7 @@ def index(request):
             message = Message(text=data['message'], sender=request.user, chatroom=rooms)
             message.save()
             
-            print("message saved", rooms)
+            #print("message saved", rooms)
             return redirect('chat:room', chatroom=str(rooms.name))
 
     form = CreateChatForm()

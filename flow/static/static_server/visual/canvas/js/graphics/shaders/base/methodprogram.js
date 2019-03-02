@@ -34,6 +34,10 @@ class MethodProgram extends Program {
                 name: 'colorMap[4]',
                 type: this.GLType.vec4,
             },
+            farplane: {
+                name: 'farplane',
+                type: this.GLType.float,
+            },
 
             //stats
             minSize: {

@@ -50,12 +50,12 @@ run_nginx(){
 }
 
 run_common(){
-    task_started "collect static"
-    python "$DIR"/manage.py collectstatic --noinput >> runlog.txt 2>&1
-    task_finished
-
     task_started "jsbuild"
     "$DIR"/jsbuild.sh >> runlog.txt 2>&1
+    task_finished
+	
+    task_started "collect static"
+    python "$DIR"/manage.py collectstatic --noinput >> runlog.txt 2>&1
     task_finished
 
     cd "$DIR"
@@ -86,6 +86,15 @@ stop(){
         task_started "additional python kill"
         sudo pkill python
         task_finished
+    fi
+
+    KILLCHECK=`pgrep daphne | wc -l`
+    if [ $KILLCHECK -ne 0 ]
+	then
+	
+	task_started "additional daphne cleanup"
+	sudo pkill daphne
+	task_finished
     fi
 }
 

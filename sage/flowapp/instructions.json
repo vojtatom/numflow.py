@@ -6,6 +6,13 @@
 	"resize": "free",
 	"animation": true,
 	"load": {
+		"appState": {
+			"position": [0, -200, 0],
+            "up": [0, 0, 1],
+            "center": [0, 0, 0],
+            "normal": [0, 0, 0],
+            "scale": 100
+		}
 	},
 	"dependencies": [
 		"scripts/gl-matrix.js",
@@ -18,7 +25,7 @@
 	"title": "Flow visualization",
 	"version": "0.0.2",
 	"description": "A WebGL thing to visualize 3D flows.",
-	"keywords": [ "webgl", "animation", "3d" ],
+	"keywords": [ "webgl", "flow", "3d" ],
 	"author": "Vojtech Tomas <tomasvo1@fit.cvut.cz>",
 	"license": "SAGE2-Software-License"
 }

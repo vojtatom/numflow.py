@@ -38,6 +38,7 @@ uniform int mode;
 //color map
 uniform int colorMapSize;
 uniform vec4 colorMap[5];
+uniform float farplane;
 
 //scale and shift
 uniform float scaleFactor;
@@ -124,19 +125,11 @@ float significance(float l) {
 
 
 float applyModeLength(vec3 value){
-	if (mode == 0) {
-		return length(value);
-	}
-
-	if (mode == 1) {
-		return value.x;
-	}
-	if (mode == 2) {
-		return value.y;
-	}
-	if (mode == 3) {
-		return value.z;
-	}
+	float val = float(mode == 0) * length(value);
+	val += float(mode == 1) * value.x;
+	val += float(mode == 2) * value.y;
+	val += float(mode == 3) * value.z;
+	return val;
 }
 
 void main(){	
@@ -150,18 +143,17 @@ void main(){
 	vec4 vertex_normal = mWorld * mField * vec4(vertNormal, 1.0);
 
 	//shade
-	vec3 color;
-	if (appearance == 1){
-		color = phong(light, sigma, vertex.xyz, vertex_normal.xyz);
-	} else {
-		color = vec3(1.0);
-	}
+	vec3 color = float(appearance == 1) * phong(light, sigma, vertex.xyz, vertex_normal.xyz);
+	color += float(appearance == 0) * vec3(1.0);
 
 	//rest of the coloring
 	color *= colorfunc(sigma);
 	color *= brightness;
-	fragColor = color;
 
 	//finalize transformation
 	gl_Position =  mProj * mView * vertex;
+	
+	//check for depth drawing
+	color += float(appearance == 2) * vec3(1.0 - gl_Position.z / farplane);
+	fragColor = color;
 }

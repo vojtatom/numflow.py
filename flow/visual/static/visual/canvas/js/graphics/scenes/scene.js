@@ -5,7 +5,20 @@ class Scene{
         this.gl = gl;
         this.camera = new Camera();
         this.light = new Light();
-        this.objects = [];
+        this.objects = {
+            glyph : {
+                obj: [],
+                program: null,
+            },
+            stream: {
+                obj: [],
+                program: null,
+            },
+            layer: {
+                obj: [],
+                program: null,
+            },
+        };
     }
 
     init(contents, ui, programs){
@@ -28,11 +41,13 @@ class Scene{
                 glyphs_group.stats = contents.stats;
                 glyphs.init(glyphs_group);
                 //console.log(glyphs);
-                this.objects.push(glyphs);
+                this.objects.glyph.obj.push(glyphs);
 
                 sceneui.addWidget(new WidgetUI(glyphs.ui));
             }
         }
+
+        this.objects.glyph.program = programs.glyph;
 
         if ('streamlines' in contents){
             for (let stream_group of contents.streamlines){
@@ -40,11 +55,13 @@ class Scene{
                 stream_group.stats = contents.stats;
                 streams.init(stream_group);
                 //console.log(streams);
-                this.objects.push(streams);
+                this.objects.stream.obj.push(streams);
 
                 sceneui.addWidget(new WidgetUI(streams.ui));
             }
         }
+
+        this.objects.stream.program = programs.stream;
 
         if ('layer' in contents){
             for (let layer_group of contents.layer){
@@ -52,11 +69,13 @@ class Scene{
                 layer_group.stats = contents.stats;
                 layer.init(layer_group);
                 //console.log(streams);
-                this.objects.push(layer);
+                this.objects.layer.obj.push(layer);
 
                 sceneui.addWidget(new WidgetUI(layer.ui));
             }
         }
+
+        this.objects.layer.program = programs.layer;
         /*
 
         let stream = new Stream(this.gl);
@@ -66,7 +85,13 @@ class Scene{
         ui.addScene(sceneui);
     }
 
-    render(){
+    render(programs){
+        //update camera
+        this.camera.frame();
+
+        if (!this.camera.needsRender)
+            return;
+
         this.gl.clearColor(0.1, 0.1, 0.1, 1.0);
         this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT);
             
@@ -75,24 +100,32 @@ class Scene{
         this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
         
         //draw bounding boxes   
-        for(let obj of this.objects){
-            obj.renderBox(this.camera, this.light);
+        programs.box.bind();
+        for(let type in this.objects){
+            for(let obj of this.objects[type].obj){
+                obj.renderBox(this.camera, this.light);
+            }
         }
         
         //draw solid objects
         this.gl.disable(this.gl.BLEND);
-        for(let obj of this.objects){
-            if (!obj.transparent){
-                obj.render(this.camera, this.light);
+        for(let type in this.objects){
+            this.objects[type].program.bind();   
+            for(let obj of this.objects[type].obj){
+                if (!obj.transparent){
+                    obj.render(this.camera, this.light);
+                }
             }
         }
         
         //draw transparent objects
         this.gl.enable(this.gl.BLEND);
-        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
-        for(let obj of this.objects){
-            if (obj.transparent){
-                obj.render(this.camera, this.light);
+        for(let type in this.objects){
+            this.objects[type].program.bind();   
+            for(let obj of this.objects[type].obj){
+                if (obj.transparent){
+                    obj.render(this.camera, this.light);
+                }
             }
         }
         
@@ -100,20 +133,76 @@ class Scene{
         this.gl.disable(this.gl.DEPTH_TEST);
         
         //bounding boxes labels  
-        for(let obj of this.objects){
-            obj.renderLabels(this.camera, this.light);
-        }
+        programs.text.bind();
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                obj.renderLabels(this.camera, this.light);
 
+                //check for camera movement
+                if (this.camera.isMoving){
+                    obj.updateEdgeAxis(this.camera);
+                }
+            }
+        }
+    }
+
+    renderColor(){
         //update camera
         this.camera.frame();
 
-        //check for camera movement
-        if (this.camera.isMoving){
-            for(let obj of this.objects){
-                obj.updateEdgeAxis(this.camera);
+        this.gl.clearColor(0.1, 0.1, 0.1, 1.0);
+        this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT);
+            
+        this.gl.enable(this.gl.DEPTH_TEST);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
+        this.gl.disable(this.gl.BLEND);
+
+        //draw solid objects
+        for(let type in this.objects){
+            this.objects[type].program.bind();   
+            for(let obj of this.objects[type].obj){
+                if (!obj.transparent){
+                    obj.render(this.camera, this.light);
+                }
             }
-            //console.log('camera is moving');
         }
+        
+        //draw transparent objects
+        this.gl.enable(this.gl.BLEND);
+        for(let type in this.objects){
+            this.objects[type].program.bind();   
+            for(let obj of this.objects[type].obj){
+                if (obj.transparent){
+                    obj.render(this.camera, this.light);
+                }
+            }
+        }
+    }
+
+    renderDepth(){
+        //update camera
+        this.camera.frame();
+
+        this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT);      
+        this.gl.enable(this.gl.DEPTH_TEST);
+        this.gl.disable(this.gl.BLEND);
+        
+        //draw depth  
+        for(let type in this.objects){
+            this.objects[type].program.bind();   
+            for(let obj of this.objects[type].obj){
+                obj.renderDepth(this.camera, this.light);
+            }
+        }
+    }
+
+    getState(){
+        return this.camera.getState();
+    }
+
+    setState(state){
+        this.camera.setState(state);
     }
 
     screen(x, y) {
@@ -122,8 +211,10 @@ class Scene{
 
     delete() {
         console.log('deleting scene...');
-        for (let obj of this.objects){
-            obj.delete();
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                obj.delete();
+            }
         }
     }
 }

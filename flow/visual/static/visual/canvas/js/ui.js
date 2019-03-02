@@ -6,6 +6,11 @@ class FlowAppUI {
         this.canvas = canvas;
         let parent = canvas.parentNode;
 
+        let status = document.createElement('div');
+        status.id = 'flowappstatus';
+        status.innerHTML = 'status';
+        parent.appendChild(status);
+
         let placeholder = document.createElement('div');
         placeholder.id = 'placeholderui';
         placeholder.innerHTML = 'M';
@@ -77,6 +82,7 @@ class FlowAppUI {
         element.appendChild(sceneElement);
         
         this.placeholder = placeholder;
+        this.status = status;
         this.element = element;
         this.sceneList = sceneList;
         this.sceneElement = sceneElement;
@@ -220,5 +226,11 @@ class FlowAppUI {
     resize(x, y){
         this.element.style.fontSize = (((y / 1400) - 1) + 1) + 'em';
         this.element.style.width = (((y / 1400) - 1) * 400 + 400) + 'px';
+        this.status.style.fontSize = (((y / 1400) - 1) + 1) + 'em';
+        this.placeholder.style.fontSize = (((y / 1400) - 1) + 1) + 'em';
+    }
+
+    updateStatus(text){
+        this.status.innerHTML = text;
     }
 }
