@@ -79,4 +79,24 @@ class CoordMode {
     }
 }
 
+class TextMode {
+    static get threeSpace() {
+        return 0;
+    }
+
+    static get screenSpace() {
+        return 1;
+    }
+
+    static encode(a) {
+        return {
+            threeSpace: 0,
+            screenSpace: 1,
+        }[a];
+    }
+
+    static decode(a) {
+        return ['threeSpace', 'screenSpace'][a];
+    }
+}
 

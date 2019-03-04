@@ -129,19 +129,29 @@ class Scene{
             }
         }
         
-        this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
         this.gl.disable(this.gl.DEPTH_TEST);
+        this.gl.disable(this.gl.BLEND);
+        //colorbars
+        programs.colorbar.bind();
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                obj.renderColorbar(this.camera, this.light);
+                
+                //check for camera movement
+                if (this.camera.isMoving){
+                    obj.updateEdgeAxis(this.camera);
+                }
+            }
+        }
         
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
         //bounding boxes labels  
         programs.text.bind();
         for(let type in this.objects){  
             for(let obj of this.objects[type].obj){
                 obj.renderLabels(this.camera, this.light);
-
-                //check for camera movement
-                if (this.camera.isMoving){
-                    obj.updateEdgeAxis(this.camera);
-                }
+                obj.renderColorbarLabels(this.camera, this.light);
             }
         }
     }

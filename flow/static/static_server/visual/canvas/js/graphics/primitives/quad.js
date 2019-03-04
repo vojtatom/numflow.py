@@ -48,20 +48,20 @@ class Quad extends Primitive {
         function makeTextCanvas(text, width, height) {
             textCtx.canvas.width  = width;
             textCtx.canvas.height = height;
-            textCtx.font = "20px monospace";
-            textCtx.textAlign = "center";
-            textCtx.textBaseline = "middle";
-            textCtx.fillStyle = "white";
+            textCtx.font = '24px monospace';
+            textCtx.textAlign = data.space === TextMode.screenSpace ? 'left' : 'center';
+            textCtx.textBaseline = 'middle';
+            textCtx.fillStyle = 'white';
             textCtx.strokeStyle = 'white';
             textCtx.lineWidth = 5;
             textCtx.clearRect(0, 0, textCtx.canvas.width, textCtx.canvas.height);
-            textCtx.fillText(text, width / 2, height / 2);
+            textCtx.fillText(text, data.space === TextMode.screenSpace ? width / 8 : width / 2, height / 2);
             return textCtx.canvas;
         }
         
 
         // create text texture.
-        let value = data.value < 100 ? data.value.toFixed(2) : data.value.toExponential(3);
+        let value = data.value < 10000 && data.value > -10000 ? data.value.toFixed(2) : data.value.toExponential(3);
         let textCanvas = makeTextCanvas(value, 200, 50);
         let textWidth  = textCanvas.width;
         let textHeight = textCanvas.height;
@@ -77,6 +77,7 @@ class Quad extends Primitive {
         this.appendMeta({
             labelSize: vec2.fromValues(textWidth, textHeight),
             texture: textTex,
+            space: data.space,
         });
         
         mat4.fromTranslation(this.model, data.position);

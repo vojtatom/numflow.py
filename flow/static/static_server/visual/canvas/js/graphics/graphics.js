@@ -28,12 +28,13 @@ class Graphics {
             layer: new LayerProgram(this.gl),
             stream: new StreamProgram(this.gl),
             text: new TextProgram(this.gl),
+            colorbar: new ColorbarProgram(this.gl),
         }
 
         //this.gl.enable(this.gl.DEPTH_TEST);
         //this.gl.disable(this.gl.BLEND);
         //this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
-        //this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+        this.gl.pixelStorei(this.gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
         //this.gl.blendFuncSeparate(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA, this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
     }
 

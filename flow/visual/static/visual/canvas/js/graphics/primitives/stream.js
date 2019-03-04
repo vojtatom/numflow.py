@@ -2,11 +2,9 @@
 
 class Stream extends MethodPrimitive {
     constructor(gl, programs) {
-        super(gl);
+        super(gl, programs);
 
         this.program = programs.stream;
-        this.box = new Box(this.gl, programs);
-
         this.loaded = false;
         this.model = mat4.create();
     }
@@ -166,6 +164,7 @@ class Stream extends MethodPrimitive {
 
         //init bounding box
         this.initBoundingBox(data);
+        this.initColorbar(data);
 
         //Finish up...
         this.loaded = true;  

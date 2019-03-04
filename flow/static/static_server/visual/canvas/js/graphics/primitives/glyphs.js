@@ -2,10 +2,9 @@
 
 class Glyphs extends MethodPrimitive {
     constructor(gl, programs) {
-        super(gl);
+        super(gl, programs);
         
         this.program = programs.glyph;
-        this.box = new Box(gl, programs);
         this.loaded = false;
 
         this.model = mat4.create();
@@ -57,6 +56,7 @@ class Glyphs extends MethodPrimitive {
 
         //init bounding box
         this.initBoundingBox(data);
+        this.initColorbar(data);
 
         //Finish up...
         this.loaded = true;  

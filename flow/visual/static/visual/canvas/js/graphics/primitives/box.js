@@ -151,6 +151,7 @@ class Box extends UnitBox {
             quad.init({
                 position: position,
                 value: labelValue,
+                space: TextMode.threeDSpace,
             });
 
             quad.boxMeta = {

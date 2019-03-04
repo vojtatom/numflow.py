@@ -2,10 +2,9 @@
 
 class Layer extends MethodPrimitive {
     constructor(gl, programs) {
-        super(gl);
-        this.program = programs.layer;
-        this.box = new Box(this.gl, programs);
+        super(gl, programs);
 
+        this.program = programs.layer;
         this.loaded = false;
         this.model = mat4.create();
     }
@@ -59,6 +58,7 @@ class Layer extends MethodPrimitive {
 
         //init bounding box
         this.initBoundingBox(data);
+        this.initColorbar(data);
 
         //Finish up...
         this.loaded = true;  

@@ -110,10 +110,6 @@ class Primitive {
 	}
 
 	//BUFFERS MANAGEMENT
-	initBoundingBox(data){
-		this.box.init(data);
-	}
-
 	addBufferVAO(buffer){
 		this.buffers.vao = buffer;
 	}

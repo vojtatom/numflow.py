@@ -2,9 +2,15 @@
 
 class WidgetUI {
     constructor(data){
+        this.activateCall = data.activate.call;
+        this.deactivateCall = data.deactivate.call;
+        console.log()
+        
         this.data = data;
         this.fieldElements = [];
         this.selected = 0;
+
+        this.active = false;
     }
 
     get node() {
@@ -47,12 +53,18 @@ class WidgetUI {
     }
     
     select(index){
-        this.element.style.display = 'block';
-        this.navpoint.classList.add('selected');
         this.fieldElements[this.selected].deselect();
         index = (index + this.fieldElements.length) % this.fieldElements.length;  
         this.fieldElements[index].select();
         this.selected = index;
+        
+        if (!this.active){
+            this.activateCall();
+            this.element.style.display = 'block';
+            this.navpoint.classList.add('selected');
+            this.active = true;
+            console.log('select');
+        }
     }
 
     selectLastField(){
@@ -64,9 +76,15 @@ class WidgetUI {
     }
     
     deselect(){
-        this.element.style.display = 'none';
-        this.navpoint.classList.remove('selected');
-        this.fieldElements[this.selected].deselect();
+        if (this.fieldElements[this.selected])
+            this.fieldElements[this.selected].deselect();
+        
+        if (this.active){
+            this.element.style.display = 'none';
+            this.navpoint.classList.remove('selected');
+            this.deactivateCall();
+            this.active = false;
+        }
     }
 
     nextField(){

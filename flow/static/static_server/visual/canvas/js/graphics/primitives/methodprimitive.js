@@ -1,6 +1,13 @@
 'use strict';
 
 class MethodPrimitive extends Primitive {
+
+    constructor(gl, programs){
+        super(gl);
+        this.box = new Box(gl, programs);
+        this.colorbar = new Colorbar(gl, programs);
+    }
+
     //META INFO MANAGEMENT
 	metaFromData(meta, stats){
         super.metaFromData(meta, stats);
@@ -18,6 +25,7 @@ class MethodPrimitive extends Primitive {
             visible: true,
             boxVisible: true,
             lablesVisible: true,
+            colorBarVisible: false,
 
             //save only values
             stats: stats.values,
@@ -30,6 +38,21 @@ class MethodPrimitive extends Primitive {
     uniformDict(camera, light, statsMode = CoordMode.xyz){
         let unifs = super.uniformDict(camera, light);
 		return Object.assign({}, unifs, this.meta.stats[CoordMode.decode(statsMode)]);
+    }
+
+    initBoundingBox(data){
+		this.box.init(data);
+	}
+
+    initColorbar(data){
+        this.colorbar.init(data);
+    }
+
+    renderColorbar(camera, light){
+        if (!this.meta.colorBarVisible)
+            return;
+            
+        this.colorbar.render(camera, light, this.meta.mode);
     }
     
     renderBox(camera, light){
@@ -52,6 +75,13 @@ class MethodPrimitive extends Primitive {
             return;
 
         this.box.renderLabels(camera, light);
+    }
+
+    renderColorbarLabels(camera, light){
+        if (!this.meta.colorBarVisible)
+            return;
+
+        this.colorbar.renderLabels(camera, light, this.meta.mode);
     }
 
     updateEdgeAxis(camera){
@@ -105,7 +135,15 @@ class MethodPrimitive extends Primitive {
                     () => {this.meta.lablesVisible = false},
                 ],
                 value: 'show',
-            }
+            },
+            activate: {
+                type: 'call',
+                call: () => { this.meta.colorBarVisible = true; },
+            },
+            deactivate: {
+                type: 'call',
+                call: () => { this.meta.colorBarVisible = false; },
+            },
         }
     }
 }

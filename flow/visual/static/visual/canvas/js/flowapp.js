@@ -6,6 +6,8 @@ class FlowApp {
         this.interface = new Interface(this);
         this.graphics = new Graphics(canvas);
         this.ui = new FlowAppUI(canvas);
+
+        this.screenshotsEnabled = false;
     }
 
     init(code = null) {
@@ -76,7 +78,7 @@ class FlowApp {
     render() {
         this.graphics.render();
 
-        if (this.interface.keys[67]){
+        if (this.interface.keys[67] && this.screenshotsEnabled){
             //setup canvas
             this.ui.updateStatus('rendering and saving image...');
             this.canvas.width = '3840px';
@@ -90,7 +92,7 @@ class FlowApp {
             this.saveCanvas('flowimage.png');
         }
 
-        if (this.interface.keys[86]){
+        if (this.interface.keys[86] && this.screenshotsEnabled){
             //setup canvas
             this.ui.updateStatus('rendering and saving images...');
             this.canvas.width = '3840px';

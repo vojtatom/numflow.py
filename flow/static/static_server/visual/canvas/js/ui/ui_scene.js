@@ -54,6 +54,11 @@ class SceneUI {
         this.widgets[this.selected].select(indexF);
     }
 
+    deselect(){
+        if (this.widgets[this.selected])
+            this.widgets[this.selected].deselect();
+    }
+
     selectFirstField(){
         this.widgets[this.selected].selectFirstField();
     }

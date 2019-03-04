@@ -55,6 +55,7 @@ read -r -d '' CANVASLIST << EOM
 ./visual/static/visual/canvas/js/graphics/shaders/stream_program.js
 ./visual/static/visual/canvas/js/graphics/shaders/text_program.js
 ./visual/static/visual/canvas/js/graphics/shaders/layer_program.js
+./visual/static/visual/canvas/js/graphics/shaders/colorbar_program.js
 ./visual/static/visual/canvas/js/graphics/primitives/classes.js
 ./visual/static/visual/canvas/js/graphics/primitives/geometry.js
 ./visual/static/visual/canvas/js/graphics/primitives/primitive.js
@@ -65,6 +66,7 @@ read -r -d '' CANVASLIST << EOM
 ./visual/static/visual/canvas/js/graphics/primitives/glyphs.js
 ./visual/static/visual/canvas/js/graphics/primitives/quad.js
 ./visual/static/visual/canvas/js/graphics/primitives/layer.js
+./visual/static/visual/canvas/js/graphics/primitives/colorbar.js
 ./visual/static/visual/canvas/js/graphics/scenes/light.js
 ./visual/static/visual/canvas/js/graphics/scenes/camera.js
 ./visual/static/visual/canvas/js/graphics/scenes/scene.js
@@ -90,6 +92,8 @@ read -r -d '' SHADERSLIST << EOM
 ./visual/static/visual/canvas/js/graphics/shaders/src/stream_vs.glsl
 ./visual/static/visual/canvas/js/graphics/shaders/src/text_fs.glsl
 ./visual/static/visual/canvas/js/graphics/shaders/src/text_vs.glsl
+./visual/static/visual/canvas/js/graphics/shaders/src/colorbar_fs.glsl
+./visual/static/visual/canvas/js/graphics/shaders/src/colorbar_vs.glsl
 EOM
 
 

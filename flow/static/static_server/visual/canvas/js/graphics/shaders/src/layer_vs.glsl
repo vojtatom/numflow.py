@@ -101,8 +101,16 @@ float significance(float l) {
 	//applying sigmoid to transform... 
 	//sigma \elem [0, 1] is sort of significance value for the vector...?
 	//return 1.0 / (1.0 + exp(-dist));
-	return (l - minSize) / (maxSize - minSize);
+
+	//in case the centering is not possible, which means both min and max are positive or negative
+	float range = minSize * maxSize;
+	float sig = float(range >= 0.0) * ((l - minSize) / (maxSize - minSize));
+	// min ------------------------ 0 --------------------------- max
+	sig += float(range < 0.0) * ((l + max(maxSize, -minSize)) / (2.0 * max(maxSize, - minSize)));
+	
+	return sig;
 }
+
 
 /**
  * Transform normal according to point of view

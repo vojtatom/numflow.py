@@ -108,6 +108,7 @@ class FlowAppUI {
             this.sceneElement.removeChild(this.sceneElement.firstChild);
         }
 
+        this.scenes[this.active].deselect();
         this.active = index;
         this.selectedScene = index;
 

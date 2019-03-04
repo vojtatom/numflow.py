@@ -8,16 +8,22 @@ uniform mat4 mProj;
 uniform vec2 labelSize;
 uniform vec2 screenSize;
 
+uniform int space;
+
+
 varying vec2 v_texcoord;
 
 
 void main() {
     // Multiply the position by the matrix.
 
-    gl_Position = mProj * mView * (mWorld * vec4(0, 0, 0, 1.0));
-    gl_Position /= gl_Position.w;
-    gl_Position.xy += (labelSize / screenSize) * position.xy;
-
+    vec4 threedpos = mProj * mView * mWorld * vec4(0, 0, 0, 1.0);
+    threedpos /= threedpos.w;
+    gl_Position = float(space == 0) * threedpos;
+    gl_Position += float(space == 1) * (mWorld * vec4(0, 0, 0, 1.0));
+    
+    
+    gl_Position.xy += (labelSize / screenSize) * clamp((screenSize.y / 1200.0), 0.9, 1.5) * (position.xy + float(space == 1) * vec2(0.5, 0.0));
     // Pass the texcoord to the fragment shader.
     v_texcoord = texcoord;
 }

@@ -181,6 +181,24 @@ class Geometry{
 
     }
 
+    static colorbar(length){
+        let vert = [];
+        let x = 1;
+        let y = 1;
+
+        for (let i = 0; i < length - 1; ++i){
+            vert.push(0, -i, 0);
+            vert.push(0, -i - 1, 0);
+            vert.push(x, -i, 0);
+
+            vert.push(x, -i, 0);
+            vert.push(0, -i - 1, 0);
+            vert.push(x, -i - 1, 0);
+        }
+
+        return vert;
+    }
+
     static get unitQuad(){
         return [
             -0.5, -0.5, 0,

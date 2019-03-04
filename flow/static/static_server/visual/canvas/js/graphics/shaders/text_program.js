@@ -36,7 +36,13 @@ class TextProgram extends Program {
                 name: 'screenSize',
                 type: this.GLType.vec2,
             },
+            space: {
+                name: 'space',
+                type: this.GLType.int,
+            },
         });
+
+        //console.log(this.uniforms);
     }
 
 

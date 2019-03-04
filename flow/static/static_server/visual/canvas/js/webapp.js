@@ -7,6 +7,7 @@ window.onload = function(e) {
     let uploadForm = document.getElementById('upload-flow');
     
     let app = new FlowApp(canvas);
+    app.screenshotsEnabled = true;
     
     ///IMPORTANT STATIC SETUP!!!!!
     Shader.dir = '/static/visual/canvas/js/graphics/shaders/src/';
