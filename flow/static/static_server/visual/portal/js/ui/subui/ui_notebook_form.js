@@ -5,7 +5,7 @@ class UINotebookForm {
 
         form.onsubmit = function(e) {
             e.preventDefault();
-            console.log('uploading notebook');
+            //console.log('uploading notebook');
 
             let data = new FormData(e.target);
             data.set('data', editor.serialize());
@@ -14,7 +14,7 @@ class UINotebookForm {
                 url: '/notebook/' + code,
                 form: data,
                 success: (r) => { UITerminal.addSavepoint(); },
-                fail: (r) => { console.log(r) },
+                fail: (r) => { console.error(r) },
             });
 
             return false; 

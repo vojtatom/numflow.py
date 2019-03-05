@@ -4,7 +4,6 @@ class WidgetUI {
     constructor(data){
         this.activateCall = data.activate.call;
         this.deactivateCall = data.deactivate.call;
-        console.log()
         
         this.data = data;
         this.fieldElements = [];
@@ -63,7 +62,6 @@ class WidgetUI {
             this.element.style.display = 'block';
             this.navpoint.classList.add('selected');
             this.active = true;
-            console.log('select');
         }
     }
 

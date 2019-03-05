@@ -32,7 +32,7 @@ class FlowApp {
                 })
             }
 
-            console.log('notebook', code);
+            //console.log('notebook', code);
 
             let url = window.location.host.split(':');
             let socket = new ReconnectingWebSocket(
@@ -66,7 +66,7 @@ class FlowApp {
         //allocate new scenes
         this.ui.updateStatus('loading new models');
         for (let scene_id in contents) {
-            console.log('loading scene', scene_id);
+            //console.log('loading scene', scene_id);
             this.graphics.addScene(contents[scene_id], this.ui);
         }
 

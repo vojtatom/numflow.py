@@ -86,5 +86,6 @@ def save_notebook(request, notebook):
     form = NotebookForm(request.POST, instance=notebook)
     if form.is_valid():
         notebook = form.save()
+        notebook.save_nodefile()
         return form
     return form

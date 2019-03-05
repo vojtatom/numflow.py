@@ -87,7 +87,7 @@ class Quad extends Primitive {
         this.gl.bindVertexArray(null);
         this.gl.bindTexture(this.gl.TEXTURE_2D, null);
 
-        console.log(this.gl.getError());
+        //console.log(this.gl.getError());
     }
 
     render(camera, light) {

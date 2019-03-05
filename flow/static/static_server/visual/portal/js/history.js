@@ -50,7 +50,7 @@ window.addEventListener('popstate', function(e) {
                 UI.index(r, false);
                 Cookies.set('flow_page', e.state.url);
             },
-            fail: (r) => { console.log(r); }
+            fail: (r) => { console.error(r); }
         });
 
     } else if (e.state.call == 'notebook'){
@@ -61,7 +61,7 @@ window.addEventListener('popstate', function(e) {
                 UI.notebook(r, false);
                 Cookies.set('flow_page', e.state.url);
             },
-            fail: (r) => { console.log(r); }
+            fail: (r) => { console.error(r); }
         });
     } else if (e.state.call == 'docs'){
         DataManager.request({
@@ -71,7 +71,7 @@ window.addEventListener('popstate', function(e) {
                 UI.docs(r, false);
                 Cookies.set('flow_page', e.state.url);
             },
-            fail: (r) => { console.log(r); }
+            fail: (r) => { console.error(r); }
         });
     }
 });

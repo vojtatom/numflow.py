@@ -79,7 +79,7 @@ class Graphics {
     }
 
     displayScene(index) {
-        console.log('scene', index);
+        //console.log('scene', index);
         this.scene = this.scenes[index];
         this.scene.screen(this.canvas.width, this.canvas.height);
     }

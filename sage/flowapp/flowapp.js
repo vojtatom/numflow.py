@@ -61,12 +61,10 @@ var flowapp = SAGE2_App.extend({
 	},
 
 	loadData: function(data){
-		console.log('requesting...');
-		
 		DataManager.request({
 			filename: data.clientInput,
 			success: (r) => { this.app.load(JSON.parse(r)); },
-			fail: (r) => { console.log(r); },
+			fail: (r) => { console.error(r); },
 		});
 	},
 
@@ -135,7 +133,7 @@ var flowapp = SAGE2_App.extend({
 	 */
 	load: function(state, date) {
 		/* TODO */
-		//console.log(state, date);
+		console.log(state, date);
 		this.app.setState(state);
 	},
 
@@ -150,8 +148,8 @@ var flowapp = SAGE2_App.extend({
 			return;
 
 		if (Date.now() - this.lastRefresh > 3000){
-			this.app.setState(this.state.appState);
 			this.lastRefresh = Date.now();
+			this.app.setState(this.state.appState);
 		}
 		
 		this.app.render();
@@ -183,37 +181,49 @@ var flowapp = SAGE2_App.extend({
 	event: function(eventType, position, user_id, data, date) {
 		if (eventType === "specialKey" && data.state === "down") {
             this.app.interface.onKeyDown(data.code);
-			this.state.appState = this.app.getState();
+			this.flowUpdateState(this.app.getState());
         }
 
 		if (eventType === "specialKey" && data.state === "up") {
 			this.app.interface.onKeyUp(data.code);
-			this.state.appState = this.app.getState();
+			this.flowUpdateState(this.app.getState());
 		}
 
 		if (eventType === "pointerScroll") {
 			this.app.interface.wheel(data.wheelDelta);
-			this.state.appState = this.app.getState();	
+			this.flowUpdateState(this.app.getState());
 		}
 
 		if (eventType === "pointerPress" && data.button === "left") {    
 			this.app.interface.onMouseDown(position.x, position.y);
-			this.state.appState = this.app.getState();
+			this.flowUpdateState(this.app.getState());
 		}
 
 		if (eventType === "pointerRelease" && data.button === "left") {
 			this.app.interface.onMouseUp(position.x, position.y);
-			this.state.appState = this.app.getState();
+			this.flowUpdateState(this.app.getState());
 		}
 
 		if (eventType === "pointerMove") {
 			this.app.interface.onMouseMove(position.x, position.y);
-			this.state.appState = this.app.getState();
+			this.flowUpdateState(this.app.getState());
 		}
 	},
 
+	flowUpdateState(state){
+		this.state.appState.position = state.position;
+		this.state.appState.up = state.up;
+		this.state.appState.center = state.center;
+		this.state.appState.normal = state.normal;
+		this.state.appState.scale = state.scale;
+		
+		this.SAGE2Sync();
+		//this.refresh(date);
+
+	},
+
 	quit: function(){
-		console.log('app is closing...');
+		//console.log('app is closing...');
 		this.app.quit();
 	}
 });

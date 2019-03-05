@@ -17,7 +17,7 @@ class UINotebook {
             url: '/notebook/data',
             decode: true,
             data: { code: code },
-            fail: (r) => console.log(r),
+            fail: (r) => console.error(r),
             success: (r, url) => {
                 editor.deserialize(r.data);
             },

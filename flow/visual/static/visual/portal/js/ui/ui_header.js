@@ -14,7 +14,7 @@ class UIHeader {
                 success: (r) => {                   
                     UI.docs(r);
                 },
-                fail: (r) => { console.log(r); }
+                fail: (r) => { console.error(r); }
             })
         }
     }

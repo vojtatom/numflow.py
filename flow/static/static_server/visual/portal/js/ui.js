@@ -2,7 +2,7 @@
 
 class UI {
     static index(element = null, history = true) {
-        console.log('loading menu');
+        //console.log('loading menu');
 
         if (element !== null) {
             UI.component(element);
@@ -12,13 +12,11 @@ class UI {
             }
         }
 
-        console.log('here!');
         //TODO
         UISidebar.create();
 
         let datasets = [...document.getElementsByClassName('dataset')]
         datasets.forEach(element => {
-            console.log(element);
             UIDataset.create(element);
         });
 
@@ -32,7 +30,7 @@ class UI {
     }
 
     static notebook(element = null, history = true) {
-        console.log('loading notebook');
+        //console.log('loading notebook');
 
         if (element !== null) {
             UI.component(element);
@@ -49,7 +47,7 @@ class UI {
 
 
     static docs(element = null, history = true) {
-        console.log('loading docs');
+        //console.log('loading docs');
 
         if (element !== null) {
             UI.component(element);

@@ -22,13 +22,13 @@ class Scene{
     }
 
     init(contents, ui, programs){
-        console.log('loading scene elements');
+        //console.log('loading scene elements');
         let sceneui = new SceneUI();
 
         contents.stats.points.center = Primitive.base64totype(contents.stats.points.center);
         contents.stats.points.min = Primitive.base64totype(contents.stats.points.min);
         contents.stats.points.max = Primitive.base64totype(contents.stats.points.max);
-        console.log(contents.stats);
+        //console.log(contents.stats);
 
 
        /* let box = new Box(this.gl);
@@ -220,7 +220,7 @@ class Scene{
     }
 
     delete() {
-        console.log('deleting scene...');
+        //console.log('deleting scene...');
         for(let type in this.objects){  
             for(let obj of this.objects[type].obj){
                 obj.delete();

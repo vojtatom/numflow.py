@@ -11056,3 +11056,616 @@ updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
 updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
 
 3 static files copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 244 unmodified.
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+running build_ext
+skipping 'visual/modules/numeric/math/interpolate.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.interpolate' extension
+creating build
+creating build/temp.macosx-10.14-x86_64-3.7
+creating build/temp.macosx-10.14-x86_64-3.7/visual
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/interpolate.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/interpolate.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/interpolate.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/interpolate.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/rk.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.rk' extension
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/rk.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/rk.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/rk.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/rk.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/integrate.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.integrate' extension
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/integrate.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/integrate.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/integrate.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/integrate.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/common.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.common' extension
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/common.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/common.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/common.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/common.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/data/cdata.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.data.cdata' extension
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/data
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/data/cdata.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/data/cdata.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/data/cdata.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/data/cdata.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+running clean
+removing 'build/temp.macosx-10.14-x86_64-3.7' (and everything under it)
+removing 'build'
+06b5c17571c36e13a909fc09059e1928da263ff048a91b79e086d73101d01b48
+docker: Error response from daemon: driver failed programming external connectivity on endpoint priceless_hermann (6fb1fe2ed8d5f9f47c64c6d4358a3d0d415bf998e2341b079c16af74bc394da0): Bind for 0.0.0.0:6379 failed: port is already allocated.
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/flowapp.js (deflated 68%)
+updating: flowapp/left.svg (deflated 40%)
+  adding: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+  adding: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 246 unmodified.
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/down.svg (deflated 57%)
+updating: flowapp/up.svg (deflated 57%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/add.svg (deflated 49%)
+updating: flowapp/right.svg (deflated 42%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/flowapp.js (deflated 68%)
+updating: flowapp/left.svg (deflated 40%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 246 unmodified.
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+running build_ext
+skipping 'visual/modules/numeric/math/interpolate.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.interpolate' extension
+creating build
+creating build/temp.macosx-10.14-x86_64-3.7
+creating build/temp.macosx-10.14-x86_64-3.7/visual
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/interpolate.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/interpolate.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/interpolate.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/interpolate.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/rk.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.rk' extension
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/rk.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/rk.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/rk.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/rk.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/integrate.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.integrate' extension
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/integrate.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/integrate.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/integrate.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/integrate.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/common.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.common' extension
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/common.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/common.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/common.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/common.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/data/cdata.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.data.cdata' extension
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/data
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/data/cdata.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/data/cdata.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/data/cdata.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/data/cdata.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+running clean
+removing 'build/temp.macosx-10.14-x86_64-3.7' (and everything under it)
+removing 'build'
+fac05d52cbb6d20cde6ff45b864e0158fbcb3d5704be29a0ef0ed22b5e543d61
+docker: Error response from daemon: driver failed programming external connectivity on endpoint elated_williamson (290f2bea33197e22aab9c515eeaffa4850af5ed3a463c0a2b12143fd40a486d8): Bind for 0.0.0.0:6379 failed: port is already allocated.
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/flowapp.js (deflated 68%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+242 static files copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server'.
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/flowapp.js (deflated 67%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+17 static files copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 225 unmodified.
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+running build_ext
+skipping 'visual/modules/numeric/math/interpolate.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.interpolate' extension
+creating build
+creating build/temp.macosx-10.14-x86_64-3.7
+creating build/temp.macosx-10.14-x86_64-3.7/visual
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/interpolate.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/interpolate.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/interpolate.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/interpolate.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/rk.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.rk' extension
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/rk.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/rk.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/rk.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/rk.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/integrate.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.integrate' extension
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/integrate.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/integrate.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/integrate.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/integrate.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/common.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.common' extension
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/math/common.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/common.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/math/common.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/math/common.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/data/cdata.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.data.cdata' extension
+creating build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/data
+clang -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic -DNDEBUG -g -fwrapv -O3 -Wall -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/Users/vojtatom/Documents/work.nosync/flow/env/lib/python3.7/site-packages/numpy/core/include -I/usr/local/Cellar/python/3.7.2_1/Frameworks/Python.framework/Versions/3.7/include/python3.7m -c visual/modules/numeric/data/cdata.c -o build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/data/cdata.o -Wall
+clang -bundle -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk build/temp.macosx-10.14-x86_64-3.7/visual/modules/numeric/data/cdata.o -o /Users/vojtatom/Documents/work.nosync/flow/flow/visual/modules/numeric/data/cdata.cpython-37m-darwin.so -g -Wno-cpp -ffast-math -O3
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+running clean
+removing 'build/temp.macosx-10.14-x86_64-3.7' (and everything under it)
+removing 'build'
+1b07db3cf4e553f6f7df8c599bd401f5c5dcda9d8942ad11e4a312001677b595
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+updating: flowapp/flowapp.js (deflated 68%)
+
+4 static files copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 238 unmodified.
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+updating: flowapp/flowapp.js (deflated 68%)
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 241 unmodified.
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+nginx: [emerg] still could not bind()
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+updating: flowapp/flowapp.js (deflated 68%)
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 241 unmodified.
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+updating: flowapp/flowapp.js (deflated 68%)
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 241 unmodified.
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+updating: flowapp/flowapp.js (deflated 68%)
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 241 unmodified.
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+updating: flowapp/flowapp.js (deflated 68%)
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 241 unmodified.
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+nginx: [emerg] bind() to 0.0.0.0:80 failed (48: Address already in use)
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+updating: flowapp/flowapp.js (deflated 68%)
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 241 unmodified.
+nginx: [warn] 1024 worker_connections exceed open file resource limit: 256
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+cp: illegal option -- u
+usage: cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file target_file
+       cp [-R [-H | -L | -P]] [-fi | -n] [-apvXc] source_file ... target_directory
+updating: flowapp/ (stored 0%)
+updating: flowapp/.DS_Store (deflated 93%)
+updating: flowapp/instructions.json (deflated 47%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/style.css (deflated 70%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+updating: flowapp/flowapp.js (deflated 68%)
+
+1 static file copied to '/Users/vojtatom/Documents/work.nosync/flow/flow/static/static_server', 241 unmodified.

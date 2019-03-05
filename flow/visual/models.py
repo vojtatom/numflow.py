@@ -83,6 +83,7 @@ class Notebook(models.Model):
     time_modified = models.DateTimeField(auto_now=True)
     data = models.TextField(blank=True)
     output = models.FileField(upload_to=directory_path_notebook, blank=True)
+    nodefile = models.FileField(upload_to=directory_path_notebook, blank=True)
     authors = models.ManyToManyField(User, related_name="authors")
 
     objects = models.Manager()
@@ -96,11 +97,20 @@ class Notebook(models.Model):
         self.clear_output()
 
         #manually into json format...
-        self.output.save('output.flow', ContentFile('[' + contents + ']'), save=True)
+        self.output.save('output.imgflow', ContentFile('[' + contents + ']'), save=True)
 
     def clear_output(self):
         if self.output and os.path.isfile(self.output.path):
             self.output.delete()
+
+    def save_nodefile(self):
+        self.clear_nodefile()
+        #manually into json format...
+        self.nodefile.save('data.docflow', ContentFile(self.data), save=True)
+
+    def clear_nodefile(self):
+        if self.nodefile and os.path.isfile(self.nodefile.path):
+            self.nodefile.delete()
 
 
 @receiver(models.signals.post_delete, sender=Notebook)
@@ -113,3 +123,7 @@ def auto_delete_file_on_delete_notebook(sender, instance, **kwargs):
     if instance.output and os.path.isfile(instance.output.path):
         os.remove(instance.output.path)
         os.rmdir(os.path.dirname(instance.output.path))
+
+    if instance.nodefile and os.path.isfile(instance.nodefile.path):
+        os.remove(instance.nodefile.path)
+        os.rmdir(os.path.dirname(instance.nodefile.path))

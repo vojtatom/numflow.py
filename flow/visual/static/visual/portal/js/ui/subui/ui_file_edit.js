@@ -28,7 +28,7 @@ class UIFileEdit {
                         file.classList.remove('editing');
                         reconstruct_call(file);
                     },
-                    fail: (r) => { console.log(r) },
+                    fail: (r) => { console.error(r) },
                 });
                 return false;
             };

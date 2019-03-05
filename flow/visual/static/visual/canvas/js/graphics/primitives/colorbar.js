@@ -54,7 +54,7 @@ class Colorbar extends Primitive {
 
         //Finish up...
         this.loaded = true;  
-        console.log(this.gl.getError());
+        //console.log(this.gl.getError());
         for(let mode in data.stats.values){
             this.labels[mode] = this.setupLabels(data.stats.values[mode].minSize, data.stats.values[mode].maxSize);
         }

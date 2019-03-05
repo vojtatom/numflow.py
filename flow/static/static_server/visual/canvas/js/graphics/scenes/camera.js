@@ -346,7 +346,9 @@ class Camera {
     }
 
     setState(state){
-        console.log(state);
+        console.log(state.position);
+        console.log(state.center);
+
         vec3.copy(this.position, state.position);
         vec3.copy(this.up, state.up);
         vec3.copy(this.center, state.center);

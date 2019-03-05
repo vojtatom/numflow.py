@@ -13,7 +13,7 @@ class UINotebookOpen {
                 success: (r) => {                   
                     UI.notebook(r);
                 },
-                fail: (r) => { console.log(r); }
+                fail: (r) => { console.error(r); }
             })
         }
         // disabled doubleclick

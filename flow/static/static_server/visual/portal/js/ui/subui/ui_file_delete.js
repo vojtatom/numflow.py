@@ -33,7 +33,7 @@ class UIFileDelete {
                 url: url_delete,
                 data: { 'code': code },
                 success: (r) => { file.parentElement.parentElement.removeChild(file.parentElement); },
-                fail: (r) => { console.log(r) },
+                fail: (r) => { console.error(r) },
             });
         }
 

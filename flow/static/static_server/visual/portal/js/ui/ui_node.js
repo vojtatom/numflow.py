@@ -80,7 +80,6 @@ class NodeUI{
             };
 
             let createSlider = function(value, title, id) {
-                console.log(value);
                 let s = document.createElement('input');
                 s.id = id
                 let label = document.createElement('label');
@@ -129,10 +128,9 @@ class NodeUI{
                             'decode': true,
                             'success' : (r) => {
                                 let dynamic = document.getElementById(dynamicNodeId);
-                                console.log(dynamic, r);
                                 dynamic.innerHTML = r.description;
                             },
-                            'fail':  (r) => console.log(r),
+                            'fail':  (r) => console.error(r),
                         })
                     };
 
@@ -179,7 +177,7 @@ class NodeUI{
                 let updateFieldColor = function(field, color) {
 
                     color = 'rgba(' + (color[0] * 255) + ',' + (color[1] * 255) + ',' + (color[2] * 255) + ',' + (color[3]) + ')';
-                    console.log(color);
+                    //console.log(color);
                     field.style.backgroundColor = color;
                 }
 
@@ -227,7 +225,6 @@ class NodeUI{
                         element.style.display = 'none';
                     });
 
-                    console.log(e);
                     if (past == 'block'){
                         cp.style.display = 'none';
                     } else {

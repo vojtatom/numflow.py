@@ -96,7 +96,7 @@ class Editor{
             success: (r) => {
                 EditorMenuUI.create(this, r);
             },
-            fail: (r) => console.log(r),
+            fail: (r) => console.error(r),
         });
     }
 
