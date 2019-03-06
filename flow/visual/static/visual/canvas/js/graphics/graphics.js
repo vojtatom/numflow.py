@@ -38,14 +38,22 @@ class Graphics {
         //this.gl.blendFuncSeparate(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA, this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
     }
 
-    resize(x, y) {
-        this.canvas.width = x;
-        this.canvas.height = y;
+    resize(x, y, offsetx=0, half=false) {
+        if (!half){
+            this.canvas.width = x;
+            this.canvas.height = y;
+            this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+        } else {
+            this.gl.viewport(offsetx, 0, this.gl.canvas.width / 2, this.gl.canvas.height);
+        }
 
-        this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         //setup for each of existing scenes
         for (let scene of this.scenes) {
-            scene.screen(this.canvas.width, this.canvas.height);
+            if (!half){
+                scene.screen(this.canvas.width, this.canvas.height);
+            } else {
+                scene.screen(this.canvas.width / 2, this.canvas.height);
+            }
         }
     }
 

@@ -19,7 +19,7 @@ class FlowApp {
                 this.ui.updateStatus('loading model from server...');
                 DataManager.request({
                     method: 'GET',
-                    url: url ? url : '/media/notebook/' + this.code + '/output.flow',
+                    url: url ? url : '/media/notebook/' + this.code + '/output.imgflow',
                     decode: true,
                     success: (contents) => { 
                         this.load(contents);
@@ -95,18 +95,17 @@ class FlowApp {
         if (this.interface.keys[86] && this.screenshotsEnabled){
             //setup canvas
             this.ui.updateStatus('rendering and saving images...');
-            this.canvas.width = '3840px';
-            this.canvas.height = '2160px';
-            this.graphics.resize(3840, 2160);
+            this.canvas.width = 3840;
+            this.canvas.height = 1080;
+           
+            this.graphics.resize(3840, 1080, 0, true);
+            this.graphics.renderColor();
+            this.graphics.resize(3840, 1080, 1920, true);
+            this.graphics.renderDepth();
             
             //86 = v
-            this.interface.keys[86] = false;
-            
-            this.graphics.renderColor();
-            this.saveCanvas('color.png');
-
-            this.graphics.renderDepth();
-            this.saveCanvas('depth.png');
+            this.interface.keys[86] = false;           
+            this.saveCanvas('3dvision.png');
         }
 
         if (this.interface.keys[84]){
@@ -161,6 +160,7 @@ class FlowApp {
             if (window.navigator.msSaveOrOpenBlob) // IE10+
                 window.navigator.msSaveOrOpenBlob(file, filename);
             else { // Others
+                console.log(file);
                 let a = document.createElement("a"),
                         url = URL.createObjectURL(file);
                 a.href = url;

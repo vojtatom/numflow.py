@@ -104,4 +104,24 @@ class DataManager {
     static getIcon(url) {
         return '/static/visual/canvas/icons/' + url;
     }
+
+    static readFile(options){
+        // File reader and uploader...
+        let handleFiles = function (file) {
+            file = file[0];
+            let reader = new FileReader();
+        
+            reader.onloadend = function(e) {
+                if (e.target.readyState == FileReader.DONE) { // DONE == 2
+                    options.success(e.target.result);
+                } else {
+                    options.fail(e);
+                }
+            };
+
+            reader.readAsBinaryString(file);
+        }
+
+        handleFiles(options.file);
+    }
 }

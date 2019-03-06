@@ -160,7 +160,7 @@ class Scene{
         //update camera
         this.camera.frame();
 
-        this.gl.clearColor(0.1, 0.1, 0.1, 1.0);
+        this.gl.clearColor(0, 0, 0, 1.0);
         this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT);
             
         this.gl.enable(this.gl.DEPTH_TEST);
@@ -193,8 +193,7 @@ class Scene{
         //update camera
         this.camera.frame();
 
-        this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-        this.gl.clear(this.gl.DEPTH_BUFFER_BIT | this.gl.COLOR_BUFFER_BIT);      
+        this.gl.clear(this.gl.DEPTH_BUFFER_BIT);      
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.disable(this.gl.BLEND);
         

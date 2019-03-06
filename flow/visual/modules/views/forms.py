@@ -53,7 +53,7 @@ def save_dataset(request):
     return form
 
 
-def new_notebook(request):
+def create_new_notebook(request):
     """
     Create new notebook and returns a form for this notebook.
     Retruns form and notebook isntance.
@@ -64,6 +64,16 @@ def new_notebook(request):
     notebook.authors.add(request.user)
     form = NotebookForm(instance=notebook)
     return form, notebook
+
+
+def new_notebook():
+    """
+    Create new notebook and returns a form for this notebook.
+    Retruns form and notebook isntance.
+        :param request: request object
+    """
+    form = NotebookForm(label_suffix='')
+    return form
 
 
 def get_notebook(notebook):

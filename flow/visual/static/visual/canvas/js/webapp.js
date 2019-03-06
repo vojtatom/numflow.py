@@ -22,27 +22,20 @@ window.onload = function(e) {
         app.init();
     }
     app.resize(window.innerWidth, window.innerHeight);
-    
-    // File reader and uploader...
-    let handleFiles = function (file) {
-        file = file[0];
-        let reader = new FileReader();
-    
-        reader.onloadend = function(e) {
-            if (e.target.readyState == FileReader.DONE) { // DONE == 2
-                let data = JSON.parse(e.target.result);
-                app.load(data);
-                uploadForm.style.display = 'none';
-            }
-        };
-      
-        reader.readAsBinaryString(file);
-    }
 
     let input = document.getElementById('file');
+
     input.onchange = (e) => {
-        handleFiles(e.target.files);
-    }
+        DataManager.readFile({
+            file: e.target.files,
+            success: (content) => {
+                let data = JSON.parse(content);
+                app.load(data);
+                uploadForm.style.display = 'none';
+            },
+            fail: (err) => { console.error(err);},
+        });
+    };
 
     /*canvas.addEventListener('dragenter', handlerFunction, false)
     canvas.addEventListener('dragleave', handlerFunction, false)

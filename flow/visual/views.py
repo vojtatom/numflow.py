@@ -29,10 +29,7 @@ def index(request):
     Index view, returns page or component if is ajax.
         :param request: request object
     """
-    if request.method == 'POST':
-        form = forms.save_dataset(request)
-        return renders.index(request, form)
-    return renders.index(request, forms.new_dataset())
+    return renders.index(request, forms.new_dataset(), forms.new_notebook())
 
 
 @login_required
@@ -53,13 +50,9 @@ def notebook(request, code=None):
         :param request: request object
         :param code=None: notebook code, new notebook created on None
     """
-    if request.method == 'POST':
-        instance = models.notebook(code)
-        form = forms.save_notebook(request, instance)
-        return renders.notebook(request, form, code)
 
     if code is None:
-        form, instance = forms.new_notebook(request)
+        form, instance = forms.create_new_notebook(request)
     else:
         instance = models.notebook(code)
         form, instance = forms.get_notebook(instance)
@@ -70,7 +63,21 @@ def notebook(request, code=None):
 def canvas(request, code=None):
     return renders.canvas(request, code)
 
+
 # API CALLS
+@login_required
+def upload_dataset(request):
+    """
+    Accepts only AJAX POST, deletes dataset
+    according to posted dict in format 
+    { 'code' : <code> }.
+        :param request: request object 
+    """
+    #_ = api.api_call(request)
+    form = forms.save_dataset(request)
+    return renders.index(request, form, forms.new_notebook())
+
+
 @login_required
 def delete_dataset(request):
     """
@@ -98,6 +105,26 @@ def rename_dataset(request):
     dataset.title = data['title']
     dataset.save()
     return HttpResponse('All okay')
+
+
+@login_required
+def upload_notebook(request, code=None):
+    """
+    Accepts only AJAX POST, deletes dataset
+    according to posted dict in format 
+    { 'code' : <code> }.
+        :param request: request object 
+    """
+    #_ = api.api_call(request)
+    if code is None:
+        _, instance = forms.create_new_notebook(request)
+        form = forms.save_notebook(request, instance)
+        return renders.index(request, forms.new_dataset(), form)
+    else:
+        instance = models.notebook(code)
+        form = forms.save_notebook(request, instance)
+        return HttpResponse('All okay')
+
 
 
 @login_required
@@ -140,6 +167,7 @@ def rename_notebook(request):
     notebook.title = data['title']
     notebook.save()
     return HttpResponse('All okay')
+
 
 @login_required
 def editor_nodes(request):

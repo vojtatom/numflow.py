@@ -106,7 +106,7 @@ def compute(notebook_code, graph, order, message):
         node_obj = node_class(node_id, node['data'], notebook_code, message)
         data[node_id] = node_obj(in_data, message)
     
-    message('<a href="/media/notebook/{}/output.flow" download>download result</a>'.format(notebook_code))
+    message('<a href="/media/notebook/{}/output.imgflow" download>download result</a>'.format(notebook_code))
     
     del data, dgraph
     gc.collect()

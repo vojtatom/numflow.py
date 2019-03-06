@@ -56,6 +56,9 @@ class Stream extends MethodPrimitive {
 
         //setup each streamline
         for (let i = 0; i < streamsCount; ++i){
+            if (lengths[i] == 0)
+                continue;
+
             //lengths[i] - 1 == segment count
             let buffer = new Float32Array((lengths[i] - 1) * segsize);
             let streamLength = lengths[i];

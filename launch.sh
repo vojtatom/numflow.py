@@ -39,7 +39,14 @@ build_and_run_base(){
     task_finished
 
     task_started "redis"
-    docker run -p 6379:6379 -d redis:2.8 >> runlog.txt 2>&1
+    if [ "$1" == "mac" ] 
+        then
+        docker run -p 6379:6379 -d redis:2.8 >> runlog.txt 2>&1
+        
+    elif [ "$1" == "lin" ]
+        then
+        redis-server --daemonize yes
+    fi
     task_finished 
 }
 
@@ -106,7 +113,7 @@ if [ "$1" == "mac" ] || [ "$1" == "lin" ]
     then
     if [ "$2" == "all" ]
         then
-        build_and_run_base
+        build_and_run_base "$1"
     fi
 
     if [ "$2" == "restart" ]

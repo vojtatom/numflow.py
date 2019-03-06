@@ -112,6 +112,9 @@ class Notebook(models.Model):
         if self.nodefile and os.path.isfile(self.nodefile.path):
             self.nodefile.delete()
 
+    def __str__(self):
+        return self.title + ' ' + str(self.code)
+
 
 @receiver(models.signals.post_delete, sender=Notebook)
 def auto_delete_file_on_delete_notebook(sender, instance, **kwargs):

@@ -11,7 +11,7 @@ from visual.models import Dataset, Notebook
 from visual.modules.processing import processing
 
 
-def index(request, form):
+def index(request, dataset_form, notebook_form):
     """
     Renders index component or page.
         :param request: request object
@@ -19,7 +19,7 @@ def index(request, form):
     """
     datasets = Dataset.objects.filter(owners=request.user)
     notebooks = Notebook.objects.filter(authors=request.user)
-    data = {'notebooks': notebooks, 'datasets': datasets, 'form': form}
+    data = {'notebooks': notebooks, 'datasets': datasets, 'dataset_form': dataset_form, 'notebook_form': notebook_form }
     
     if request.is_ajax():
         return render(request, 'visual/components/index.html', data)

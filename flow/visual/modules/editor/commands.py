@@ -57,7 +57,7 @@ def canvas_update(group, notebook_code, username=None):
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(group, {
         'type': 'update',
-        'url': '/media/notebook/{}/output.flow'.format(notebook_code),
+        'url': '/media/notebook/{}/output.imgflow'.format(notebook_code),
         'sender': username,
         'time': str(datetime.datetime.now()),
     })

@@ -11,7 +11,7 @@ class UINotebookForm {
             data.set('data', editor.serialize());
             
             DataManager.request({
-                url: '/notebook/' + code,
+                url: '/notebook/upload/' + code,
                 form: data,
                 success: (r) => { UITerminal.addSavepoint(); },
                 fail: (r) => { console.error(r) },

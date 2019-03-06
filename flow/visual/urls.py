@@ -5,8 +5,10 @@ from . import views
 
 urlpatterns = [
     ## API FOR REST
-    url(r'^dataset/delete$', views.delete_dataset, name='delete_dataset'),
+    url(r'^dataset/upload$', views.upload_dataset, name='upload_dataset'),
+    url(r'^dataset/delete$', views.delete_dataset, name='delete_dataset'), 
     url(r'^dataset/rename$', views.rename_dataset, name='rename_dataset'),
+    url(r'^notebook/upload/(?P<code>[^/]+)$', views.upload_notebook, name='upload_notebook'),
     url(r'^notebook/delete$', views.delete_notebook, name='delete_notebook'),
     url(r'^notebook/rename$', views.rename_notebook, name='rename_notebook'),
     url(r'^notebook/data$', views.get_notebook, name='get_notebook'),
