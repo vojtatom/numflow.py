@@ -1,18 +1,13 @@
 {
 	"main_script": "flowapp.js",
 	"icon": "icon.png",
-	"width": 960,
-	"height": 540,
+	"width": 1920,
+	"height": 1080,
 	"resize": "free",
 	"animation": true,
 	"load": {
-		"appState": {
-			"position": [0, -200, 0],
-            "up": [0, 0, 1],
-            "center": [0, 0, 0],
-            "normal": [0, 0, 0],
-            "scale": 100
-		}
+		"model": null,
+		"appstate": null
 	},
 	"dependencies": [
 		"scripts/gl-matrix.js",

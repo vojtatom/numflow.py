@@ -81,12 +81,11 @@ class FlowApp {
         if (this.interface.keys[67] && this.screenshotsEnabled){
             //setup canvas
             this.ui.updateStatus('rendering and saving image...');
-            this.canvas.width = '3840px';
-            this.canvas.height = '2160px';
+            this.canvas.width = 3840;
+            this.canvas.height = 2160;
             this.graphics.resize(3840, 2160);
             this.graphics.render();
             
-
             //67 = c 
             this.interface.keys[67] = false;
             this.saveCanvas('flowimage.png');

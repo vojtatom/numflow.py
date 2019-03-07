@@ -110,13 +110,21 @@ class Graphics {
     }
 
     getState() {
-        if (this.loaded)
-            return this.scene.getState();
+        if (this.loaded){
+            let state = [];
+            for (let s of this.scenes){
+                state.push(s.getState());
+            }
+        }
     }
 
     setState(state) {
-        if (this.loaded)
-            this.scene.setState(state);
+        if (this.loaded){
+            let state = [];
+            for (let i = 0; i < this.scenes.length; ++i){
+                this.scenes[i].setState(state[i])
+            }
+        }
     }
 
 

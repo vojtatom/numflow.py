@@ -102,4 +102,19 @@ class SceneUI {
     previousValue(alternative){
         this.widgets[this.selected].previousValue(alternative);
     }
+
+    getState(){
+        let state = [];
+        for(let widget of this.widgets){
+            state.push(widget.getState());
+        }
+        return state;
+    }
+
+    setState(state){
+        let i = 0;
+        for(let widget of this.widgets){
+            widget.setState(state[i++]);
+        }
+    }
 }

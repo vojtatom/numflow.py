@@ -108,4 +108,19 @@ class WidgetUI {
     previousValue(alternative){
         this.fieldElements[this.selected].previous(alternative);
     }
+
+    getState(){
+        let state = [];
+        for(let field of this.fieldElements){
+            state.push(field.getState());
+        }
+        return state;
+    }
+
+    setState(state){
+        let i = 0;
+        for(let field of this.fieldElements){
+            field.setState(state[i++]);
+        }
+    }
 }

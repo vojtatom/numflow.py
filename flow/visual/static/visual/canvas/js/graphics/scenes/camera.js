@@ -337,22 +337,21 @@ class Camera {
 
     getState(){
         return {
-            position: vec3.clone(this.position),
-            up: vec3.clone(this.up),
-            center: vec3.clone(this.center),
-            normal: vec3.clone(this.normal),
+            position: this.position,
+            up: this.up,
+            center: this.center,
+            normal: this.normal,
             scale: this.scale,
-        }
+        };
     }
 
     setState(state){
-        console.log(state.position);
-        console.log(state.center);
-
         vec3.copy(this.position, state.position);
         vec3.copy(this.up, state.up);
         vec3.copy(this.center, state.center);
         vec3.copy(this.normal, state.normal);
         this.scale = state.scale;
+
+        this.sceneChanged = true;
     }
 }

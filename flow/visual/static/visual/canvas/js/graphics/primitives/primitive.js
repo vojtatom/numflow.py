@@ -31,6 +31,8 @@ class Primitive {
 			instances: 1,
 			instanceSize: 1,
 		};
+
+		this.stateToBeSet = null;
 	}
 
     get transparent() {
@@ -80,8 +82,11 @@ class Primitive {
 	get isRenderReady(){
 		if (!this.loaded){
 			this.init();
+		} else if (this.stateToBeSet !== null){
+			this.meta = this.stateToBeSet;
+			this.stateToBeSet = null;
 		}
-		
+
 		return this.loaded;
 	}
 

@@ -19,6 +19,8 @@ class Scene{
                 program: null,
             },
         };
+
+        this.loaded = false;
     }
 
     init(contents, ui, programs){
@@ -83,6 +85,7 @@ class Scene{
 
         //append ui
         ui.addScene(sceneui);
+        this.loaded = true;
     }
 
     render(programs){
@@ -207,11 +210,30 @@ class Scene{
     }
 
     getState(){
-        return this.camera.getState();
+        let state = {
+            objects: [],
+            camera: null,
+        };
+
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                state.objects.push(obj.getState());
+            }
+        }
+
+        state.camera = this.camera.getState();
+        return state;
     }
 
     setState(state){
-        this.camera.setState(state);
+        let i = 0;
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                obj.setState(state.objects[i++]);
+            }
+        }
+        
+        this.camera.setState(state.camera);
     }
 
     screen(x, y) {

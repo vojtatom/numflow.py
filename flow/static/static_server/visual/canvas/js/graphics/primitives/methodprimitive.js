@@ -13,11 +13,11 @@ class MethodPrimitive extends Primitive {
         super.metaFromData(meta, stats);
         this.meta = Object.assign({}, this.meta, {
             colorMapSize: meta.colormap.sampling,
-            colorMap0: vec4.fromValues(...meta.colormap.colors[0]),
-            colorMap1: vec4.fromValues(...meta.colormap.colors[1]),
-            colorMap2: vec4.fromValues(...meta.colormap.colors[2]),
-            colorMap3: vec4.fromValues(...meta.colormap.colors[3]),
-            colorMap4: vec4.fromValues(...meta.colormap.colors[4]),
+            colorMap0: meta.colormap.colors[0],
+            colorMap1: meta.colormap.colors[1],
+            colorMap2: meta.colormap.colors[2],
+            colorMap3: meta.colormap.colors[3],
+            colorMap4: meta.colormap.colors[4],
 
             appearance: Appearance.encode(meta.appearance),
             brightness: 1.0,
@@ -86,6 +86,15 @@ class MethodPrimitive extends Primitive {
 
     updateEdgeAxis(camera){
         this.box.updateEdgeAxis(camera);
+    }
+
+    getState(){
+        return this.meta;
+    }
+
+    setState(state){
+        this.stateToBeSet = state;
+        return this.meta;
     }
 
     get ui(){

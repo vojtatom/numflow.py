@@ -34,15 +34,15 @@ var flowapp = SAGE2_App.extend({
 				console.log("WebGL Context Restored");
 				console.log(event);
 				_this.loaded = true;
-			}, false);*/
-
-		//this.controls.addButton({type: "default", position: 1, label: "reload", identifier: "reload"});
-		//this.controls.addButton({type: "default", position: 2, label: "mode", identifier: "toggle"});
-		//this.controls.addButton({type: "default", position: 3, label: "spl--", identifier: "up"});
-		//this.controls.addButton({type: "default", position: 4, label: "spl++", identifier: "down"});
-		
+			}, false);*/	
 
 		this.controls.finishedAddingControls();
+		console.log('loading app', this.state);
+
+		if (this.state.model !== null){
+			this.app.setState(this.state.appstate);
+			this.loadData(this.state.model);
+		}
 	},
 
 	getContextEntries: function() {
@@ -51,7 +51,7 @@ var flowapp = SAGE2_App.extend({
 
 		entry = {};
 		entry.description = "load data";
-		entry.callback = "loadData";
+		entry.callback = "loadDataWidgetCallback";
 		entry.parameters = {};
 		entry.inputField = true;
 		entry.inputFieldSize = 40;
@@ -60,11 +60,25 @@ var flowapp = SAGE2_App.extend({
 		return entries;
 	},
 
-	loadData: function(data){
+	loadDataWidgetCallback: function(data){
+		this.loadData(data.clientInput);
+	},
+
+	loadData: function(filepath){
+		this.app.ui.updateStatus('reading file...');
 		DataManager.request({
-			filename: data.clientInput,
-			success: (r) => { this.app.load(JSON.parse(r)); },
-			fail: (r) => { console.error(r); },
+			filename: filepath,
+			success: (r) => { 
+				this.app.load(JSON.parse(r)); 
+				this.state.model = filepath;
+				this.SAGE2Sync(true);
+			},
+			fail: (r) => { 
+				
+				console.error(r); 
+				this.app.ui.updateStatus('file not found');
+			
+			},
 		});
 	},
 
@@ -121,20 +135,18 @@ var flowapp = SAGE2_App.extend({
         app.init();
         app.resize(this.element.width, this.element.height);
 		this.app = app;
-		this.lastRefresh = Date.now();
         this.loaded = true;
 	},
 
 	/**
 	 * Load the app from a previous state
 	 * @method load
-	 * @param state object to initialize or restore the app
 	 * @param date time from the server
 	 */
-	load: function(state, date) {
+	load: function(date) {
 		/* TODO */
-		console.log(state, date);
-		this.app.setState(state);
+		this.app.setState(this.state.appstate);
+		this.loadData(this.state.model);
 	},
 
 	/**
@@ -147,11 +159,7 @@ var flowapp = SAGE2_App.extend({
 		if (this.loaded === false || this.loaded === undefined)
 			return;
 
-		if (Date.now() - this.lastRefresh > 3000){
-			this.lastRefresh = Date.now();
-			this.app.setState(this.state.appState);
-		}
-		
+		this.stateDistribute();
 		this.app.render();
 	},
 
@@ -181,45 +189,74 @@ var flowapp = SAGE2_App.extend({
 	event: function(eventType, position, user_id, data, date) {
 		if (eventType === "specialKey" && data.state === "down") {
             this.app.interface.onKeyDown(data.code);
-			this.flowUpdateState(this.app.getState());
+			//this.flowUpdateState(this.app.getState());
         }
 
 		if (eventType === "specialKey" && data.state === "up") {
 			this.app.interface.onKeyUp(data.code);
-			this.flowUpdateState(this.app.getState());
+			//this.flowUpdateState(this.app.getState());
 		}
 
 		if (eventType === "pointerScroll") {
 			this.app.interface.wheel(data.wheelDelta);
-			this.flowUpdateState(this.app.getState());
+			//this.flowUpdateState(this.app.getState());
 		}
 
 		if (eventType === "pointerPress" && data.button === "left") {    
 			this.app.interface.onMouseDown(position.x, position.y);
-			this.flowUpdateState(this.app.getState());
+			//this.flowUpdateState(this.app.getState());
 		}
 
 		if (eventType === "pointerRelease" && data.button === "left") {
 			this.app.interface.onMouseUp(position.x, position.y);
-			this.flowUpdateState(this.app.getState());
+			//this.flowUpdateState(this.app.getState());
 		}
 
 		if (eventType === "pointerMove") {
 			this.app.interface.onMouseMove(position.x, position.y);
-			this.flowUpdateState(this.app.getState());
+			//this.flowUpdateState(this.app.getState());
 		}
 	},
 
-	flowUpdateState(state){
-		this.state.appState.position = state.position;
-		this.state.appState.up = state.up;
-		this.state.appState.center = state.center;
-		this.state.appState.normal = state.normal;
-		this.state.appState.scale = state.scale;
-		
-		this.SAGE2Sync();
-		//this.refresh(date);
 
+	stateDistribute: function(){
+		/* create lastRefresh in case you haven't done that before;
+		   following 3 lines can be deleted 
+		   and this.lastRefresh = Date.now(); moved into init */
+		if (!('lastRefresh' in this)){
+			this.lastRefresh = Date.now();
+		}
+
+		/* setup custom time timerange how often should state be forced to update */
+		if (Date.now() - this.lastRefresh > 3000){
+			this.lastRefresh = Date.now();
+			
+			if(isMaster){
+				/* manually set individual properties of state (load);
+				   following object should copy exact structure of load variable
+				   in instructions.json */
+				let newState = {
+					'model': this.state.model,
+					'appstate': this.app.getState(),
+				};
+
+				console.log(newState.appstate);
+
+				/* broadcast state accross browsers */
+				this.broadcast('stateUpdate', newState);
+			}
+		}
+	},
+
+	stateUpdate: function(newState){
+		/* setup individual keys in this.state from newState */ 
+		for (let key in newState){
+			this.state[key] = newState[key];
+		}
+
+		console.log(this.state.appstate);
+		this.app.setState(this.state.appstate);
+		this.SAGE2Sync(true);
 	},
 
 	quit: function(){

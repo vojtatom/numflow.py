@@ -207,11 +207,30 @@ class Scene{
     }
 
     getState(){
-        return this.camera.getState();
+        let state = {
+            objects: [],
+            camera: null,
+        };
+
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                state.push(obj.getState());
+            }
+        }
+
+        state.camera = camera.getState();
+        return state;
     }
 
     setState(state){
-        this.camera.setState(state);
+        let i = 0;
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                obj.setState(state.objects[i++]);
+            }
+        }
+        
+        this.camera.setState(state.camera);
     }
 
     screen(x, y) {
