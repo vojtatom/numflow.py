@@ -6,11 +6,18 @@ class Graphics {
         this.scenes = [];
 
         //active scene
-        this.scene = null;
+        this.sceneIndex = 0;
+    }
+
+    get scene() {
+        return this.scenes[this.sceneIndex];
     }
 
     get loaded(){
-        return this.scene !== null;
+        if (this.scenes.length == 0){
+            return false;
+        }
+        return this.scenes[this.scenes.length - 1].loaded;
     }
 
     init() {
@@ -58,19 +65,19 @@ class Graphics {
     }
 
     render() {
-        if (this.scene !== null) {
+        if (this.scene !== null && this.scene !== undefined) {
             this.scene.render(this.programs);
         }
     }
 
     renderColor(){
-        if (this.scene !== null) {
+        if (this.scene !== null && this.scene !== undefined) {
             this.scene.renderColor();
         }
     }
 
     renderDepth(){
-        if (this.scene !== null) {
+        if (this.scene !== null && this.scene !== undefined) {
             this.scene.renderDepth();
         }
     }
@@ -78,17 +85,12 @@ class Graphics {
     addScene(sceneContents, ui) {
         let scene = new Scene(this.gl);
         scene.init(sceneContents, ui, this.programs);
+        scene.screen(this.canvas.width, this.canvas.height);
         this.scenes.push(scene);
-
-        if (this.scene === null) {
-            this.scene = scene;
-            scene.screen(this.canvas.width, this.canvas.height);
-        }
     }
 
     displayScene(index) {
-        console.log('scene', index);
-        this.scene = this.scenes[index];
+        this.sceneIndex = index;
         this.scene.screen(this.canvas.width, this.canvas.height);
     }
 
@@ -98,7 +100,7 @@ class Graphics {
             scene.delete();
         }
 
-        this.scene = null
+        this.sceneIndex = 0;
         this.scenes = [];
 
         if (!all)
@@ -110,21 +112,20 @@ class Graphics {
     }
 
     getState() {
-        if (this.loaded){
-            let state = [];
-            for (let s of this.scenes){
-                state.push(s.getState());
-            }
+        let state = [[], this.sceneIndex];
+
+        for (let s of this.scenes){
+            state[0].push(s.getState());
         }
+
+        return state;
     }
 
     setState(state) {
-        if (this.loaded){
-            let state = [];
-            for (let i = 0; i < this.scenes.length; ++i){
-                this.scenes[i].setState(state[i])
-            }
+        for (let i = 0; i < this.scenes.length; ++i){
+            this.scenes[i].setState(state[0][i]);
         }
+        this.sceneIndex = state[1];
     }
 
 

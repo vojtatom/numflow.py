@@ -8,6 +8,7 @@ class FlowApp {
         this.ui = new FlowAppUI(canvas);
 
         this.screenshotsEnabled = false;
+        this.stateToBeLoaded = null;
     }
 
     init(code = null) {
@@ -245,13 +246,22 @@ class FlowApp {
     }
 
     getState(){
-        console.log('getting state...');
-        return this.graphics.getState();
+        if (this.graphics.loaded && this.stateToBeLoaded === null){
+            let state = [this.graphics.getState(), this.ui.getState()];
+            return state;
+        } else {
+            return this.stateToBeLoaded;
+        }
     }
 
     setState(state){
-        console.log('setting state...');
-        return this.graphics.setState(state);
+        if (this.graphics.loaded){
+            this.graphics.setState(state[0]);
+            this.ui.setState(state[1]);
+            this.stateToBeLoaded = null;
+        } else {
+            this.stateToBeLoaded = state;
+        }
     }
 
     quit(){

@@ -234,4 +234,42 @@ class FlowAppUI {
     updateStatus(text){
         this.status.innerHTML = text;
     }
+
+    getState(){
+        let values = [];
+        for (let scene of this.scenes){
+            values.push(scene.getState());
+        }
+
+        return {
+            active: {
+                scene: this.active,
+                widget: this.scenes[this.active].selected,
+                field: this.scenes[this.active].widgets[this.scenes[this.active].selected].selected,
+                visibility: this.menuVisible,
+            },
+            scenes: values
+        }
+    }
+
+    setState(state){
+        let i = 0;
+        for (let scene of this.scenes){
+            scene.setState(state.scenes[i++]);
+        }
+
+        if (this.active != state.active.scene){
+            this.displayScene(state.active.scene);
+        }
+
+        if (this.scenes[this.active].selected != state.active.widget || 
+            this.scenes[this.active].widgets[this.scenes[this.active].selected].selected != state.active.field){
+            this.scenes[this.active].deselect();
+            this.scenes[this.active].select(state.active.widget, state.active.field);
+        }
+
+        if (this.menuVisible !== state.active.visibility){
+            this.toggleMenu();
+        }
+    }
 }

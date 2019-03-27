@@ -31,7 +31,7 @@ class MethodPrimitive extends Primitive {
             stats: stats.values,
 
             scaleFactor: stats.points.scale_factor,
-            shift: stats.points.center,
+            shift: Array.from(stats.points.center),
         });
     }
     

@@ -32,6 +32,8 @@ class Scene{
         contents.stats.points.max = Primitive.base64totype(contents.stats.points.max);
         //console.log(contents.stats);
 
+        this.camera.sceneSetup(contents.stats.points);
+
 
        /* let box = new Box(this.gl);
         box.init(vec3.fromValues(-10, -10, 0), vec3.fromValues(20, 20, 40));

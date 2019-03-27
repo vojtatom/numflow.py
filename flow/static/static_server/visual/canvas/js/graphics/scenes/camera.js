@@ -75,9 +75,6 @@ class Camera {
         this.tmp2 = new Float32Array(3);
 
         //constatnts
-        this.globalSide = vec3.fromValues(50, 0, 0);
-        this.globalFront = vec3.fromValues(0, -50, 0);
-        this.globalUp = vec3.fromValues(0, 0, 50);
         this.aspect = 1;
         this.screenX = 1;
         this.screenY = 1;
@@ -134,6 +131,14 @@ class Camera {
         return this.actualPosition; 
     }
 
+    sceneSetup(stats){
+        let min = vec3.len(vec3.sub(vec3.create(), stats.center, stats.min)) * stats.scale_factor;
+        let max = vec3.len(vec3.sub(vec3.create(), stats.center, stats.max)) * stats.scale_factor;
+
+        this.geometryCenter = vec3.fromValues(0, 0, 0);
+        this.geometryRadius = Math.max(min, max);
+    }
+
     screen(x, y){
         this.screenX = x;
         this.screenY = y;
@@ -146,22 +151,22 @@ class Camera {
         if (position === CameraPosition.top){
             
             let length = vec3.dist(this.position, this.center);
-            this.globalUp[2] = Math.max(1.0, length);
-            vec3.add(this.position, this.center, this.globalUp);
+            vec3.copy(this.position, this.center);
+            this.position[2] += Math.max(1.0, length);
             this.up = vec3.fromValues(0, 1, 0);
 
         } else if (position === CameraPosition.front){
 
             let length = vec3.dist(this.position, this.center);
-            this.globalFront[1] = Math.min(-1.0, -length);
-            vec3.add(this.position, this.center, this.globalFront);
+            vec3.copy(this.position, this.center);
+            this.position[1] += Math.min(-1.0, -length);
             this.up = vec3.fromValues(0, 0, 1);
 
         } else if (position === CameraPosition.side){
             
             let length = vec3.dist(this.position, this.center);
-            this.globalSide[0] = Math.max(1.0, length);
-            vec3.add(this.position, this.center, this.globalSide);
+            vec3.copy(this.position, this.center);
+            this.position[0] += Math.max(1.0, length);
             this.up = vec3.fromValues(0, 0, 1);
 
         } else if (position === CameraPosition.rotateUp || position === CameraPosition.rotateDown) {
@@ -180,7 +185,7 @@ class Camera {
             let angle = position === CameraPosition.rotateRight ? glMatrix.toRadian(1) : glMatrix.toRadian(-1);
             
             vec3.sub(this.tmp2, this.center, this.position);
-            let axes_y = this.globalUp;
+            let axes_y = this.up;
             
             mat4.fromRotation(this.rotateMatrix, angle, axes_y);
             vec3.transformMat4(this.tmp2, this.tmp2, this.rotateMatrix);
@@ -199,7 +204,7 @@ class Camera {
 
         } else if (position === CameraPosition.origin){
 
-            this.position = vec3.fromValues(0, -20, 0);
+            this.position = vec3.fromValues(0, -200, 0);
             this.up = vec3.fromValues(0, 0, 1);
             this.center = vec3.fromValues(0, 0, 0);
 
@@ -306,6 +311,10 @@ class Camera {
             this.scaleMomentum = 0;
         }
 
+        //tmp is now direction of view
+        vec3.sub(this.tmp, this.geometryCenter, this.actualPosition); 
+        //adding dist from position to geometry center and radius of geomtry from the geom center
+        this.farplane = vec3.len(this.tmp) + this.geometryRadius;
     }
 
     get isMoving(){
@@ -337,22 +346,21 @@ class Camera {
 
     getState(){
         return {
-            position: vec3.clone(this.position),
-            up: vec3.clone(this.up),
-            center: vec3.clone(this.center),
-            normal: vec3.clone(this.normal),
+            position: this.position,
+            up: this.up,
+            center: this.center,
+            normal: this.normal,
             scale: this.scale,
-        }
+        };
     }
 
     setState(state){
-        console.log(state.position);
-        console.log(state.center);
-
         vec3.copy(this.position, state.position);
         vec3.copy(this.up, state.up);
         vec3.copy(this.center, state.center);
         vec3.copy(this.normal, state.normal);
         this.scale = state.scale;
+
+        this.sceneChanged = true;
     }
 }

@@ -19,6 +19,8 @@ class Scene{
                 program: null,
             },
         };
+
+        this.loaded = false;
     }
 
     init(contents, ui, programs){
@@ -29,6 +31,8 @@ class Scene{
         contents.stats.points.min = Primitive.base64totype(contents.stats.points.min);
         contents.stats.points.max = Primitive.base64totype(contents.stats.points.max);
         //console.log(contents.stats);
+
+        this.camera.sceneSetup(contents.stats.points);
 
 
        /* let box = new Box(this.gl);
@@ -83,6 +87,7 @@ class Scene{
 
         //append ui
         ui.addScene(sceneui);
+        this.loaded = true;
     }
 
     render(programs){
@@ -214,11 +219,11 @@ class Scene{
 
         for(let type in this.objects){  
             for(let obj of this.objects[type].obj){
-                state.push(obj.getState());
+                state.objects.push(obj.getState());
             }
         }
 
-        state.camera = camera.getState();
+        state.camera = this.camera.getState();
         return state;
     }
 

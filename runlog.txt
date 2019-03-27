@@ -13219,3 +13219,436 @@ updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
 updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
 
 7 static files copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 235 unmodified.
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+running build_ext
+cythoning visual/modules/numeric/data/cdata.pyx to visual/modules/numeric/data/cdata.c
+building 'visual.modules.numeric.data.cdata' extension
+creating build
+creating build/temp.linux-x86_64-3.6
+creating build/temp.linux-x86_64-3.6/visual
+creating build/temp.linux-x86_64-3.6/visual/modules
+creating build/temp.linux-x86_64-3.6/visual/modules/numeric
+creating build/temp.linux-x86_64-3.6/visual/modules/numeric/data
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/data/cdata.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/data/cdata.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/data/cdata.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/data/cdata.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+cythoning visual/modules/numeric/math/interpolate.pyx to visual/modules/numeric/math/interpolate.c
+building 'visual.modules.numeric.math.interpolate' extension
+creating build/temp.linux-x86_64-3.6/visual/modules/numeric/math
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/interpolate.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/interpolate.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/interpolate.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/interpolate.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+cythoning visual/modules/numeric/math/rk.pyx to visual/modules/numeric/math/rk.c
+building 'visual.modules.numeric.math.rk' extension
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/rk.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/rk.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/rk.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/rk.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+cythoning visual/modules/numeric/math/common.pyx to visual/modules/numeric/math/common.c
+building 'visual.modules.numeric.math.common' extension
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/common.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/common.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/common.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/common.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+cythoning visual/modules/numeric/math/integrate.pyx to visual/modules/numeric/math/integrate.c
+building 'visual.modules.numeric.math.integrate' extension
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/integrate.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/integrate.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/integrate.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/integrate.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+running clean
+removing 'build/temp.linux-x86_64-3.6' (and everything under it)
+removing 'build'
+updating: flowapp/ (stored 0%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/style.css (deflated 72%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+11 static files copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 231 unmodified.
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+running build_ext
+skipping 'visual/modules/numeric/data/cdata.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.data.cdata' extension
+creating build
+creating build/temp.linux-x86_64-3.6
+creating build/temp.linux-x86_64-3.6/visual
+creating build/temp.linux-x86_64-3.6/visual/modules
+creating build/temp.linux-x86_64-3.6/visual/modules/numeric
+creating build/temp.linux-x86_64-3.6/visual/modules/numeric/data
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/data/cdata.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/data/cdata.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/data/cdata.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/data/cdata.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/interpolate.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.interpolate' extension
+creating build/temp.linux-x86_64-3.6/visual/modules/numeric/math
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/interpolate.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/interpolate.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/interpolate.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/interpolate.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/rk.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.rk' extension
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/rk.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/rk.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/rk.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/rk.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/common.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.common' extension
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/common.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/common.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/common.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/common.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/integrate.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.integrate' extension
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/integrate.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/integrate.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/integrate.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/integrate.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+running clean
+removing 'build/temp.linux-x86_64-3.6' (and everything under it)
+removing 'build'
+updating: flowapp/ (stored 0%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/style.css (deflated 72%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+1 static file copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 241 unmodified.
+updating: flowapp/ (stored 0%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/style.css (deflated 72%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+3 static files copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 239 unmodified.
+updating: flowapp/ (stored 0%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/style.css (deflated 72%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+2 static files copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 240 unmodified.
+updating: flowapp/ (stored 0%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/style.css (deflated 72%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+2 static files copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 240 unmodified.
+updating: flowapp/ (stored 0%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/style.css (deflated 72%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+2 static files copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 240 unmodified.
+updating: flowapp/ (stored 0%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/style.css (deflated 72%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+2 static files copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 240 unmodified.
+updating: flowapp/ (stored 0%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/style.css (deflated 72%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+2 static files copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 240 unmodified.
+updating: flowapp/ (stored 0%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/style.css (deflated 72%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+2 static files copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 240 unmodified.
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+running build_ext
+skipping 'visual/modules/numeric/data/cdata.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.data.cdata' extension
+creating build
+creating build/temp.linux-x86_64-3.6
+creating build/temp.linux-x86_64-3.6/visual
+creating build/temp.linux-x86_64-3.6/visual/modules
+creating build/temp.linux-x86_64-3.6/visual/modules/numeric
+creating build/temp.linux-x86_64-3.6/visual/modules/numeric/data
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/data/cdata.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/data/cdata.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/data/cdata.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/data/cdata.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/interpolate.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.interpolate' extension
+creating build/temp.linux-x86_64-3.6/visual/modules/numeric/math
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/interpolate.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/interpolate.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/interpolate.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/interpolate.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/rk.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.rk' extension
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/rk.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/rk.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/rk.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/rk.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/common.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.common' extension
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/common.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/common.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/common.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/common.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+skipping 'visual/modules/numeric/math/integrate.c' Cython extension (up-to-date)
+building 'visual.modules.numeric.math.integrate' extension
+x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -fPIC -DNPY_NO_DEPRECATED_API=NPY_1_7_API_VERSION -I. -I/home/vojtatom/Documents/flow/env/lib/python3.6/site-packages/numpy/core/include -I/usr/include/python3.6m -I/home/vojtatom/Documents/flow/env/include/python3.6m -c visual/modules/numeric/math/integrate.c -o build/temp.linux-x86_64-3.6/visual/modules/numeric/math/integrate.o -Wall
+x86_64-linux-gnu-gcc -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-Bsymbolic-functions -Wl,-z,relro -g -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 build/temp.linux-x86_64-3.6/visual/modules/numeric/math/integrate.o -o /home/vojtatom/Documents/flow/flow/visual/modules/numeric/math/integrate.cpython-36m-x86_64-linux-gnu.so -g -Wno-cpp -ffast-math -O3
+path: visual.modules.numeric.data.cdata visual/modules/numeric/data/cdata.pyx
+path: visual.modules.numeric.math.interpolate visual/modules/numeric/math/interpolate.pyx
+path: visual.modules.numeric.math.rk visual/modules/numeric/math/rk.pyx
+path: visual.modules.numeric.math.common visual/modules/numeric/math/common.pyx
+path: visual.modules.numeric.math.integrate visual/modules/numeric/math/integrate.pyx
+running clean
+removing 'build/temp.linux-x86_64-3.6' (and everything under it)
+removing 'build'
+updating: flowapp/ (stored 0%)
+updating: flowapp/icons/ (stored 0%)
+updating: flowapp/icons/right.svg (deflated 42%)
+updating: flowapp/icons/add.svg (deflated 49%)
+updating: flowapp/icons/up.svg (deflated 57%)
+updating: flowapp/icons/down.svg (deflated 57%)
+updating: flowapp/icons/left.svg (deflated 40%)
+updating: flowapp/style.css (deflated 72%)
+updating: flowapp/shaders/ (stored 0%)
+updating: flowapp/shaders/stream_vs.glsl (deflated 66%)
+updating: flowapp/shaders/box_fs.glsl (deflated 20%)
+updating: flowapp/shaders/layer_fs.glsl (deflated 43%)
+updating: flowapp/shaders/stream_fs.glsl (deflated 45%)
+updating: flowapp/shaders/layer_vs.glsl (deflated 62%)
+updating: flowapp/shaders/glyph_vs.glsl (deflated 63%)
+updating: flowapp/shaders/text_fs.glsl (deflated 23%)
+updating: flowapp/shaders/glyph_fs.glsl (deflated 43%)
+updating: flowapp/shaders/box_vs.glsl (deflated 37%)
+updating: flowapp/shaders/text_vs.glsl (deflated 55%)
+updating: flowapp/instructions.json (deflated 42%)
+updating: flowapp/flowapp.js (deflated 66%)
+updating: flowapp/scripts/ (stored 0%)
+updating: flowapp/scripts/cookies.js (deflated 62%)
+updating: flowapp/scripts/websocket.js (deflated 72%)
+updating: flowapp/scripts/gl-matrix.js (deflated 75%)
+updating: flowapp/scripts/uuid.js (deflated 46%)
+updating: flowapp/scripts/scripts.js (deflated 84%)
+updating: flowapp/shaders/colorbar_vs.glsl (deflated 56%)
+updating: flowapp/shaders/colorbar_fs.glsl (deflated 13%)
+
+1 static file copied to '/home/vojtatom/Documents/flow/flow/static/static_server', 241 unmodified.
