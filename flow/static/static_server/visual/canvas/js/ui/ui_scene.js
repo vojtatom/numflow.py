@@ -19,20 +19,20 @@ class SceneUI {
         let scenew = document.createElement('div');
         scenew.id = 'scenewidgets';
 
-        let up = document.createElement('img');
+        /*let up = document.createElement('img');
         up.src = DataManager.getIcon('up.svg');
         up.classList.add('widgetnav');
         up.classList.add('canvasIcon');
         let down = document.createElement('img');
         down.src = DataManager.getIcon('down.svg');
         down.classList.add('widgetnav');
-        down.classList.add('canvasIcon');
+        down.classList.add('canvasIcon');*/
 
-        scenew.appendChild(up);
+        //scenew.appendChild(up);
         for (let w of this.widgets){
             scenew.appendChild(w.node);
         }
-        scenew.appendChild(down);
+        //scenew.appendChild(down);
         scene.appendChild(scenew);
 
         //navpoints

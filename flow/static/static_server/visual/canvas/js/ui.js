@@ -6,92 +6,174 @@ class FlowAppUI {
         this.canvas = canvas;
         let parent = canvas.parentNode;
 
-        let status = document.createElement('div');
-        status.id = 'flowappstatus';
-        status.innerHTML = 'status';
+        let status = FlowAppUI.createElement({
+            type: 'div',
+            id: 'flowappstatus',
+            innerHTML: 'status',
+        });
         parent.appendChild(status);
 
-        let placeholder = document.createElement('div');
-        placeholder.id = 'placeholderui';
-        placeholder.innerHTML = 'M';
+        let placeholder = FlowAppUI.createElement({
+            type: 'div',
+            id: 'placeholderui',
+            innerHTML: 'press <span>M</span> for menu',
+        });
         parent.appendChild(placeholder);
-
         
-        let element = document.createElement('div');
-        element.id = 'flowappui';
+        let element = FlowAppUI.createElement({
+            type: 'div',
+            id: 'flowappui',
+            style: {
+                display: 'none',
+            }
+        });
         parent.appendChild(element);
-        element.style.display = 'none';
+
+
+        // ---------------------------- main help
+        //elements nav description
+        let mainNavCont = FlowAppUI.createElement({
+            type: 'div',
+            id: 'mainNavigationContainer',
+        });
+
+        let mainNav = FlowAppUI.getHelpElement([{
+            action: 'translation',
+            keys: 'shift + WASD'
+        }, {
+            action: 'rotation',
+            keys: 'WASD'
+        }, {
+            action: 'change perspective',
+            keys: 'P'
+        }, {
+            action: 'front view',
+            keys: 'F'
+        }, {
+            action: 'top view',
+            keys: 'T'
+        }, {
+            action: 'right-side view',
+            keys: 'R'
+        }, {
+            action: 'capture image',
+            keys: 'C'
+        }, {
+            action: 'capture image with depth',
+            keys: 'V'
+        }], false);
+        mainNav.classList.add('mainNavigation');
+        mainNavCont.appendChild(mainNav);
+        parent.appendChild(mainNavCont);
+
+
+        // --------------------------- scenes element
+        let scenes = FlowAppUI.createElement({
+            type: 'div',
+            id: 'scenes',
+            style: {
+                display: 'none',
+            },
+        });
+        element.appendChild(scenes);
 
         //scenes label
-        let sceneLabel = document.createElement('div');
-        sceneLabel.id = 'sceneLabel';
-        sceneLabel.innerHTML = 'scenes';
-        sceneLabel.classList.add('menuLabel');
-        element.appendChild(sceneLabel);
+        let sceneLabel = FlowAppUI.createElement({
+            type: 'div',
+            id: 'sceneLabel',
+            innerHTML: 'Scenes',
+            class: ['menuLabel'],
+        });
+        scenes.appendChild(sceneLabel);
 
-        // scenes nav description
-        let sceneDesc = document.createElement('div');
-        sceneDesc.id = 'sceneNavDesc';
-        sceneDesc.innerHTML = 'shift + arrows to move, enter to select';
-        sceneDesc.classList.add('menuLabel');
-        sceneDesc.classList.add('menuDescription');
-        element.appendChild(sceneDesc);
-
-        let sceneListContainer = document.createElement('div');
-        sceneListContainer.id = 'sceneListContainer';
-        element.appendChild(sceneListContainer);
-
-        //nav
-        let sceneListLeft = document.createElement('img');
-        sceneListLeft.id = 'sceneListLeft';
-        sceneListLeft.src = DataManager.getIcon('left.svg');
-        sceneListLeft.classList.add('canvasIcon');
-        sceneListLeft.classList.add('side');
-        sceneListContainer.appendChild(sceneListLeft);
+        let navigationScenes = FlowAppUI.getHelpElement([{
+            action: 'change scene',
+            keys: 'shift + right/left arrows'
+        }, {
+            action: 'enter scene',
+            keys: 'enter'
+        }], true);
+        scenes.appendChild(navigationScenes);
         
         //list
-        let sceneList = document.createElement('div');
-        sceneList.id = 'sceneList';
-        sceneListContainer.appendChild(sceneList);
+        let sceneList = FlowAppUI.createElement({
+            type: 'div',
+            id: 'sceneList',
+        });
+        scenes.appendChild(sceneList);
 
-        //nav
-        let sceneListRight = document.createElement('img');
-        sceneListRight.id = 'sceneListRight';
-        sceneListRight.src = DataManager.getIcon('right.svg');
-        sceneListRight.classList.add('canvasIcon');
-        sceneListRight.classList.add('side');
-        sceneListContainer.appendChild(sceneListRight);
+        // ------------------------------ objects element
+        //elements
+        let elements = FlowAppUI.createElement({
+            type: 'div',
+            id: 'elements',
+        });
+        element.appendChild(elements);
 
-        //elements label
-        let elementsLabel = document.createElement('div');
-        elementsLabel.id = 'sceneLabel';
-        elementsLabel.innerHTML = 'scene elements';
-        elementsLabel.classList.add('menuLabel');
-        element.appendChild(elementsLabel);
 
         //elements nav description
-        let elementsDesc = document.createElement('div');
-        elementsDesc.id = 'sceneNavDesc';
-        elementsDesc.innerHTML = 'up/down arrows to move, left/right to change';
-        elementsDesc.classList.add('menuLabel');
-        elementsDesc.classList.add('menuDescription');
-        element.appendChild(elementsDesc);
+        let navigationElements = FlowAppUI.getHelpElement([{
+            action: 'select property',
+            keys: 'up/down arrows'
+        }, {
+            action: 'skip to next/prev.',
+            keys: 'shift + up/down arrows'
+        }, {
+            action: 'change property',
+            keys: 'right/left arrows'
+        }, {
+            action: 'quick change property',
+            keys: 'alt + right/left arrows'
+        }], true);
+        elements.appendChild(navigationElements);
 
-        let sceneElement = document.createElement('div');
-        sceneElement.id = 'sceneElement';
-        element.appendChild(sceneElement);
+        //elements label
+        let elementsLabel = FlowAppUI.createElement({
+            type: 'div',
+            id: 'elementsLabel',
+            innerHTML: 'Scene elements',
+            class: ['menuLabel'],
+        });
+        elements.appendChild(elementsLabel);
+
+        let sceneElement = FlowAppUI.createElement({
+            type: 'div',
+            id: 'sceneElement',
+        });
+        elements.appendChild(sceneElement);
+
+
+        // ------------------------------ other widgets
+        let helpWidget = FlowAppUI.createElement({
+            type: 'div',
+            id: 'helpWidget',
+            innerHTML: 'Press <span>H</span> to toggle help, <span>M</span> to hide menu',
+            class: ['menuNote'],
+        });
+        element.appendChild(helpWidget);
         
+
+
+        // ------------------------------------
+        
+        /* general stuff */
         this.placeholder = placeholder;
         this.status = status;
         this.element = element;
+
+        /* scene list stuff */
+        this.sceneWidget = scenes;
         this.sceneList = sceneList;
+        
+        /* scene elements menu */
         this.sceneElement = sceneElement;
         
+        /* other stuff */
         this.scenes = [];
         this.selectedScene = 0;
         this.active = 0;
-
         this.menuVisible = false;
+        this.helpVisible = false;
     }
 
     addScene(scene){
@@ -101,6 +183,10 @@ class FlowAppUI {
         sceneCard.id = 'scene' + (this.scenes.length - 1);
         sceneCard.classList.add('scene');
         this.sceneList.appendChild(sceneCard);
+
+        if (this.scenes.length > 1){
+            this.sceneWidget.style.display = 'block';
+        }
     }
 
     displayScene(index){
@@ -204,12 +290,33 @@ class FlowAppUI {
             this.element.style.display = 'none';
             this.placeholder.style.display = 'block';
             this.menuVisible = false;
+
+            if (this.helpVisible){
+                this.toggleHelp();
+            }
         } else {
             this.element.style.display = 'block';
             this.placeholder.style.display = 'none';
             this.menuVisible = true;
         }
+    }
 
+    toggleHelp(){
+        if (!this.menuVisible)
+            this.helpVisible = true;
+
+        let all = document.getElementsByClassName('navigation');
+        if (this.helpVisible){
+            for (let i = 0; i < all.length; i++) {
+                all[i].style.display = 'none';
+            }
+            this.helpVisible = false;
+        } else {
+            for (let i = 0; i < all.length; i++) {
+                all[i].style.display = 'flex';
+            }
+            this.helpVisible = true;
+        }
     }
 
     delete(){
@@ -247,6 +354,7 @@ class FlowAppUI {
                 widget: this.scenes[this.active].selected,
                 field: this.scenes[this.active].widgets[this.scenes[this.active].selected].selected,
                 visibility: this.menuVisible,
+                help: this.helpVisible,
             },
             scenes: values
         }
@@ -271,5 +379,94 @@ class FlowAppUI {
         if (this.menuVisible !== state.active.visibility){
             this.toggleMenu();
         }
+
+        if (this.helpVisible !== state.active.help){
+            this.toggleHelp();
+        }
+    }
+
+    static createElement(options){
+        /* only type is mandatory */
+        let elem = document.createElement(options.type);
+
+        if (options.id)
+            elem.id = options.id;
+
+        if (options.src)
+            elem.src = options.src;
+
+        if (options.class){
+            if (Array.isArray(options.class)){
+                for (let cls of options.class){
+                    elem.classList.add(cls);
+                }
+            } else {
+                console.log('ui class must be an array')
+            }
+        }
+
+        if (options.innerHTML)
+            elem.innerHTML = options.innerHTML;
+
+
+        if (options.style){
+            for (let attr in options.style){
+                elem.style[attr] = options.style[attr];
+            }
+        }
+
+        return elem;
+    }
+
+    static getHelpElement(tasks, inline){
+        let navigation = FlowAppUI.createElement({
+            type: 'div',
+            class: inline ? ['navigation', 'navigation-inline'] : ['navigation'],
+        });
+
+        for (let task of tasks){
+            let container = FlowAppUI.createElement({
+                type: 'div',
+                class: ['task'],
+            });
+
+            let action = FlowAppUI.createElement({
+                type: 'div',
+                innerHTML: task.action,
+                class: ['action'],
+            });
+
+            container.appendChild(action);
+
+            let keysElem = FlowAppUI.createElement({
+                type: 'div',
+                class: ['keys'],
+            });
+
+            let keys = task.keys.split("+");
+            let plus = FlowAppUI.createElement({
+                type: 'div',
+                innerHTML: '+',
+                class: ['and'],
+            });
+
+            for (let keyid in keys){
+                let keyElem = FlowAppUI.createElement({
+                    type: 'div',
+                    innerHTML: keys[keyid],
+                    class: ['key'],
+                });
+                keysElem.appendChild(keyElem);
+                
+                if (keys.length - 1 != keyid){
+                    keysElem.appendChild(plus);
+                }
+            }
+
+            container.appendChild(keysElem);
+            navigation.appendChild(container);
+        }
+
+        return navigation;
     }
 }

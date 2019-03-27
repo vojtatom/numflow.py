@@ -147,10 +147,6 @@ class FlowApp {
                 this.graphics.scene.camera.setPosition(CameraPosition.rotateLeft);
             }
         }
-
-        if (this.interface.keys[72]){
-            this.graphics.scene.camera.setPosition(CameraPosition.origin);
-        }
     }
 
     saveCanvas(name){
@@ -240,6 +236,12 @@ class FlowApp {
 
         if (key === 80){
             this.graphics.scene.camera.toggleMode();
+        }
+
+        //help
+        if (key === 72){
+            this.ui.toggleHelp();
+            //this.graphics.scene.camera.setPosition(CameraPosition.origin);
         }
 
         this.graphics.scene.camera.sceneChanged = true;
