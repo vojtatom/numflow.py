@@ -240,9 +240,41 @@ class Stream extends MethodPrimitive {
         }
     }
 
+    timeLimits(){
+        return {
+            t0: 'meta' in this ? this.meta.t0: this._data.meta.t0,
+            tbound: 'meta' in this ? this.meta.tbound: this._data.meta.tbound,
+        };
+    }
+
+    animationSetup(){
+        let times = this.timeLimits();
+        return {
+            start: times.t0,
+            end: times.tbound,
+            callback: {
+                setup: (s, e) => { this.animate(s, e); },
+                reset: () => this.resetAnimate(),
+            },
+        };
+    }
+
+    animate(start, end){
+        if(!this.isRenderReady)
+            return;
+
+        this.meta.time = [start, end];
+    }
+
+    resetAnimate(){
+        if(!this.isRenderReady)
+            return;
+
+        this.meta.time = [this.meta.t0, this.meta.tbound];
+    }
+
     get ui(){
-        let t0 = 'meta' in this ? this.meta.t0: this._data.meta.t0;
-        let tbound = 'meta' in this ? this.meta.tbound: this._data.meta.tbound;
+        let times = this.timeLimits();
 
         return Object.assign({}, {
             type: {
@@ -277,18 +309,18 @@ class Stream extends MethodPrimitive {
             },
             t_start: {
                 type: 'slider',
-                min: t0,
-                max: tbound,
-                delta:  (tbound - t0) / 1000,
-                value: t0,
+                min: times.t0,
+                max: times.tbound,
+                delta:  (times.tbound - times.t0) / 1000,
+                value: times.t0,
                 callback: (value) => { this.meta.time[0] = value },
             },
             t_end: {
                 type: 'slider',
-                min: t0,
-                max: tbound,
-                delta:  (tbound - t0) / 1000,
-                value: tbound,
+                min: times.t0,
+                max: times.tbound,
+                delta:  (times.tbound - times.t0) / 1000,
+                value: times.tbound,
                 callback: (value) => { this.meta.time[1] = value },
             },
         }, super.ui);

@@ -29,7 +29,7 @@ class SceneUI {
         //navpoints
         let scenen = document.createElement('div');
         scenen.id = 'scenenavpoints';
-        
+
         for (let w of this.widgets){
             scenen.appendChild(w.nodenavpoint);
         }
@@ -37,6 +37,12 @@ class SceneUI {
 
         return scene;
     }
+
+    /*addAnimationBounds(options){
+        this.animationBounds.push([options.start, options.end]);
+        this.animationCalls.push(options.callback);
+        console.log(options);
+    }*/
 
     select(indexW, indexF){
         if (this.widgets.length <= indexW)

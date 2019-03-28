@@ -108,6 +108,7 @@ class FlowApp {
             this.saveCanvas('3dvision.png');
         }
 
+        /* views*/
         if (this.interface.keys[84]){
             this.graphics.scene.camera.setPosition(CameraPosition.top);
         }
@@ -244,6 +245,7 @@ class FlowApp {
             //this.graphics.scene.camera.setPosition(CameraPosition.origin);
         }
 
+        this.ui.componentKey(key);
         this.graphics.scene.camera.sceneChanged = true;
     }
 

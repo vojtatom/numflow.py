@@ -64,7 +64,7 @@ canvas {
     border-radius: 0.3em;
     display: none;
     flex-flow: column;
-    background: rgba(34, 34, 34, 0.5);;
+    background: rgba(34, 34, 34, 0.85);;
     padding: 0.5em;
 }
 
@@ -246,64 +246,151 @@ canvas {
 
 /*widgets */
 
-#scene .widget {
+.widget {
     border-radius: 0.3em;
 }
 
-#scene .widget:first-child {
+.widget:first-child {
     margin-top: 0;
 }
 
-/*#scene .widget:last-child {
-    margin-bottom: 0;
-}*/
-
-#scene .widget .field {
+.widget .field {
     display: flex;
 }
 
-#scene .widget .field .title,
-#scene .widget .field .value,
-#scene .widget .field .meta {
+.widget .field .title,
+.widget .field .value,
+.widget .field .meta {
     padding: 0.5em;
     box-sizing: border-box;
 }
 
-#scene .widget .field .title{
+.widget .field .title{
     width: 40%; 
     background: #333;
 }
 
-#scene .widget .field.selected .title{
+.widget .field.selected .title{
    background: #444;
 }
 
-#scene .widget .field .value,
-#scene .widget .field .meta{
+.widget .field .value,
+.widget .field .meta{
     width: 60%; 
 }
 
-#scene .widget .field .value {
+.widget .field .value {
     background: #444;
 }
 
-#scene .widget .field.selected .value{
+.widget .field.selected .value{
     background: #555;
  }
 
-#scene .widget .field:first-child .title {
+.widget .field:first-child .title {
     border-top-left-radius: 0.3em;
 }
 
-#scene .widget .field:first-child .value{
+.widget .field:first-child .value{
     border-top-right-radius: 0.3em;
 }
 
-#scene .widget .field:last-child .value:last-child,
-#scene .widget .field:last-child .meta:last-child{
+.widget .field:last-child .value:last-child,
+.widget .field:last-child .meta:last-child{
     border-bottom-right-radius: 0.3em;
 }
 
-#scene .widget .field:last-child .title{
+.widget .field:last-child .title{
     border-bottom-left-radius: 0.3em;
+}
+
+/* components */
+.component {
+    margin: 1em 0;
+}
+
+.componentPlaceholder{
+    background: #333;
+    padding: 1em;
+    border-radius: 0.3em;
+}
+
+.componentTitle{
+    text-align: right;
+    font-size: 1.5em;
+}
+
+.componentDescription{
+    text-align: right;
+}
+
+.componentDescription span {
+    font-weight: bold;
+}
+
+.componentWidget{
+    position: relative;
+}
+
+.componentMainWidget{
+    flex: 2 1;
+}
+
+.componentSideWidget{
+    flex: 3 1;
+}
+
+.componentMainWidget{
+    background: #333;
+    border-radius: 0.3em 0 0 0.3em;
+}
+
+.componentSideWidget{
+    background: #444;
+    border-radius: 0 0.3em 0.3em 0;
+}
+
+.componentField{
+    padding: 0.5em 1em;
+    align-items: center;
+}
+
+.componentSideWidget .componentField{
+    display: flex;
+    justify-content: space-between;
+}
+
+.componentMainWidget .componentFieldValue {
+    font-size: 1.5em;
+}
+
+.componentFieldKeys {
+    font-weight: bold;
+}
+
+.componentFieldTitle{
+    flex: 2 1;
+    color: #888;
+    max-width: 5.5em;
+}
+
+.componentFieldValue{
+    flex: 2 1;
+}
+
+.componentFieldKey{
+    flex: 1 1;
+}
+
+.componentMainWidget .componentDescription{
+    padding: 0 1em;
+    text-align: left;
+}
+
+.componentMainWidget .componentDescription:first-of-type{
+    padding-top: 1em;
+}
+
+.componentMainWidget .componentDescription:last-of-type{
+    padding-bottom: 1em;
 }

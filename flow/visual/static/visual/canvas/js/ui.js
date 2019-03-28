@@ -1,8 +1,10 @@
 'use strict';
 
 
-class FlowAppUI {
+class FlowAppUI extends BaseUI {
     constructor(canvas){
+        super();
+
         this.canvas = canvas;
         let parent = canvas.parentNode;
 
@@ -144,6 +146,19 @@ class FlowAppUI {
 
 
         // ------------------------------ other widgets
+        //elements
+        let components = FlowAppUI.createElement({
+            type: 'div',
+            id: 'components',
+        });
+        element.appendChild(components);
+
+        let componentElement = FlowAppUI.createElement({
+            type: 'div',
+            id: 'componentElement',
+        });
+        components.appendChild(componentElement);
+
         let helpWidget = FlowAppUI.createElement({
             type: 'div',
             id: 'helpWidget',
@@ -167,17 +182,29 @@ class FlowAppUI {
         
         /* scene elements menu */
         this.sceneElement = sceneElement;
+        this.componentElement = componentElement;
+        
+        /* elements classes */
+        this.scenes = [];
+        this.components = [];
         
         /* other stuff */
-        this.scenes = [];
         this.selectedScene = 0;
         this.active = 0;
+        this.activeComponent = null;
         this.menuVisible = false;
         this.helpVisible = false;
     }
 
-    addScene(scene){
+    addScene(scene, components){
         this.scenes.push(scene);
+
+        let comObj = {};
+        for (let comp of components){
+            comObj[comp.activationKey] = comp;
+        }
+
+        this.components.push(comObj);
 
         let sceneCard = document.createElement('div');
         sceneCard.id = 'scene' + (this.scenes.length - 1);
@@ -190,19 +217,31 @@ class FlowAppUI {
     }
 
     displayScene(index){
+        /* sene settings */
         while (this.sceneElement.firstChild) {
             this.sceneElement.removeChild(this.sceneElement.firstChild);
         }
 
+        /* animation settings */
+        while (this.componentElement.firstChild) {
+            this.componentElement.removeChild(this.componentElement.firstChild);
+        }
+
         this.scenes[this.active].deselect();
+        //this.animations[this.active].deselect();
+        
         this.active = index;
         this.selectedScene = index;
 
-        let ui = this.scenes[this.active].node;
-        this.sceneElement.appendChild(ui);
+        let uiElements = this.scenes[this.active].node;
+        this.sceneElement.appendChild(uiElements);
+
+        for (let comp in this.components[this.active]){
+            let uiComp = this.components[this.active][comp].node;
+            this.componentElement.appendChild(uiComp);
+        }
 
         this.scenes[this.active].select(0, 0);
-        
         let scene = document.getElementById('scene' + this.selectedScene);
         scene.classList.add('selected');
     }
@@ -231,6 +270,37 @@ class FlowAppUI {
 
         scene = document.getElementById('scene' + this.selectedScene);
         scene.classList.add('selected');
+    }
+
+    componentKey(key){
+        /* check component activation */
+        if (key in this.components[this.active]){
+            this.toggleComponent(key)
+            return;
+        }
+
+        if (this.activeComponent !== null){
+            this.components[this.active][this.activeComponent].key(key);
+            return;
+        }
+
+    }
+
+
+    toggleComponent(key){
+        //deactivate
+        if (this.activeComponent !== null){
+            this.components[this.active][this.activeComponent].deactivate();
+        }
+        
+        //toggle
+        if (this.activeComponent == key){
+            this.activeComponent = null;
+        } else {
+            this.activeComponent = key;
+            this.components[this.active][this.activeComponent].activate();
+        }
+        
     }
 
     nextWidget(){
@@ -383,90 +453,5 @@ class FlowAppUI {
         if (this.helpVisible !== state.active.help){
             this.toggleHelp();
         }
-    }
-
-    static createElement(options){
-        /* only type is mandatory */
-        let elem = document.createElement(options.type);
-
-        if (options.id)
-            elem.id = options.id;
-
-        if (options.src)
-            elem.src = options.src;
-
-        if (options.class){
-            if (Array.isArray(options.class)){
-                for (let cls of options.class){
-                    elem.classList.add(cls);
-                }
-            } else {
-                console.log('ui class must be an array')
-            }
-        }
-
-        if (options.innerHTML)
-            elem.innerHTML = options.innerHTML;
-
-
-        if (options.style){
-            for (let attr in options.style){
-                elem.style[attr] = options.style[attr];
-            }
-        }
-
-        return elem;
-    }
-
-    static getHelpElement(tasks, inline){
-        let navigation = FlowAppUI.createElement({
-            type: 'div',
-            class: inline ? ['navigation', 'navigation-inline'] : ['navigation'],
-        });
-
-        for (let task of tasks){
-            let container = FlowAppUI.createElement({
-                type: 'div',
-                class: ['task'],
-            });
-
-            let action = FlowAppUI.createElement({
-                type: 'div',
-                innerHTML: task.action,
-                class: ['action'],
-            });
-
-            container.appendChild(action);
-
-            let keysElem = FlowAppUI.createElement({
-                type: 'div',
-                class: ['keys'],
-            });
-
-            let keys = task.keys.split("+");
-            let plus = FlowAppUI.createElement({
-                type: 'div',
-                innerHTML: '+',
-                class: ['and'],
-            });
-
-            for (let keyid in keys){
-                let keyElem = FlowAppUI.createElement({
-                    type: 'div',
-                    innerHTML: keys[keyid],
-                    class: ['key'],
-                });
-                keysElem.appendChild(keyElem);
-                
-                if (keys.length - 1 != keyid){
-                    keysElem.appendChild(plus);
-                }
-            }
-
-            container.appendChild(keysElem);
-            navigation.appendChild(container);
-        }
-
-        return navigation;
     }
 }

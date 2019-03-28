@@ -20,22 +20,37 @@ class Scene{
             },
         };
 
+
+        this.animationCalls = [];
+        
+        this.time = {
+            bounds: {
+                low: 0,
+                high: 0,
+            },
+            current: 0,
+            delta: 1000,
+            step: 100,
+            running: false,
+            paused: false,
+        };
+
         this.loaded = false;
     }
 
     init(contents, ui, programs){
         //console.log('loading scene elements');
         let sceneui = new SceneUI();
-
+        
         contents.stats.points.center = Primitive.base64totype(contents.stats.points.center);
         contents.stats.points.min = Primitive.base64totype(contents.stats.points.min);
         contents.stats.points.max = Primitive.base64totype(contents.stats.points.max);
         //console.log(contents.stats);
-
+        
         this.camera.sceneSetup(contents.stats.points);
-
-
-       /* let box = new Box(this.gl);
+        
+        
+        /* let box = new Box(this.gl);
         box.init(vec3.fromValues(-10, -10, 0), vec3.fromValues(20, 20, 40));
         this.objects.push(box); */
         
@@ -46,13 +61,13 @@ class Scene{
                 glyphs.init(glyphs_group);
                 //console.log(glyphs);
                 this.objects.glyph.obj.push(glyphs);
-
+                
                 sceneui.addWidget(new WidgetUI(glyphs.ui));
             }
         }
-
+        
         this.objects.glyph.program = programs.glyph;
-
+        
         if ('streamlines' in contents){
             for (let stream_group of contents.streamlines){
                 let streams = new Stream(this.gl, programs);
@@ -60,13 +75,14 @@ class Scene{
                 streams.init(stream_group);
                 //console.log(streams);
                 this.objects.stream.obj.push(streams);
-
+                
                 sceneui.addWidget(new WidgetUI(streams.ui));
+                this.addAnimatedObject(streams.animationSetup());
             }
         }
-
+        
         this.objects.stream.program = programs.stream;
-
+        
         if ('layer' in contents){
             for (let layer_group of contents.layer){
                 let layer = new Layer(this.gl, programs);
@@ -74,27 +90,70 @@ class Scene{
                 layer.init(layer_group);
                 //console.log(streams);
                 this.objects.layer.obj.push(layer);
-
+                
                 sceneui.addWidget(new WidgetUI(layer.ui));
             }
         }
-
+        
         this.objects.layer.program = programs.layer;
-        /*
-
-        let stream = new Stream(this.gl);
-        stream.segment([0, 0, 0], [1, 0, 0], [1, 1, 0], [1, 0, 0]);*/
-
-        //append ui
-        ui.addScene(sceneui);
+        
+        this.createUI(ui, sceneui);
         this.loaded = true;
+    }
+
+    addAnimatedObject(options){
+        this.animationCalls.push(options.callback);
+
+        this.time.bounds.low = Math.min(this.time.bounds.low, options.start);
+        this.time.bounds.high = Math.max(this.time.bounds.high, options.end);
+
+        this.time.current = this.time.bounds.low;
+        this.time.step = (this.time.bounds.high - this.time.bounds.low) / 400;
+        console.log(options);
+    }
+
+    togglePauseAnimation(){
+        this.time.paused = !this.time.paused;
+    }
+
+    toggleAnimation(){
+        if (!this.time.running){
+            this.time.running = true;
+            this.time.current = this.time.bounds.low;
+            this.time.paused = false;
+        } else {
+            for (let callId in this.animationCalls){
+                this.animationCalls[callId].reset();
+            }
+            this.time.running = false;
+        }
+    }
+
+    timeTick(){
+        if (!this.time.running || this.time.paused)
+            return;
+
+        let start = this.time.current;
+        let delta = Math.min(this.time.current - this.time.bounds.low, this.time.delta)
+        let end = this.time.current + delta;
+
+        for (let callId in this.animationCalls){
+            this.animationCalls[callId].setup(start, end);
+        }
+
+        this.time.current = (this.time.current + this.time.step)
+        if (this.time.current > this.time.bounds.high)
+            this.time.current = this.time.bounds.low;
+
+        this.animationUI.update('current', this.time.current.toFixed(3));
     }
 
     render(programs){
         //update camera
         this.camera.frame();
+        this.timeTick();
 
-        if (!this.camera.needsRender)
+        if (!this.camera.needsRender && (!this.time.running || this.time.paused))
             return;
 
         this.gl.clearColor(0.1, 0.1, 0.1, 1.0);
@@ -211,10 +270,59 @@ class Scene{
         }
     }
 
+    createUI(ui, sceneui){
+        let components = [];
+        if (this.time.bounds.low != this.time.bounds.high){
+            this.animationUI = new ComponentUI({
+                title: 'Animation',
+                key: 66,
+                actions: {
+                    activate : () => { this.toggleAnimation(); },
+                    deactivate : () => { this.toggleAnimation(); },
+                    32: () => this.togglePauseAnimation(),
+                },
+                main: [{
+                  type: 'display',
+                  title: 'current',
+                  value: this.time.current,
+                  id: 'current',
+                }],
+                side: [{
+                    type: 'display',
+                    title: 'range',
+                    value: this.time.bounds.low + ' - ' + this.time.bounds.high,
+                },{
+                    type: 'slider',
+                    title: 'render range',
+                    value: this.time.delta,
+                    min: this.time.bounds.low,
+                    max: this.time.bounds.high,
+                    update: (delta) => { this.time.delta = delta },
+                },{
+                    type: 'slider',
+                    title: 'time step',
+                    value: this.time.step,
+                    min: 1,
+                    max: (this.time.bounds.high - this.time.bounds.low) / 5,
+                    update: (step) => { this.time.step = step },
+                }],
+                help: BaseUI.getHelpElement([{
+                    action: 'play/pause',
+                    keys: 'spacebar',
+                }], true)
+            });
+
+            components.push(this.animationUI);
+        }
+
+        ui.addScene(sceneui, components);
+    }
+
     getState(){
         let state = {
             objects: [],
             camera: null,
+            time: this.time,
         };
 
         for(let type in this.objects){  
@@ -236,6 +344,7 @@ class Scene{
         }
         
         this.camera.setState(state.camera);
+        this.time = state.time;
     }
 
     screen(x, y) {
