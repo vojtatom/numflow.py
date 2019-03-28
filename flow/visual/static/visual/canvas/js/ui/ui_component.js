@@ -7,6 +7,7 @@ class ComponentUI extends BaseUI{
         
         this.elements = {};
         this.actions = structure.actions;
+        this.active = false;
     }
     
     get activationKey() {
@@ -115,6 +116,8 @@ class ComponentUI extends BaseUI{
 
         if (this.actions.activate)
             this.actions.activate();
+
+        this.active = true;
     }
     
     deactivate(){
@@ -123,6 +126,8 @@ class ComponentUI extends BaseUI{
 
         if (this.actions.deactivate)
             this.actions.deactivate();
+        
+        this.active = false;
     }
 
     key(key){
@@ -223,5 +228,19 @@ class ComponentUI extends BaseUI{
 
     update(id, value){
         this.elements[id].innerHTML = value;
+    }
+
+    getState(){
+        return {
+            active: this.active,
+        }
+    }
+
+    setState(state){
+        if (state.active && !this.active)
+            this.activate();
+
+        if (!state.active && this.active)
+            this.deactivate();
     }
 }

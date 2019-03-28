@@ -175,6 +175,7 @@ class FlowAppUI extends BaseUI {
         this.placeholder = placeholder;
         this.status = status;
         this.element = element;
+        this.mainNav = mainNav;
 
         /* scene list stuff */
         this.sceneWidget = scenes;
@@ -213,6 +214,8 @@ class FlowAppUI extends BaseUI {
 
         if (this.scenes.length > 1){
             this.sceneWidget.style.display = 'block';
+        } else {
+            this.sceneWidget.style.display = 'none';
         }
     }
 
@@ -399,13 +402,22 @@ class FlowAppUI extends BaseUI {
         }
 
         this.scenes = [];
+        this.components = [];
+
+        //deactivate
+        if (this.activeComponent !== null){
+            this.components[this.active][this.activeComponent].deactivate();
+        }
     }
 
     resize(x, y){
-        this.element.style.fontSize = (((y / 1400) - 1) + 1) + 'em';
-        this.element.style.width = (((y / 1400) - 1) * 400 + 400) + 'px';
-        this.status.style.fontSize = (((y / 1400) - 1) + 1) + 'em';
-        this.placeholder.style.fontSize = (((y / 1400) - 1) + 1) + 'em';
+        let fontSize = (((y / 1400) - 1) + 1) + 'em';
+        let width = (((y / 1400) - 1) * 400 + 400) + 'px';
+        this.element.style.fontSize = fontSize;
+        this.element.style.width = width;
+        this.status.style.fontSize = fontSize;
+        this.placeholder.style.fontSize = fontSize;
+        this.mainNav.style.fontSize = fontSize;
     }
 
     updateStatus(text){
@@ -418,6 +430,12 @@ class FlowAppUI extends BaseUI {
             values.push(scene.getState());
         }
 
+        let components = [];
+        for (let component of this.components){
+            components.push(components.getState());
+        }
+
+
         return {
             active: {
                 scene: this.active,
@@ -426,7 +444,8 @@ class FlowAppUI extends BaseUI {
                 visibility: this.menuVisible,
                 help: this.helpVisible,
             },
-            scenes: values
+            scenes: values,
+            components: components,
         }
     }
 
@@ -434,6 +453,10 @@ class FlowAppUI extends BaseUI {
         let i = 0;
         for (let scene of this.scenes){
             scene.setState(state.scenes[i++]);
+        }
+        i = 0;
+        for (let component of this.components){
+            component.setState(state.components[i++]);
         }
 
         if (this.active != state.active.scene){

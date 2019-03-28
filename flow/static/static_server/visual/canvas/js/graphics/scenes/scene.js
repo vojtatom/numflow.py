@@ -109,6 +109,7 @@ class Scene{
 
         this.time.current = this.time.bounds.low;
         this.time.step = (this.time.bounds.high - this.time.bounds.low) / 400;
+        this.time.delta = (this.time.bounds.high - this.time.bounds.low) / 20;
         console.log(options);
     }
 
@@ -133,9 +134,10 @@ class Scene{
         if (!this.time.running || this.time.paused)
             return;
 
-        let start = this.time.current;
-        let delta = Math.min(this.time.current - this.time.bounds.low, this.time.delta)
-        let end = this.time.current + delta;
+        let lower = this.time.current - this.time.bounds.low;
+        let delta = Math.min(lower, this.time.delta)
+        let end = this.time.current;
+        let start = Math.max(end - delta, this.time.bounds.low);
 
         for (let callId in this.animationCalls){
             this.animationCalls[callId].setup(start, end);
