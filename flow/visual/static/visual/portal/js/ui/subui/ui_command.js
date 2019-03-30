@@ -8,14 +8,6 @@ class UICommand {
         return li;
     }
 
-    static createProgress(text){
-        let li = document.createElement('li');
-        li.classList.add('output');
-        li.classList.add('progress')
-        li.innerHTML = text;
-        return li;   
-    }
-
     static createInfo(text){
         let li = document.createElement('li');
         li.classList.add('info');
@@ -23,15 +15,22 @@ class UICommand {
         return li;   
     }
 
-    static createOutput(text, status){
+    static createError(text){
         let li = document.createElement('li');
         li.classList.add('output');
-        if (status != 0)
-            li.classList.add('error')
+        li.classList.add('error')
 
         li.innerHTML = text;
         return li;   
     }
+
+    static createOutput(text){
+        let li = document.createElement('li');
+        li.classList.add('output');
+        li.innerHTML = text;
+        return li;   
+    }
+
 
     static createSavepoint(){
         let li = document.createElement('li');

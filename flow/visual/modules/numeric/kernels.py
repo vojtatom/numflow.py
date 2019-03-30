@@ -17,18 +17,10 @@ def dataset_kernel(filepath, mode):
         raise NumericError('Unknown dataset format')
 
 
-def glyph_kernel(data, points, benchmark=False, bench_count=1000):
+def glyph_kernel(data, points):
     interpolator = data.interpolator
-
-    if benchmark:
-        def interp():
-            interpolator(points)
-        time = timeit.Timer(interp).timeit(bench_count)
-        data = interpolator(points)
-        return data, time
-    else:
-        data = interpolator(points)
-        return data
+    data = interpolator(points)
+    return data
 
 
 def points_kernel(start, end, sampling):
@@ -44,9 +36,9 @@ def points_kernel(start, end, sampling):
     return k
 
 
-def stream_kernel(data, t_0, t_bound, points, mode):    
+def stream_kernel(data, t_0, t_bound, points, mode, abort):    
     if mode  == 'scipy':
-        return sstreamlines(data, t_0, t_bound, points)
+        return sstreamlines(data, t_0, t_bound, points, abort)
     elif mode == 'c':
         return cstreamlines(data, t_0, t_bound, points)
     else:

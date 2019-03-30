@@ -4,6 +4,7 @@ class Terminal {
     constructor(code){
         this.code = code;
         this.waiting = false;
+        this.formats = ['output', 'error', 'progress', 'command', 'info'];
 
         this.socket = this.socket();
         UITerminal.addLine('terminal initialized with uuid<br>' + this.code, 'info');
@@ -24,9 +25,11 @@ class Terminal {
 
         socket.onmessage = (e) => {
             let data = JSON.parse(e.data);
-            UITerminal.addLine(data.text, data.type, data.status);
+
+            if (this.formats.indexOf(data.type) > -1)
+                UITerminal.addLine(data.text, data.type);
             
-            if (data.type == 'output'){
+            if (data.type == 'output' || data.type == 'error'){
                 this.waiting = false;
             };
         };
@@ -44,7 +47,9 @@ class Terminal {
         this.socket.send(JSON.stringify({
             'command': text,
             'data': data,
-        }));        
+        }));  
+        
+        UITerminal.clear();
     }
 
     close(){

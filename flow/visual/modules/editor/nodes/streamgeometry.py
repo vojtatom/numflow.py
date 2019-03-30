@@ -1,4 +1,4 @@
-from .base import Node
+from .base import Node, check_abort
 import numpy as np
 import copy
 
@@ -73,7 +73,7 @@ class StreamGeometryNode(Node):
         self._appearance = data['appearance']
 
 
-    def __call__(self, indata, message):    
+    def __call__(self, indata, message, abort):    
         """
         Call glyph kernel and perform interpolation.
             :param indata: data coming from connected nodes
@@ -101,6 +101,7 @@ class StreamGeometryNode(Node):
                 new['meta'] = meta
 
                 transformed_streams.append(new)
+                check_abort(abort)
 
         #return all flatenned
         return {'streamlines' : transformed_streams}

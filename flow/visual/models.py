@@ -99,18 +99,22 @@ class Notebook(models.Model):
         #manually into json format...
         self.output.save('output.imgflow', ContentFile('[' + contents + ']'), save=True)
 
+
     def clear_output(self):
         if self.output and os.path.isfile(self.output.path):
             self.output.delete()
+
 
     def save_nodefile(self):
         self.clear_nodefile()
         #manually into json format...
         self.nodefile.save('data.docflow', ContentFile(self.data), save=True)
 
+
     def clear_nodefile(self):
         if self.nodefile and os.path.isfile(self.nodefile.path):
             self.nodefile.delete()
+
 
     def __str__(self):
         return self.title + ' ' + str(self.code)
@@ -130,3 +134,17 @@ def auto_delete_file_on_delete_notebook(sender, instance, **kwargs):
     if instance.nodefile and os.path.isfile(instance.nodefile.path):
         os.remove(instance.nodefile.path)
         os.rmdir(os.path.dirname(instance.nodefile.path))
+
+###########################################################################
+class Task(models.Model):
+    group = models.TextField(blank=True)
+    data = models.TextField(blank=True)
+    time_created = models.DateTimeField(auto_now_add=True)
+    notebook = models.ForeignKey(Notebook, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    running = models.BooleanField(default=False)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return str(self.time_created) + ' ' + self.user.username + ' ' + str(self.notebook)

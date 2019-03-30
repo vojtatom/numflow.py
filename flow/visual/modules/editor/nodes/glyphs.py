@@ -1,4 +1,4 @@
-from .base import Node
+from .base import Node, check_abort
 import numpy as np
 
 from .color import ColorNode
@@ -64,7 +64,7 @@ class GlyphsNode(Node):
         self._appearance = data['appearance']
 
 
-    def __call__(self, indata, message):    
+    def __call__(self, indata, message, abort):    
         """
         Call glyph kernel and perform interpolation.
             :param indata: data coming from connected nodes, can be None here.
@@ -79,6 +79,7 @@ class GlyphsNode(Node):
         #interpolate per points group
         for points_group in indata['points']:
             out_values = glyph_kernel(indata['dataset'], points_group)
+            check_abort(abort)
             
             if values is None:
                 values = out_values

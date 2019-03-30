@@ -1,4 +1,4 @@
-from .base import Node
+from .base import Node, check_abort
 from ..exceptions import NodeError
 import json
 import copy
@@ -95,7 +95,7 @@ class ColorNode(Node):
             self._colors.append(data[field])
 
 
-    def __call__(self, indata, message):
+    def __call__(self, indata, message, abort):
         """
         Create dataset.
             :param indata: data coming from connected nodes, can be None here.
@@ -118,6 +118,7 @@ class ColorNode(Node):
                 meta['colormap'] = colormap
                 new['meta'] = meta
                 transformed_glyphs.append(new)
+                check_abort(abort)
 
         ### streamlines
         if 'streamlines' in indata:
@@ -132,6 +133,7 @@ class ColorNode(Node):
                 meta['colormap'] = colormap
                 new['meta'] = meta
                 transformed_streamlines.append(new)
+                check_abort(abort)
 
         ### layer
         if 'layer' in indata:
@@ -141,6 +143,7 @@ class ColorNode(Node):
                 meta['colormap'] = colormap
                 new['meta'] = meta
                 transformed_layer.append(new)
+                check_abort(abort)
 
         #return all together
         out = {}

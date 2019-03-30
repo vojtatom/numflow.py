@@ -6,7 +6,7 @@ from channels.db import database_sync_to_async
 from asgiref.sync import async_to_sync, sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from visual.modules.editor import commands
+from visual import commands
 
 
 class TerminalConsumer(AsyncWebsocketConsumer):
@@ -32,28 +32,75 @@ class TerminalConsumer(AsyncWebsocketConsumer):
 
     # Receive command from WebSocket
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        command = text_data_json['command']
-        data = text_data_json['data']
+        recdata = json.loads(text_data)
+        user = self.scope['user'].username
 
-        # Send command to group
-        await self.channel_layer.group_send(
-            self.terminal_group_name,
-            {
-                'type': 'command',
-                'text': command,
-                'sender': self.scope['user'].username,
-                'time': str(datetime.datetime.now()),
-            }
-        )
-        
-        ## At this point, check what to do and let it handle the rest.
-        #await commands.command(self.terminal_group_name, command, data, self.scope['user'].username)
-        # launch processing in background
-        t = threading.Thread(target=commands.command, args=(self.terminal_group_name, self.terminal_name, command, data, self.scope['user'].username))
-        t.setDaemon(True)
-        t.start()
+        # basic command management
+        if 'command' in recdata:
+            command = recdata['command']
+            data = recdata['data']
 
+            # Send command to group
+            await self.channel_layer.group_send(
+                self.terminal_group_name,
+                {
+                    'type': 'command',
+                    'text': command,
+                    'sender': user,
+                    'time': str(datetime.datetime.now()),
+                }
+            )
+
+            output, error = await commands.command(self.terminal_group_name, self.terminal_name, command, data, user)
+            await self.send_message(user, output, error)
+            return
+
+        #proecssing server message
+        if 'message' in recdata:
+            user = self.scope['user'].username
+            message = recdata['message']
+            error = recdata['error']
+            await self.send_message(user, message, error)
+            return
+
+        #canvas update
+        if 'canvas' in recdata:
+            canvas = recdata['canvas']
+            await self.channel_layer.group_send(
+                self.terminal_group_name,
+                {
+                    'type': 'update',
+                    'url': '/media/notebook/{}/output.imgflow'.format(canvas),
+                    'sender': user,
+                    'time': str(datetime.datetime.now()),
+                }
+            )
+            return
+
+
+    async def send_message(self, user, text, error):
+        if error:
+            #in case error was recieved
+            await self.channel_layer.group_send(
+                self.terminal_group_name,
+                {
+                    'type': 'error',
+                    'text': text,
+                    'sender': user,
+                    'time': str(datetime.datetime.now()),
+                }
+            )
+        else:
+            #standard output
+            await self.channel_layer.group_send(
+                self.terminal_group_name,
+                {
+                    'type': 'output',
+                    'text': text,
+                    'sender': user,
+                    'time': str(datetime.datetime.now()),
+                }
+            )
 
 
     # Receive command from group
@@ -79,8 +126,15 @@ class TerminalConsumer(AsyncWebsocketConsumer):
         # Send command to WebSocket
         await self.send(text_data=json.dumps({
             'type': 'output',
-            'text': event['text'],
-            'status': event['status'],
+            'text': event['text']
+        }))
+
+    # Receive error from group
+    async def error(self, event):
+        # Send command to WebSocket
+        await self.send(text_data=json.dumps({
+            'type': 'error',
+            'text': event['text']
         }))
 
     # Receive output from group
@@ -88,8 +142,7 @@ class TerminalConsumer(AsyncWebsocketConsumer):
         # Send command to WebSocket
         await self.send(text_data=json.dumps({
             'type': 'canvas',
-            'text': event['text'],
-            'status': event['status'],
+            'text': event['text']
         }))
 
         # Receive output from group

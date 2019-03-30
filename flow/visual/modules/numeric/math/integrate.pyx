@@ -131,7 +131,7 @@ def cstreamlines(CData data, DTYPE t0, DTYPE t_bound, DTYPE[:,::1] starting_poin
     return positions, values, lengths, times
 
 
-def sstreamlines(data, t0, t_bound, starting_points):
+def sstreamlines(data, t0, t_bound, starting_points, abort):
     positions = None
     times = None
     lengths = np.empty((starting_points.shape[0],), dtype=np.int)
@@ -156,6 +156,9 @@ def sstreamlines(data, t0, t_bound, starting_points):
             times = np.append(times, np.transpose(sol.t), axis=0)
 
         lengths[i] = sol.t.shape[0]
+        
+        if abort.is_set():
+            raise Exception('Abort!')
 
     values = data.interpolator(positions)
     

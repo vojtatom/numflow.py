@@ -1,4 +1,4 @@
-from .base import Node
+from .base import Node, check_abort
 from ..model import notebook
 import numpy as np
 from numpy.linalg import norm
@@ -96,7 +96,7 @@ class VisualNode(Node):
 
         self._width_max = data['width_max']
 
-    def __call__(self, indata, message):    
+    def __call__(self, indata, message, abort):    
         """
         Send all data via websockets to display clients
             :param indata: data coming from connected nodes.
@@ -141,6 +141,7 @@ class VisualNode(Node):
                 layer_group['meta']['bounds'] = boundries(layer['points'])
                 layer_encoded.append(layer_group)
                 points, values = setup_stats(points, values, layer['points'], layer['values'])
+                check_abort(abort)
 
             content['layer'] = layer_encoded
 
@@ -155,7 +156,8 @@ class VisualNode(Node):
                 glyphs_group['meta']['bounds'] = boundries(glyphs['points'])
                 glyphs_encoded.append(glyphs_group)
                 points, values = setup_stats(points, values, glyphs['points'], glyphs['values'])
-            
+                check_abort(abort)
+
             content['glyphs'] = glyphs_encoded
 
         if 'streamlines' in indata:
@@ -174,6 +176,7 @@ class VisualNode(Node):
                 stream_group['meta']['bounds'] = boundries(stream['points'])
                 stream_encoded.append(stream_group)
                 points, values = setup_stats(points, values, stream['points'], stream['values'])
+                check_abort(abort)
             
             content['streamlines'] = stream_encoded
                 

@@ -1,4 +1,4 @@
-from .base import Node
+from .base import Node, check_abort
 from ..exceptions import NodeError
 import numpy as np
 from visual.modules.numeric.kernels import points_kernel
@@ -91,7 +91,7 @@ class PlaneNode(Node):
         self._value = data['norm_value']
 
 
-    def __call__(self, indata, message):
+    def __call__(self, indata, message, abort):
         """
         Create np.ndarray of points
             :param indata: data coming from connected nodes, can be None here.
@@ -101,5 +101,6 @@ class PlaneNode(Node):
             'normal_value': self._value,
             'sampling': self._sampling,
         }
-
+        
+        check_abort(abort)
         return {'plane': {'data': points_kernel(self._start, self._end, self._sampling), 'meta': meta}}

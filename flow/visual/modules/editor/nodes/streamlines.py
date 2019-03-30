@@ -1,4 +1,4 @@
-from .base import Node
+from .base import Node, check_abort
 import numpy as np
 
 from .color import ColorNode
@@ -86,7 +86,7 @@ class StreamlinesNode(Node):
         self._size = data['size']
 
 
-    def __call__(self, indata, message):    
+    def __call__(self, indata, message, abort):    
         """
         Call stream kernel and perform integrations.
             :param indata: data coming from connected nodes, can be None here.
@@ -108,7 +108,7 @@ class StreamlinesNode(Node):
 
         #integrate per points group
         for points_group in indata['points']:
-            p, v, l, t = stream_kernel(indata['dataset'], self._t0, self._tbound, points_group, self._mode)
+            p, v, l, t = stream_kernel(indata['dataset'], self._t0, self._tbound, points_group, self._mode, abort)
             
             if p is None:
                 raise NodeError('Integration failed.')
@@ -123,6 +123,8 @@ class StreamlinesNode(Node):
                 values = np.append(values, v, axis=0)
                 lengths = np.append(lengths, l, axis=0)
                 times = np.append(times, t, axis=0)
+            
+            check_abort(abort)
 
         meta = {
             'colormap': ColorNode.get_default_cm(),

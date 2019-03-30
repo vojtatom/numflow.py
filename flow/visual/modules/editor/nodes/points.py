@@ -1,4 +1,4 @@
-from .base import Node
+from .base import Node, check_abort
 from ..exceptions import NodeError
 
 from visual.modules.numeric.kernels import points_kernel
@@ -89,9 +89,10 @@ class PointsNode(Node):
         self._sampling = [int(data['x_sampling']), int(data['y_sampling']), int(data['z_sampling'])]
 
 
-    def __call__(self, indata, message):
+    def __call__(self, indata, message, abort):
         """
         Create np.ndarray of points
             :param indata: data coming from connected nodes, can be None here.
         """   
+        check_abort(abort)
         return {'points': points_kernel(self._start, self._end, self._sampling)}

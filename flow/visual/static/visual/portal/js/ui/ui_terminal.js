@@ -21,7 +21,7 @@ class UITerminal {
         UITerminal.prepare_close(terminal);
     }
 
-    static addLine(text, type, status) {
+    static addLine(text, type) {
         let list = document.getElementById('terminal');
         let line;
 
@@ -29,21 +29,14 @@ class UITerminal {
             line = UICommand.createInfo(text);
         } else if (type == 'command') {
             line = UICommand.createCommand(text);
-        } else if (type == 'progress') {
-            line = UICommand.createProgress(text);
         } else if (type == 'output') {
-            line = UICommand.createOutput(text, status);
+            line = UICommand.createOutput(text);
         } else if (type == 'error') {
-            line = UICommand.createOutput(text, -1);
+            line = UICommand.createError(text);
         }
         
         list.appendChild(line);
         list.scrollTop = list.scrollHeight;
-
-        if (type == 'output'){
-            let input = document.getElementById('command');
-            input.value = '';
-        }
     }
 
     static addSavepoint(){
@@ -51,6 +44,11 @@ class UITerminal {
         let savepoint = UICommand.createSavepoint();
         list.appendChild(savepoint);
         list.scrollTop = list.scrollHeight;
+    }
+
+    static clear(){
+        let input = document.getElementById('command');
+        input.value = '';
     }
 
     static prepare_close(terminal) {

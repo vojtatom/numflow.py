@@ -5,6 +5,7 @@ from .exceptions import EditorError
 from .nodes import DataNode, GlyphsNode, PointsNode, nodes
 from .model import notebook
 
+
 def load_graph(string_graph):
     """
     Loads graph, filters data 
@@ -57,9 +58,9 @@ def topological_sort(graph):
             if neighbour_id not in order and satisfied:
                 order.append(neighbour_id)    
     return order
-            
+        
 
-def compute(notebook_code, graph, order, message):
+def compute(notebook_code, graph, order, message, abort):
     n = notebook(notebook_code)
     n.clear_output()
     data = {}
@@ -72,6 +73,12 @@ def compute(notebook_code, graph, order, message):
         node = dgraph[node_id]
         in_data = {}
         node_class = nodes[node['title']]
+
+        #check for abort flag before data construction
+        if abort.is_set():
+            del data, dgraph
+            gc.collect()
+            raise Exception('Abort!')
 
         #construct in node dict
         for in_node in node['in']:
@@ -98,13 +105,18 @@ def compute(notebook_code, graph, order, message):
                         if type(d) is list:
                             raise EditorError('Multipart output into non-multipart input!')
                         elif datatype in in_data:
-                            raise EditorError('Multiple smae-type inputs into non-multipart input!')
+                            raise EditorError('Multiple same-type inputs into non-multipart input!')
                         in_data[datatype] = data[in_node][datatype]  
 
+        #check for abort flag befor node call
+        if abort.is_set():
+            del data, dgraph
+            gc.collect()
+            raise Exception('Abort!')
 
         message('Running node #{}: {}'.format(node_id, node['title']))
         node_obj = node_class(node_id, node['data'], notebook_code, message)
-        data[node_id] = node_obj(in_data, message)
+        data[node_id] = node_obj(in_data, message, abort)
     
     message('<a href="/media/notebook/{}/output.imgflow" download>download result</a>'.format(notebook_code))
     

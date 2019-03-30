@@ -141,6 +141,13 @@ header ul li + li {
     padding-left: 1em;
 }
 
+header a#home-link {
+    text-decoration: none;
+    color: #FFF;
+}
+
+
+
 a:link,
 a:visited {
     color: #509aaf;
@@ -823,10 +830,13 @@ svg path {
     }
 }
 
+#terminal hr {
+    border: none;
+}
+
 #terminal li{
     padding: 0.4em 1em;
     box-sizing: border-box;
-    display: flex;
     border-bottom: 1px solid #111;
     color: #FFF;
 }

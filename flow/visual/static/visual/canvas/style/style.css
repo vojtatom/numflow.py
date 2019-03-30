@@ -78,7 +78,7 @@ canvas {
     margin-bottom: 0;
 }
 
-.action{
+.navigation .action{
     width: 100%;
     text-align: right;
     /*font-weight: bold;*/

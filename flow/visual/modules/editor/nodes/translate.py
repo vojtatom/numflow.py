@@ -1,4 +1,4 @@
-from .base import Node
+from .base import Node, check_abort
 import numpy as np
 import copy
 
@@ -82,7 +82,7 @@ class TranslateNode(Node):
         self._transform = np.array([data['x_translate'], data['y_translate'], data['z_translate']])
         self._part = data['part']
 
-    def __call__(self, indata, message):    
+    def __call__(self, indata, message, abort):    
         """
         Call glyph kernel and perform interpolation.
             :param indata: data coming from connected nodes, can be None here.
@@ -113,6 +113,7 @@ class TranslateNode(Node):
                     'points': points,
                     'meta': glyphs_group['meta']
                     })
+                check_abort(abort)
 
         ### streamlines
         if 'streamlines' in indata:
@@ -125,6 +126,7 @@ class TranslateNode(Node):
                     'times': stream_group['times'],
                     'meta': stream_group['meta'],
                     })
+                check_abort(abort)
 
         ### layers
         if 'layer' in indata:
@@ -144,6 +146,7 @@ class TranslateNode(Node):
                     'points': points,
                     'meta': meta
                     })
+                check_abort(abort)
 
         #return all together
         out = {}

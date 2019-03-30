@@ -2,7 +2,9 @@
 
 class UI {
     static index(element = null, history = true) {
-        //console.log('loading menu');
+        console.log('loading menu');
+
+        UI.homeLink();
 
         if (element !== null) {
             UI.component(element);
@@ -32,6 +34,8 @@ class UI {
     static notebook(element = null, history = true) {
         //console.log('loading notebook');
 
+        UI.homeLink();
+
         if (element !== null) {
             UI.component(element);
 
@@ -49,6 +53,8 @@ class UI {
     static docs(element = null, history = true) {
         //console.log('loading docs');
 
+        UI.homeLink();
+
         if (element !== null) {
             UI.component(element);
 
@@ -63,6 +69,23 @@ class UI {
     static component(html) {
         let dom = document.getElementById('main');
         dom.innerHTML = html;
+    }
+
+    static homeLink(){
+        let home = document.getElementById('home-link');
+        home.onclick = (e) => {
+            DataManager.request({
+                method: 'GET',
+                url: '/',
+                success: (r) => {                 
+                    UI.index(r);
+                },
+                fail: (r) => { console.error(r); }
+            });
+
+            e.preventDefault();
+            return false;
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-from .base import Node
+from .base import Node, check_abort
 from ..model import dataset
 from ..exceptions import NodeError
 from visual.modules.numeric.kernels import dataset_kernel
@@ -50,7 +50,7 @@ class DataNode(Node):
         self._mode = data['mode']
 
 
-    def __call__(self, indata, message):
+    def __call__(self, indata, message, abort):
         """
         Create dataset.
             :param indata: data coming from connected nodes, can be None here.
