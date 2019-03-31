@@ -33,6 +33,7 @@ def points_kernel(start, end, sampling):
                 np.meshgrid(*spc, sparse=False, indexing='ij') \
                 ), (np.prod(sampling), 3) \
         )
+
     return k
 
 

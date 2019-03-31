@@ -63,6 +63,14 @@ class DataManager {
             }
         };
 
+        if ('progress' in options){
+            // progress bar
+            request.upload.onprogress = function(e) {
+                let p = (e.loaded / e.total * 100);
+                options.progress(p);
+            };
+        }
+
         request.send(options.data);
     }
 

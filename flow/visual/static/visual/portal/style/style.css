@@ -146,6 +146,15 @@ header a#home-link {
     color: #FFF;
 }
 
+.uploadbar{
+    position: absolute;
+    bottom: 0;
+    padding: 0.5em 1em;
+    border-bottom: 1px solid #222;
+    background: #333;
+    width: 100%;
+    box-sizing: border-box;
+}
 
 
 a:link,

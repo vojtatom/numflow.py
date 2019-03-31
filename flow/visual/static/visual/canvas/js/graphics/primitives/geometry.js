@@ -172,8 +172,8 @@ class Geometry{
         let elements = [];
         for (let b = 0; b < sampling[1] - 1; ++b){
             for (let a = 0; a < sampling[0] - 1; ++a){
-                elements.push(a + 1 + b * sampling[1], a + b * sampling[1], a + sampling[0] + b * sampling[1]);
-                elements.push(a + 1 + b * sampling[1], a + sampling[0] + b * sampling[1], a + 1 + sampling[0] + b * sampling[1]);
+                elements.push(a + 1 + b * sampling[0], a + b * sampling[0], a + sampling[0] + b * sampling[0]);
+                elements.push(a + 1 + b * sampling[0], a + sampling[0] + b * sampling[0], a + 1 + sampling[0] + b * sampling[0]);
             }
         }
 

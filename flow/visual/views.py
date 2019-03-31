@@ -110,9 +110,7 @@ def rename_dataset(request):
 @login_required
 def upload_notebook(request, code=None):
     """
-    Accepts only AJAX POST, deletes dataset
-    according to posted dict in format 
-    { 'code' : <code> }.
+    Accepts only AJAX POST, uploads new notebook.
         :param request: request object 
     """
     #_ = api.api_call(request)

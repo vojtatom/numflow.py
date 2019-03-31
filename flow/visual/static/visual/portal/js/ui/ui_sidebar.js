@@ -13,18 +13,36 @@ class UISidebar {
                 dialog.style.display = 'flex';                    
         };
 
-        
+        //upload dataset
         document.getElementById('dataset_upload_form').onsubmit = function(e){
             e.preventDefault();
             //console.log('uploading dataset');
             
+            let headerBar = document.createElement('div');
+            headerBar.classList.add('uploadbar');
+            headerBar.innerHTML = 'uploading...';
+            let header = document.getElementById('header');
+            header.parentNode.insertBefore(headerBar, header.nextSibling);
+
             let data = new FormData(e.target);
             DataManager.upload({
                 url: '/dataset/upload',
                 data: data,
-                success: (r) => { UI.index(r, false) },
-                fail: (r) => { console.error(r) },
+                progress: (p) => { 
+                        if (p < 100){
+                            headerBar.innerHTML = 'uploading ' + p + '%, please don\'t leave this window.'; 
+                        } else {
+                            headerBar.innerHTML = 'uploading ' + p + '%, processing on server...'; 
+                        }
+                    },
+                success: (r) => { 
+                    UI.index(r, false); 
+                    header.parentNode.removeChild(headerBar);
+                },
+                fail: (r) => { console.error(r); },
             });
+
+            
             
             return false;
         };
@@ -70,7 +88,7 @@ class UISidebar {
                 success: (contents) => {
                     data.set('data', contents);
                     DataManager.upload({
-                        url: '/notebook/upload',
+                        url: '/notebook/upload/',
                         data: data,
                         success: (r) => { UI.index(r, false) },
                         fail: (r) => { console.error(r) },

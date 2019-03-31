@@ -264,6 +264,8 @@ class Editor{
         try{
             nodes = JSON.parse(text);
         } catch {
+            console.error('notebook format corrupted');
+            UITerminal.addLine('Notebook format corrupted, editor is unable to create a graph.', 'error');
             return;
         }
 

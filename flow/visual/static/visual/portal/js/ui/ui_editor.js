@@ -52,6 +52,10 @@ class EditorUI{
 }
 
 class EditorMenuUI {
+    static cloneObj(obj){
+        return JSON.parse(JSON.stringify(obj));
+    }
+
     static create(editor, nodesMenu){
         let menu = document.createElement('div');
         menu.id = 'editor_menu';
@@ -70,15 +74,15 @@ class EditorMenuUI {
             catTitle.innerHTML = category;
             catMenu.appendChild(catTitle);
 
-            for(let node in nodesMenu[category]){
+            for(let nodeTitle in nodesMenu[category]){
                 let nodeMenu = document.createElement('div');
                 nodeMenu.classList.add('template');
-                nodeMenu.innerHTML = node;
+                nodeMenu.innerHTML = nodeTitle;
                 catMenu.appendChild(nodeMenu);
 
                 nodeMenu.onclick = (e) => {
                     let pos = editor.mouseCoord(e);
-                    let newNode = new Node(pos.x - 10, pos.y - 10, editor, nodesMenu[category][node], node);
+                    let newNode = new Node(pos.x - 10, pos.y - 10, editor, EditorMenuUI.cloneObj(nodesMenu[category][nodeTitle]), nodeTitle);
 
                     EditorMenuUI.toggleMenu(editor);
 

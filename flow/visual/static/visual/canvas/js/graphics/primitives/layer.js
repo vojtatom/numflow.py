@@ -19,6 +19,7 @@ class Layer extends MethodPrimitive {
         //load base64 data
         let positions = Primitive.base64totype(data.points);
         let values = Primitive.base64totype(data.values);
+
         let elements = Geometry.layerElements(data.meta.geometry.sampling, data.meta.geometry.normal);
 
         //setup vao

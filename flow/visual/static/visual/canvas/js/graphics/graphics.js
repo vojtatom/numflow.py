@@ -23,6 +23,7 @@ class Graphics {
     init() {
         console.log('Getting webgl 2 context');
         this.gl = this.canvas.getContext('webgl2');
+        var ext = this.gl.getExtension('OES_element_index_uint');
 
         if (!this.gl) {
             console.error('WebGL 2 not supported');
