@@ -32,6 +32,7 @@ class MethodPrimitive extends Primitive {
 
             scaleFactor: stats.points.scale_factor,
             shift: Array.from(stats.points.center),
+            gamma: 1,
         });
     }
     
@@ -95,6 +96,11 @@ class MethodPrimitive extends Primitive {
     setState(state){
         this.stateToBeSet = state;
         return this.meta;
+    }
+
+    updateGamma(gamma){
+        this.meta.gamma = gamma;
+        this.colorbar.meta.gamma = gamma;
     }
 
     get ui(){

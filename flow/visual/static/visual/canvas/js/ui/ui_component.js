@@ -6,6 +6,12 @@ class ComponentUI extends BaseUI{
         this.structure = structure;
         
         this.elements = {};
+
+        if (!('actions' in structure)){
+            structure.actions = {};
+        }
+
+
         this.actions = structure.actions;
         this.active = false;
     }
@@ -158,8 +164,11 @@ class ComponentUI extends BaseUI{
         
         container.appendChild(value);
         
-        if ('id' in structure)
-            this.elements[structure.id] = value;
+        if ('id' in structure){
+            this.elements[structure.id] = (v) => {
+                value.innerHTML = v;
+            }
+        }
 
         return container;
     }
@@ -220,6 +229,9 @@ class ComponentUI extends BaseUI{
             innerHTML: String.fromCharCode(binds[0]) + '/' + String.fromCharCode(binds[1]),
             class: ['componentFieldKeys'],
         });
+
+        if ('id' in structure)
+            this.elements[structure.id] = update;
         
         container.appendChild(keys);
 
@@ -227,7 +239,11 @@ class ComponentUI extends BaseUI{
     }
 
     update(id, value){
-        this.elements[id].innerHTML = value;
+        if (id in this.elements){
+            this.elements[id](value);
+        } else {
+            console.warn('Trying to update nonexisting element "' + id +'"');
+        }
     }
 
     getState(){

@@ -16,7 +16,11 @@ uniform float maxSize;
 uniform int colorMapSize;
 uniform vec4 colorMap[5];
 
+uniform float gamma;
+
 varying vec3 color;
+
+
 
 
 /**
@@ -31,6 +35,7 @@ vec3 colorfunc(float sigma) {
 	return (colorMap[low] * (1.0 - factor) + colorMap[high] * factor).xyz;
 }
 
+
 float significance(float l) {
 	//positive for vector longer than median, normalized by std...
 	//float dist = (l - medianSize) / stdSize;
@@ -44,14 +49,17 @@ float significance(float l) {
 	// min ------------------------ 0 --------------------------- max
 	sig += float(range < 0.0) * ((l + max(maxSize, -minSize)) / (2.0 * max(maxSize, - minSize)));
 	
+	//gamma correction
+	sig = clamp(sig, 0.0, 1.0);
+	sig = pow(sig, gamma);
 	return sig;
 }
 
 
 
 void main() {
-    float vectorL = mix(maxSize, minSize, -position.y / float(colorMapSize - 1));
+    float vectorL = mix(maxSize, minSize, (-position.y / float(colorMapSize - 1)));
     float sigma = significance(vectorL);
-    gl_Position = vec4(vec3(position.x * barSize.x * 2.0 + barPos.x - 1.0, position.y * barSize.y * 2.0 / (float(colorMapSize) - 1.0) + 1.0 - barPos.y, 0.0), 1.0);
+    gl_Position = vec4(position.x * barSize.x * 2.0 + barPos.x - 1.0, position.y * barSize.y * 2.0 / (float(colorMapSize) - 1.0) + 1.0 - barPos.y, 0.0, 1.0);
     color = colorfunc(sigma);
 }

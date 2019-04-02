@@ -46,6 +46,7 @@ uniform float farplane;
 //scale and shift
 uniform float scaleFactor;
 uniform vec3 shift;
+uniform float gamma;
 
 /*** END COMMON UNIFORMS ***/
 
@@ -108,6 +109,8 @@ float significance(float l) {
 	// min ------------------------ 0 --------------------------- max
 	sig += float(range < 0.0) * ((l + max(maxSize, -minSize)) / (2.0 * max(maxSize, - minSize)));
 	
+	//gamma correction
+	sig = pow(sig, gamma);
 	return sig;
 }
 

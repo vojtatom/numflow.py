@@ -36,6 +36,8 @@ class Scene{
         };
 
         this.loaded = false;
+
+        this.gamma = 1;
     }
 
     init(contents, ui, programs){
@@ -60,8 +62,7 @@ class Scene{
                 glyphs_group.stats = contents.stats;
                 glyphs.init(glyphs_group);
                 //console.log(glyphs);
-                this.objects.glyph.obj.push(glyphs);
-                
+                this.objects.glyph.obj.push(glyphs);                
                 sceneui.addWidget(new WidgetUI(glyphs.ui));
             }
         }
@@ -90,7 +91,6 @@ class Scene{
                 layer.init(layer_group);
                 //console.log(streams);
                 this.objects.layer.obj.push(layer);
-                
                 sceneui.addWidget(new WidgetUI(layer.ui));
             }
         }
@@ -315,9 +315,51 @@ class Scene{
             });
 
             components.push(this.animationUI);
+
         }
+        
+        this.gammaUI = new ComponentUI({
+            title: 'Gamma',
+            key: 71,
+            actions: {
+                32: () => {
+                    this.gammaUI.update('gamma', 1);
+                },
+            },
+            main: [],
+            side: [{
+                type: 'slider',
+                title: 'gamma',
+                value: this.gamma,
+                min: 0,
+                max: 10,
+                update: (gamma) => { 
+                    this.updateGamma(gamma);
+                    },
+                id: 'gamma',
+            },{
+                type: 'display',
+                title: 'range',
+                value: 0 + ' - ' + 10,
+            }],
+            help: BaseUI.getHelpElement([{
+                action: 'reset',
+                keys: 'spacebar',
+            }], true)
+        });
+
+        components.push(this.gammaUI);
 
         ui.addScene(sceneui, components);
+    }
+
+    updateGamma(gamma){
+        this.gamma = gamma; 
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                obj.updateGamma(gamma);
+            }
+        }
     }
 
     getState(){
@@ -325,6 +367,7 @@ class Scene{
             objects: [],
             camera: null,
             time: this.time,
+            gamma: this.gamma,
         };
 
         for(let type in this.objects){  
@@ -347,6 +390,8 @@ class Scene{
         
         this.camera.setState(state.camera);
         this.time = state.time;
+        this.gamma = state.gamma;
+        this.updateGamma(this.gamma);
     }
 
     screen(x, y) {

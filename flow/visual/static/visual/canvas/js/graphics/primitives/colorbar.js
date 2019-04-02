@@ -50,6 +50,7 @@ class Colorbar extends Primitive {
 
             //save only values
             stats: data.stats.values,
+            gamma: 1.0,
         });
 
         //Finish up...

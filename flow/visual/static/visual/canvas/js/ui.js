@@ -41,10 +41,10 @@ class FlowAppUI extends BaseUI {
 
         let mainNav = FlowAppUI.getHelpElement([{
             action: 'translation',
-            keys: 'shift + WASD'
+            keys: 'shift + WSAD'
         }, {
             action: 'rotation',
-            keys: 'WASD'
+            keys: 'WSAD'
         }, {
             action: 'change perspective',
             keys: 'P'

@@ -184,7 +184,6 @@ class Geometry{
     static colorbar(length){
         let vert = [];
         let x = 1;
-        let y = 1;
 
         for (let i = 0; i < length - 1; ++i){
             vert.push(0, -i, 0);
