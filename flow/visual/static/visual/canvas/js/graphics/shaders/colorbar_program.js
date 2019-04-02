@@ -52,6 +52,10 @@ class ColorbarProgram extends Program {
                 name: 'colorMapSize',
                 type: this.GLType.int, 
             },
+            colorMapSamples: {
+                name: 'colorMapSamples',
+                type: this.GLType.int, 
+            },
             colorMap0: {
                 name: 'colorMap[0]',
                 type: this.GLType.vec4,
@@ -76,6 +80,11 @@ class ColorbarProgram extends Program {
             gamma: {
                 name: 'gamma',
                 type: this.GLType.float,
+            },
+
+            colorMode: {
+                name: 'colorMode',
+                type: this.GLType.int,
             },
         });
     }

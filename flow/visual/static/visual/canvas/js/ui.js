@@ -176,6 +176,7 @@ class FlowAppUI extends BaseUI {
         this.status = status;
         this.element = element;
         this.mainNav = mainNav;
+        this.mainNavCont = mainNavCont;
 
         /* scene list stuff */
         this.sceneWidget = scenes;
@@ -417,7 +418,7 @@ class FlowAppUI extends BaseUI {
         this.element.style.width = width;
         this.status.style.fontSize = fontSize;
         this.placeholder.style.fontSize = fontSize;
-        this.mainNav.style.fontSize = fontSize;
+        this.mainNavCont.style.fontSize = fontSize;
     }
 
     updateStatus(text){

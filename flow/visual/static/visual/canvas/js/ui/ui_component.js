@@ -100,6 +100,8 @@ class ComponentUI extends BaseUI{
                 elem = this.displayWidget(widget);
             } else if (widget.type === 'slider') {
                 elem = this.sliderWidget(widget);
+            } else if (widget.type === 'select') {
+                elem = this.selectWidget(widget);
             }
             side.appendChild(elem);
         }
@@ -235,6 +237,65 @@ class ComponentUI extends BaseUI{
         
         container.appendChild(keys);
 
+        return container;
+    }
+
+    selectWidget(structure){
+        structure.iterator = 0;
+
+        let container = ComponentUI.createElement({
+            type: 'div',
+            class: ['componentField'],
+        });
+
+        let title = ComponentUI.createElement({
+            type: 'div',
+            innerHTML: structure.title,
+            class: ['componentFieldTitle'],
+        });
+
+        container.appendChild(title);
+
+        let value = ComponentUI.createElement({
+            type: 'div',
+            innerHTML: structure.value,
+            class: ['componentFieldValue'],
+        });
+        
+        container.appendChild(value);
+
+        
+        /* setting up bindings */
+
+        let binds = this.sliderKeys.pop();
+        let delta = (structure.max - structure.min) / 200;
+        
+        let update = (i) => {
+            structure.calls[i]();
+            value.innerHTML = structure.options[i];
+            structure.value = structure.options[i];
+        }
+
+        /* go down */
+        this.actions[binds[0]] = () => {
+            structure.iterator = (structure.iterator - 1 + structure.options.length) % structure.options.length;
+            update(structure.iterator);
+        }
+        
+        /* go up */
+        this.actions[binds[1]] = () => {
+            structure.iterator = (structure.iterator + 1) % structure.options.length;
+            update(structure.iterator);
+        }
+        
+        /* constrols help */
+        let keys = ComponentUI.createElement({
+            type: 'div',
+            innerHTML: String.fromCharCode(binds[0]) + '/' + String.fromCharCode(binds[1]),
+            class: ['componentFieldKeys'],
+        });
+        
+        container.appendChild(keys);
         return container;
     }
 

@@ -1,5 +1,15 @@
 'use strict';
 
+class ColorbarMode{
+    static get optical(){
+        return 0;
+    }
+
+    static get complete(){
+        return 1;
+    }
+}
+
 class Colorbar extends Primitive {
     constructor(gl, programs) {
         super(gl);
@@ -19,7 +29,8 @@ class Colorbar extends Primitive {
 
         //Actual initialization
         //load base64 data
-        let positions = Geometry.colorbar(data.meta.colormap.sampling);
+        this.colorMapSamples = 100;
+        let positions = Geometry.colorbar(this.colorMapSamples);
 
         //setup vao
         let vao = this.gl.createVertexArray();
@@ -42,6 +53,7 @@ class Colorbar extends Primitive {
             barSize: [0.01, 0.25],
             barPos: [0.05, 0.1],
             colorMapSize: data.meta.colormap.sampling,
+            colorMapSamples: this.colorMapSamples,
             colorMap0: vec4.fromValues(...data.meta.colormap.colors[0]),
             colorMap1: vec4.fromValues(...data.meta.colormap.colors[1]),
             colorMap2: vec4.fromValues(...data.meta.colormap.colors[2]),
@@ -51,6 +63,7 @@ class Colorbar extends Primitive {
             //save only values
             stats: data.stats.values,
             gamma: 1.0,
+            colorMode: ColorbarMode.optical,
         });
 
         //Finish up...

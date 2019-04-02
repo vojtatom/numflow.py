@@ -97,6 +97,11 @@ class MethodProgram extends Program {
                 name: 'gamma',
                 type: this.GLType.float,
             },
+
+            colorMode: {
+                name: 'colorMode',
+                type: this.GLType.int,
+            },
         });
     }
 }

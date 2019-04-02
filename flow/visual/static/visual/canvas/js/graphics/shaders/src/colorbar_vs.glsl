@@ -14,6 +14,8 @@ uniform float maxSize;
 
 //color map
 uniform int colorMapSize;
+uniform int colorMapSamples;
+uniform int colorMode;
 uniform vec4 colorMap[5];
 
 uniform float gamma;
@@ -47,7 +49,10 @@ float significance(float l) {
 	float range = minSize * maxSize;
 	float sig = float(range >= 0.0) * ((l - minSize) / (maxSize - minSize));
 	// min ------------------------ 0 --------------------------- max
-	sig += float(range < 0.0) * ((l + max(maxSize, -minSize)) / (2.0 * max(maxSize, - minSize)));
+	// range complete (simple)
+	sig += float(range < 0.0) * float(colorMode == 1) * ((l - minSize) / (maxSize - minSize));
+	// range optical (scaled)
+	sig += float(range < 0.0) * float(colorMode == 0) *((l + max(maxSize, -minSize)) / (2.0 * max(maxSize, -minSize)));
 	
 	//gamma correction
 	sig = clamp(sig, 0.0, 1.0);
@@ -58,8 +63,8 @@ float significance(float l) {
 
 
 void main() {
-    float vectorL = mix(maxSize, minSize, (-position.y / float(colorMapSize - 1)));
+    float vectorL = mix(maxSize, minSize, (-position.y / float(colorMapSamples - 1)));
     float sigma = significance(vectorL);
-    gl_Position = vec4(position.x * barSize.x * 2.0 + barPos.x - 1.0, position.y * barSize.y * 2.0 / (float(colorMapSize) - 1.0) + 1.0 - barPos.y, 0.0, 1.0);
+    gl_Position = vec4(position.x * barSize.x * 2.0 + barPos.x - 1.0, position.y * barSize.y * 2.0 / (float(colorMapSamples) - 1.0) + 1.0 - barPos.y, 0.0, 1.0);
     color = colorfunc(sigma);
 }

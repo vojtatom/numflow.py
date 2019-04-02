@@ -33,6 +33,7 @@ class MethodPrimitive extends Primitive {
             scaleFactor: stats.points.scale_factor,
             shift: Array.from(stats.points.center),
             gamma: 1,
+            colorMode: ColorbarMode.optical,
         });
     }
     
@@ -101,6 +102,11 @@ class MethodPrimitive extends Primitive {
     updateGamma(gamma){
         this.meta.gamma = gamma;
         this.colorbar.meta.gamma = gamma;
+    }
+
+    updateColorMode(mode){
+        this.meta.colorMode = mode;
+        this.colorbar.meta.colorMode = mode;
     }
 
     get ui(){

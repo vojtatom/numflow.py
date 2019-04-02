@@ -38,6 +38,7 @@ class Scene{
         this.loaded = false;
 
         this.gamma = 1;
+        this.colorMode = ColorbarMode.optical; 
     }
 
     init(contents, ui, programs){
@@ -319,7 +320,7 @@ class Scene{
         }
         
         this.gammaUI = new ComponentUI({
-            title: 'Gamma',
+            title: 'Colorbar',
             key: 71,
             actions: {
                 32: () => {
@@ -332,15 +333,28 @@ class Scene{
                 title: 'gamma',
                 value: this.gamma,
                 min: 0,
-                max: 10,
+                max: 40,
                 update: (gamma) => { 
                     this.updateGamma(gamma);
                     },
                 id: 'gamma',
             },{
+                type: 'select',
+                title: 'mode',
+                value: 'optical',
+                options: ['optical', 'complete'],
+                calls: [
+                    () => {
+                        this.updateColorMode(ColorbarMode.optical);
+                    },
+                    () => {
+                        this.updateColorMode(ColorbarMode.complete);
+                    }
+                ],
+            },{
                 type: 'display',
                 title: 'range',
-                value: 0 + ' - ' + 10,
+                value: 0 + ' - ' + 40,
             }],
             help: BaseUI.getHelpElement([{
                 action: 'reset',
@@ -358,6 +372,15 @@ class Scene{
         for(let type in this.objects){  
             for(let obj of this.objects[type].obj){
                 obj.updateGamma(gamma);
+            }
+        }
+    }
+
+    updateColorMode(mode){
+        this.colorMode = mode; 
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                obj.updateColorMode(mode);
             }
         }
     }
