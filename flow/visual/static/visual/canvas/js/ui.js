@@ -221,7 +221,7 @@ class FlowAppUI extends BaseUI {
     }
 
     displayScene(index){
-        /* sene settings */
+        /* scene settings */
         while (this.sceneElement.firstChild) {
             this.sceneElement.removeChild(this.sceneElement.firstChild);
         }
@@ -232,7 +232,6 @@ class FlowAppUI extends BaseUI {
         }
 
         this.scenes[this.active].deselect();
-        //this.animations[this.active].deselect();
         
         this.active = index;
         this.selectedScene = index;
@@ -432,8 +431,12 @@ class FlowAppUI extends BaseUI {
         }
 
         let components = [];
-        for (let component of this.components){
-            components.push(components.getState());
+        for (let componentObjs of this.components){
+            let sceneComps = {};
+            for (let componentKey in componentObjs){
+                sceneComps[componentKey] = componentObjs[componentKey].getState();
+            }
+            components.push(sceneComps);
         }
 
 
@@ -444,6 +447,7 @@ class FlowAppUI extends BaseUI {
                 field: this.scenes[this.active].widgets[this.scenes[this.active].selected].selected,
                 visibility: this.menuVisible,
                 help: this.helpVisible,
+                component: this.activeComponent,
             },
             scenes: values,
             components: components,
@@ -451,17 +455,21 @@ class FlowAppUI extends BaseUI {
     }
 
     setState(state){
+        if (this.active != state.active.scene){
+            this.displayScene(state.active.scene);
+        }
+        
         let i = 0;
         for (let scene of this.scenes){
             scene.setState(state.scenes[i++]);
         }
-        i = 0;
-        for (let component of this.components){
-            component.setState(state.components[i++]);
-        }
 
-        if (this.active != state.active.scene){
-            this.displayScene(state.active.scene);
+        i = 0;
+        for (let componentStates of state.components){
+            for (let componentKey in componentStates){
+                this.components[i][componentKey].setState(state.components[i][componentKey]);
+            }
+            i++;
         }
 
         if (this.scenes[this.active].selected != state.active.widget || 
@@ -476,6 +484,10 @@ class FlowAppUI extends BaseUI {
 
         if (this.helpVisible !== state.active.help){
             this.toggleHelp();
+        }
+
+        if (this.activeComponent !== state.active.component){
+            this.componentKey(state.active.component);
         }
     }
 }

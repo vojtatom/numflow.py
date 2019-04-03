@@ -11,6 +11,14 @@ class ComponentUI extends BaseUI{
             structure.actions = {};
         }
 
+        //setup default updates
+        for (let widget of this.structure.main){
+            widget.componentUpdate = (i) => {};
+        }
+
+        for (let widget of this.structure.side){
+            widget.componentUpdate = (i) => {};
+        }
 
         this.actions = structure.actions;
         this.active = false;
@@ -207,7 +215,7 @@ class ComponentUI extends BaseUI{
             structure.update(v);
             value.innerHTML = v.toFixed(3);
             structure.value = v;
-        }
+        };
 
         /* go down */
         this.actions[binds[0]] = (bigStep) => {
@@ -215,7 +223,7 @@ class ComponentUI extends BaseUI{
             delta *= 10;
             let v = Math.max(structure.min, structure.value - delta);
             update(v);
-        }
+        };
         
         /* go up */
         this.actions[binds[1]] = (bigStep) => {
@@ -223,7 +231,7 @@ class ComponentUI extends BaseUI{
                 delta *= 10;
             let v = Math.min(structure.max, structure.value + delta);
             update(v);
-        }
+        };
         
         /* constrols help */
         let keys = ComponentUI.createElement({
@@ -234,14 +242,14 @@ class ComponentUI extends BaseUI{
 
         if ('id' in structure)
             this.elements[structure.id] = update;
-        
-        container.appendChild(keys);
+        structure.componentUpdate = update;
 
+        container.appendChild(keys);
         return container;
     }
 
     selectWidget(structure){
-        structure.iterator = 0;
+        structure.iterator = structure.iterator;
 
         let container = ComponentUI.createElement({
             type: 'div',
@@ -258,7 +266,7 @@ class ComponentUI extends BaseUI{
 
         let value = ComponentUI.createElement({
             type: 'div',
-            innerHTML: structure.value,
+            innerHTML: structure.options[structure.iterator],
             class: ['componentFieldValue'],
         });
         
@@ -268,9 +276,9 @@ class ComponentUI extends BaseUI{
         /* setting up bindings */
 
         let binds = this.sliderKeys.pop();
-        let delta = (structure.max - structure.min) / 200;
         
         let update = (i) => {
+            structure.iterator = i;
             structure.calls[i]();
             value.innerHTML = structure.options[i];
             structure.value = structure.options[i];
@@ -278,14 +286,14 @@ class ComponentUI extends BaseUI{
 
         /* go down */
         this.actions[binds[0]] = () => {
-            structure.iterator = (structure.iterator - 1 + structure.options.length) % structure.options.length;
-            update(structure.iterator);
+            let iterator = (structure.iterator - 1 + structure.options.length) % structure.options.length;
+            update(iterator);
         }
         
         /* go up */
         this.actions[binds[1]] = () => {
-            structure.iterator = (structure.iterator + 1) % structure.options.length;
-            update(structure.iterator);
+            let iterator = (structure.iterator + 1) % structure.options.length;
+            update(iterator);
         }
         
         /* constrols help */
@@ -294,7 +302,11 @@ class ComponentUI extends BaseUI{
             innerHTML: String.fromCharCode(binds[0]) + '/' + String.fromCharCode(binds[1]),
             class: ['componentFieldKeys'],
         });
-        
+
+        if ('id' in structure)
+            this.elements[structure.id] = update;
+        structure.componentUpdate = update;
+
         container.appendChild(keys);
         return container;
     }
@@ -308,12 +320,61 @@ class ComponentUI extends BaseUI{
     }
 
     getState(){
+        let state = {
+            main: [],
+            side: [],
+        };
+
+        for (let widget of this.structure.main){
+            if (widget.type === 'display'){
+                state.main.push({});
+            } else if (widget.type === 'slider') {
+                state.main.push({
+                    value: widget.value,
+                });
+            }
+        }
+
+        for (let widget of this.structure.side){
+            if (widget.type === 'display'){
+                state.side.push(null);
+            } else if (widget.type === 'slider') {
+                state.side.push(widget.value);
+            } else if (widget.type === 'select') {
+                state.side.push(widget.iterator);
+            }
+        }
+
         return {
+            structure: state,
             active: this.active,
         }
     }
 
     setState(state){
+        let i = 0;
+        for (let widget of this.structure.main){
+            if (widget.type === 'display'){
+                i++;
+            } else if (widget.type === 'slider') {
+                widget.componentUpdate(state.structure.main[i])
+                i++;
+            }
+        }
+
+        i = 0;
+        for (let widget of this.structure.side){
+            if (widget.type === 'display'){
+                i++;
+            } else if (widget.type === 'slider') {
+                widget.componentUpdate(state.structure.side[i])
+                i++;
+            } else if (widget.type === 'select') {
+                widget.componentUpdate(state.structure.side[i])
+                i++;
+            }
+        }
+
         if (state.active && !this.active)
             this.activate();
 

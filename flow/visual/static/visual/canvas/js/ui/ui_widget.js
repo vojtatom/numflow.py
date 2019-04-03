@@ -7,8 +7,8 @@ class WidgetUI {
         
         this.data = data;
         this.fieldElements = [];
+        
         this.selected = 0;
-
         this.active = false;
     }
 
@@ -110,9 +110,14 @@ class WidgetUI {
     }
 
     getState(){
-        let state = [];
+        let state = {
+            fields: [],
+            active: this.active,
+            selected: this.selected,
+        };
+
         for(let field of this.fieldElements){
-            state.push(field.getState());
+            state.fields.push(field.getState());
         }
         return state;
     }
@@ -120,7 +125,17 @@ class WidgetUI {
     setState(state){
         let i = 0;
         for(let field of this.fieldElements){
-            field.setState(state[i++]);
+            field.setState(state.fields[i++]);
+        }
+
+        this.selected = state.selected;
+
+        if (state.active == true && this.active == false){
+            this.select(state.selected);
+        }
+
+        if (state.active == false && this.active == true){
+            this.deselect();
         }
     }
 }

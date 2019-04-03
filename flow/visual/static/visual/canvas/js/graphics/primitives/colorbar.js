@@ -8,6 +8,17 @@ class ColorbarMode{
     static get complete(){
         return 1;
     }
+
+    static decode(mode){
+        return ['optical', 'complete'][mode];
+    }
+
+    static encode(mode){
+        return {
+            optical: 0,
+            static: 1,
+        }[mode];
+    }
 }
 
 class Colorbar extends Primitive {

@@ -41,6 +41,32 @@ class Scene{
         this.colorMode = ColorbarMode.optical; 
     }
 
+    set gamma(gamma) {
+        this.gammaValue = gamma; 
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                obj.updateGamma(gamma);
+            }
+        }
+    }
+
+    get gamma(){
+        return this.gammaValue;
+    }
+
+    set colorMode(mode){
+        this.colorModeValue = mode; 
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                obj.updateColorMode(mode);
+            }
+        }
+    }
+
+    get colorMode(){
+        return this.colorModeValue;
+    }
+
     init(contents, ui, programs){
         //console.log('loading scene elements');
         let sceneui = new SceneUI();
@@ -319,12 +345,12 @@ class Scene{
 
         }
         
-        this.gammaUI = new ComponentUI({
+        this.colorUI = new ComponentUI({
             title: 'Colorbar',
             key: 71,
             actions: {
                 32: () => {
-                    this.gammaUI.update('gamma', 1);
+                    this.colorUI.update('gamma', 1);
                 },
             },
             main: [],
@@ -335,22 +361,23 @@ class Scene{
                 min: 0,
                 max: 40,
                 update: (gamma) => { 
-                    this.updateGamma(gamma);
+                    this.gamma = gamma;
                     },
                 id: 'gamma',
             },{
                 type: 'select',
                 title: 'mode',
-                value: 'optical',
+                iterator: this.colorMode,
                 options: ['optical', 'complete'],
                 calls: [
                     () => {
-                        this.updateColorMode(ColorbarMode.optical);
+                        this.colorMode = ColorbarMode.optical;
                     },
                     () => {
-                        this.updateColorMode(ColorbarMode.complete);
+                        this.colorMode = ColorbarMode.complete;
                     }
                 ],
+                id: 'mode',
             },{
                 type: 'display',
                 title: 'range',
@@ -362,28 +389,10 @@ class Scene{
             }], true)
         });
 
-        components.push(this.gammaUI);
-
+        components.push(this.colorUI);
         ui.addScene(sceneui, components);
     }
 
-    updateGamma(gamma){
-        this.gamma = gamma; 
-        for(let type in this.objects){  
-            for(let obj of this.objects[type].obj){
-                obj.updateGamma(gamma);
-            }
-        }
-    }
-
-    updateColorMode(mode){
-        this.colorMode = mode; 
-        for(let type in this.objects){  
-            for(let obj of this.objects[type].obj){
-                obj.updateColorMode(mode);
-            }
-        }
-    }
 
     getState(){
         let state = {
@@ -391,6 +400,7 @@ class Scene{
             camera: null,
             time: this.time,
             gamma: this.gamma,
+            colorMode: this.colorMode,
         };
 
         for(let type in this.objects){  
@@ -414,7 +424,7 @@ class Scene{
         this.camera.setState(state.camera);
         this.time = state.time;
         this.gamma = state.gamma;
-        this.updateGamma(this.gamma);
+        this.colorMode = state.colorMode;
     }
 
     screen(x, y) {

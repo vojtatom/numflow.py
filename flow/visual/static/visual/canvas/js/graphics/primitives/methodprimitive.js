@@ -51,7 +51,7 @@ class MethodPrimitive extends Primitive {
     }
 
     renderColorbar(camera, light){
-        if (!this.meta.colorBarVisible)
+        if (!this.colorBarVisible)
             return;
             
         this.colorbar.render(camera, light, this.meta.mode);
@@ -80,7 +80,7 @@ class MethodPrimitive extends Primitive {
     }
 
     renderColorbarLabels(camera, light){
-        if (!this.meta.colorBarVisible)
+        if (!this.colorBarVisible)
             return;
 
         this.colorbar.renderLabels(camera, light, this.meta.mode);
@@ -96,7 +96,6 @@ class MethodPrimitive extends Primitive {
 
     setState(state){
         this.stateToBeSet = state;
-        return this.meta;
     }
 
     updateGamma(gamma){
@@ -159,11 +158,15 @@ class MethodPrimitive extends Primitive {
             },
             activate: {
                 type: 'call',
-                call: () => { this.meta.colorBarVisible = true; },
+                call: () => { 
+                    console.log('activating collorbar', this.program);
+                    this.colorBarVisible = true; },
             },
             deactivate: {
                 type: 'call',
-                call: () => { this.meta.colorBarVisible = false; },
+                call: () => { 
+                    console.log('deactivating collorbar', this.program);
+                    this.colorBarVisible = false; },
             },
         }
     }
