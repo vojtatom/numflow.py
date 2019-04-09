@@ -21,7 +21,7 @@ class ColorbarMode{
     }
 }
 
-class Colorbar extends Primitive {
+class Colorbar extends ColorPrimitive {
     constructor(gl, programs) {
         super(gl);
         this.program = programs.colorbar;

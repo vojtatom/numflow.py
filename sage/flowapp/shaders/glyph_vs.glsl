@@ -37,12 +37,14 @@ uniform int mode;
 
 //color map
 uniform int colorMapSize;
+uniform int colorMode;
 uniform vec4 colorMap[5];
 uniform float farplane;
 
 //scale and shift
 uniform float scaleFactor;
 uniform vec3 shift;
+uniform float gamma;
 /*** END COMMON UNIFORMS ***/
 
 //out
@@ -110,9 +112,7 @@ vec3 scaleshift(vec3 position) {
 	return (position - shift) * scaleFactor;
 }
 
-/**
- * Calculate significance
- */
+
 float significance(float l) {
 	//positive for vector longer than median, normalized by std...
 	//float dist = (l - medianSize) / stdSize;
@@ -124,8 +124,14 @@ float significance(float l) {
 	float range = minSize * maxSize;
 	float sig = float(range >= 0.0) * ((l - minSize) / (maxSize - minSize));
 	// min ------------------------ 0 --------------------------- max
-	sig += float(range < 0.0) * ((l + max(maxSize, -minSize)) / (2.0 * max(maxSize, - minSize)));
+	// range complete (simple)
+	sig += float(range < 0.0) * float(colorMode == 1) * ((l - minSize) / (maxSize - minSize));
+	// range optical (scaled)
+	sig += float(range < 0.0) * float(colorMode == 0) *((l + max(maxSize, -minSize)) / (2.0 * max(maxSize, -minSize)));
 	
+	//gamma correction
+	sig = clamp(sig, 0.0, 1.0);
+	sig = pow(sig, gamma);
 	return sig;
 }
 

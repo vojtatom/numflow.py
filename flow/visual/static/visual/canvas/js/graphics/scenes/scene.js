@@ -136,7 +136,7 @@ class Scene{
 
         this.time.current = this.time.bounds.low;
         this.time.step = (this.time.bounds.high - this.time.bounds.low) / 400;
-        this.time.delta = (this.time.bounds.high - this.time.bounds.low) / 20;
+        this.time.delta = (this.time.bounds.high - this.time.bounds.low) / 5;
         console.log(options);
     }
 
@@ -154,6 +154,14 @@ class Scene{
                 this.animationCalls[callId].reset();
             }
             this.time.running = false;
+        }
+    }
+
+    reverseColor(){
+        for(let type in this.objects){  
+            for(let obj of this.objects[type].obj){
+                obj.reverseColor();
+            }
         }
     }
 
@@ -322,7 +330,7 @@ class Scene{
                     value: this.time.bounds.low + ' - ' + this.time.bounds.high,
                 },{
                     type: 'slider',
-                    title: 'render range',
+                    title: 'display length',
                     value: this.time.delta,
                     min: this.time.bounds.low,
                     max: this.time.bounds.high,
@@ -352,6 +360,9 @@ class Scene{
                 32: () => {
                     this.colorUI.update('gamma', 1);
                 },
+                76: () => {
+                    this.reverseColor();
+                }
             },
             main: [],
             side: [{
@@ -386,6 +397,9 @@ class Scene{
             help: BaseUI.getHelpElement([{
                 action: 'reset',
                 keys: 'spacebar',
+            },{
+                action: 'reverse color',
+                keys: 'L',
             }], true)
         });
 

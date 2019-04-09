@@ -291,6 +291,9 @@ class FlowAppUI extends BaseUI {
 
 
     toggleComponent(key){
+        if (!this.menuVisible)
+            return;
+
         //deactivate
         if (this.activeComponent !== null){
             this.components[this.active][this.activeComponent].deactivate();

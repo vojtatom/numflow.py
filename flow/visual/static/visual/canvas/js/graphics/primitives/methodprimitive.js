@@ -1,6 +1,19 @@
 'use strict';
 
-class MethodPrimitive extends Primitive {
+class ColorPrimitive extends Primitive {
+    reverseColor(){
+        let updatedColorMap = {};
+        for (let i = 0; i < this.meta.colorMapSize; ++i){
+            updatedColorMap['colorMap' + i] = this.meta['colorMap' + (this.meta.colorMapSize - 1 - i)];
+        }
+
+        for (let i = 0; i < this.meta.colorMapSize; ++i){
+            this.meta['colorMap' + i] = updatedColorMap['colorMap' + i];
+        }
+    }
+}
+
+class MethodPrimitive extends ColorPrimitive {
 
     constructor(gl, programs){
         super(gl);
@@ -25,16 +38,17 @@ class MethodPrimitive extends Primitive {
             visible: true,
             boxVisible: true,
             lablesVisible: true,
-            colorBarVisible: false,
-
+            
             //save only values
             stats: stats.values,
-
+            
             scaleFactor: stats.points.scale_factor,
             shift: Array.from(stats.points.center),
             gamma: 1,
             colorMode: ColorbarMode.optical,
         });
+
+        this.colorBarVisible = false;
     }
     
     uniformDict(camera, light, statsMode = CoordMode.xyz){
@@ -108,6 +122,11 @@ class MethodPrimitive extends Primitive {
         this.colorbar.meta.colorMode = mode;
     }
 
+    reverseColor(){
+        super.reverseColor();
+        this.colorbar.reverseColor();
+    }
+
     get ui(){
         return {
             mode: {
@@ -171,3 +190,5 @@ class MethodPrimitive extends Primitive {
         }
     }
 }
+
+
