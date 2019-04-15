@@ -149,9 +149,9 @@ class NodeColorUI extends NodeBaseUI {
         return { slider: s, label: label };
     }
 
-    static updateFieldColor = function (field, color) {
-        color = 'rgba(' + (color[0] * 255) + ',' + (color[1] * 255) + ',' + (color[2] * 255) + ',' + (color[3]) + ')';
-        field.style.backgroundColor = color;
+    static updateFieldColor(field, color) {
+        let colorstr = 'rgba(' + Math.floor(color[0] * 255) + ',' + Math.floor(color[1] * 255) + ',' + Math.floor(color[2] * 255) + ',' + (color[3]) + ')';
+        field.style.backgroundColor = colorstr;
     }
 
     static create(key, structure, node) {

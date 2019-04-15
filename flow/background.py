@@ -97,6 +97,13 @@ def checkAbort(abort, sock, group):
     return False
 
 
+def trySend(message, sock):
+    try:
+        sock.send(json.dumps({'message': message, 'error': False}))
+    except:
+        printFail("<< communication failed, message: {}".format(message))
+
+
 def task_pipeline(update, abort):
     """
     Processing pipeline, second thread.
@@ -138,7 +145,7 @@ def task_pipeline(update, abort):
                     break
 
                 # evaluate/compute
-                sender = lambda m: sock.send(json.dumps({'message': m, 'error': False}))
+                sender = lambda m: trySend(m, sock)
                 pipeline.compute(task.notebook.code, graph, order, sender, abort)
             
                 #check for abort during compute
@@ -148,14 +155,15 @@ def task_pipeline(update, abort):
                 #update canvas
                 sock.send(json.dumps({'canvas': group, 'error': False}))
 
+                del graph, order
             except Exception as e:
                 sock.send(json.dumps({'message': str(e), 'error': True}))
 
             # end of actual processing
             sock.send(json.dumps({'message': 'Processing finished', 'error': False}))
             sock.close()
-            del graph, order, sock
             printOK('<< pipeline finished')
+            del sock
             
             #update and check for new
             with update:

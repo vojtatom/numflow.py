@@ -1,5 +1,10 @@
 #!/bin/bash
 
+function cprv {
+	echo "$2 $1"
+	#cp "$2" "$1"
+}
+
 cd "$(dirname "$0")"
 
 BUILD_DIR="./visual/static/visual/build"
@@ -139,10 +144,11 @@ sed "s/'use strict';/ /g" $OUTPUT_TMP >> $OUTPUT_SAGE
 rm $OUTPUT_TMP
 
 
-echo "$EXTERNALSLIST" | xargs cp -ut "../sage/flowapp/scripts/"
-echo "$SHADERSLIST" | xargs cp -ut "../sage/flowapp/shaders/"
+#echo "$EXTERNALSLIST" | xargs `cprv "../sage/flowapp/scripts/"`
+#echo "$SHADERSLIST" | xargs `cprv "../sage/flowapp/shaders/"`
+while read -r file; do cp "$file" "../sage/flowapp/scripts/"; done <<< "$EXTERNALSLIST"
+while read -r file; do cp "$file" "../sage/flowapp/shaders/"; done <<< "$SHADERSLIST"
 
-cp -r "./visual/static/visual/canvas/icons" "../sage/flowapp/"
 
 cd $SAGEDIR
 zip -r flowapp.zip flowapp

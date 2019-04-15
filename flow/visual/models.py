@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import uuid
 import base64
 
@@ -81,7 +82,7 @@ class Notebook(models.Model):
         primary_key=True, default=uuid.uuid4, editable=False)
     time_created = models.DateTimeField(auto_now_add=True)
     time_modified = models.DateTimeField(auto_now=True)
-    data = models.TextField(blank=True)
+    data = models.TextField(blank=True, default="[]")
     output = models.FileField(upload_to=directory_path_notebook, blank=True)
     nodefile = models.FileField(upload_to=directory_path_notebook, blank=True)
     authors = models.ManyToManyField(User, related_name="authors")
@@ -129,11 +130,25 @@ def auto_delete_file_on_delete_notebook(sender, instance, **kwargs):
 
     if instance.output and os.path.isfile(instance.output.path):
         os.remove(instance.output.path)
-        os.rmdir(os.path.dirname(instance.output.path))
 
     if instance.nodefile and os.path.isfile(instance.nodefile.path):
         os.remove(instance.nodefile.path)
-        os.rmdir(os.path.dirname(instance.nodefile.path))
+    
+    if instance.output or instance.nodefile:
+        try:
+            dirpath = os.path.dirname(instance.nodefile.path)
+            shutil.rmtree(dirpath)
+            return
+        except:
+            pass
+        
+        try:
+            dirpath = os.path.dirname(instance.output.path)
+            shutil.rmtree(dirpath)
+            return
+        except:
+            print('possibly undeleted files {}'.format(instance.code))
+            pass
 
 ###########################################################################
 class Task(models.Model):

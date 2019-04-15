@@ -406,11 +406,11 @@ class FlowAppUI extends BaseUI {
 
         this.scenes = [];
         this.components = [];
-
-        //deactivate
-        if (this.activeComponent !== null){
-            this.components[this.active][this.activeComponent].deactivate();
-        }
+        this.selectedScene = 0;
+        this.active = 0;
+        this.activeComponent = null;
+        this.menuVisible = false;
+        this.helpVisible = false;
     }
 
     resize(x, y){
