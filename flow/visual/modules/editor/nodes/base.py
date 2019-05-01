@@ -15,7 +15,7 @@ class Node(abc.ABC):
         structure:  { key : { type: 'display'|'input', value: value of the key, ... }}
     """
 
-    structure = {}
+    #structure = {}
     parsing = {}
     data = {}
 

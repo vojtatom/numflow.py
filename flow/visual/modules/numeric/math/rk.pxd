@@ -18,7 +18,7 @@ cdef enum Status:
 cdef class RKSolver:
     cdef int     order
     cdef int     n_stages
-    cdef int     n
+    #cdef int     n
     cdef int     status
     cdef int     direction
     cdef int     initialized

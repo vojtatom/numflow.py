@@ -76,7 +76,7 @@ read -r -d '' CANVASLIST << EOM
 ./visual/static/visual/canvas/js/graphics/scenes/camera.js
 ./visual/static/visual/canvas/js/graphics/scenes/scene.js
 ./visual/static/visual/canvas/js/graphics/graphics.js
-./visual/static/visual/canvas/js/interface/interface.js
+./visual/static/visual/canvas/js/interface.js
 ./visual/static/visual/canvas/js/math.js
 ./visual/static/visual/canvas/js/ui/ui_base.js
 ./visual/static/visual/canvas/js/ui/ui_fields.js
