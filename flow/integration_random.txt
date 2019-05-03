@@ -1,36 +1,36 @@
 num points: 1, repetitions 1
-ctime: 0.00015, stime 0.02989, ratio 197.98771
+ctime: 0.00015, stime 0.04424, ratio 299.99230
 
 num points: 1, repetitions 10
-ctime: 0.00074, stime 0.34542, ratio 464.58516
+ctime: 0.00054, stime 0.22431, ratio 418.54432
 
 num points: 1, repetitions 100
-ctime: 0.00799, stime 5.46505, ratio 684.10007
+ctime: 0.00842, stime 5.70725, ratio 677.79576
 
 num points: 10, repetitions 1
-ctime: 0.00039, stime 0.25998, ratio 668.55029
+ctime: 0.00039, stime 0.27176, ratio 702.11287
 
 num points: 10, repetitions 10
-ctime: 0.00221, stime 2.06754, ratio 937.61320
+ctime: 0.00357, stime 3.15701, ratio 884.20845
 
 num points: 10, repetitions 100
-ctime: 0.01546, stime 14.23423, ratio 920.87706
+ctime: 0.02749, stime 26.11968, ratio 949.99519
 
 num points: 100, repetitions 1
-ctime: 0.00259, stime 2.29795, ratio 888.70346
+ctime: 0.00252, stime 2.18294, ratio 864.92351
 
 num points: 100, repetitions 10
-ctime: 0.02316, stime 22.08861, ratio 953.69621
+ctime: 0.02558, stime 23.72849, ratio 927.76125
 
 num points: 100, repetitions 100
-ctime: 0.21591, stime 220.76337, ratio 1022.49237
+ctime: 0.21622, stime 223.59716, ratio 1034.14127
 
 num points: 1000, repetitions 1
-ctime: 0.02642, stime 22.99931, ratio 870.54856
+ctime: 0.02735, stime 24.55039, ratio 897.67965
 
 num points: 1000, repetitions 10
-ctime: 0.26638, stime 242.60377, ratio 910.73894
+ctime: 0.26720, stime 247.21871, ratio 925.23173
 
 num points: 10000, repetitions 1
-ctime: 0.25988, stime 237.12850, ratio 912.44285
+ctime: 0.27809, stime 244.00952, ratio 877.43580
 

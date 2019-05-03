@@ -137,7 +137,7 @@ c_interpolator, cdata = ccreate([x_axis, y_axis, z_axis], [x, y, z])
 s_interpolator, sdata = screate([x_axis, y_axis, z_axis], [x, y, z])
 
 #test_interpoltaion('interpolation_random.txt')
-#test_integrations('integration_random.txt')
+test_integrations('integration_random.txt')
 
 del x_axis, y_axis, z_axis, c_interpolator, s_interpolator
 
