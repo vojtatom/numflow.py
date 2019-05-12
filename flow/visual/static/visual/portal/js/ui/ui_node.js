@@ -38,7 +38,7 @@ class NodeBaseUI {
         field.classList.add('field');
         field.id = key + node.id;
         field.classList.add('dynamic');
-        field.innerHTML = 'Waiting for input above.';
+        field.innerHTML = 'Waiting for input above.\n\nIn case a value is already there,\nclick the field above\nand press enter.';
         return field;
     }
 }
@@ -291,6 +291,10 @@ class NodeUI {
         node.baseElement = base;
         body.onmousedown = (e) => {
             node.mouseDown(e);
+        };
+
+        body.onmouseup = (e) => {
+            node.mouseUp(e);
         };
 
         NodeUI.buildStructure(node, body);

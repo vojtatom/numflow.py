@@ -98,7 +98,7 @@ vec3 phong(vec3 light, float sigma, vec3 ver_position, vec3 ver_normal){
     float NdotL = clamp(dot(normalize(ver_normal), L), 0.0, 1.0);
    
    	//ambient
-	ret += vec3(0.5);
+	ret += vec3(0.8);
 	
 	//diffuse
     ret += vec3(1.0) * NdotL;

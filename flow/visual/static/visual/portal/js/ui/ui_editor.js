@@ -7,9 +7,17 @@ class EditorUI{
         scaledArea.id = 'editor_scaled';
         area.appendChild(scaledArea);
 
+        let status = document.createElement('div');
+        status.id = 'editor_status';
+        area.appendChild(status);
+
         let mode = document.createElement('div');
         mode.id = 'editor_mode';
-        area.appendChild(mode);
+        status.appendChild(mode);
+
+        let message = document.createElement('div');
+        message.id = 'editor_message';
+        status.appendChild(message);
 
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute("width",  "100%");
@@ -19,6 +27,7 @@ class EditorUI{
         editor.area = area;
         editor.scaledArea = scaledArea;
         editor.modeLabel = mode;
+        editor.messageLabel = message;
         editor.svg = svg;
 
         area.oncontextmenu = (e) => {

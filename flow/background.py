@@ -147,16 +147,15 @@ def task_pipeline(update, abort):
                 # evaluate/compute
                 sender = lambda m: trySend(m, sock)
                 pipeline.compute(task.notebook.code, graph, order, sender, abort)
-            
-                #check for abort during compute
-                if checkAbort(abort, sock, group):
-                    break
                 
                 #update canvas
+                # create socket in case the old one timeouted
+                sock = websocket.create_connection(FORMATED_STR_CONTACT.format(task.group))
                 sock.send(json.dumps({'canvas': group, 'error': False}))
 
                 del graph, order
             except Exception as e:
+                sock = websocket.create_connection(FORMATED_STR_CONTACT.format(task.group))
                 sock.send(json.dumps({'message': str(e), 'error': True}))
 
             # end of actual processing

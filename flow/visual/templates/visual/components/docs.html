@@ -2,20 +2,142 @@
 
 
 <div id="docs">
-    <h1>Documentation</h1>
-    <p>Documentation for Flow project - scalable vizualization tool with support for SAGE enviroment.</p>
+    <h1>User Manual</h1>
+    <p>Documentation for Flow project - scalable vizualization tool with support for SAGE environment.</p>
+    
+    
+    <h2>Installation</h2>
+    <p class="important">There is a standrad script <code>makefile</code> for linux  (run <code>make</code>) and mac (run <code>make mac</code>). Please run it, it should do all of the steps below for you. Please pay attention, your input is required from time to time.</p>
+    <ul class="important">
+        <li><code>make</code> - build for linux</li>
+        <li><code>make mac</code> - build for mac</li>
+        <li><code>make run</code> - run the application</li>
+        <li><code>make backend</code> - run the backend</li>
+        <li><code>make rebuild</code> - linux and mac rebuild C and JS</li>
+        <li><code>make clean</code> - delete built files</li>
+        <li><code>make cleanall</code> - delete all built files, including added static and user media (accounts, etc.)</li>
+    </ul>
+    <p>There are two possible installations - one simpler for local use and second more robust for deployment server. Both of the methods require creating Python Virtualenv, installing dependencies, and building the application.</p>
+    <p>Please make sure you have at least Python 3.6 installed. The application will likely work with any 3.* installation of Python, but the tested all tested versions were >=3.6. The following guide is for <strong>Linux</strong> only; however, the setup on other OS' should be similar.</p>
+   
+    <h3>Local installation</h3>
+    <p><strong>Navigate into the local</strong> copy of the <strong>folder</strong> containing the application. The folder should contain the following structure:</p>
+    <ul class="dirtree">
+      <li class="root">src</li>
+      <li>flow/
+        <ul class="dirtree">
+          <li>build.sh</li>
+          <li>jsbuild.sh</li>
+          <li>...other files and folders...</li>
+        </ul>
+      </li>
+      <li>sage/</li>
+      <li>makefile</li>
+      <li>requirement.txt</li>
+    </ul>
+    <p>Create a python environment and launch it. You can use Conda or Virtualenv. The use of Virtualenv is recommended. If you do not have Virtualenv installed, run following command:</p>
+    <code class="prettyprint">sudo apt install virtualenv</code>
+    <p>The following code creates the virtual env:</p>
+    <code class="prettyprint">virtualenv --python=python3 env</code>
+    <p>Now activate the environment with the first line of the following code and then install all dependencies. All Python dependencies are listed in the requirements.txt file. You can install them with the second line of code.</p>
+    <code class="prettyprint">. ./env/bin/activate                    #activate environment
+pip install -r requirements.txt         #install dependencies</code>
+    <p>If all goes well, you should be done with the initial installation part. Now is time to build the application. The application contains two installation scripts - <code>build.sh</code> and <code>jsbuild.sh</code>. They assemble the JavaScript and C parts of the application. </p>
+    <code class="prettyprint">cd ./flow
+./jsbuild.sh     #assemble JS files
+./build.sh       #build C</code>
+    <p>The installation is done. Now it is necessary to initialize the database.</p>
+    <code class="prettyprint"># in the ./flow folder
+python manage.py makemigrations
+python manage.py migrate</code>
+    <p>Create the administrator of the local server (please change the credentials according to your needs).</p>
+    <code class="prettyprint">#in the ./flow folder
+python manage.py createsuperuser
+#insert the information requested by the app</code>
+    <p>And finally, launch the application.</p>
+    <code class="prettyprint">#in the ./flow folder
+#please do not change the port 9000
+python manage.py runserver 0.0.0.0:9000</code>
+    <p>And that's it! The application should be accessible from ytou browser on the address <code>localhost:9000</code>.</p>
+
+    <h3>Installation on the Deployment Server</h3>
+    <p class="important">If you plan to deploy the application and you expect a heavy use, please adjust all of the actions below according to your needs. The correct parameters of the setup are highly dependent on your requirements.</p>
+    <p>The installation on the deployment server uses Redis for enabling the WebSocket communication, Nginx for serving the static files, Guincorn for serving classical HTTP requests, and Daphne for serving the WebSocket requests. This setup has been chosen deliberately to distribute the load.</p>
+
+    <p>The following code should help with the installation of the individual components:</p>
+    <code class="prettyprint">##install redis on Linux
+##in the ~/Downloads or anywhere you like
+
+wget http://download.redis.io/redis-stable.tar.gz
+tar xvzf redis-stable.tar.gz
+cd redis-stable
+make install
+
+## when somethign goes wrong 
+#make distclean
+
+## install nginx
+sudo apt install nginx
+
+## the gunicorn and daphne packages have already been 
+## installed into the local python environment, 
+## in cane anything doesn't work, please consult google
+</code>
+<p>Now it is necessary to locate the config file of the Django project <code>./flow/flow/settigns.py</code> and swap the code bellow with the code in the comments.</p>
+<code class="prettyprint">CHANNEL_LAYERS={
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+     }
+}
+
+#CHANNEL_LAYERS = {
+#    'default': {
+#        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#        'CONFIG': {
+#            "hosts": [('127.0.0.1', 6379)],
+#        },
+#    },
+#}
+</code>
+<p>Launch Redis</p>
+<code class="prettyprint">redis-server --daemonize yes</code>
+<p> To launch Nginx, you need to set up your local config file. An example of used config file usable on Linux is in the <code>flow</code> folder - <code>nginx.conf</code></p>
+<code class="prettyprint">sudo nginx -c ./flow/nginx.conf >> runlog.txt 2>&1</code>
+<p>Launch Gunicorn:</p>
+<code class="prettyprint">
+NAME="flow"                                # Name of the application (*)
+DJANGODIR="./flow"                         # Django project directory (*)
+SOCKFILE="/flow/run/gunicorn.sock"         # we will communicate using this unix socket (*)
+NUM_WORKERS=1                              # how many worker processes should Gunicorn spawn (*)
+DJANGO_SETTINGS_MODULE=flow.settings       # which settings file should Django use (*)
+DJANGO_WSGI_MODULE=flow.wsgi               # WSGI module name (*)
+
+#export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+#export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+# Create the run directory if it doesn't exist
+RUNDIR=$(dirname $SOCKFILE)
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+# Start your Django Unicorn
+gunicorn ${DJANGO_WSGI_MODULE}:application --name $NAME --workers $NUM_WORKERS --bind=unix:$SOCKFILE &
+</code>
+<p>Launch Daphne</p>
+<code class="prettyprint">daphne flow.asgi:application --bind 0.0.0.0 --port 9000 --verbosity 1 &</code>
+<p>And there you go! Now the app should be up and running. Of course, do not forget to migrate the database and create the admin as was illustrated in the local installation.</p>
+
+
     <h2>Dataset format</h2>
     <p>Prefered upload format is <code>.fits</code> with following structure:</p>
     <code class="prettyprint">Filename: example.fits
 
-No.    Name      Ver    Type        Cards   Dimensions   Format
-  0  PRIMARY       1    PrimaryHDU      k   ()      
-  1                1    ImageHDU        c   (x, y, z)    float32  #x component value
-  2                1    ImageHDU        c   (x, y, z)    float32  #y component value
-  3                1    ImageHDU        c   (x, y, z)    float32  #z component value  
-  4                1    ImageHDU        c   (x,)         float32  #x component of location   
-  5                1    ImageHDU        c   (y,)         float32  #y component of location   
-  6                1    ImageHDU        c   (z,)         float32  #z component of location</code>
+No.  Type             Dimensions   Format
+  0  PrimaryHDU       ()      
+  1  ImageHDU         (x, y, z)    float32  #x component value
+  2  ImageHDU         (x, y, z)    float32  #y component value
+  3  ImageHDU         (x, y, z)    float32  #z component value  
+  4  ImageHDU         (x,)         float32  #x component of location
+  5  ImageHDU         (y,)         float32  #y component of location
+  6  ImageHDU         (z,)         float32  #z component of location</code>
     <p>...where <code>N</code> is total number of sample points.
     Let <code>F</code> be a vector field and
     let <code>P_i</code> be a point in space with a value <code>[x, y, z]</code>, then <code>V_i</code> is a vector of the vector field <code>F</code> at that point. Using python <code>astropy</code> module, this can be demonstrated as following:</p>

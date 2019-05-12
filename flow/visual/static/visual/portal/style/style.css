@@ -550,6 +550,37 @@ input#notebook_upload_form_file{
     }
 }
 
+#help {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+    background: rgba(29, 29, 29, 0.5);
+    padding: 0.5em 1em;
+    border-radius: 0.3em;
+    z-index: 5;
+    text-align: right;
+    display: block;
+}
+
+#help dt{
+    display: inline-block;
+    padding: 0.5em;
+}
+
+#help dt::after{
+    content: ":";
+    display: inline-block;
+}
+
+#help dd{
+    font-weight: bold;
+    display: inline-block;
+    padding: 0.5em;
+    margin: 0;
+    background: #494949;
+    border-radius: 0.3em;
+}
+
 /* EDITOR LAYOUT */
 
 #editor {
@@ -569,7 +600,7 @@ input#notebook_upload_form_file{
     position: absolute;
 }
 
-#editor_mode {
+#editor_status {
     position: absolute;
     top: 0;
     left: 0;
@@ -577,6 +608,16 @@ input#notebook_upload_form_file{
     background: rgba(17, 17, 17, 0.9);
     width: 100%;
     padding: 1em 1em;
+}
+
+#editor_mode,
+#editor_message{
+    display: inline-block;
+}
+
+#editor_message{
+    font-weight: bold;
+    margin-left: 1em;
 }
 
 #editor_menu{
@@ -609,6 +650,14 @@ input#notebook_upload_form_file{
     display: inline-block;
 }
 
+.move_nodes{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 /* EDITOR NODE */
 
@@ -893,7 +942,7 @@ svg path {
 
 #docs {
     flex: 1;
-    max-width: 65em;
+    max-width: 45em;
     margin: 2em auto;
 }
 
@@ -942,6 +991,49 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
     overflow: auto;
 }
 
+ul.dirtree {
+    margin: 0;
+    list-style: none;
+    line-height: 2em;
+    font-family: Arial;
+  }
+  ul.dirtree li {
+    font-size: 16px;
+    position: relative;
+  }
+  ul.dirtree li:before {
+    position: absolute;
+    left: -15px;
+    top: 0px;
+    content: '';
+    display: block;
+    border-left: 1px solid #ddd;
+    height: 1em;
+    border-bottom: 1px solid #ddd;
+    width: 10px;
+  }
+  ul.dirtree li:after {
+    position: absolute;
+    left: -15px;
+    bottom: -7px;
+    content: '';
+    display: block;
+    border-left: 1px solid #ddd;
+    height: 100%;
+  }
+  ul.dirtree li.root {
+    margin: 0px 0px 0px -20px;
+  }
+  ul.dirtree li.root:before {
+    display: none;
+  }
+  ul.dirtree li.root:after {
+    display: none;
+  }
+  ul.dirtree li:last-child:after {
+    display: none;
+  }
+
 
 /* FLOW CANVAS */
 #upload-flow {
@@ -951,4 +1043,14 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
     border-radius: 0.3em;
     margin: 10em calc((100vw - 30em) / 2);
     max-width: 30em;
+}
+
+p.important,
+ul.important{
+    background: #182c3a;
+    padding: 1em;
+}
+
+ul.important {
+    list-style: none;
 }

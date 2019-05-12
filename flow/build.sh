@@ -14,9 +14,9 @@ elif [ "$1" == "annot" ]
     find . -type f -name '*.pyx' -exec cython -a {} +
 elif [ "$1" == "install" ]
     then
-    python3 compile.py install
+    python3 setup.py install
 else
-    python3 compile.py build_ext --inplace
+    python3 setup.py build_ext --inplace
     find . -type f -name '*.pyx' -exec cython -a {} +
-    python3 compile.py clean
+    python3 setup.py clean
 fi

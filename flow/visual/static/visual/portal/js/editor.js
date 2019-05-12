@@ -82,6 +82,9 @@ class Editor{
             outNode: undefined,
         }
 
+        this.help = true;
+        this.toggleHelp();
+
         
         EditorUI.create(this);
 
@@ -98,6 +101,16 @@ class Editor{
             },
             fail: (r) => console.error(r),
         });
+    }
+
+    toggleHelp(){
+        let help = document.querySelectorAll('.hide-help');
+
+        for (let elem of help) {
+            elem.style.display = this.help ? 'none' : 'inline-block';
+        }
+
+        this.help = !this.help;
     }
 
     mouseDown(e) {
@@ -174,6 +187,10 @@ class Editor{
             this.setMode(Modes.delete);
         } else if (e.keyCode == 116) {
             this.serialize();
+        } else if (e.keyCode == 104) {
+            //HELP
+            console.log("help");
+            this.toggleHelp();
         }
     }
 
@@ -200,10 +217,14 @@ class Editor{
 
 
         this.mode = mode;
-        this.modeLabel.innerHTML = Modes.title(mode);
+        this.modeLabel.innerHTML = "mode: " + Modes.title(mode);
         this.area.className = '';
         this.area.classList.add(Modes.class(mode));
         this.clearStagedConnection();
+    }
+
+    status(message){
+        this.messageLabel.innerHTML = message;
     }
 
     addNode(node){
@@ -218,6 +239,7 @@ class Editor{
     connect(node) {
         if (this.connection.outNode == undefined) {
             this.connection.outNode = node;
+            this.status("Connect second node");
             return;
         }
 
@@ -225,11 +247,19 @@ class Editor{
             this.connection.inNode = node;
         }
 
-        if (this.connection.inNode != this.connection.outNode && 
-            !this.connection.inNode.isConnectedTo(this.connection.outNode) &&
-            this.connection.inNode.isCompatible(this.connection.outNode)){
-
-            Connection.create(this.connection.inNode, this.connection.outNode, this);
+        if (this.connection.inNode != this.connection.outNode){
+            if (!this.connection.inNode.isConnectedTo(this.connection.outNode)){
+                if(this.connection.inNode.isCompatible(this.connection.outNode)){
+                    Connection.create(this.connection.inNode, this.connection.outNode, this);
+                    this.status("Nodes connected.");
+                } else {
+                    this.status("Selected nodes are not compatible");
+                }
+            } else {
+                this.status("Selected nodes are already connected");
+            }
+        } else {
+            this.status("Cannot connect the same node.");
         }
 
         this.clearStagedConnection();
@@ -245,6 +275,8 @@ class Editor{
         this.scaledArea.style.transform = 'translate(' + this.transform.x + 'px, ' 
                                         + this.transform.y + 'px) scale(' 
                                         + this.transform.zoom + ')';
+
+        this.status("");
     }
 
     serialize() {
@@ -265,6 +297,7 @@ class Editor{
             nodes = JSON.parse(text);
         } catch {
             console.error('notebook format corrupted');
+            this.status("Notebook cannot be loaded.");
             UITerminal.addLine('Notebook format corrupted, editor is unable to create a graph.', 'error');
             return;
         }
@@ -279,6 +312,8 @@ class Editor{
                 this.connect(this.nodes[inNode]);
             }
         }
+
+        this.status("Notebook loaded.");
     }
 }
 
@@ -334,6 +369,16 @@ class Node{
         }
 
         e.stopPropagation();
+    }
+
+    mouseUp(e) {
+        if (this.active){
+            this.active = false;
+            if (this.editor.mode == Modes.moveNodes){
+                this.editor.setMode(Modes.select);
+            }
+            e.stopPropagation();
+        }
     }
  
     move(dx, dy) {
