@@ -1,6 +1,15 @@
 'use strict';
 
+/**
+ * Class representing the terminal in the notebook editor.
+ */
 class Terminal {
+    /**
+     * Construct a terminal and connect the terminal websocket to the 
+     * server.
+     * 
+     * @param {UUID} code terminal uuid, used for socket construction
+     */
     constructor(code){
         this.code = code;
         this.waiting = false;
@@ -10,12 +19,20 @@ class Terminal {
         UITerminal.addLine('terminal initialized with uuid<br>' + this.code, 'info');
     }
 
+    /**
+     * Try to send a command to the server along with additional data.
+     * @param {string} text command
+     * @param {string} data additional data
+     */
     command(text, data){
         if (this.waiting)
             return;
         this.send(text, data);
     }
 
+    /**
+     * Create and set up a web socket.
+     */
     socket(){
         console.log('constructing terminal', this.code);
         let url = window.location.host.split(':');
@@ -42,6 +59,11 @@ class Terminal {
         return socket;
     }
 
+    /**
+     * Send a command to the server along with additional data.
+     * @param {string} text command
+     * @param {string} data additional data
+     */
     send(text, data){
         this.waiting = true;
         this.socket.send(JSON.stringify({
@@ -52,6 +74,9 @@ class Terminal {
         UITerminal.clear();
     }
 
+    /**
+     * Close the connection with the server.
+     */
     close(){
         if (this.socket !== null){
             console.log('closing websocket...');

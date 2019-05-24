@@ -4,6 +4,8 @@ import numpy as np
 from visual.modules.numeric.kernels import points_kernel
 
 class PlaneNode(Node):
+    """Node representing the construction of 2D slice seeding points."""
+
     data = {
         'structure': {
             'title' : {
@@ -68,10 +70,16 @@ class PlaneNode(Node):
     
     def __init__(self, id, data, notebook_code, message):
         """
-        Inicialize new instance of points node.
+        Inicialize new instance of plane node.
+            :param self: instance of PlaneNode
             :param id: id of node
-            :param data: dictionary of values from node
-        """  
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+        """
+
         self.id = id
 
         fields = ['norm_axis', 'norm_value', 'a_start', 'b_start', 'a_end', 
@@ -93,9 +101,15 @@ class PlaneNode(Node):
 
     def __call__(self, indata, message, abort):
         """
-        Create np.ndarray of points
-            :param indata: data coming from connected nodes, can be None here.
-        """   
+        Construct 2D slice seeding points.
+            :param self: instance of PlaneNode
+            :param indata: data coming from connected nodes
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+            :param abort: object for chacking the abort flag,
+                          check is done by using the check_abort method
+        """ 
+
         meta = {
             'normal': self._index,
             'normal_value': self._value,

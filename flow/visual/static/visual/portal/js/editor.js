@@ -1,3 +1,9 @@
+'use strict';
+
+/**
+ * Helper class, containing only static variables.
+ * JavaScript variant of a smart enum.
+ */
 class Modes{
     static get add() {
         return 0;
@@ -57,9 +63,13 @@ class Modes{
         }
     }
 }
-
+/**
+ * Class representing the pipeline editor.
+ */
 class Editor{
-
+    /**
+     * Create a new editor.
+     */
     constructor() {
         this.nodes = {};
         this.transform = {
@@ -103,6 +113,9 @@ class Editor{
         });
     }
 
+    /**
+     * Toggle the visibility of the contents of the help widget.
+     */
     toggleHelp(){
         let help = document.querySelectorAll('.hide-help');
 
@@ -113,6 +126,11 @@ class Editor{
         this.help = !this.help;
     }
 
+    /**
+     * Callback frou mouse press.
+     * 
+     * @param {Event} e event object
+     */
     mouseDown(e) {
         this.mouse.down = true;
         this.setMode(Modes.move);
@@ -120,11 +138,21 @@ class Editor{
         this.mouse.y = e.clientY;
     }
 
+    /**
+     * Callback for mouse release.
+     * 
+     * @param {Event} e event object 
+     */
     mouseUp(e) {
         this.mouse.down = false;
         this.mouse.dragged = false;
     }
 
+    /**
+     * Callback for mouse move.
+     * 
+     * @param {Event} e event object 
+     */
     mouseMove(e) {
         this.mouse.dx = e.clientX - this.mouse.x;
         this.mouse.dy = e.clientY - this.mouse.y;
@@ -151,6 +179,11 @@ class Editor{
         }
     }
 
+    /**
+     * Callback for wheel rotation.
+     * 
+     * @param {Event} e event object 
+     */
     wheel(e){
         let delta = e.wheelDelta / 10000;
         delta = this.transform.zoom + delta > 0.1 ? delta : 0;
@@ -162,12 +195,22 @@ class Editor{
         e.preventDefault();
     }
 
+    /**
+     * Callback for window resize.
+     * 
+     * @param {Event} e event object 
+     */
     resize(e){
         const rect = this.area.getBoundingClientRect();
         this.center = { x: this.area.offsetWidth / 2, y: this.area.offsetHeight / 2 };
         this.start = { x: rect.left, y: rect.top };
     }
 
+    /**
+     * Callback for key press inside the editor.
+     * 
+     * @param {Event} e event object 
+     */
     keyPress(e){
         console.log(e.keyCode);
 
@@ -194,6 +237,11 @@ class Editor{
         }
     }
 
+    /**
+     * Method to get the mouse position during the event.
+     * 
+     * @param {Event} e event object
+     */
     mouseCoord(e) {
         let offsetX = (e.x - this.start.x - this.center.x - this.transform.x) / this.transform.zoom;
         let offsetY = (e.y - this.start.y - this.center.y - this.transform.y) / this.transform.zoom;
@@ -202,6 +250,10 @@ class Editor{
         return {x: x, y: y};
     }
 
+    /**
+     * Set the editor mode. Uses Modes class.
+     * @param {Modes.*} mode 
+     */
     setMode(mode){
 
         // turn off moving nodes when leaving moveNodes mode
@@ -223,19 +275,41 @@ class Editor{
         this.clearStagedConnection();
     }
 
+    /**
+     * Set the editor status.
+     * 
+     * @param {string} message 
+     */
     status(message){
         this.messageLabel.innerHTML = message;
     }
 
+    /**
+     * Add node to the editor.
+     * 
+     * @param {Node} node 
+     */
     addNode(node){
         this.scaledArea.appendChild(node.baseElement);
         this.nodes[node.id] = node;
     }
 
+    /**
+     * Delete node form the editor.
+     * 
+     * @param {Node} node 
+     */
     deleteNode(node){
         delete this.nodes[node.id];
     }
 
+    /**
+     * Try to stage a connection of a node.
+     * Requires calling this method twice to
+     * create a complete connection.
+     * 
+     * @param {Node} node 
+     */
     connect(node) {
         if (this.connection.outNode == undefined) {
             this.connection.outNode = node;
@@ -266,11 +340,17 @@ class Editor{
         this.setMode(Modes.move);
     }
 
+    /**
+     * Cleares staged connection.
+     */
     clearStagedConnection() {
         this.connection.inNode = undefined;
         this.connection.outNode = undefined;
     }
 
+    /**
+     * Applies editor space transformation. 
+     */
     applyTransform() {
         this.scaledArea.style.transform = 'translate(' + this.transform.x + 'px, ' 
                                         + this.transform.y + 'px) scale(' 
@@ -279,6 +359,9 @@ class Editor{
         this.status("");
     }
 
+    /**
+     * Produce serialized description of the computation pipeline.
+     */
     serialize() {
         let nodes = [];
         Object.entries(this.nodes).forEach(
@@ -290,6 +373,12 @@ class Editor{
         return JSON.stringify(nodes, null, 4);
     }
 
+    /**
+     * Reconstruct the contents of the editor from JSON encoded
+     * pipeline representation.
+     * 
+     * @param {string} text 
+     */
     deserialize(text) {
         let nodes;
 
@@ -317,7 +406,13 @@ class Editor{
     }
 }
 
+/**
+ * Represents a single node from the Editor.
+ */
 class Node{
+    /**
+     * Get new node id.
+     */
     static get newId() {
         if (Node.id == undefined) {
             Node.id = 0;
@@ -325,14 +420,29 @@ class Node{
         return Node.id++;
     }
 
+    /**
+     * Set base node HTML element.
+     */
     set baseElement(value){
         this.element = value;
     }
 
+    /**
+     * Get base node HTML element.
+     */
     get baseElement() {
         return this.element;
     }
 
+    /**
+     * Construct a new node.
+     * 
+     * @param {int} x x position of the node
+     * @param {int} y y position of the node
+     * @param {Editor} editor editor class where the node is conatined
+     * @param {object} data object containing parameters, input and output types of the node
+     * @param {string} title node title
+     */
     constructor(x, y, editor, data, title){
         this.editor = editor;
         this.active = false; 
@@ -353,6 +463,11 @@ class Node{
         this.applyTransform();
     }
 
+    /**
+     * Callback frou mouse press.
+     * 
+     * @param {Event} e event object
+     */
     mouseDown(e){
         if (this.editor.mode == Modes.select) {
             this.active = true;
@@ -371,6 +486,11 @@ class Node{
         e.stopPropagation();
     }
 
+    /**
+     * Callback frou mouse release.
+     * 
+     * @param {Event} e event object
+     */
     mouseUp(e) {
         if (this.active){
             this.active = false;
@@ -381,6 +501,12 @@ class Node{
         }
     }
  
+    /**
+     * Move the node to the specified position. 
+     * 
+     * @param {int} dx x delta from the current position of the node
+     * @param {int} dy y delta from the current position of the node
+     */
     move(dx, dy) {
         this.transform.x += dx;
         this.transform.y += dy;
@@ -395,22 +521,45 @@ class Node{
         );
     }
 
+    /**
+     * Add incoming connection.
+     * 
+     * @param {Connection} connection incoming connection
+     */
     addInConnection(connection) {
         this.inConnections[connection.outNode.id] = connection;
     }
 
+    /**
+     * Add outcoming connection.
+     * 
+     * @param {Connection} connection outcomming conneciton
+     */
     addOutConnection(connection) {
         this.outConnections[connection.inNode.id] = connection;
     }
 
+    /**
+     * Delete incoming connection.
+     * 
+     * @param {Connection} connection incoming connection
+     */  
     deleteInConnection(connection) {
         delete this.inConnections[connection.outNode.id];
     }
 
+    /**
+     * Delete outcoming connection.
+     * 
+     * @param {Connection} connection outcoming connection
+     */  
     deleteOutConnection(connection) {
         delete this.outConnections[connection.inNode.id];
     }
 
+    /**
+     * Delete node and all of its connecitons.
+     */
     delete() {
         this.editor.deleteNode(this);
 
@@ -428,6 +577,11 @@ class Node{
         this.editor.setMode(Modes.move);
     }
 
+    /**
+     * Test if the node is connected to the node passed as the parameter.
+     * 
+     * @param {Node} node 
+     */
     isConnectedTo(node) {
         if (this.inConnections[node.id] === undefined && 
             this.outConnections[node.id] === undefined) {
@@ -437,6 +591,11 @@ class Node{
         return true;
     }
 
+    /**
+     * Test if the node is compatible as a successor of the parameter node.
+     * 
+     * @param {Node} incomingNode incoming node
+     */
     isCompatible(incomingNode){
         let intersect = function (a, b) {
             var t;
@@ -451,10 +610,16 @@ class Node{
         return false;
     }
 
+    /**
+     * Apply the tranlation of the node to the HTML element.
+     */
     applyTransform() {
         this.element.style.transform = 'translate(' + this.transform.x + 'px, ' + this.transform.y + 'px)';
     }
 
+    /**
+     * Serialize the contents of the node.
+     */
     serialize(){
         return {
             id: this.id,
@@ -466,6 +631,12 @@ class Node{
         }
     }
 
+    /**
+     * Deserialize the node according to the JSON deserialized object data.
+     * 
+     * @param {string} data 
+     * @param {Editor} editor 
+     */
     static deserialize(data, editor) {
         let node = new Node(data.position.x, data.position.y, editor, data.data, data.title);
         node.id = data.id;
@@ -474,8 +645,18 @@ class Node{
     }
 }
 
+/**
+ * Class representing a connection between two nodes.
+ */
 class Connection{
 
+    /**
+     * Create a new connection between input and output nodes.
+     * Automatically inserts the connection into the editor and the connected nodes.
+     * @param {Node} inNode 
+     * @param {Node} outNode 
+     * @param {Editor} editor 
+     */
     static create(inNode, outNode, editor) {
         let connection = new Connection(inNode, outNode, editor);
         inNode.addInConnection(connection);
@@ -486,6 +667,13 @@ class Connection{
         this.element = value;
     }
 
+    /**
+     * Create a new connection between input and output nodes.
+     * 
+     * @param {Node} inNode 
+     * @param {Node} outNode 
+     * @param {Editor} editor 
+     */
     constructor(inNode, outNode, editor){
         this.outNode = outNode;
         this.inNode = inNode;
@@ -496,6 +684,9 @@ class Connection{
         this.redraw();
     }
 
+    /**
+     * Redraw the html element.
+     */
     redraw() {
         let handle = Math.max((this.inNode.transform.x - this.outNode.transform.x) / 2 - 100, 0); 
         let startx = this.outNode.transform.x + 320;
@@ -511,6 +702,11 @@ class Connection{
         this.element.setAttribute('d', d);
     }
 
+    /**
+     * Callback for the mouse click.
+     * 
+     * @param {Event} e event object
+     */
     mouseDown(e) {
         if (this.editor.mode == Modes.delete) {
             this.delete();
@@ -518,6 +714,9 @@ class Connection{
         e.stopPropagation();
     }
 
+    /**
+     * Delete the connection.
+     */
     delete() {
         this.inNode.deleteInConnection(this);
         this.outNode.deleteOutConnection(this);

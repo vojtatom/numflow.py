@@ -1,7 +1,13 @@
 'use strict';
 
-
+/**
+ * Class representing renderer UI.
+ */
 class FlowAppUI extends BaseUI {
+    /**
+     * Create new renderer UI.
+     * @param {HTML element} canvas canvas element
+     */
     constructor(canvas){
         super();
 
@@ -198,6 +204,12 @@ class FlowAppUI extends BaseUI {
         this.helpVisible = false;
     }
 
+    /**
+     * Adds a scene controls to the menu.
+     * 
+     * @param {SceneUI} scene instance of scene UI class
+     * @param {ComponentUI} components instance of component UI class
+     */
     addScene(scene, components){
         this.scenes.push(scene);
 
@@ -220,6 +232,11 @@ class FlowAppUI extends BaseUI {
         }
     }
 
+    /**
+     * Switches the menu to the scene of specified index.
+     * 
+     * @param {int} index index of the scene 
+     */
     displayScene(index){
         /* scene settings */
         while (this.sceneElement.firstChild) {
@@ -249,6 +266,9 @@ class FlowAppUI extends BaseUI {
         scene.classList.add('selected');
     }
 
+    /**
+     * Switches menu to the next scene.
+     */
     nextScene(){
         if (!this.menuVisible)
             return;
@@ -262,6 +282,9 @@ class FlowAppUI extends BaseUI {
         scene.classList.add('selected');
     }
 
+    /**
+     * Switches menu to the previous scene.
+     */
     previousScene(){
         if (!this.menuVisible)
             return;
@@ -275,6 +298,11 @@ class FlowAppUI extends BaseUI {
         scene.classList.add('selected');
     }
 
+    /**
+     * Performs the action for specified key.
+     * 
+     * @param {string} key key code 
+     */
     componentKey(key){
         /* check component activation */
         if (key in this.components[this.active]){
@@ -290,6 +318,11 @@ class FlowAppUI extends BaseUI {
     }
 
 
+    /**
+     * Display or hide a component widget.
+     * 
+     * @param {string} key key code
+     */
     toggleComponent(key){
         if (!this.menuVisible)
             return;
@@ -309,6 +342,9 @@ class FlowAppUI extends BaseUI {
         
     }
 
+    /**
+     * Switches menu to the next widget.
+     */
     nextWidget(){
         if (!this.menuVisible)
             return;
@@ -316,6 +352,9 @@ class FlowAppUI extends BaseUI {
         this.scenes[this.active].nextWidget();
     }
 
+    /**
+     * Switches menu to the previous widget.
+     */
     previousWidget(){
         if (!this.menuVisible)
             return;
@@ -323,6 +362,9 @@ class FlowAppUI extends BaseUI {
         this.scenes[this.active].previousWidget();
     }
 
+    /**
+     * Switches menu to the next field.
+     */
     nextField(){
         if (!this.menuVisible)
             return;
@@ -335,6 +377,9 @@ class FlowAppUI extends BaseUI {
         }
     }
 
+    /**
+     * Switches menu to the previous field.
+     */
     previousField(){
         if (!this.menuVisible)
             return;
@@ -347,6 +392,9 @@ class FlowAppUI extends BaseUI {
         }
     }
 
+    /**
+     * Changes the value of the currently selected field to the next one.
+     */
     nextValue(alternative){
         if (!this.menuVisible)
             return;
@@ -354,6 +402,9 @@ class FlowAppUI extends BaseUI {
         this.scenes[this.active].nextValue(alternative);
     }
 
+    /**
+     * Changes the value of the currently selected field to the previous one.
+     */
     previousValue(alternative){
         if (!this.menuVisible)
             return;
@@ -361,6 +412,9 @@ class FlowAppUI extends BaseUI {
         this.scenes[this.active].previousValue(alternative);
     }
 
+    /**
+     * Display or hide menu.
+     */
     toggleMenu(){
         if (this.menuVisible){
             this.element.style.display = 'none';
@@ -377,6 +431,9 @@ class FlowAppUI extends BaseUI {
         }
     }
 
+    /**
+     * Display or hide help.
+     */
     toggleHelp(){
         if (!this.menuVisible)
             this.helpVisible = true;
@@ -395,6 +452,9 @@ class FlowAppUI extends BaseUI {
         }
     }
 
+    /**
+     * Delete the UI and remove the HTML elements.
+     */
     delete(){
         while (this.sceneElement.firstChild) {
             this.sceneElement.removeChild(this.sceneElement.firstChild);
@@ -413,6 +473,11 @@ class FlowAppUI extends BaseUI {
         this.helpVisible = false;
     }
 
+    /**
+     * Resize the UI. 
+     * @param {int} x x dimension of the screen
+     * @param {int} y y dimension of the screen
+     */
     resize(x, y){
         let fontSize = (((y / 1400) - 1) + 1) + 'em';
         let width = (((y / 1400) - 1) * 400 + 400) + 'px';
@@ -423,10 +488,17 @@ class FlowAppUI extends BaseUI {
         this.mainNavCont.style.fontSize = fontSize;
     }
 
+    /**
+     * Update the text of the status widget.
+     * @param {string} text status text
+     */
     updateStatus(text){
         this.status.innerHTML = text;
     }
 
+    /**
+     * Get current state of the menu.
+     */
     getState(){
         let values = [];
         for (let scene of this.scenes){
@@ -457,6 +529,10 @@ class FlowAppUI extends BaseUI {
         }
     }
 
+    /**
+     * Set object's state.
+     * @param {object} state state object
+     */
     setState(state){
         if (this.active != state.active.scene){
             this.displayScene(state.active.scene);

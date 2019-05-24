@@ -36,6 +36,15 @@ class ServerError(Exception):
 #COMMANDS
 
 def help_command(group, notebook_code, command, data, username):
+    """
+    Returns the text of the help command
+        :param group: user group
+        :param notebook_code: opened notebook code
+        :param command: posted command with parameteers
+        :param data: notebook data
+        :param username: user username
+    """
+
     return "commands:\
             <hr>run - run a computation, adds task to the computation queue\
             <hr>stop - stop running task or remove it from task queue\
@@ -43,6 +52,15 @@ def help_command(group, notebook_code, command, data, username):
 
 
 def stop_command(group, notebook_code, command, data, username):
+    """
+    Sends the stop command to the computation backend
+        :param group: user group
+        :param notebook_code: opened notebook code
+        :param command: posted command with parameteers
+        :param data: notebook data
+        :param username: user username
+    """
+    
     notebook = Notebook.objects.filter(code=notebook_code)
     if notebook.count() == 1:
         notebook = notebook[0]

@@ -7,6 +7,7 @@ from visual.modules.numeric.kernels import glyph_kernel
 
 
 class LayerNode(Node):
+    """The node represents the construction of a 2D slice."""
     data = {
         'structure': {
             'title' : {
@@ -45,10 +46,15 @@ class LayerNode(Node):
     
     def __init__(self, id, data, notebook_code, message):
         """
-        Inicialize new instance of glyph node.
+        Inicialize new instance of layer node.
+            :param self: instance of LayerNode
             :param id: id of node
-            :param data: dictionary, can be None here.
-        """   
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+        """
         self.id = id
 
         fields = ['appearance']
@@ -58,9 +64,14 @@ class LayerNode(Node):
 
     def __call__(self, indata, message, abort):    
         """
-        Call glyph kernel and perform interpolation.
-            :param indata: data coming from connected nodes, can be None here.
-        """   
+        Construct the 2D slice.
+            :param self: instance of LayerNode
+            :param indata: data coming from connected nodes
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+            :param abort: object for chacking the abort flag,
+                          check is done by using the check_abort method
+        """  
 
         fields = ['dataset', 'plane']
         self.check_dict(fields, indata, self.id, self.title)

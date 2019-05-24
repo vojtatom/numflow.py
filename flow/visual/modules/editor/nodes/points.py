@@ -4,6 +4,7 @@ from ..exceptions import NodeError
 from visual.modules.numeric.kernels import points_kernel
 
 class PointsNode(Node):
+    """Node represents a 3D slice seeding points."""
     data = {
         'structure': {
             'title' : {
@@ -74,10 +75,14 @@ class PointsNode(Node):
     def __init__(self, id, data, notebook_code, message):
         """
         Inicialize new instance of points node.
+            :param self: instance of PointsNode
             :param id: id of node
-            :param data: dictionary, must contain keys 'x_min', 'y_min', 'z_min', 'x_max', 'y_max', 
-                        'z_max', 'x_sampling', 'y_sampling' and 'z_sampling'
-        """  
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+        """
         self.id = id
 
         fields = ['x_min', 'y_min', 'z_min', 'x_max', 'y_max', 
@@ -91,8 +96,13 @@ class PointsNode(Node):
 
     def __call__(self, indata, message, abort):
         """
-        Create np.ndarray of points
-            :param indata: data coming from connected nodes, can be None here.
+        Construct 3D slice seeding points.
+            :param self: instance of PointsNode
+            :param indata: data coming from connected nodes
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+            :param abort: object for chacking the abort flag,
+                          check is done by using the check_abort method
         """   
         check_abort(abort)
         return {'points': points_kernel(self._start, self._end, self._sampling)}

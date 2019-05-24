@@ -6,6 +6,8 @@ from ..exceptions import NodeError
 
 
 class GlyphGeometryNode(Node):
+    """Node modifying the glyph geometry."""
+
     data = {
         'structure': {
             'title' : {
@@ -59,10 +61,15 @@ class GlyphGeometryNode(Node):
     
     def __init__(self, id, data, notebook_code, message):
         """
-        Inicialize new instance of glyph node.
+        Inicialize new instance of glyph geometry node.
+            :param self: instance of GlyphGeometryNode
             :param id: id of node
-            :param data: dictionary, can be None here.
-        """   
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+        """ 
         self.id = id
 
         fields = ['geometry', 'size', 'sampling', 'appearance']
@@ -75,8 +82,13 @@ class GlyphGeometryNode(Node):
 
     def __call__(self, indata, message, abort):    
         """
-        Call glyph kernel and perform interpolation.
-            :param indata: data coming from connected nodes, can be None here.
+        Perform the glyph geometry modification.
+            :param self: instance of GlyphGeometryNode
+            :param indata: data coming from connected nodes
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+            :param abort: object for chacking the abort flag,
+                          check is done by using the check_abort method
         """   
 
         fields = ['glyphs']

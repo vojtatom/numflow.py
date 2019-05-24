@@ -5,6 +5,8 @@ from visual.modules.numeric.kernels import dataset_kernel
 
 
 class DataNode(Node):
+    """Node representing loading a dataset."""
+
     data = {
         'structure': {
             'title' : {
@@ -36,10 +38,15 @@ class DataNode(Node):
     
     def __init__(self, id, data, notebook_code, message):
         """
-        Inicialize new instance of dataset node.
+        Inicialize new instance of DataNode.
+            :param self: instance of DataNode
             :param id: id of node
-            :param data: dictionary, must contain keys 'code' and 'mode'.
-        """   
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+        """ 
 
         self.id = id
         fields = ['code', 'mode']
@@ -52,7 +59,12 @@ class DataNode(Node):
 
     def __call__(self, indata, message, abort):
         """
-        Create dataset.
-            :param indata: data coming from connected nodes, can be None here.
-        """   
+        Load the specified dataset.
+            :param self: instance of DataNode
+            :param indata: data coming from connected nodes
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+            :param abort: object for chacking the abort flag,
+                          check is done by using the check_abort method
+        """ 
         return {'dataset' : dataset_kernel(self._path, self._mode)}

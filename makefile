@@ -117,7 +117,7 @@ run:
 		echo ""; \
 		echo "Open browser supporting WebGL2 (Chrome, Chromium, Electron, Brave...)\nand go to '0.0.0.0:9000'."; \
 		echo ""; \
-		python flow/manage.py runserver 0.0.0.0:9000; \
+		python flow/manage.py runserver "0.0.0.0:9000"; \
 	)
 
 backend:

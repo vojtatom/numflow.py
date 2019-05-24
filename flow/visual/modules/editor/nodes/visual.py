@@ -8,6 +8,11 @@ from ..exceptions import NodeError
 
 
 def cleanup_streamline(streamlines):
+    """
+    Cleans up streamline data. Removes consecutive 
+    points with the same positions.
+        :param streamlines: dict with points, values, lengths, times, and meta
+    """
     offset = 0
     to_delete = []
     lengths_diff = np.zeros(streamlines['lengths'].shape)
@@ -46,6 +51,8 @@ def cleanup_streamline(streamlines):
 
 
 class VisualNode(Node):
+    """Node represents the rendering operation."""
+
     data = {
         'structure': {
             'title' : {
@@ -84,9 +91,14 @@ class VisualNode(Node):
     def __init__(self, id, data, notebook_code, message):
         """
         Inicialize new instance of visual node.
+            :param self: instance of VisualNode
             :param id: id of node
-            :param data: dictionary, can be None here.
-        """   
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+        """ 
         self.id = id
         self.notebook_code = notebook_code
 
@@ -96,11 +108,17 @@ class VisualNode(Node):
 
         self._width_max = data['width_max']
 
+
     def __call__(self, indata, message, abort):    
         """
-        Send all data via websockets to display clients
-            :param indata: data coming from connected nodes.
-        """   
+        Store the scene representation into the output file.
+            :param self: instance of VisualNode
+            :param indata: data coming from connected nodes
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+            :param abort: object for chacking the abort flag,
+                          check is done by using the check_abort method
+        """  
 
         def serialize_array(array, dtype):
             a = np.ascontiguousarray(dtype(array), dtype=dtype)

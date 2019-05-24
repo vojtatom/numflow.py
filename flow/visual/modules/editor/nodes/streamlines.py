@@ -7,6 +7,8 @@ from visual.modules.numeric.kernels import stream_kernel
 
 
 class StreamlinesNode(Node):
+    """Node represents the streamline integration operation."""
+
     data = {
         'structure': {
             'title' : {
@@ -70,10 +72,15 @@ class StreamlinesNode(Node):
     
     def __init__(self, id, data, notebook_code, message):
         """
-        Inicialize new instance of streamlines node.
+        Inicialize new instance of streamline node.
+            :param self: instance of StreamlinesNode
             :param id: id of node
-            :param data: dictionary, can be None here.
-        """   
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+        """ 
 
         self.id = id
         fields = ['mode', 't_0', 't_bound', 'appearance', 'size']
@@ -88,9 +95,14 @@ class StreamlinesNode(Node):
 
     def __call__(self, indata, message, abort):    
         """
-        Call stream kernel and perform integrations.
-            :param indata: data coming from connected nodes, can be None here.
-        """   
+        Perform streamline integration.
+            :param self: instance of StreamlinesNode
+            :param indata: data coming from connected nodes
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+            :param abort: object for chacking the abort flag,
+                          check is done by using the check_abort method
+        """ 
 
         fields = ['dataset', 'points']
         self.check_dict(fields, indata, self.id, self.title)

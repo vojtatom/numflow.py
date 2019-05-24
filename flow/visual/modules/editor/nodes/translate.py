@@ -6,6 +6,8 @@ from ..exceptions import NodeError
 
 
 class TranslateNode(Node):
+    """Node represents translation operations."""
+
     data = {
         'structure': {
             'title' : {
@@ -71,10 +73,16 @@ class TranslateNode(Node):
     
     def __init__(self, id, data, notebook_code, message):
         """
-        Inicialize new instance of glyph node.
+        Inicialize new instance of translation node.
+            :param self: instance of TranslateNode
             :param id: id of node
-            :param data: dictionary, can be None here.
-        """   
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+        """
+
         self.id = id
 
         fields = ['x_translate', 'y_translate', 'z_translate', 'part']
@@ -84,9 +92,15 @@ class TranslateNode(Node):
 
     def __call__(self, indata, message, abort):    
         """
-        Call glyph kernel and perform interpolation.
-            :param indata: data coming from connected nodes, can be None here.
+        Translate the input values according to the node parameters.
+            :param self: instance of TranslateNode
+            :param indata: data coming from connected nodes
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+            :param abort: object for chacking the abort flag,
+                          check is done by using the check_abort method
         """   
+
 
         transformed_glyphs = []
         transformed_streamlines = []

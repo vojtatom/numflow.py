@@ -10,19 +10,28 @@ def check_abort(event):
 class Node(abc.ABC):
     """
     Following class properties must be implemented:
-        in:        { type: { required: True | False }, ... }
-        out:        type
-        structure:  { key : { type: 'display'|'input', value: value of the key, ... }}
-    """
+        data: {
+            "in":        { type: { required: True | False }, ... }
+            "out":        type
+            "structure":  { key : { type: 'display'|'input', value: value of the key, ... }}
+        }
 
-    #structure = {}
-    parsing = {}
+        parsing: {} dict specifying the parsing functions for individual structural elements
+    """
     data = {}
+    parsing = {}
 
     @abc.abstractmethod
     def __init__(self, id, data, notebook_code, message):
         """
-        Validate supplied parameters, raise exception in case of error.
+        Inicialize new instance of node.
+            :param self: instance of Node
+            :param id: id of node
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
         """
         pass
 
@@ -43,8 +52,15 @@ class Node(abc.ABC):
         """ 
         pass
 
+
     @classmethod
     def deserialize(cls, data):
+        """
+        Deserialize the JSON string created by the client JavaScript node.
+            :param cls: class inheriting from Node
+            :param data: JSON string
+        """
+        
         parsed = {}
         parsed['title'] = data['title']
         parsed['id'] = data['id']
@@ -64,6 +80,14 @@ class Node(abc.ABC):
 
 
     def check_dict(self, fields, data, node_id, node_title):
+        """
+        Check whether the supplied dictionary contains all of the required values.
+            :param self: class inheriting from Node
+            :param fields: list of required values
+            :param data: checked dict
+            :param node_id: id of the checking node
+            :param node_title: title of the checking node
+        """
         for field in fields:
             if field not in data:
                 raise NodeError('{} with id {} missing input {}.'.format(node_title.title(), node_id, field))

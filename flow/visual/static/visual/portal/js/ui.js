@@ -1,6 +1,14 @@
 'use strict';
 
+/**
+ * Class managing the portal UI
+ */
 class UI {
+    /**
+     * Routine setting up callbacks for the main page. 
+     * @param {HTML element} element the HTML element of the main page
+     * @param {Bool} history indicates wheteher a history record should be made
+     */
     static index(element = null, history = true) {
         console.log('loading menu');
 
@@ -14,7 +22,6 @@ class UI {
             }
         }
 
-        //TODO
         UISidebar.create();
 
         let datasets = [...document.getElementsByClassName('dataset')]
@@ -31,6 +38,11 @@ class UI {
 
     }
 
+    /**
+     * Routine setting up callbacks for the notebook page. 
+     * @param {*} element the HTML element of the main page
+     * @param {*} history indicates wheteher a history record should be made
+     */
     static notebook(element = null, history = true) {
         //console.log('loading notebook');
 
@@ -50,6 +62,11 @@ class UI {
     }
 
 
+    /**
+     * Routine setting up callbacks for the documentation page. 
+     * @param {*} element the HTML element of the docs page
+     * @param {*} history indicates wheteher a history record should be made
+     */
     static docs(element = null, history = true) {
         //console.log('loading docs');
 
@@ -66,11 +83,18 @@ class UI {
         UIHeader.create();
     }
 
+    /**
+     * Inster the element into the displayed screen.
+     * @param {HTML element} html Html element to be inserted
+     */
     static component(html) {
         let dom = document.getElementById('main');
         dom.innerHTML = html;
     }
 
+    /**
+     * Set up on home link for the top left icon on each screen.
+     */
     static homeLink(){
         let home = document.getElementById('home-link');
         home.onclick = (e) => {

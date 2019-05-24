@@ -1,6 +1,13 @@
 'use strict';
 
+/**
+ * Base Node UI class. Represents the node UI.
+ */
 class NodeBaseUI {
+    /**
+     * Set up the node title.
+     * @param {string} text 
+     */
     static createTitle(text) {
         let title = document.createElement('div');
         title.classList.add('title');
@@ -17,12 +24,19 @@ class NodeBaseUI {
         return title;
     }
 
+    /**
+     * Callback that does literally nothing.
+     */
     static get nothing() {
         return (e) => {
             e.stopPropagation();
         };
     }
 
+    /**
+     * Create node base HTML element.
+     * @param {string} key title of the node
+     */
     static createBase(key) {
         let field = document.createElement('div');
         field.classList.add('field');
@@ -33,6 +47,11 @@ class NodeBaseUI {
         return field;
     }
 
+    /**
+     * Insert dynamic field into the node UI structure.
+     * @param {string} key node title
+     * @param {Node} node node class
+     */
     static createDynamic(key, node) {
         let field = document.createElement('div');
         field.classList.add('field');
@@ -43,8 +62,16 @@ class NodeBaseUI {
     }
 }
 
-
+/**
+ * Class representing display node UI field.
+ */
 class NodeDisplayUI extends NodeBaseUI {
+    /**
+     * Creates display field and inserts it into the node UI.
+     * @param {string} key node title
+     * @param {object} structure field structure
+     * @param {Node} node node class
+     */
     static create(key, structure, node) {
         let field = NodeDisplayUI.createBase(key);
 
@@ -57,8 +84,16 @@ class NodeDisplayUI extends NodeBaseUI {
     }
 }
 
-
+/**
+ * Class representing input node UI field.
+ */
 class NodeInputUI extends NodeBaseUI {
+    /**
+     * Creates input field and inserts it into the node UI.
+     * @param {string} key node title
+     * @param {object} structure field structure
+     * @param {Node} node node class
+     */
     static create(key, structure, node) {
         let field = NodeInputUI.createBase(key);
 
@@ -98,8 +133,16 @@ class NodeInputUI extends NodeBaseUI {
     }
 }
 
-
+/**
+ * Class representing select node UI field.
+ */
 class NodeSelectUI extends NodeBaseUI {
+    /**
+     * Creates select field and inserts it into the node UI.
+     * @param {string} key node title
+     * @param {object} structure field structure
+     * @param {Node} node node class
+     */
     static create(key, structure, node) {
         let field = NodeSelectUI.createBase(key);
         let contents = document.createElement('select');
@@ -126,8 +169,16 @@ class NodeSelectUI extends NodeBaseUI {
     }
 }
 
+/**
+ * Class representing color node UI field.
+ */
 class NodeColorUI extends NodeBaseUI {
-
+    /**
+     * Creates HTML slider for color component manipulation.
+     * @param {float} value color component initial value
+     * @param {string} title control title
+     * @param {string} id id of the color manipulator
+     */
     static createSlider(value, title, id) {
         let s = document.createElement('input');
         s.id = id
@@ -149,11 +200,22 @@ class NodeColorUI extends NodeBaseUI {
         return { slider: s, label: label };
     }
 
+    /**
+     * Callback updating the field background color.
+     * @param {HTML element} field html element of the field
+     * @param {array} color 4 element array (RGBA) representing the color
+     */
     static updateFieldColor(field, color) {
         let colorstr = 'rgba(' + Math.floor(color[0] * 255) + ',' + Math.floor(color[1] * 255) + ',' + Math.floor(color[2] * 255) + ',' + (color[3]) + ')';
         field.style.backgroundColor = colorstr;
     }
 
+    /**
+     * Creates color field and inserts it into the node UI.
+     * @param {string} key node title
+     * @param {object} structure field structure
+     * @param {Node} node node class
+     */
     static create(key, structure, node) {
         let field = NodeColorUI.createBase(key);
 
@@ -256,6 +318,10 @@ class NodeColorUI extends NodeBaseUI {
  * @class NodeUI
  */
 class NodeUI {
+    /**
+     * Create UI for corresponding node based on its structure.
+     * @param {Node} node instance of node class
+     */
     static create(node) {
         let base = document.createElement('div');
         base.classList.add('node');
@@ -373,8 +439,13 @@ class NodeUI {
         nodeElement.appendChild(NodeUI.buildMeta('out', meta));
     }
 
+    /**
+     * Create HTML of a meta field.
+     * @param {string} name meta field label
+     * @param {string} content meta field content
+     */
     static buildMeta(name, content) {
-        let field, contents, title, tmp;
+        let field, contents, title;
 
         field = document.createElement('div');
         field.classList.add('field');

@@ -1,7 +1,35 @@
 'use strict';
 
+/**
+ * DataManager handles the HTTP requests.
+ * The calss offers a set of methods 
+ * suitable for different situations.
+ * 
+ * Each method accepts an object specifying 
+ * the request parameters.
+ * Following object structure is expected:
+ * {
+ * 'method': 'POST' | 'GET'
+ * 'decode': whether the response data should be JSON-deserialized 
+ * 'headers': list of custom request headers
+ * 'data': request contents
+ * 'form': JavaScript Form object
+ * 'progress': bool 
+ * 'files': list of requested files
+ * 
+ * 'success': callback for success response
+ * 'fail': callback for fil response
+ * 'url': target url of the request
+ * } 
+ */
 class DataManager {
-
+    /**
+     * It is expected that this method will be called very frequently.
+     * The internal implementation sends the requests with a delay to prevent 
+     * overload.
+     * 
+     * @param {object} options request parameters
+     */
     static requestFrequent(options) {
            if (DataManager.changeTimer !== false)
                clearTimeout(DataManager.changeTimer);
@@ -11,6 +39,11 @@ class DataManager {
            }, 300);
        }
 
+    /**
+     * Send a standard request
+     * 
+     * @param {object} options request parameters
+     */
     static request(options) {
         if (!('method' in options))
             options['method'] = 'POST';
@@ -47,6 +80,11 @@ class DataManager {
         }
     }
 
+    /**
+     * Upload a file.
+     * 
+     * @param {object} options request parameters
+     */
     static upload(options) {
         let request = new XMLHttpRequest();
         let token = Cookies.get('csrftoken');
@@ -74,6 +112,11 @@ class DataManager {
         request.send(options.data);
     }
 
+    /**
+     * Get files from url.
+     * 
+     * @param {object} options request parameters
+     */
     static files(options) {
         let requests = [];
 
@@ -87,6 +130,11 @@ class DataManager {
         );
     }
 
+    /**
+     * Support method for the files routine.
+     * 
+     * @param {object} url 
+     */
     static getPromise(url) {
         return new Promise(function (resolve, reject) {
             var request = new XMLHttpRequest();
@@ -109,10 +157,20 @@ class DataManager {
         });
     }
 
+    /**
+     * Load a static icon.
+     * 
+     * @param {object} url 
+     */
     static getIcon(url) {
         return '/static/visual/canvas/icons/' + url;
     }
 
+    /**
+     * Get a file from url and read its contents.
+     * 
+     * @param {object} options request parameters
+     */
     static readFile(options){
         // File reader and uploader...
         let handleFiles = function (file) {

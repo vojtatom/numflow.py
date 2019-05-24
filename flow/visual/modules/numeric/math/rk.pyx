@@ -48,7 +48,7 @@ cdef DTYPE dot(DTYPE * vec_a, DTYPE * vec_b, int vec_l, int stride_a, int stride
 
 cdef class RKSolver:
     """
-    Custom Runge
+    Custom Runge-Kutta fourt and fifth order solver
     Requires number of compenents to be equal to number of dimensions
     or number of dimensions plus one. 
 
@@ -61,6 +61,7 @@ cdef class RKSolver:
         Create uninitialized solver.
         """
         self.initialized = 0
+
 
     def __dealloc__(self):
         """

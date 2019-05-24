@@ -6,6 +6,8 @@ from ..exceptions import NodeError
 
 
 class ScaleNode(Node):
+    """Node represents scaling operations."""
+    
     data = {
         'structure': {
             'title' : {
@@ -71,10 +73,16 @@ class ScaleNode(Node):
     
     def __init__(self, id, data, notebook_code, message):
         """
-        Inicialize new instance of glyph node.
+        Inicialize new instance of scale node.
+            :param self: instance of ScaleNode
             :param id: id of node
-            :param data: dictionary, can be None here.
-        """   
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+        """
+
         self.id = id
 
         fields = ['x_scale', 'y_scale', 'z_scale', 'part']
@@ -82,11 +90,17 @@ class ScaleNode(Node):
         self._transform = np.array([data['x_scale'], data['y_scale'], data['z_scale']])
         self._part = data['part']
 
+
     def __call__(self, indata, message, abort):    
         """
-        Call glyph kernel and perform interpolation.
-            :param indata: data coming from connected nodes, can be None here.
-        """   
+        Scale the input values according to the node parameters.
+            :param self: instance of ScaleNode
+            :param indata: data coming from connected nodes
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+            :param abort: object for chacking the abort flag,
+                          check is done by using the check_abort method
+        """ 
 
         transformed_glyphs = []
         transformed_streamlines = []

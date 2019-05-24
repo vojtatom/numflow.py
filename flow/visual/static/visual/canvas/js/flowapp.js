@@ -1,19 +1,41 @@
 'use strict';
 
+/**
+ * Main class of the visualization application.
+ */
 class FlowApp {
+    /**
+     * Creates a new instance of the applicaiton.
+     * @param {HTML element} canvas HTML canvas
+     */
     constructor(canvas) {
         this.canvas = canvas;
         this.interface = new Interface(this);
         this.graphics = new Graphics(canvas);
         this.ui = new FlowAppUI(canvas);
 
+        this.valid = true;
+
         this.screenshotsEnabled = false;
         this.stateToBeLoaded = null;
     }
 
+    /**
+     * Initializes the application instance. Tries to connect
+     * with the server and establish a web socket connection.
+     * 
+     * @param {string} code UUID string of the application instance.
+     */
     init(code = null) {
         this.code = code;
-        this.graphics.init();
+        
+        try{
+            this.graphics.init();
+        } catch(err) {
+            this.ui.updateStatus(err);
+            this.valid = false;
+            return;
+        }
 
         if (code !== null){
             let getData = (url) => {
@@ -58,7 +80,15 @@ class FlowApp {
 
     }
 
+    /**
+     * Loads the contents of the enriched dataset, creates models, initializes buffers.
+     * 
+     * @param {object} contents deserialized JSON description of the visualized model
+     */
     load(contents){
+        if (!this.valid)
+            return;
+
         //delete all previously allocated buffers and data etc.
         this.ui.updateStatus('deleting old graphics');
         this.graphics.delete();
@@ -76,7 +106,13 @@ class FlowApp {
         this.ui.updateStatus('model loaded');
     }
 
+    /**
+     * Render a single frame of the visualization.
+     */
     render() {
+        if (!this.valid)
+            return;
+
         this.graphics.render();
 
         if (this.interface.keys[67] && this.screenshotsEnabled){
@@ -150,7 +186,15 @@ class FlowApp {
         }
     }
 
+    /**
+     * Capture the current frame into a PNG file and download it.
+     * 
+     * @param {string} name name of the output png file
+     */
     saveCanvas(name){
+        if (!this.valid)
+            return;
+
         this.canvas.toBlob((blob) => {
             // Function to download data to a file
             let file = blob;
@@ -177,6 +221,12 @@ class FlowApp {
         });
     }
 
+    /**
+     * Resize the canvas and UI.
+     * 
+     * @param {int} x x dimension of the screen
+     * @param {int} y y dimension of the screen
+     */
     resize(x, y){
         this.dim = {
             x: x,
@@ -187,7 +237,15 @@ class FlowApp {
         this.ui.resize(x, y);
     }
 
+    /**
+     * Callback for the key press handeled by the main application.
+     * 
+     * @param {string} key key code
+     */
     pressed(key){
+        if (!this.valid)
+            return;
+
         if (key === 40){
             //16 = shift 
             if (this.interface.keys[16]){
@@ -249,7 +307,13 @@ class FlowApp {
         this.graphics.scene.camera.sceneChanged = true;
     }
 
+    /**
+     * Get current state of the application.
+     */
     getState(){
+        if (!this.valid)
+            return;
+
         if (this.graphics.loaded && this.stateToBeLoaded === null){
             let state = [this.graphics.getState(), this.ui.getState()];
             return state;
@@ -258,7 +322,14 @@ class FlowApp {
         }
     }
 
+    /**
+     * Set object's state.
+     * @param {object} state state object
+     */
     setState(state){
+        if (!this.valid)
+            return;
+
         if (this.graphics.loaded){
             this.graphics.setState(state[0]);
             this.ui.setState(state[1]);
@@ -269,6 +340,9 @@ class FlowApp {
     }
 
     quit(){
+        if (!this.valid)
+            return;
+
         this.graphics.delete(true);
     }
 

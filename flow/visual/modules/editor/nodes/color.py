@@ -4,6 +4,8 @@ import json
 import copy
 
 class ColorNode(Node):
+    """Node representing the colorbar.""" 
+
     data = {
         'structure': {
             'title' : {
@@ -76,13 +78,19 @@ class ColorNode(Node):
     }
     
     title = 'color'
-    
+
+
     def __init__(self, id, data, notebook_code, message):
         """
-        Inicialize new instance of dataset node.
+        Inicialize new instance of color node.
+            :param self: instance of ColorNode
             :param id: id of node
-            :param data: dictionary, must contain keys 'code' and 'mode'.
-        """   
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+        """
 
         self.id = id
         fields = ['sampling', 'color_0', 'color_1', 'color_2', 'color_3', 'color_4']
@@ -97,8 +105,13 @@ class ColorNode(Node):
 
     def __call__(self, indata, message, abort):
         """
-        Create dataset.
-            :param indata: data coming from connected nodes, can be None here.
+        Apply the specified colormap on the input data objects.
+            :param self: instance of ColorNode
+            :param indata: data coming from connected nodes
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+            :param abort: object for chacking the abort flag,
+                          check is done by using the check_abort method
         """   
 
         colormap = {
@@ -155,8 +168,13 @@ class ColorNode(Node):
             out['layer'] = transformed_layer
         return out
 
+
     @staticmethod
     def get_default_cm():
+        """
+        Supply default colormap.
+        """   
+
         return {
                     'sampling': 3,
                     'colors': [

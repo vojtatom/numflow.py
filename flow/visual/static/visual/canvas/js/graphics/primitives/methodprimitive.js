@@ -166,7 +166,7 @@ class MethodPrimitive extends ColorPrimitive {
                 ],
                 value: 'show',
             },
-            lables: {
+            labels: {
                 type: 'select',
                 options: ['show', 'hide'],
                 callbacks: [

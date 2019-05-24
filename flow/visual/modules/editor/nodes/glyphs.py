@@ -7,6 +7,8 @@ from visual.modules.numeric.kernels import glyph_kernel
 
 
 class GlyphsNode(Node):
+    """Node representing the glyphs construction."""
+
     data = {
         'structure': {
             'title' : {
@@ -53,9 +55,15 @@ class GlyphsNode(Node):
     def __init__(self, id, data, notebook_code, message):
         """
         Inicialize new instance of glyph node.
+            :param self: instance of GlyphsNode
             :param id: id of node
-            :param data: dictionary, can be None here.
-        """   
+            :param data: dictionary of node parameters, 
+                   has to contain values from Node.data['structure']
+            :param notebook_code: code of the notebook containing the node
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+        """
+
         self.id = id
 
         fields = ['size', 'appearance']
@@ -66,9 +74,14 @@ class GlyphsNode(Node):
 
     def __call__(self, indata, message, abort):    
         """
-        Call glyph kernel and perform interpolation.
-            :param indata: data coming from connected nodes, can be None here.
-        """   
+        Perform glyphs construction.
+            :param self: instance of GlyphsNode
+            :param indata: data coming from connected nodes
+            :param message: lambda with signature (string): none; 
+                            has to send messages back to user
+            :param abort: object for chacking the abort flag,
+                          check is done by using the check_abort method
+        """ 
 
         fields = ['dataset', 'points']
         self.check_dict(fields, indata, self.id, self.title)

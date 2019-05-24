@@ -23,6 +23,13 @@ def load_graph(string_graph):
 
 
 def topological_sort(graph): 
+    """
+    Sorts the nodes contained in the graph topologically.
+    Returns a list with ordered ids.
+        :param graph: dict representing the graph, each node 
+                      is represented by dict with in and out lists containing 
+                      ids of input and output edges
+    """
     # List of indices of starting nodes
     start_nodes = []
     # dict of nodes
@@ -61,6 +68,18 @@ def topological_sort(graph):
         
 
 def compute(notebook_code, graph, order, message, abort):
+    """
+    Compute the visualization pipeline
+        :param notebook_code: code of the notebook represented by the graph
+        :param graph: dict representing the graph, each node 
+                      is represented by dict with in and out lists containing 
+                      ids of input and output edges
+        :param order: list with ordered ids
+        :param message: lambda with signature (string): none; 
+                        has to send messages back to user
+        :param abort: object for chacking the abort flag,
+                      check is done by using the check_abort method
+    """
     n = notebook(notebook_code)
     n.clear_output()
     data = {}

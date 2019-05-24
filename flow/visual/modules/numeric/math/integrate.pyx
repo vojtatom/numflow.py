@@ -13,6 +13,12 @@ from scipy.integrate import solve_ivp
 
 
 cdef int buffer_realloc(DTYPE ** b, int buffer_l):
+    """
+    Reallocs buffers, increases the size by multiplier of two. 
+        :param DTYPE**   b: array of buffers
+        :param int       buffer_l: current length of buffers.
+    """
+
     cdef DTYPE * new_b
 
     #when buffer is full, realloc
@@ -30,6 +36,15 @@ cdef int buffer_realloc(DTYPE ** b, int buffer_l):
 
 
 def cstreamlines(CData data, DTYPE t0, DTYPE t_bound, DTYPE[:,::1] starting_points):
+    """
+    Performs integration inside given dataset using C solver.
+        :param CData          data:  dataset
+        :param DTYPE          t0: integration start time
+        :param DTYPE          t_bound: integration end time
+        :param DTYPE[::,::1] starting_points: 2D numpy array of 
+                                              integration seeding points 
+    """
+
     cdef int points_l = starting_points.shape[0]
     cdef int i, j, tmp_yl, tmp_fl, tmp_tl
     cdef int buffer_l = 100 * data.c.com_l
@@ -132,6 +147,17 @@ def cstreamlines(CData data, DTYPE t0, DTYPE t_bound, DTYPE[:,::1] starting_poin
 
 
 def sstreamlines(data, t0, t_bound, starting_points, abort):
+    """
+    Performs integration inside given dataset using SciPy solver.
+        :param data: dataset
+        :param t0: integration start time
+        :param t_bound: integration end time
+        :param starting_points: 2D numpy array of 
+                                integration seeding points 
+        :param abort: object for chacking the abort flag,
+                      check is done by using the check_abort method
+    """
+    
     positions = None
     times = None
     lengths = np.empty((starting_points.shape[0],), dtype=np.int)
