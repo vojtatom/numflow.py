@@ -10,7 +10,7 @@ window.onload = function(e) {
     app.screenshotsEnabled = true;
     
     ///IMPORTANT STATIC SETUP!!!!!
-    Shader.dir = '/static/visual/canvas/js/graphics/shaders/src/';
+    Shader.dir = '/js/graphics/shaders/src/';
     
     let path = window.location.href.split('/');
     let code = path[path.length - 1];
