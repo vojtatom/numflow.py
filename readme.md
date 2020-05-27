@@ -10,13 +10,13 @@ Before commiting, please run `make clean` to remove unnecesary build files, I tr
  * udelat vetev
  * opravit bug s interpolací
  * dodelat integraci
- 
+
 Obecne GL
  * napsat opengl spousteni okna
  * kompilace shaderu VS + FS... toho je hodne
-  * nacteni, kompilovani, linkovani... 
-  * mechanismus pro ziskani atributu... nejak
-  * co z toho -> nejaky objekt co representuje shader a muzu s nim nej pracovat abych mu mohl nastavovat atributy (attribs, uniforms...)
+ * nacteni, kompilovani, linkovani... 
+ * mechanismus pro ziskani atributu... nejak
+ * co z toho -> nejaky objekt co representuje shader a muzu s nim nej pracovat abych mu mohl nastavovat atributy (attribs, uniforms...)
 
 Glyphy
  * generovai geometrie glyphu
