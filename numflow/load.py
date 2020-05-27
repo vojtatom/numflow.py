@@ -42,7 +42,6 @@ def load(filename, separator=",", points_clustering_tolerance=0.0001, mode="scip
     else:
        raise NumflowException("Unknown file format: .{}".format(filename.split(".")[-1])) 
 
-
     if data.ndim != 2:
         raise NumflowException("Unsuported number of dimensions: {}".format(data.ndim))
     
