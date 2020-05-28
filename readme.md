@@ -6,9 +6,12 @@ Changes in `.cpp`, `.hpp`, `.pyx`, and `.pyd` requre recompilation of the numflo
 Before commiting, please run `make clean` to remove unnecesary build files, I tried to include them all in gitignore, but something hight have slipped through.
 
 
+## Bugfixes
+ * ad interpolace - v krajních bodech může dojít k tomu že to nebude interpolovat okay, pro vnitřní body datasetu to funguje dobře, problém je ve strojové přesnosti, takže je všechno ok.
+
 ## TODO
  * udelat vetev
- * opravit bug s interpolací
+ * ~~opravit bug s interpolací~~
  * dodelat integraci
 
 Obecne GL

@@ -38,3 +38,13 @@
 
 
 
+from numflow import load
+from scipy.interpolate import RegularGridInterpolator
+
+axis, data = load("data.csv")
+print(axis, data)
+
+interp = RegularGridInterpolator(axis, data)
+print(axis)
+
+print(interp([0.10001,1.12,-7.05]))
