@@ -48,6 +48,9 @@ def load(filename, separator=",", points_clustering_tolerance=0.0001, mode="scip
     if data.shape[1] != 6:
         raise NumflowException("Unsuported number of dataset columns: {}".format(data.shape[1]))
 
+    if not filename.endswith(".npy"):
+        np.save('tmp.npy', data)
+    print("numflow.load: input file parsed, now testing rectilinearity...")
 
     #try constructing rectilinear
     gc.collect()

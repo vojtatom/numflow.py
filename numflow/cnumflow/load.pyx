@@ -6,7 +6,7 @@ import gc
 cimport numpy as np
 from .types cimport DTYPE, LONGDTYPE, INTDTYPE
 from .decl cimport load_rectilinear_3d, parse_file, DataMatrix, Dataset3D, delete_dataset_3d, delete_datamatrix, construct_level_3d
-from .common cimport create_2d_double_numpy, create_1d_double_numpy, create_4d_double_numpy, create_3d_double_numpy
+from .common cimport create_2d_float_numpy, create_1d_float_numpy, create_4d_float_numpy, create_3d_float_numpy
 
 
 def load_file(file_name, separator): 
@@ -15,7 +15,7 @@ def load_file(file_name, separator):
     if mat == NULL:
         raise NumflowException("Error encountered during file reading")
 
-    cdef np.ndarray[DTYPE, ndim=2] arr = create_2d_double_numpy(mat[0].data, mat[0].rows, mat[0].columns)
+    cdef np.ndarray[DTYPE, ndim=2] arr = create_2d_float_numpy(mat[0].data, mat[0].rows, mat[0].columns)
 
     delete_datamatrix(mat)
     return arr
@@ -33,9 +33,9 @@ cdef c_construct_rectilinear_3d(DTYPE[:,::1] data, DTYPE epsilon):
         #raise NumflowException("Error encountered during creating dataset")
         return None
 
-    cdef np.ndarray[DTYPE, ndim=1] ax = create_1d_double_numpy(<void *>dataset[0].ax, dataset[0].dx)
-    cdef np.ndarray[DTYPE, ndim=1] ay = create_1d_double_numpy(<void *>dataset[0].ay, dataset[0].dy)
-    cdef np.ndarray[DTYPE, ndim=1] az = create_1d_double_numpy(<void *>dataset[0].az, dataset[0].dz)
+    cdef np.ndarray[DTYPE, ndim=1] ax = create_1d_float_numpy(<void *>dataset[0].ax, dataset[0].dx)
+    cdef np.ndarray[DTYPE, ndim=1] ay = create_1d_float_numpy(<void *>dataset[0].ay, dataset[0].dy)
+    cdef np.ndarray[DTYPE, ndim=1] az = create_1d_float_numpy(<void *>dataset[0].az, dataset[0].dz)
     
     delete_dataset_3d(dataset)
 
@@ -47,7 +47,7 @@ def construct_rectilinear_3d(data, epsilon):
     if axis is None:
         return None, None 
 
-    data = np.ascontiguousarray((data[:,0:3]).reshape(axis[0].size, axis[1].size, axis[2].size, 3)) #not optimal?
+    data = np.ascontiguousarray((data[:,3:6]).reshape(axis[0].size, axis[1].size, axis[2].size, 3)) #not optimal?
     return axis, data
 
 
@@ -64,10 +64,10 @@ cdef c_build_pyramide_level_3d(DTYPE[:,:,:,::1] values, DTYPE[::1] x,  DTYPE[::1
     #calculates square of magnitude
     cdef Dataset3D * level = construct_level_3d(&dataset, xi, yi, zi)
 
-    cdef np.ndarray[DTYPE, ndim=1] ax = create_1d_double_numpy(<void *>level[0].ax, level[0].dx)
-    cdef np.ndarray[DTYPE, ndim=1] ay = create_1d_double_numpy(<void *>level[0].ay, level[0].dy)
-    cdef np.ndarray[DTYPE, ndim=1] az = create_1d_double_numpy(<void *>level[0].az, level[0].dz)
-    cdef np.ndarray[DTYPE, ndim=3] data = create_3d_double_numpy(<void *>level[0].data, level[0].dx, level[0].dy, level[0].dz)
+    cdef np.ndarray[DTYPE, ndim=1] ax = create_1d_float_numpy(<void *>level[0].ax, level[0].dx)
+    cdef np.ndarray[DTYPE, ndim=1] ay = create_1d_float_numpy(<void *>level[0].ay, level[0].dy)
+    cdef np.ndarray[DTYPE, ndim=1] az = create_1d_float_numpy(<void *>level[0].az, level[0].dz)
+    cdef np.ndarray[DTYPE, ndim=3] data = create_3d_float_numpy(<void *>level[0].data, level[0].dx, level[0].dy, level[0].dz)
     
     delete_dataset_3d(level)
     return ax, ay, az, data

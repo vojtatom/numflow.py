@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <locale>
 #include <cassert>
 #include <sstream>
 #include <string>
@@ -15,20 +16,20 @@ using namespace std;
 
 struct dataset_line3D
 {
-    double vx, vy, vz;
-    double x, y, z;
+    float x, y, z;
+    float vx, vy, vz;
 };
 
 struct dataset_line2D
 {
-    double vx, vy;
-    double x, y;
+    float x, y;
+    float vx, vy;
 };
 
 struct marker
 {
     int32_t i;
-    double fac;
+    float fac;
     int32_t status;
 };
 
@@ -39,32 +40,32 @@ enum LookUp
 };
 
 //Matrices for 4th order RK step
-const double A[25] = {1.0 / 5.0, 0.0, 0.0, 0.0, 0.0,
+const float A[25] = {1.0 / 5.0, 0.0, 0.0, 0.0, 0.0,
                       3.0 / 40.0, 9.0 / 40.0, 0.0, 0.0, 0.0,
                       44.0 / 45.0, -(56.0 / 15.0), 32.0 / 9.0, 0.0, 0.0,
                       19372.0 / 6561.0, -(25360.0 / 2187.0), 64448.0 / 6561.0, -(212.0 / 729.0), 0.0,
                       9017.0 / 3168.0, -(355.0 / 33.0), 46732.0 / 5247.0, 49.0 / 176.0, -(5103.0 / 18656.0)};
 
-const double B[6] = {35.0 / 384.0, 0.0, 500.0 / 1113.0, 125.0 / 192.0, -(2187.0 / 6784.0), 11.0 / 84.0};
-const double C[5] = {1.0 / 5.0, 3.0 / 10.0, 4.0 / 5.0, 8.0 / 9.0, 1.0};
-const double E[7] = {-(71.0 / 57600.0), 0.0, 71.0 / 16695.0, -(71.0 / 1920.0), 17253.0 / 339200.0, -(22.0 / 525.0), 1.0 / 40.0};
+const float B[6] = {35.0 / 384.0, 0.0, 500.0 / 1113.0, 125.0 / 192.0, -(2187.0 / 6784.0), 11.0 / 84.0};
+const float C[5] = {1.0 / 5.0, 3.0 / 10.0, 4.0 / 5.0, 8.0 / 9.0, 1.0};
+const float E[7] = {-(71.0 / 57600.0), 0.0, 71.0 / 16695.0, -(71.0 / 1920.0), 17253.0 / 339200.0, -(22.0 / 525.0), 1.0 / 40.0};
 
 //Constants
-const double SAFETY = 0.9;     // Multiply steps computed from asymptotic behaviour of errors by this.
-const double MIN_FACTOR = 0.2; // Minimum allowed decrease in a step size.
-const double MAX_FACTOR = 10;  // Maximum allowed increase in a step size.
+const float SAFETY = 0.9;     // Multiply steps computed from asymptotic behaviour of errors by this.
+const float MIN_FACTOR = 0.2; // Minimum allowed decrease in a step size.
+const float MAX_FACTOR = 10;  // Maximum allowed increase in a step size.
 
 //-----------------------------------------------------------------------------------
 
-void index(const double value, const double *grid, const int32_t size, marker &mark)
+void index(const float value, const float *grid, const int32_t size, marker &mark)
 {
     if (size == 0)
         return;
 
     int32_t low = 0;
     int32_t high = size - 1;
-    double min = grid[low];
-    double max = grid[high];
+    float min = grid[low];
+    float max = grid[high];
     int32_t middle = high * (value - min) / (max - min);
 
     if (value < min || value > max)
@@ -103,13 +104,13 @@ void index(const double value, const double *grid, const int32_t size, marker &m
     mark.status = LookUp::ok;
 }
 
-double *interpolate_3d(const Dataset3D *dataset, const double *points, const int32_t count)
+float *interpolate_3d(const Dataset3D *dataset, const float *points, const int32_t count)
 {
-    double *values = new double[count * 3]{};
+    float *values = new float[count * 3]{};
 
     int32_t zy = dataset->dy * dataset->dz;
     int32_t zyx0, zyx1, zy0, zy1, zy0ind2, zy1ind2;
-    double c00[3], c01[3], c10[3], c11[3], c0[3], c1[3];
+    float c00[3], c01[3], c10[3], c11[3], c0[3], c1[3];
     marker x, y, z;
 
     for (int32_t j = 0; j < count; j++)
@@ -155,11 +156,11 @@ double *interpolate_3d(const Dataset3D *dataset, const double *points, const int
 }
 
 //copy of the method above for single point use
-void interpolate_3d(const Dataset3D *dataset, const double *points, double *values)
+void interpolate_3d(const Dataset3D *dataset, const float *points, float *values)
 {
     int32_t zy = dataset->dy * dataset->dz;
     int32_t zyx0, zyx1, zy0, zy1, zy0ind2, zy1ind2;
-    double c00[3], c01[3], c10[3], c11[3], c0[3], c1[3];
+    float c00[3], c01[3], c10[3], c11[3], c0[3], c1[3];
     marker x, y, z;
 
     //get indicies
@@ -201,15 +202,15 @@ void interpolate_3d(const Dataset3D *dataset, const double *points, double *valu
 
 //-------------------------------------------------------------------------------
 
-double norm(double *val)
+float norm(float *val)
 {
     return sqrt(val[0] * val[0] + val[1] * val[1] + val[2] * val[2]);
 }
 
-double dot(const double *vec_a, const double *vec_b, const int32_t vec_l, 
+float dot(const float *vec_a, const float *vec_b, const int32_t vec_l, 
            const int32_t stride_a, const int32_t stride_b)
 {
-    double d = 0.0;
+    float d = 0.0;
     for (int32_t i = 0; i < vec_l; ++i)
         d += vec_a[i * stride_a] * vec_b[i * stride_b];
 
@@ -225,7 +226,7 @@ enum SolverStatus
 
 struct RKSolver
 {
-    RKSolver(const Dataset3D *_dataset, double _t0, double _tbound, const size_t _dims)
+    RKSolver(const Dataset3D *_dataset, float _t0, float _tbound, const size_t _dims)
         : dataset(_dataset), order(4), n_stages(6),
           atol(1e-6), rtol(1e-3), t0(_t0), tbound(_tbound),
           direction(tbound - t0 > 0 ? 1 : -1), dims(_dims), status(SolverStatus::ready){};
@@ -233,9 +234,9 @@ struct RKSolver
     //Initial step of integration, sets up internal variables
     //and selects initial step value. In case solver was used previously,
     //restarts time and status.
-    void initial_step(const double *y0)
+    void initial_step(const float *y0)
     {
-        double d0, d1, d2, h0, h1;
+        float d0, d1, d2, h0, h1;
 
         //restarting, just to make sure
         t = t0;
@@ -287,10 +288,10 @@ struct RKSolver
             return;
 
         //declaring all necessary
-        double t_new;
-        double min_step = 10.0 * (nextafter(t, tbound) - t);
-        double lh_abs = h_abs; // absolute dt
-        double h = 0;          // actualy is dt
+        float t_new;
+        float min_step = 10.0 * (nextafter(t, tbound) - t);
+        float lh_abs = h_abs; // absolute dt
+        float h = 0;          // actualy is dt
         int32_t accepted = 0;
 
         //if dt is smaller than minimal step
@@ -353,9 +354,9 @@ struct RKSolver
     //    this->f1  - new function value (vector)
     //    this->er  - error rate (vector)
     //    this->ern - norm from error rate (value)
-    void rk_step(double h)
+    void rk_step(float h)
     {
-        double tmp = 0.0;
+        float tmp = 0.0;
 
         //prepare K matrix and init y1 (new_y)
         for (size_t i = 0; i < dims; i++)
@@ -410,36 +411,36 @@ struct RKSolver
     const Dataset3D *dataset;
     const size_t order;
     const size_t n_stages;
-    const double atol;
-    const double rtol;
-    const double t0;
-    const double tbound;
-    const double direction;
+    const float atol;
+    const float rtol;
+    const float t0;
+    const float tbound;
+    const float direction;
     const size_t dims;
 
     //runtime buffers and variables
-    double h_abs;
-    double ern;
+    float h_abs;
+    float ern;
     size_t status;
-    double t;
-    double y[3] = {0, 0, 0};
-    double f[3] = {0, 0, 0};
-    double yt[3] = {0, 0, 0};
-    double ft[3] = {0, 0, 0};
-    double y1[3] = {0, 0, 0};
-    double f1[3] = {0, 0, 0};
-    double sc[3] = {0, 0, 0};
-    double er[3] = {0, 0, 0};
-    double K[21] = {0, 0, 0}; //3 * (n_stages + 1)
+    float t;
+    float y[3] = {0, 0, 0};
+    float f[3] = {0, 0, 0};
+    float yt[3] = {0, 0, 0};
+    float ft[3] = {0, 0, 0};
+    float y1[3] = {0, 0, 0};
+    float f1[3] = {0, 0, 0};
+    float sc[3] = {0, 0, 0};
+    float er[3] = {0, 0, 0};
+    float K[21] = {0, 0, 0}; //3 * (n_stages + 1)
 };
 
 //-------------------------------------------------------------------------------
 
-DataStreamlines *integrate_3d(const Dataset3D *dataset, double *points, const int32_t count,
-                              const double t0, const double tbound)
+DataStreamlines *integrate_3d(const Dataset3D *dataset, float *points, const int32_t count,
+                              const float t0, const float tbound)
 {
     //positions, values, times
-    Buffer<double> y, f, t;
+    Buffer<float> y, f, t;
     Buffer<int32_t> l; //streamline lengths
     size_t len;
 
@@ -512,7 +513,7 @@ bool compare_datasets_2d(const dataset_line2D &i1, const dataset_line2D &i2)
 }
 
 //sort matrix rows according to 3-6th or 2-4th columns
-void dataset_sort(double *data, int32_t columns, int32_t rows)
+void dataset_sort(float *data, int32_t columns, int32_t rows)
 {
     if (columns == 6)
         sort((dataset_line3D *)data, (dataset_line3D *)data + rows, compare_datasets_3d);
@@ -521,7 +522,7 @@ void dataset_sort(double *data, int32_t columns, int32_t rows)
 }
 
 //try to add uniques to buffer of unique values, values remain sorted
-void add_unique(Buffer<double> &uniques, Buffer<size_t> &counts, double value, double epsilon)
+void add_unique(Buffer<float> &uniques, Buffer<size_t> &counts, float value, float epsilon)
 {
     size_t idx = uniques.lower_bound(value);
 
@@ -533,12 +534,12 @@ void add_unique(Buffer<double> &uniques, Buffer<size_t> &counts, double value, d
 
 //gets unique coordinates of all axis
 //also test for rectilinear grid
-bool is_rectilinear_3d(double *values, size_t count, double epsilon,
-                       Buffer<double> &ux, Buffer<double> &uy, Buffer<double> &uz)
+bool is_rectilinear_3d(float *values, size_t count, float epsilon,
+                       Buffer<float> &ux, Buffer<float> &uy, Buffer<float> &uz)
 {
     Buffer<size_t> xcount, ycount, zcount;
 
-    size_t idx = 3;
+    size_t idx = 0;
     while (idx < count)
     {
         add_unique(ux, xcount, values[idx++], epsilon);
@@ -567,9 +568,9 @@ bool is_rectilinear_3d(double *values, size_t count, double epsilon,
 }
 
 //load 3D dataset
-Dataset3D *load_rectilinear_3d(const DataMatrix *mat, double epsilon)
+Dataset3D *load_rectilinear_3d(const DataMatrix *mat, float epsilon)
 {
-    Buffer<double> ux, uy, uz;
+    Buffer<float> ux, uy, uz;
     size_t size = mat->columns * mat->rows;
 
     if (!is_rectilinear_3d(mat->data, size, epsilon, ux, uy, uz))
@@ -593,6 +594,14 @@ Dataset3D *load_rectilinear_3d(const DataMatrix *mat, double epsilon)
     return dataset;
 }
 
+float parse_nans(const string & num)
+{
+    if (num == "NaN")
+        return NAN;
+    else 
+        return stof(num); 
+}
+
 //parse .csv file
 DataMatrix *parse_file(const char *filename, const char *sep)
 {
@@ -601,7 +610,8 @@ DataMatrix *parse_file(const char *filename, const char *sep)
     string line;
     unsigned char s1, s2, s3, s4, s5;
     float x, y, z, vx, vy, vz;
-    Buffer<double> values;
+    string svx, svy, svz;
+    Buffer<float> values;
 
     //number of dimensions
     getline(file, line);
@@ -620,8 +630,19 @@ DataMatrix *parse_file(const char *filename, const char *sep)
     if (dims == 5)
     {
         values.reserve(6 * clines);
-        while (!file.eof() && file >> vx >> s1 >> vy >> s2 >> vz >> s3 >> x >> s4 >> y >> s5 >> z)
+        while (!file.eof() && file >> line)
         {
+            stringstream s_stream(line);
+            if (!(s_stream >> x >> s1 >> y >> s2 >> z >> s3))
+                break;
+
+            getline(s_stream, svx, ',');
+            vx = parse_nans(svx);
+            getline(s_stream, svy, ',');
+            vy = parse_nans(svy);
+            getline(s_stream, svz, ',');
+            vz = parse_nans(svz);
+
             //separators checking, might be usefull for safety
             /*if (!(s1 == *sep && s2 == *sep && s3 == *sep 
                   && s4 == *sep && s5 == *sep))
@@ -630,7 +651,7 @@ DataMatrix *parse_file(const char *filename, const char *sep)
                     return nullptr;
                 }*/
 
-            values.push_back(vx, vy, vz, x, y, z);
+            values.push_back(x, y, z, vx, vy, vz);
         }
     }
     //2d dataset
@@ -661,10 +682,10 @@ Dataset3D * construct_level_3d(const Dataset3D * ds, int32_t x, int32_t y, int32
     nds->dx = min(max(x, 1), ds->dx);
     nds->dy = min(max(y, 1), ds->dy);
     nds->dz = min(max(z, 1), ds->dz);
-    nds->data = new double[nds->dx * nds->dy * nds->dz]{};
-    nds->ax = new double[nds->dx];
-    nds->ay = new double[nds->dy];
-    nds->az = new double[nds->dz];
+    nds->data = new float[nds->dx * nds->dy * nds->dz]{};
+    nds->ax = new float[nds->dx];
+    nds->ay = new float[nds->dy];
+    nds->az = new float[nds->dz];
 
     //setup axis
     float stepx = (float) ds->dx / nds->dx;
@@ -681,7 +702,7 @@ Dataset3D * construct_level_3d(const Dataset3D * ds, int32_t x, int32_t y, int32
     
     //get dataset values as max of assigned region
     size_t oi, ni;
-    double len;
+    float len;
     for (int32_t i = 0; i < ds->dx; i++)
     {
         for (int32_t j = 0; j < ds->dy; j++)

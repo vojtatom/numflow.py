@@ -40,11 +40,16 @@
 
 from numflow import load
 from scipy.interpolate import RegularGridInterpolator
+import numpy as np
 
-axis, data = load("data.csv")
-print(axis, data)
+#interpc, interps = load("test.csv", mode="both")
+#interpc, interps = load("tmp.npy", mode="both")
+interps = load("el1_512_512_512.csv", mode="c")
 
-interp = RegularGridInterpolator(axis, data)
-print(axis)
+points = [[20, 20, -10]]
+#points = [[0.1, 1.12, -20]]
+#print(interpc)
+print(interps)
+#print(interpc(points))
+print(interps(points))
 
-print(interp([0.10001,1.12,-7.05]))
