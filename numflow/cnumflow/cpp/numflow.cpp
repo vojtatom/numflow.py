@@ -461,7 +461,7 @@ DataStreamlines *integrate_3d(const Dataset3D *dataset, float *points, const int
     for (int32_t i = 0; i < count; i++)
     {
         solver.initial_step(points + 3 * i);
-        len = 0;
+        len = 1;
 
         //copy initial points and function values from inside solver
         //pushback handles the realloc
@@ -485,7 +485,7 @@ DataStreamlines *integrate_3d(const Dataset3D *dataset, float *points, const int
             t.push_back(solver.t);
         }
 
-        l[i] = len;
+        l.push_back(len);
     }
 
     DataStreamlines *stream = new DataStreamlines();

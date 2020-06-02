@@ -21,8 +21,8 @@ Before commiting, please run `make clean` to remove unnecesary build files, I tr
 ## Test output:
 
     numflow.load: input file parsed, now testing rectilinearity...
-    <numflow.dataset.RectilinearDataset object at 0x7f8fc70e1fd0>
-    <numflow.dataset.ScipyRectilinearDataset object at 0x7f8fc70e1c50>
+    <numflow.dataset.RectilinearDataset object at 0x7f1a62383f98>
+    <numflow.dataset.ScipyRectilinearDataset object at 0x7f1a62383c18>
     interpolation test
     [[  1.6076945    0.70690924 -10.        ]]
     [[  1.60769447   0.70690929 -10.        ]]
@@ -73,6 +73,8 @@ Before commiting, please run `make clean` to remove unnecesary build files, I tr
       3.25432829  3.64851065  7.59033421 20.          0.          0.11019766
       1.18756941  2.09899614  2.67713969  2.86206899  3.14961777  3.43765094
       6.31798256 20.        ]
+    (20,)
+    (20, 3) (20, 3)
     [[  0.5          0.5         -1.        ]
      [  0.5210646    0.5380434   -1.0250733 ]
      [  0.7961869    0.8737525   -1.3131194 ]
@@ -115,8 +117,10 @@ Before commiting, please run `make clean` to remove unnecesary build files, I tr
      [  0.           0.           0.        ]
      [  0.           0.           0.        ]
      [  0.           0.           0.        ]]
-    [] #tohle je error, ale to se fixne...
+    [11 10]
     [ 0.          0.02476414  0.27240553  0.8415613   1.646643    2.475587
       2.8542733   3.1752079   3.4961424   6.7054877  20.          0.
       0.04232192  0.4655411   1.5165104   2.6313925   2.9104774   3.1440234
       3.3775694   5.71303    20.        ]
+    (21,)
+    (21, 3) (21, 3)
