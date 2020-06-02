@@ -32,7 +32,7 @@ def makeExtension(extName, cfiles):
 		# adding the '.' to include_dirs is CRUCIAL!!
 		include_dirs=[".", np.get_include()],
 		extra_compile_args=["-Wall"],
-		extra_link_args=['-g', '-Wno-cpp', '-ffast-math', '-O2'],
+		extra_link_args=['-g', '-Wno-cpp', '-ffast-math'],
 		define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')],
 		language="c++"
 		)
@@ -79,6 +79,6 @@ setup(
 		'Programming Language :: Python :: 3.6',
 	],
 	# packages = ["visual.modules.numeric", "visual.modules.numeric.data", "visual.modules.numeric.math"],
-	ext_modules=cythonize(extensions),
+	ext_modules=cythonize(extensions, gdb_debug=True),
 	include_package_data=True
 )

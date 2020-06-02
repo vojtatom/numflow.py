@@ -184,6 +184,8 @@ struct Buffer
         }*/
     }
 
+    //essentially sets the buffer into state after std::move(), 
+    //the buffer SHOULD NEVER be used after this call
     void rob()
     {
         data = nullptr;

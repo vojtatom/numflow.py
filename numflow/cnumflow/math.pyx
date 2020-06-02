@@ -32,10 +32,10 @@ def integrate3D(DTYPE[:,:,:,::1] values, DTYPE[::1] x, DTYPE[::1] y, DTYPE[::1] 
     dataset.az = &z[0]
     dataset.data = &values[0, 0, 0, 0]
 
-    cdef DataStreamlines * streamlines = integrate_3d(&dataset, &points[0, 0], points.shape[1], t0, tbound)
+    cdef DataStreamlines * streamlines = integrate_3d(&dataset, &points[0, 0], points.shape[0], t0, tbound)
 
-    cdef np.ndarray[DTYPE, ndim=1] pos = create_1d_float_numpy(streamlines[0].y, streamlines[0].dy)
-    cdef np.ndarray[DTYPE, ndim=1] vals = create_1d_float_numpy(streamlines[0].f, streamlines[0].df)
+    cdef np.ndarray[DTYPE, ndim=2] pos = create_2d_float_numpy(streamlines[0].y, streamlines[0].dy / 3, 3)
+    cdef np.ndarray[DTYPE, ndim=2] vals = create_2d_float_numpy(streamlines[0].f, streamlines[0].df / 3, 3)
     cdef np.ndarray[DTYPE, ndim=1] ts = create_1d_float_numpy(streamlines[0].t, streamlines[0].dt)
     cdef np.ndarray[INTDTYPE, ndim=1] lens = create_1d_int32_numpy(streamlines[0].l, streamlines[0].dl)
 

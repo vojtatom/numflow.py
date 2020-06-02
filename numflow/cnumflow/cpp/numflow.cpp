@@ -106,7 +106,7 @@ void index(const float value, const float *grid, const int32_t size, marker &mar
 
 float *interpolate_3d(const Dataset3D *dataset, const float *points, const int32_t count)
 {
-    float *values = new float[count * 3]{};
+    float *values = new float[count * 3]();
 
     int32_t zy = dataset->dy * dataset->dz;
     int32_t zyx0, zyx1, zy0, zy1, zy0ind2, zy1ind2;
@@ -163,6 +163,8 @@ void interpolate_3d(const Dataset3D *dataset, const float *points, float *values
     float c00[3], c01[3], c10[3], c11[3], c0[3], c1[3];
     marker x, y, z;
 
+    memset(values, 0, sizeof(float) * 3);
+
     //get indicies
     index(points[0], dataset->ax, dataset->dx, x);
     if (x.status != LookUp::ok)
@@ -198,6 +200,9 @@ void interpolate_3d(const Dataset3D *dataset, const float *points, float *values
 
         values[i] = c0[i] * (1.0 - z.fac) + c1[i] * z.fac;
     }
+
+    //cout << "    interp " << points[0] << " " << points[1] << " " << points[2] << endl;
+    //cout << "           " << values[0] << " " << values[1] << " " << values[2] << endl;
 }
 
 //-------------------------------------------------------------------------------
@@ -316,7 +321,7 @@ struct RKSolver
                 t_new = tbound;
 
             h = t_new - t;
-            h_abs = fabs(h);
+            lh_abs = fabs(h);
 
             //perform step, error is implemented inside
             rk_step(h);
@@ -324,20 +329,20 @@ struct RKSolver
 
             if (ern == 0.0)
             {
-                h_abs *= MAX_FACTOR;
+                lh_abs *= MAX_FACTOR;
                 accepted = 1;
             }
             else if (ern < 1)
             {
-                h_abs *= fmin(MAX_FACTOR, fmax(1.0, SAFETY * pow(ern, -(1.0 / (order + 1.0)))));
+                lh_abs *= fmin(MAX_FACTOR, fmax(1.0, SAFETY * pow(ern, -(1.0 / (order + 1.0)))));
                 accepted = 1;
             }
             else
-                h_abs *= fmax(MIN_FACTOR, SAFETY * pow(ern, -(1.0 / (order + 1.0))));
+                lh_abs *= fmax(MIN_FACTOR, SAFETY * pow(ern, -(1.0 / (order + 1.0))));
         }
 
         t = t_new;
-        h_abs = h_abs;
+        h_abs = lh_abs;
         for (size_t i = 0; i < dims; i++)
             y[i] = y1[i], f[i] = f1[i];
 
@@ -444,6 +449,9 @@ DataStreamlines *integrate_3d(const Dataset3D *dataset, float *points, const int
     Buffer<int32_t> l; //streamline lengths
     size_t len;
 
+
+    //cout << "points count " << count << endl;
+
     //set the buffer for streamline lengths to fixed size
     l.reserve(count);
 
@@ -457,7 +465,9 @@ DataStreamlines *integrate_3d(const Dataset3D *dataset, float *points, const int
 
         //copy initial points and function values from inside solver
         //pushback handles the realloc
+        //cout << "step " << solver.y[0] << " " << solver.y[1] << " " << solver.y[2] << endl;
         y.push_back(solver.y[0], solver.y[1], solver.y[2]);
+        //cout << solver.f[0] << " " << solver.f[1] << " " << solver.f[2] << endl;
         f.push_back(solver.f[0], solver.f[1], solver.f[2]);
         t.push_back(solver.t);
 
@@ -468,7 +478,9 @@ DataStreamlines *integrate_3d(const Dataset3D *dataset, float *points, const int
             len += 1;
 
             //copy points and function values from inside solver
+            //cout << solver.y[0] << " " << solver.y[1] << " " << solver.y[2] << endl;
             y.push_back(solver.y[0], solver.y[1], solver.y[2]);
+            //cout << solver.f[0] << " " << solver.f[1] << " " << solver.f[2] << endl;
             f.push_back(solver.f[0], solver.f[1], solver.f[2]);
             t.push_back(solver.t);
         }
@@ -608,7 +620,7 @@ DataMatrix *parse_file(const char *filename, const char *sep)
     ifstream file(filename);
     size_t dims = 0, clines = 0;
     string line;
-    unsigned char s1, s2, s3, s4, s5;
+    unsigned char s1, s2, s3;
     float x, y, z, vx, vy, vz;
     string svx, svy, svz;
     Buffer<float> values;

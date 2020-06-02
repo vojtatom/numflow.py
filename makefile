@@ -1,4 +1,4 @@
-all: js #build
+all: python #build
 .PHONY: python upload clean
 
 #environments
