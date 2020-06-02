@@ -27,16 +27,13 @@ class Box(Primitive):
         glEnableVertexAttribArray(program.attr("pos"))
         glVertexAttribPointer(program.attr("pos"), 3, GL_FLOAT, GL_FALSE, 0, None)
 
-    def draw(self, view, projection):
-        #print("drawing box")
-        #print(view, projection)
-        #print(self.low, self.high)
 
+    def draw(self, view, projection):
         self.program.setupViewProjection(view, projection)
         self.program.uniformVec3f("low", self.low)
         self.program.uniformVec3f("high", self.high)
 
         glBindVertexArray(self.vao)
         glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
-        glDrawArrays(GL_LINES, 0, 72)
+        glDrawArrays(GL_LINES, 0, 36)
 

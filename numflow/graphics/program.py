@@ -2,6 +2,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
 
+import numpy as np
 class Program:
     def __init__(self, vert_shader, frag_shader):
         self.program = glCreateProgram()
@@ -54,27 +55,34 @@ class Program:
         shader = open(fname, 'r').read()
         return shader
 
+
     def addAttribute(self, name):
         aid = glGetAttribLocation(self.program, name)
         self.attributes[name] = aid
+
 
     def addUniform(self, name):
         uid = glGetUniformLocation(self.program, name)
         self.uniforms[name] = uid
 
+
     def use(self):
         glUseProgram(self.program)
+
 
     def attr(self, name):
         return self.attributes[name]
 
+
     def unif(self, name):
         return self.uniforms[name]
+
 
     def setupViewProjection(self, viewMat, projectionMat):
         self.use()
         glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, viewMat)
         glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, projectionMat)
+
 
     def uniformVec3f(self, name, value):
         glUniform3fv(self.unif(name), 1, value)

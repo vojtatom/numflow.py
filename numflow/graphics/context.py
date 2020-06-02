@@ -19,12 +19,20 @@ class Context:
 
         name = b'Nice little window'
 
+        self.doDrawing = True
+        self.mouseDown = False
+        self.mousePos = [0, 0]
+
         glutInit()
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
-        glutInitWindowSize(512, 512)
+        glutInitWindowSize(1920, 1080)
         glutCreateWindow(name)
         glutDisplayFunc(self.frame)
         glutReshapeFunc(self.resize)
+        glutMouseFunc(self.onMouse)
+        glutPassiveMotionFunc(self.onMove)
+        glutMotionFunc(self.onMove)
+        self.resize(1920, 1080)
 
         #compiles programs, sets attributes, uniforms
         self.setupPrograms()
@@ -33,25 +41,43 @@ class Context:
     def runLoop(self):
         #init global GL settings
         glClearColor(0., 0., 0., 1.)
-        glEnable(GL_BLEND)
-        glEnable(GL_DEPTH_TEST)
+        #glEnable(GL_BLEND)
+        #glEnable(GL_DEPTH_TEST)
         glutMainLoop()
 
 
     def frame(self):
-        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         #draw geometry
+        if self.doDrawing:
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+            self.app.draw()
 
-        self.app.draw()
+            glutSwapBuffers()
+            self.doDrawing = False
 
         #done drawing
-        glutSwapBuffers()
         glutPostRedisplay()
 
 
     def resize(self, w, h):
-        if self.app.camera == None:
+        if self.app.camera != None:
             self.app.camera.resize(w, h)
+        glViewport(0, 0, w, h)
+
+
+    def onMouse(self, button, state, x, y):
+        self.mouseDown = (state == 0)
+
+    def onMove(self, x, y):
+        if self.app.camera != None and self.mouseDown:
+            self.app.camera.rotate(x - self.mousePos[0], y - self.mousePos[1])
+            self.redraw()
+        self.mousePos = [x, y]
+        
+
+    def redraw(self):
+        self.doDrawing = True
+
 
     def setupPrograms(self):
         basepath = os.path.dirname(os.path.abspath(__file__))

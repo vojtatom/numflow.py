@@ -10,9 +10,8 @@ uniform mat4 projection;
 
 
 void main() { 
-    vec3 size = high - low;
-
-	vec3 vert = 0.5 * pos;//pos * size + low;
-
-	gl_Position = projection * view * vec4(vert, 1.0f);
+    //vec3 size = high - low;
+	vec3 vert = pos; //pos * size + low;
+    
+	gl_Position =  projection * view * vec4(vert, 1.0f);
 } 
