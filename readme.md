@@ -12,7 +12,7 @@ Before commiting, please run `make clean` to remove unnecesary build files, I tr
 ## TODO
  * udelat vetev
  * ~~opravit bug s interpolací~~
- * opravit integraci
+ * ~~opravit integraci~~
  * pospojovat kod
  * kamera
  * vizualizace boxu

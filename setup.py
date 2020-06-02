@@ -24,7 +24,7 @@ def scandir(dir, files=[], cfiles=[]):
 
 # generate an Extension object from its dotted name
 def makeExtension(extName, cfiles):
-	extPath=extName.replace(".", os.path.sep) + ".pyx"
+	extPath= extName.replace(".", os.path.sep) + ".pyx" 
 	print('path:', extName, [extPath] + cfiles)
 	return Extension(
 		extName,

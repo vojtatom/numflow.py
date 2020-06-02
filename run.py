@@ -1,3 +1,32 @@
+from numflow.application import Application 
+
+if __name__ == "__main__":
+    app = Application()
+    app.load_dataset("test.csv")
+
+
+
+    app.run()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #user written script/script to run the application
 ##import numpy as np
 ##from scipy.interpolate import RegularGridInterpolator
@@ -38,39 +67,40 @@
 
 
 
-from numflow import load, sstreamlines, cstreamlines
-from scipy.interpolate import RegularGridInterpolator
-import numpy as np
-from threading import Event
-
-interpc, interps = load("test.csv", mode="both")
-#interpc, interps = load("tmp.npy", mode="both")
-#interps = load("el1_512_512_512.csv", mode="c")
-
-points = [[20, 20, -10]]
-#points = [[0.1, 1.12, -20]]
-print(interpc)
-print(interps)
-print("interpolation test")
-print(interpc(points))
-print(interps(points))
-
-print("integration test")
-print(interpc([[3.76936, 0.564129, -35.9231]]))
-abort = Event()
-start_pts = np.array([[0.5, 0.5, -1.0], [5, 5, -1.0]])
-positions, values, lengths, times = sstreamlines(interps, 0, 20, start_pts, abort)
-print(positions)
-print(values)
-print(lengths)
-print(times)
-print(times.shape)
-print(positions.shape, values.shape)
-
-positions, values, lengths, times = cstreamlines(interpc, 0, 20, start_pts, abort)
-print(positions)
-print(values)
-print(lengths)
-print(times)
-print(times.shape)
-print(positions.shape, values.shape)
+#from numflow import load, sstreamlines, cstreamlines
+#from scipy.interpolate import RegularGridInterpolator
+#import numpy as np
+#from threading import Event
+#
+#interpc, interps = load("test.csv", mode="both")
+##interpc, interps = load("tmp.npy", mode="both")
+##interps = load("el1_512_512_512.csv", mode="c")
+#
+#points = [[20, 20, -10]]
+##points = [[0.1, 1.12, -20]]
+#print(interpc)
+#print(interps)
+#print("interpolation test")
+#print(interpc(points))
+#print(interps(points))
+#
+#print("integration test")
+#print(interpc([[3.76936, 0.564129, -35.9231]]))
+#abort = Event()
+#start_pts = np.array([[0.5, 0.5, -1.0], [5, 5, -1.0]])
+#positions, values, lengths, times = sstreamlines(interps, 0, 20, start_pts, abort)
+#print(positions)
+#print(values)
+#print(lengths)
+#print(times)
+#print(times.shape)
+#print(positions.shape, values.shape)
+#
+#positions, values, lengths, times = cstreamlines(interpc, 0, 20, start_pts, abort)
+#print(positions)
+#print(values)
+#print(lengths)
+#print(times)
+#print(times.shape)
+#print(positions.shape, values.shape)
+#
