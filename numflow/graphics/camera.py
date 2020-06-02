@@ -40,9 +40,7 @@ class Camera:
 
         rotmat = create_from_axis_rotation(axes_y, a_x)
         rotmat = multiply(rotmat, create_from_axis_rotation(axes_x, a_y))
-        print("pre", front)
         front = apply_to_vector(rotmat, front)
-        print("post", front)
 
         self.pos = self.center - front
         self.up = apply_to_vector(rotmat, self.up)

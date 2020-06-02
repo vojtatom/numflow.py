@@ -14,14 +14,12 @@ class Context:
         self.boxProgram = 0
         self.glyphProgram = 0
 
-        #self.initPrograms(vert, frag)
-        #self.initBuffers();
-
         name = b'Nice little window'
 
         self.doDrawing = True
         self.mouseDown = False
         self.mousePos = [0, 0]
+        self.keymap = {}
 
         glutInit()
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
@@ -32,6 +30,8 @@ class Context:
         glutMouseFunc(self.onMouse)
         glutPassiveMotionFunc(self.onMove)
         glutMotionFunc(self.onMove)
+        glutKeyboardFunc(self.onKey)
+        glutKeyboardUpFunc(self.onKeyUp)
         self.resize(1920, 1080)
 
         #compiles programs, sets attributes, uniforms
@@ -41,8 +41,8 @@ class Context:
     def runLoop(self):
         #init global GL settings
         glClearColor(0., 0., 0., 1.)
-        #glEnable(GL_BLEND)
-        #glEnable(GL_DEPTH_TEST)
+        glEnable(GL_BLEND)
+        glEnable(GL_DEPTH_TEST)
         glutMainLoop()
 
 
@@ -68,12 +68,21 @@ class Context:
     def onMouse(self, button, state, x, y):
         self.mouseDown = (state == 0)
 
+
     def onMove(self, x, y):
         if self.app.camera != None and self.mouseDown:
             self.app.camera.rotate(x - self.mousePos[0], y - self.mousePos[1])
             self.redraw()
         self.mousePos = [x, y]
         
+
+    def onKey(self, key, x, y):
+        self.keymap[key] = True
+
+
+    def onKeyUp(self, key, x, y):
+        self.keymap[key] = False
+
 
     def redraw(self):
         self.doDrawing = True

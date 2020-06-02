@@ -14,10 +14,14 @@ Before commiting, please run `make clean` to remove unnecesary build files, I tr
  * ~~opravit bug s interpolací~~
  * ~~opravit integraci~~
  * pospojovat kod
- * kamera
+ * ~~kamera~~
  * vizualizace boxu
  * neco zkusit vykreslit?
     
+
+## Notes:
+půlnoční update: bude to ještě dost práce, nějaké problémy ala interaktivní kamera atd, jsou vyřešené, ale zbývá vyrobit samotnou vizualizaci. Kódu přibývá a *musí* se v tom udržovat nějaký objektový model, protože jinak není absolutně šance se v tom vyznat. Všechny kreslící věci jsou ve složce graphics uvnitř numflow. Pokračování zítra, uvidí se, co všechno stihnu, teoreticky už tobo tolik není
+
 ## Test output:
 
     numflow.load: input file parsed, now testing rectilinearity...
