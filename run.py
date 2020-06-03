@@ -2,7 +2,7 @@ from numflow.application import Application
 
 if __name__ == "__main__":
     app = Application()
-    app.load_dataset("test.csv")
+    app.load_dataset("test2.csv")
     app.add_glyphs()
 
 

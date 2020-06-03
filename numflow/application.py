@@ -26,7 +26,7 @@ class Application:
         #add main bounding box to the visualization
         box = Box(self.gl.boxProgram, self.dataset.low, self.dataset.high)
         boxCenter = 0.5 * (self.dataset.low + self.dataset.high)
-        #self.camera.set_center(boxCenter)
+        self.camera.set_center(boxCenter)
         self.boxes.append(box)
 
 
@@ -35,10 +35,12 @@ class Application:
         if not self.dataset:
             raise NumflowException("Dataset needed.")
 
-        seed_points = np.random.rand(200, 3) * (self.dataset.high - self.dataset.low) + self.dataset.low
+        seed_points = np.random.rand(2000, 3) * (self.dataset.high - self.dataset.low) + self.dataset.low
         values = self.dataset(seed_points)
         glyphs = Glyphs(self.gl.glyphProgram, seed_points, values)
         self.glyphs.append(glyphs)
+
+
 
     def run(self):
         self.gl.runLoop()

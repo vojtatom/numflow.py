@@ -90,3 +90,7 @@ class Program:
 
     def uniformVec3f(self, name, value):
         glUniform3fv(self.unif(name), 1, value)
+
+    
+    def uniformf(self, name, value):
+        glUniform1f(self.unif(name), value)

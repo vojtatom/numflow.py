@@ -7,6 +7,7 @@ from OpenGL.GLUT import *
 #from OpenGL.GLUT.freeglut import *
 
 from .program import Program
+from .text import Text
 
 
 class Context:
@@ -36,6 +37,8 @@ class Context:
         glutTimerFunc(16, self.timer, 0)
         self.resize(1920, 1080)
 
+
+        self.text = Text("example", 10, [1, 1, 1])
         #compiles programs, sets attributes, uniforms
         self.setupPrograms()
 
@@ -43,9 +46,9 @@ class Context:
     def runLoop(self):
         #init global GL settings
         glClearColor(0., 0., 0., 1.)
-        #glEnable(GL_BLEND)
-        #glEnable(GL_DEPTH_TEST)
-        #glEnable(GL_CULL_FACE)
+        glEnable(GL_BLEND)
+        glEnable(GL_DEPTH_TEST)
+        glEnable(GL_CULL_FACE)
         glutMainLoop()
 
 
@@ -55,6 +58,7 @@ class Context:
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             self.app.draw()
 
+            self.text.renderText(10, 10)
             glutSwapBuffers()
             self.doDrawing = False
 
@@ -114,9 +118,11 @@ class Context:
         self.glyphProgram = Program(path("glyph.vert"), path("glyph.frag"))
         self.glyphProgram.use()
         self.glyphProgram.addAttribute("pos")
-        #self.glyphProgram.addAttribute("normal")
-        #self.glyphProgram.addAttribute("fvalues")
-        #self.glyphProgram.addAttribute("shift")
+        self.glyphProgram.addAttribute("normal")
+        self.glyphProgram.addAttribute("fvalues")
+        self.glyphProgram.addAttribute("shift")
+        self.glyphProgram.addUniform("amin")
+        self.glyphProgram.addUniform("amax")
 
 
     def timer(self, value):
