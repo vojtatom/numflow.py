@@ -53,9 +53,6 @@ mat4 getRotationMat(vec3 vector)
 
 }
 
-
-
-
 void main() { 
 	float amag = scaledMagnitude(fvalues);
 

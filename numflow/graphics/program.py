@@ -1,7 +1,7 @@
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
-import glm
+#import glm
 
 import numpy as np
 class Program:
@@ -83,14 +83,19 @@ class Program:
         return self.uniforms[name]
 
 
-    def setupViewProjection(self, viewMat, projectionMat):
-        glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, glm.value_ptr(viewMat))
-        glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, glm.value_ptr(projectionMat))
+    def setupBeforeDraw(self, viewMat, projectionMat, settings):
+        if "amin" in self.uniforms:
+            self.uniformf("amin", settings["min"])
+            self.uniformf("amax", settings["max"])
+
+        #glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, glm.value_ptr(viewMat))
+        glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, viewMat)
+        #glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, glm.value_ptr(projectionMat))
+        glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, projectionMat)
 
 
     def uniformVec3f(self, name, value):
         glUniform3fv(self.unif(name), 1, value)
 
-    
     def uniformf(self, name, value):
         glUniform1f(self.unif(name), value)

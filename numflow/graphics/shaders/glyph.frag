@@ -9,9 +9,5 @@ vec3 mapcolor( float val ) {
 }
 
 void main() { 
-    //vec3 defcolor = vec3(0.5, 0.0, 0.5);
-    //vec3 newcolor = mapcolor( fvalues );
-
-    //gl_FragColor = vec4(1.0); 
     gl_FragColor = vec4(fcolor * mapcolor(ofvalues) , 1.0); 
 } 

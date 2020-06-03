@@ -7,7 +7,7 @@ from OpenGL.GLUT import *
 #from OpenGL.GLUT.freeglut import *
 
 from .program import Program
-from .text import Text
+#from .text import Text
 
 
 class Context:
@@ -37,8 +37,7 @@ class Context:
         glutTimerFunc(16, self.timer, 0)
         self.resize(1920, 1080)
 
-
-        self.text = Text("example", 10, [1, 1, 1])
+        #self.text = Text("example", 10, [1, 1, 1])
         #compiles programs, sets attributes, uniforms
         self.setupPrograms()
 
@@ -58,7 +57,7 @@ class Context:
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             self.app.draw()
 
-            self.text.renderText(10, 10)
+            #self.text.renderText(10, 10)
             glutSwapBuffers()
             self.doDrawing = False
 
@@ -69,6 +68,7 @@ class Context:
         if self.app.camera != None:
             self.app.camera.resize(w, h)
         glViewport(0, 0, w, h)
+        self.redraw()
 
 
     def onMouse(self, button, state, x, y):
@@ -123,6 +123,15 @@ class Context:
         self.glyphProgram.addAttribute("shift")
         self.glyphProgram.addUniform("amin")
         self.glyphProgram.addUniform("amax")
+
+        #slice program setup
+        self.sliceProgram = Program(path("slice.vert"), path("slice.frag"))
+        self.sliceProgram.use()
+        self.sliceProgram.addAttribute("pos")
+        self.sliceProgram.addAttribute("fvalue")
+        self.sliceProgram.addUniform("amin")
+        self.sliceProgram.addUniform("amax")
+        self.sliceProgram.addUniform("normal")
 
 
     def timer(self, value):

@@ -11,10 +11,6 @@ class Glyphs(Primitive):
     def __init__(self, program, positions, values):
         self.program = program
 
-        lengths = np.linalg.norm(values, axis=1)
-        self.amin = np.amin(lengths)
-        self.amax = np.amax(lengths)
-
         glyph_vertices = np.ascontiguousarray(glyphVertCone(), dtype=np.float32) # vertices of a glyph
         glyph_normals = np.ascontiguousarray(glyphNormCone(), dtype=np.float32) # normals of a glyph
         positions = np.ascontiguousarray(positions.flatten(), dtype=np.float32)
@@ -67,7 +63,7 @@ class Glyphs(Primitive):
         glBindVertexArray(GL_NONE)
         self.program.unuse()
 
-    def draw(self, view, projection):
+    def draw(self, view, projection, settings):
         #setup projection matrices
         self.program.use()
 
@@ -76,9 +72,7 @@ class Glyphs(Primitive):
         glBindBuffer(GL_ARRAY_BUFFER, self.posvbo)
         glBindBuffer(GL_ARRAY_BUFFER, self.valvbo)
 
-        self.program.setupViewProjection(view, projection)
-        self.program.uniformf("amin", self.amin)
-        self.program.uniformf("amax", self.amax)
+        self.program.setupBeforeDraw(view, projection, settings)
 
         #glDrawArrays(GL_TRIANGLES, 0, 60)
         glDrawArraysInstanced(GL_TRIANGLES, 0, self.numverts, self.numglyphs)

@@ -4,6 +4,7 @@ if __name__ == "__main__":
     app = Application()
     app.load_dataset("test2.csv")
     app.add_glyphs()
+    app.add_slice(5, axis="z")
 
 
     app.run()

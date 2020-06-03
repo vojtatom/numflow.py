@@ -5,7 +5,6 @@ from OpenGL.GL import *
 import numpy as np
 import math
 from pyrr.matrix44 import create_look_at, create_perspective_projection_matrix, create_from_axis_rotation, multiply, apply_to_vector
-import glm
 
 
 ROT_STEP = 0.1
@@ -27,11 +26,11 @@ class Camera:
 
 
     def recalc(self):
-        view = glm.lookAt(self.pos, self.center, self.up)
-        proj = glm.perspective(45, self.width / self.height, 0.1, 1000)
+        #view = glm.lookAt(self.pos, self.center, self.up)
+        #proj = glm.perspective(45, self.width / self.height, 0.1, 1000)
 
-        #view = create_look_at(self.pos, self.center, self.up)
-        #proj = create_perspective_projection_matrix(45, self.width / self.height, 0.1, 1000)
+        view = create_look_at(self.pos, self.center, self.up)
+        proj = create_perspective_projection_matrix(45, self.width / self.height, 0.1, 1000)
         self.view, self.projection =  view, proj
 
 
