@@ -15,10 +15,8 @@ class Glyphs(Primitive):
         glyph_normals = np.ascontiguousarray(glyphNormCone(), dtype=np.float32) # normals of a glyph
         positions = np.ascontiguousarray(positions.flatten(), dtype=np.float32)
         values = np.ascontiguousarray(values.flatten(), dtype=np.float32)
-        #print(glyph_vertices)
 
         self.numverts = int(glyph_vertices.shape[0] / 3)
-        #print(self.numverts)
         self.numglyphs = int(positions.shape[0])
 
         self.vao = glGenVertexArrays(1)

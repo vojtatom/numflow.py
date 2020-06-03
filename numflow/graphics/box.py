@@ -14,7 +14,6 @@ class Box(Primitive):
         self.high = np.array(high, dtype=np.float32) 
         
         v = generateBox()
-        print(v)
 
         self.vao = glGenVertexArrays(1)
         glBindVertexArray(self.vao)

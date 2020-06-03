@@ -1,12 +1,14 @@
 import numpy as np
 
-from .graphics import Box, Context, Camera, Glyphs, Layer
+from .graphics import Box, Context, Camera, Glyphs, Layer, Streamline
 from .load import load
+from .integrate import sstreamlines
 
 from .exception import NumflowException
+from threading import Event
 
 
-def points(start, end, sampling):
+def regular_points(start, end, sampling):
     """
     Fonction producing regularly sampled seeding points. 
     The seeding space is defined by bounding cuboid. 
@@ -27,6 +29,23 @@ def points(start, end, sampling):
 
     return k
 
+def random_points(start, end, dataset, numSamples):
+    #TODO comments
+    if start == None:
+        start = dataset.low
+    else:
+        start = np.array(start)
+        start = np.amax([start, dataset.low], axis=0)
+
+    if end == None:
+        end = dataset.high
+    else:
+        end = np.array(end)
+        end = np.amin([end, dataset.high], axis=0)
+    
+
+    return np.random.rand(numSamples, 3) * (end - start) + start
+
 
 class Application:
     def __init__(self):
@@ -38,6 +57,7 @@ class Application:
         self.boxes = []
         self.layers = []
         self.glyphs = []
+        self.streamlines = []
         self.dataset = False
         
         self.stats = {
@@ -45,11 +65,19 @@ class Application:
             "max": 0
         }
 
+    #------------------------------------------------------------------------------------------------
+    # USER FUNCTIONS
+    #------------------------------------------------------------------------------------------------
 
     def load_dataset(self, file):
+        #TODO comments
         self.dataset = load(file)
         
         print(f"dataset {file} loaded")
+        print(f"Dataset stats:")
+        print(f"    resolution {self.dataset.res}")
+        print(f"    low        {self.dataset.low}")
+        print(f"    high       {self.dataset.high}")
 
         #add main bounding box to the visualization
         box = Box(self.gl.boxProgram, self.dataset.low, self.dataset.high)
@@ -58,11 +86,13 @@ class Application:
         self.boxes.append(box)
 
 
-    def add_glyphs(self):
+    def add_glyphs(self, numSamples=2000, low=None, high=None):
+        #TODO comments
         if not self.dataset:
             raise NumflowException("Dataset needed.")
 
-        seed_points = np.random.rand(2000, 3) * (self.dataset.high - self.dataset.low) + self.dataset.low
+        seed_points = random_points(low, high, self.dataset, numSamples)
+
         values = self.dataset(seed_points)
         self.updateStats(values)
         glyphs = Glyphs(self.gl.glyphProgram, seed_points, values)
@@ -70,18 +100,18 @@ class Application:
 
 
     def add_slice(self, slice_coord, axis="x", resolution=[20, 20]):
+        #TODO comments
         if not self.dataset:
             raise NumflowException("Dataset needed.")
 
         axis_id = ["x", "y", "z"].index(axis)
-        print(axis_id)
 
         start = self.dataset.low.copy()
         end = self.dataset.high.copy()
         start[axis_id] = slice_coord
         end[axis_id] = slice_coord
         resolution.insert(axis_id, 1)
-        grid_points = points(start, end, resolution)
+        grid_points = regular_points(start, end, resolution)
         values = self.dataset(grid_points)
         self.updateStats(values)
 
@@ -89,6 +119,19 @@ class Application:
         self.layers.append(layer)
 
 
+    def add_streamline(self, t0, t_bound, numSamples=10, low=None, high=None):
+        #TODO comments
+        if not self.dataset:
+            raise NumflowException("Dataset needed.")
+
+        seed_points = random_points(low, high, self.dataset, numSamples)
+
+        abort = Event() #for compatibility...
+        positions, values, lengths, times = sstreamlines(self.dataset, t0, t_bound, seed_points, abort)
+        streamline = Streamline(self.gl.streamlineProgram, positions, values, lengths, times)
+        self.streamlines.append(streamline)
+
+    #------------------------------------------------------------------------------------------------
 
     def run(self):
         self.gl.runLoop()
@@ -102,11 +145,13 @@ class Application:
         for box in self.boxes:
             box.draw(self.camera.view, self.camera.projection, self.stats)
 
-        for glyph in self.glyphs:
-            glyph.draw(self.camera.view, self.camera.projection, self.stats)
+        #for glyph in self.glyphs:
+        #    glyph.draw(self.camera.view, self.camera.projection, self.stats)
+        #for layer in self.layers:
+        #    layer.draw(self.camera.view, self.camera.projection, self.stats)
 
-        for layer in self.layers:
-            layer.draw(self.camera.view, self.camera.projection, self.stats)
+        for streamline in self.streamlines:
+            streamline.draw(self.camera.view, self.camera.projection, self.stats)
 
 
     def updateStats(self, values):

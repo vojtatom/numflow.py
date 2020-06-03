@@ -5,7 +5,8 @@ if __name__ == "__main__":
     app.load_dataset("test2.csv")
     app.add_glyphs()
     app.add_slice(5, axis="z")
-
+    #app.add_slice(15, axis="z")
+    app.add_streamline(0, 5, low=[-5, -5, 5], high=[5, 5, 5])
 
     app.run()
 

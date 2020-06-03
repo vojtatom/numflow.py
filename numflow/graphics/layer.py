@@ -8,7 +8,6 @@ from .geometry import layerElements
 class Layer:
     def __init__(self, program, positions, values, resolution, axis_id, slice_coord):
         self.program = program
-        print(program)
 
         layer_elements = np.ascontiguousarray(layerElements(resolution, axis_id), dtype=np.uint32) 
         positions =  np.ascontiguousarray(positions.flatten(), dtype=np.float32) 
@@ -60,9 +59,7 @@ class Layer:
         self.program.setupBeforeDraw(view, projection, settings)
         self.program.uniformVec3f("normal", self.normal)
 
-        #print("drawing elements")
         glDrawElements(GL_TRIANGLES, self.numIndices, GL_UNSIGNED_INT, None)
-        #print("done drawing elements")
 
         glBindVertexArray(GL_NONE)
         self.program.unuse()

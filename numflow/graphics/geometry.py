@@ -121,7 +121,8 @@ def streamVert(sampling, divisions=10):
     for i in range(divisions):
         vert.extend(glyphVertLine(sampling, 0)) 
 
-    return vert 
+    return np.ascontiguousarray(np.array(vert), dtype=np.float32) 
+
 
 def streamNorm(sampling, divisions=10):
     vert = [] 
@@ -129,7 +130,7 @@ def streamNorm(sampling, divisions=10):
     for i in range(divisions):
         vert.extend(glyphNormLine(sampling, 1)) 
     
-    return vert
+    return np.ascontiguousarray(np.array(vert), dtype=np.float32) 
 
 
 def streamLocalT(sampling, divisions=10):
@@ -155,7 +156,7 @@ def streamLocalT(sampling, divisions=10):
             vert.extend([top, top, top]) 
             i += add
         
-    return vert
+    return np.ascontiguousarray(np.array(vert), dtype=np.float32) 
 
 
 def layerElements(sampling, normal):

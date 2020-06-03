@@ -2,6 +2,44 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from .cnumflow import integrate3D
 
+def cleanup_streamlines(positions, values, lengths, times):
+    """
+    Cleans up streamline data. Removes consecutive 
+    points with the same positions.
+        :param streamlines: dict with points, values, lengths, times, and meta
+    """
+    offset = 0
+    to_delete = []
+    lengths_diff = np.zeros(lengths.shape)
+
+    ### take each streamline
+    for i, streamline_length in enumerate(lengths):
+        local_values = values[offset:offset + streamline_length,:] 
+        norms = np.linalg.norm(local_values, axis=1)
+
+        ### take only those wehre norm is zero
+        delete_index = np.where(norms < 10 ** -5)[0]
+        
+        ### if there are any zero length
+        if delete_index.size > 0:
+            subseq = np.diff(delete_index)
+            subseq = np.insert(subseq, 0, 1)
+            delete_index = delete_index[subseq == 1]
+
+            ### if there are any disposable
+            if delete_index.size > 0:
+                to_delete.extend(offset + delete_index)
+                lengths_diff[i] = delete_index.size
+
+        offset += streamline_length
+
+    positions = np.delete(positions, to_delete, axis=0) 
+    values = np.delete(values, to_delete, axis=0) 
+    times = np.delete(times, to_delete, axis=0) 
+    lengths = lengths - lengths_diff
+
+    return positions, values, lengths, times
+    
 
 def cstreamlines(dataset, t0, t_bound, starting_points, abort):
     #solve the integration inside C function from cnumflow
@@ -60,4 +98,5 @@ def sstreamlines(dataset, t0, t_bound, starting_points, abort):
     values = dataset(positions)
     
     del interpolate
+    cleanup_streamlines(positions, values, lengths, times)
     return positions, values, lengths, times

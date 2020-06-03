@@ -71,7 +71,4 @@ def load(filename, separator=",", points_clustering_tolerance=0.0001, mode="scip
 
 def sample_rectilinear_dataset(dataset, x, y, z):
     pos, vals = sample_dataset_3d(dataset.data, dataset.axis, x, y, z)
-    print(pos)
-    print(vals)
-
     return pos, vals

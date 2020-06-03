@@ -2,7 +2,7 @@ from math import sin, cos
 import numpy as np
 
 def field(x, y, z):
-	return [-y, x, 0]
+	return [-y * z, x * z, 0]
 
 gridx = np.linspace(-20, 20, num=60, endpoint=True) 
 gridy = np.linspace(-20, 20, num=60, endpoint=True) 

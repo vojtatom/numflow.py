@@ -137,6 +137,25 @@ class Context:
         self.sliceProgram.addUniform("amax")
         self.sliceProgram.addUniform("normal")
 
+        #streamline setup program
+        self.streamlineProgram = Program(path("streamline.vert"), path("streamline.frag"))
+        self.streamlineProgram.use()
+        self.streamlineProgram.addAttribute("vertPos")
+        self.streamlineProgram.addAttribute("vertNormal")
+        self.streamlineProgram.addAttribute("t_local")
+        self.streamlineProgram.addAttribute("fieldPosition0")
+        self.streamlineProgram.addAttribute("fieldPosition1")
+        self.streamlineProgram.addAttribute("fieldPosition2")
+        self.streamlineProgram.addAttribute("fieldPosition3")
+        self.streamlineProgram.addAttribute("fieldValue0")
+        self.streamlineProgram.addAttribute("fieldValue1")
+        self.streamlineProgram.addAttribute("fieldValue2")
+        self.streamlineProgram.addAttribute("fieldValue3")
+        self.streamlineProgram.addAttribute("t_global")
+        #self.streamlineProgram.addUniform("amin")
+        #self.streamlineProgram.addUniform("amax")
+
+
 
     def timer(self, value):
         glutPostRedisplay()
