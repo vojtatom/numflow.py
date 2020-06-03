@@ -1,17 +1,17 @@
 #version 330
 
-in vec3 position;
-in vec3 normal;
-in vec3 fvalues;
-in vec3 shift;   // to shift the glyph vertices to position
+in vec3 pos;
+//in vec3 normal;
+//in vec3 fvalues;
+//in vec3 shift;   // to shift the glyph vertices to position
 
 uniform mat4 view;
 uniform mat4 projection;
 
-out vec3 fcolor;
-out vec3 ofvalues;
+//out vec3 fcolor;
+//out vec3 ofvalues;
 
-vec3 phong(vec3 light, vec3 ver_position, vec3 ver_normal){
+/*vec3 phong(vec3 light, vec3 ver_position, vec3 ver_normal){
     vec3 ret = vec3(0.0);
     
     vec3 L = normalize(-light);
@@ -39,15 +39,14 @@ mat4 getRotationMat(vec3 vector)
                 oc * a.z * a.x - a.y * s,  oc * a.y * a.z + a.x * s,  oc * a.z * a.z + c,        0.0,
                 0.0,                       0.0,                       0.0,                       1.0);
 
-}
+}*/
 
 void main() { 
-	vec4 vertex = vec4(position + shift, 8.0);
-	mat4 rot = getRotationMat(fvalues); // fvalues here
-    vertex = rot * vertex;
-	gl_Position = vertex;
+	//mat4 rot = getRotationMat(fvalues); // fvalues here
+	//vec4 vertex = vec4(pos, 1.0);
+	gl_Position = projection * view * vec4(pos, 1.0f);
 
-	vec3 light = vec3(0., 100., -100.);
-	fcolor = phong(light, vertex.xyz, normal);
-	ofvalues = fvalues;
+	//vec3 light = vec3(0., 100., -100.);
+	//fcolor = vec3(1, 1, 1);//phong(light, vertex.xyz, normal);
+	//ofvalues = fvalues;
 } 

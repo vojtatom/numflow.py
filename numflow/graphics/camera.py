@@ -25,9 +25,9 @@ class Camera:
 
 
     def recalc(self):
-        view = create_look_at(self.pos, self.center, self.up, dtype=np.float32)
-        proj = create_perspective_projection_matrix(45, self.width / self.height, 0.1, 100, dtype=np.float32)
-        self.view, self.projection =  view, proj
+        view = create_look_at(self.pos, self.center, self.up).T
+        proj = create_perspective_projection_matrix(45, self.width / self.height, 0.1, 1000).T
+        self.view, self.projection =  view.flatten(order='F').astype(np.float32), proj.flatten(order='F').astype(np.float32)
 
 
     def rotate(self, x, y):
@@ -47,4 +47,25 @@ class Camera:
 
         self.recalc()
 
+
+    def set_center(self, center):
+        self.center = center
+
+    def zoom_out(self):
+        front = self.center - self.pos
+        size = np.linalg.norm(front)
+        front = front / size
+
+        self.pos = self.center - front * (size + 1) 
+        self.recalc()
+
+    def zoom_in(self):
+        front = self.center - self.pos
+        size = np.linalg.norm(front)
+        front = front / size
+
+        self.pos = self.center - front * max(size - 1, 1) 
+        self.recalc()
+
+    
     

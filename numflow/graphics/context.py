@@ -4,6 +4,7 @@ import numpy as np
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
+from OpenGL.GLUT.freeglut import *
 
 from .program import Program
 
@@ -32,6 +33,7 @@ class Context:
         glutMotionFunc(self.onMove)
         glutKeyboardFunc(self.onKey)
         glutKeyboardUpFunc(self.onKeyUp)
+        glutTimerFunc(16, self.timer, 0)
         self.resize(1920, 1080)
 
         #compiles programs, sets attributes, uniforms
@@ -41,8 +43,9 @@ class Context:
     def runLoop(self):
         #init global GL settings
         glClearColor(0., 0., 0., 1.)
-        glEnable(GL_BLEND)
-        glEnable(GL_DEPTH_TEST)
+        #glEnable(GL_BLEND)
+        #glEnable(GL_DEPTH_TEST)
+        #glEnable(GL_CULL_FACE)
         glutMainLoop()
 
 
@@ -56,7 +59,6 @@ class Context:
             self.doDrawing = False
 
         #done drawing
-        glutPostRedisplay()
 
 
     def resize(self, w, h):
@@ -66,8 +68,15 @@ class Context:
 
 
     def onMouse(self, button, state, x, y):
-        self.mouseDown = (state == 0)
-
+        #left button
+        if button == 0:
+            self.mouseDown = (state == 0)
+        elif button == 3: #wheel up
+            self.app.camera.zoom_out()
+            self.redraw()
+        elif button == 4: #wheel down
+            self.app.camera.zoom_in()
+            self.redraw()
 
     def onMove(self, x, y):
         if self.app.camera != None and self.mouseDown:
@@ -104,10 +113,15 @@ class Context:
         #glyph program setup
         self.glyphProgram = Program(path("glyph.vert"), path("glyph.frag"))
         self.glyphProgram.use()
-        self.glyphProgram.addAttribute("position")
-        self.glyphProgram.addAttribute("normal")
-        self.glyphProgram.addAttribute("fvalues")
-        self.glyphProgram.addAttribute("shift")
+        self.glyphProgram.addAttribute("pos")
+        #self.glyphProgram.addAttribute("normal")
+        #self.glyphProgram.addAttribute("fvalues")
+        #self.glyphProgram.addAttribute("shift")
+
+
+    def timer(self, value):
+        glutPostRedisplay()
+        glutTimerFunc(16, self.timer, value + 1)
 
 
     #def drawCut( self, positions, values, sampling, normal ):

@@ -9,6 +9,8 @@ class RectilinearDataset:
         self.axis = axis
         self.data = data
         self.res = [len(axis[0]), len(axis[1]), len(axis[2])]
+        self.low = np.array([ np.amin(ax) for ax in axis ])
+        self.high = np.array([ np.amax(ax) for ax in axis ])
         self.type = "c"
     
 
@@ -39,6 +41,8 @@ class ScipyRectilinearDataset:
         self.axis = axis
         self.data = data
         self.res = [len(axis[0]), len(axis[1]), len(axis[2])]
+        self.low = np.array([ np.amin(ax) for ax in axis ])
+        self.high = np.array([ np.amax(ax) for ax in axis ])
         self.type = "scipy"
 
     def __call__(self, points):

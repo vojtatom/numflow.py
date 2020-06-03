@@ -20,7 +20,7 @@ def glyphVertCone(sampling=10):
         vert.extend([0, 0, 0])
         i += add
 
-    return np.array(vert, dtype=np.float32)
+    return np.ascontiguousarray(np.array(vert), dtype=np.float32)
 
 
 def glyphNormCone(sampling=10):

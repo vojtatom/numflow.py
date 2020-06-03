@@ -70,6 +70,10 @@ class Program:
         glUseProgram(self.program)
 
 
+    def unuse(self):
+        glUseProgram(GL_NONE)
+
+
     def attr(self, name):
         return self.attributes[name]
 
@@ -79,7 +83,6 @@ class Program:
 
 
     def setupViewProjection(self, viewMat, projectionMat):
-        self.use()
         glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, viewMat)
         glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, projectionMat)
 
