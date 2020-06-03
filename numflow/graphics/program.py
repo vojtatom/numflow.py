@@ -1,6 +1,7 @@
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from OpenGL.GL import *
+import glm
 
 import numpy as np
 class Program:
@@ -83,8 +84,8 @@ class Program:
 
 
     def setupViewProjection(self, viewMat, projectionMat):
-        glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, viewMat)
-        glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, projectionMat)
+        glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, glm.value_ptr(viewMat))
+        glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, glm.value_ptr(projectionMat))
 
 
     def uniformVec3f(self, name, value):

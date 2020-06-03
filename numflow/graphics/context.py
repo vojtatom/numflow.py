@@ -4,7 +4,7 @@ import numpy as np
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
-from OpenGL.GLUT.freeglut import *
+#from OpenGL.GLUT.freeglut import *
 
 from .program import Program
 

@@ -29,22 +29,21 @@ class Box(Primitive):
         glVertexAttribPointer(program.attr("pos"), 3, GL_FLOAT, GL_FALSE, 0, None)
 
         glBindVertexArray(GL_NONE)
-
         self.program.unuse()
+
 
     def draw(self, view, projection):
         self.program.use()
 
         glBindVertexArray(self.vao)
-        glBindVertexArray(self.vao)
-
+        glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
 
         self.program.setupViewProjection(view, projection)
         self.program.uniformVec3f("low", self.low)
         self.program.uniformVec3f("high", self.high)
 
         #glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
-        glDrawArrays(GL_LINES, 0, 36)
+        glDrawArrays(GL_LINES, 0, 24)
 
         glBindVertexArray(GL_NONE)
         self.program.unuse()

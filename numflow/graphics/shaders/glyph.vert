@@ -23,10 +23,13 @@ uniform mat4 projection;
 	//diffuse
     ret += vec3(1.0) * NdotL;
     return ret;
-}
+}*/
 
 mat4 getRotationMat(vec3 vector)
 {
+	if (vector == vec3(1, 0, 0))
+		return mat4(1.0);
+
 	vec3 unit = vec3(1, 0, 0);
 	vec3 f = normalize(vector);
 	vec3 cross = cross(f, unit);
@@ -39,10 +42,10 @@ mat4 getRotationMat(vec3 vector)
                 oc * a.z * a.x - a.y * s,  oc * a.y * a.z + a.x * s,  oc * a.z * a.z + c,        0.0,
                 0.0,                       0.0,                       0.0,                       1.0);
 
-}*/
+}
 
 void main() { 
-	//mat4 rot = getRotationMat(fvalues); // fvalues here
+	mat4 rot = getRotationMat(vec3(0, 0, 1)); // fvalues here
 	//vec4 vertex = vec4(pos, 1.0);
 	gl_Position = projection * view * vec4(pos, 1.0f);
 

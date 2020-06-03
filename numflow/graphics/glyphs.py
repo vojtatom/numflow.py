@@ -11,7 +11,7 @@ class Glyphs(Primitive):
     def __init__(self, program, positions, values):
         self.program = program
 
-        glyph_vertices = glyphVertCone().flatten(order="F") # vertices of a glyph
+        glyph_vertices = np.ascontiguousarray(glyphVertCone(), dtype=np.float32) # vertices of a glyph
         #n = glyphNormCone() # normals of a glyph
 
         print(glyph_vertices)
@@ -57,6 +57,7 @@ class Glyphs(Primitive):
         #glVertexAttribDivisor(program.attr("fvalues"), 1)
 
         glBindVertexArray(GL_NONE)
+        self.program.unuse()
 
     def draw(self, projection, view):
         #setup projection matrices
@@ -67,7 +68,7 @@ class Glyphs(Primitive):
 
         self.program.setupViewProjection(view, projection)
 
-        glDrawArrays(GL_TRIANGLES, 0, 36)
+        glDrawArrays(GL_TRIANGLES, 0, 60)
         #glDrawArraysInstanced(GL_TRIANGLES, 0, self.numverts, self.numglyphs)
 
         glBindVertexArray(GL_NONE)
