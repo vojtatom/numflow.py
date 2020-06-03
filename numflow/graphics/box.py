@@ -36,7 +36,7 @@ class Box(Primitive):
         self.program.use()
 
         glBindVertexArray(self.vao)
-        glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
+        #glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
 
         self.program.setupBeforeDraw(view, projection, settings)
         self.program.uniformVec3f("low", self.low)

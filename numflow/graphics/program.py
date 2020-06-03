@@ -6,6 +6,7 @@ from OpenGL.GL import *
 import numpy as np
 class Program:
     def __init__(self, vert_shader, frag_shader):
+        self.name = f"{vert_shader} + {frag_shader}"
         self.program = glCreateProgram()
 
         vertex = glCreateShader(GL_VERTEX_SHADER)
@@ -99,3 +100,6 @@ class Program:
 
     def uniformf(self, name, value):
         glUniform1f(self.unif(name), value)
+
+    def __str__(self):
+        return f"OpenGl program {self.name}"

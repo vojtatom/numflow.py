@@ -167,7 +167,7 @@ def layerElements(sampling, normal):
             elements.extend([a + 1 + b * sampling[0], a + b * sampling[0], a + sampling[0] + b * sampling[0]]) 
             elements.extend([a + 1 + b * sampling[0], a + sampling[0] + b * sampling[0], a + 1 + sampling[0] + b * sampling[0]]) 
 
-    return elements 
+    return np.array(elements, dtype=np.uint32) 
 
 
 def colorbar(length):

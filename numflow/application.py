@@ -36,7 +36,7 @@ class Application:
         self.gl = Context(self)
         self.camera = Camera(500, 500)
         self.boxes = []
-        self.slices = []
+        self.layers = []
         self.glyphs = []
         self.dataset = False
         
@@ -86,7 +86,7 @@ class Application:
         self.updateStats(values)
 
         layer = Layer(self.gl.sliceProgram, grid_points, values, resolution, axis_id, slice_coord)
-        self.slices.append(layer)
+        self.layers.append(layer)
 
 
 
@@ -105,7 +105,7 @@ class Application:
         for glyph in self.glyphs:
             glyph.draw(self.camera.view, self.camera.projection, self.stats)
 
-        for layer in self.slices:
+        for layer in self.layers:
             layer.draw(self.camera.view, self.camera.projection, self.stats)
 
 

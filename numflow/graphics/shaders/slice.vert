@@ -13,6 +13,7 @@ uniform vec3 normal;
 out vec3 fcolor;
 out float ofvalues;
 
+//TODO improve phong, not working correctly
 vec3 phong(vec3 light, vec3 ver_position, vec3 ver_normal){
     vec3 ret = vec3(0.0);
     

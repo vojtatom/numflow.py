@@ -27,11 +27,9 @@ class Glyphs(Primitive):
         # glyph vertices
         self.vbo = glGenBuffers(1)
         glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
-        print(glyph_vertices.nbytes)
         glBufferData(GL_ARRAY_BUFFER, glyph_vertices.nbytes, glyph_vertices, GL_STATIC_DRAW)
 
         self.program.use()
-        #print("program pos", self.program.attributes, self.vao)
         glEnableVertexAttribArray(program.attr("pos"))
         glVertexAttribPointer(program.attr("pos"), 3, GL_FLOAT, GL_FALSE, 0, None)
 
@@ -68,9 +66,9 @@ class Glyphs(Primitive):
         self.program.use()
 
         glBindVertexArray(self.vao)
-        glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
-        glBindBuffer(GL_ARRAY_BUFFER, self.posvbo)
-        glBindBuffer(GL_ARRAY_BUFFER, self.valvbo)
+        #glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
+        #glBindBuffer(GL_ARRAY_BUFFER, self.posvbo)
+        #glBindBuffer(GL_ARRAY_BUFFER, self.valvbo)
 
         self.program.setupBeforeDraw(view, projection, settings)
 
