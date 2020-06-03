@@ -152,8 +152,8 @@ class Context:
         self.streamlineProgram.addAttribute("fieldValue2")
         self.streamlineProgram.addAttribute("fieldValue3")
         self.streamlineProgram.addAttribute("t_global")
-        #self.streamlineProgram.addUniform("amin")
-        #self.streamlineProgram.addUniform("amax")
+        self.streamlineProgram.addUniform("amin")
+        self.streamlineProgram.addUniform("amax")
 
 
 

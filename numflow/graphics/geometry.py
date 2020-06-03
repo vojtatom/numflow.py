@@ -49,7 +49,7 @@ def glyphNormCone(sampling=10):
     return np.array(vert, dtype=np.float32)
 
 
-def glyphVertLine(sampling, height=4):
+def glyphVertLine(sampling=3, height=4):
     vert = []
     add = 2 * math.pi / sampling 
     size = 0.5 
@@ -82,7 +82,7 @@ def glyphVertLine(sampling, height=4):
     return vert 
 
 
-def glyphNormLine(sampling, height=4):
+def glyphNormLine(sampling=3, height=4):
     vert = [] 
     add = 2 * math.pi / sampling
     t = np.array((0, 0, 0))

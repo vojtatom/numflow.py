@@ -128,6 +128,7 @@ class Application:
 
         abort = Event() #for compatibility...
         positions, values, lengths, times = sstreamlines(self.dataset, t0, t_bound, seed_points, abort)
+        self.updateStats(values)
         streamline = Streamline(self.gl.streamlineProgram, positions, values, lengths, times)
         self.streamlines.append(streamline)
 
@@ -145,10 +146,11 @@ class Application:
         for box in self.boxes:
             box.draw(self.camera.view, self.camera.projection, self.stats)
 
-        #for glyph in self.glyphs:
-        #    glyph.draw(self.camera.view, self.camera.projection, self.stats)
-        #for layer in self.layers:
-        #    layer.draw(self.camera.view, self.camera.projection, self.stats)
+        for glyph in self.glyphs:
+            glyph.draw(self.camera.view, self.camera.projection, self.stats)
+        
+        for layer in self.layers:
+            layer.draw(self.camera.view, self.camera.projection, self.stats)
 
         for streamline in self.streamlines:
             streamline.draw(self.camera.view, self.camera.projection, self.stats)

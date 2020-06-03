@@ -3,10 +3,14 @@ from OpenGL.GLU import *
 from OpenGL.GL import *
 
 import numpy as np
+import ctypes
 
 from .geometry import streamVert, streamNorm, streamLocalT
 from .primitives import Primitive
 
+def copyVector(invec, outvec, inoffset, outoffset, veclen):
+    for vi in range(veclen):
+        outvec[outoffset + vi] = invec[inoffset + vi]
 
 class Streamline:
     def __init__(self, program, positions, values, lengths, times):
@@ -28,6 +32,41 @@ class Streamline:
 
         self.vao = glGenVertexArrays(1)
         glBindVertexArray(self.vao)
+
+        #init segment
+        sampling = 10
+        divisions = 8
+        vert = streamVert(sampling, divisions)
+        norm = streamNorm(sampling, divisions)
+        t = streamLocalT(sampling, divisions)
+
+        #init VBO for stream positions
+        self.posvbo = glGenBuffers(1)
+        glBindBuffer(GL_ARRAY_BUFFER, self.posvbo)
+        glBufferData(GL_ARRAY_BUFFER, vert.nbytes, vert, GL_STATIC_DRAW)
+
+        self.program.use()
+        glEnableVertexAttribArray(program.attr("vertPos"))
+        glVertexAttribPointer(program.attr("vertPos"), 3, GL_FLOAT, GL_FALSE, 0, None)
+
+
+        #init VBO for stream normals
+        self.normvbo = glGenBuffers(1)
+        glBindBuffer(GL_ARRAY_BUFFER, self.normvbo)
+        glBufferData(GL_ARRAY_BUFFER, norm.nbytes, norm, GL_STATIC_DRAW)
+
+        glEnableVertexAttribArray(program.attr("vertNormal"))
+        glVertexAttribPointer(program.attr("vertNormal"), 3, GL_FLOAT, GL_FALSE, 0, None)
+
+        #init VBO for stream local time
+        self.timevbo = glGenBuffers(1)
+        glBindBuffer(GL_ARRAY_BUFFER, self.timevbo)
+        glBufferData(GL_ARRAY_BUFFER, t.nbytes, t, GL_STATIC_DRAW)
+
+        glEnableVertexAttribArray(program.attr("t_local"))
+        glVertexAttribPointer(program.attr("t_local"), 1, GL_FLOAT, GL_FALSE, 0, None)
+        self.instanceSize = int(vert.shape[0] / 3)
+
             
         #glyph positions
         self.streambuffer = glGenBuffers(1)
@@ -41,17 +80,13 @@ class Streamline:
         #offset in time array
         toffset = 0
 
-        def copyVector(invec, outvec, inoffset, outoffset, veclen):
-            for vi in range(veclen):
-                outvec[outoffset + vi] = invec[inoffset + vi]
-
         #setup each streamline
         for i in range(streamsCount):
             if lengths[i] == 0:
                 continue
 
             #lengths[i] - 1 == segment count
-            buffer = np.zeros(((lengths[i] - 1) * segsize,), dtype=np.float32)
+            buffer = np.ascontiguousarray(np.zeros(((lengths[i] - 1) * segsize,)), dtype=np.float32)
             streamLength = lengths[i]
             streamSegments = streamLength - 1
             #offset in buffer
@@ -128,9 +163,10 @@ class Streamline:
             toffset += 3
 
             #append to buffer 
-            glBufferSubData(GL_ARRAY_BUFFER, filled, buffer)
+            glBufferSubData(GL_ARRAY_BUFFER, filled, buffer.nbytes, buffer)
             filled += buffer.shape[0] * 4
             buffer = None
+        
 
 
         #setup attributes all on the same buffer
@@ -139,66 +175,31 @@ class Streamline:
         glVertexAttribPointer(program.attr("fieldPosition0"), 3, GL_FLOAT, GL_FALSE, 28 * 4, None)
         glVertexAttribDivisor(program.attr("fieldPosition0"), 1)
         glEnableVertexAttribArray(program.attr("fieldPosition1"))
-        glVertexAttribPointer(program.attr("fieldPosition1"), 3, GL_FLOAT, GL_FALSE, 28 * 4, 3 * 4)
+        glVertexAttribPointer(program.attr("fieldPosition1"), 3, GL_FLOAT, GL_FALSE, 28 * 4, ctypes.c_void_p(3 * 4))
         glVertexAttribDivisor(program.attr("fieldPosition1"), 1)
         glEnableVertexAttribArray(program.attr("fieldPosition2"))
-        glVertexAttribPointer(program.attr("fieldPosition2"), 3, GL_FLOAT, GL_FALSE, 28 * 4, 6 * 4)
+        glVertexAttribPointer(program.attr("fieldPosition2"), 3, GL_FLOAT, GL_FALSE, 28 * 4, ctypes.c_void_p(6 * 4))
         glVertexAttribDivisor(program.attr("fieldPosition2"), 1)
         glEnableVertexAttribArray(program.attr("fieldPosition3"))
-        glVertexAttribPointer(program.attr("fieldPosition3"), 3, GL_FLOAT, GL_FALSE, 28 * 4, 9 * 4)
+        glVertexAttribPointer(program.attr("fieldPosition3"), 3, GL_FLOAT, GL_FALSE, 28 * 4, ctypes.c_void_p(9 * 4))
         glVertexAttribDivisor(program.attr("fieldPosition3"), 1)
         glEnableVertexAttribArray(program.attr("fieldValue0"))
-        glVertexAttribPointer(program.attr("fieldValue0"), 3, GL_FLOAT, GL_FALSE, 28 * 4, 12 * 4)
+        glVertexAttribPointer(program.attr("fieldValue0"), 3, GL_FLOAT, GL_FALSE, 28 * 4, ctypes.c_void_p(12 * 4))
         glVertexAttribDivisor(program.attr("fieldValue0"), 1)
         glEnableVertexAttribArray(program.attr("fieldValue1"))
-        glVertexAttribPointer(program.attr("fieldValue1"), 3, GL_FLOAT, GL_FALSE, 28 * 4, 15 * 4)
+        glVertexAttribPointer(program.attr("fieldValue1"), 3, GL_FLOAT, GL_FALSE, 28 * 4, ctypes.c_void_p(15 * 4))
         glVertexAttribDivisor(program.attr("fieldValue1"), 1)
         glEnableVertexAttribArray(program.attr("fieldValue2"))
-        glVertexAttribPointer(program.attr("fieldValue2"), 3, GL_FLOAT, GL_FALSE, 28 * 4, 18 * 4)
+        glVertexAttribPointer(program.attr("fieldValue2"), 3, GL_FLOAT, GL_FALSE, 28 * 4, ctypes.c_void_p(18 * 4))
         glVertexAttribDivisor(program.attr("fieldValue2"), 1)
         glEnableVertexAttribArray(program.attr("fieldValue3"))
-        glVertexAttribPointer(program.attr("fieldValue3"), 3, GL_FLOAT, GL_FALSE, 28 * 4, 21 * 4)
+        glVertexAttribPointer(program.attr("fieldValue3"), 3, GL_FLOAT, GL_FALSE, 28 * 4, ctypes.c_void_p(21 * 4))
         glVertexAttribDivisor(program.attr("fieldValue3"), 1)
         #glEnableVertexAttribArray(program.attr("t_global"))
-        #glVertexAttribPointer(program.attr("t_global"), 3, GL_FLOAT, GL_FALSE, 28 * 4, 24 * 4)
+        #glVertexAttribPointer(program.attr("t_global"), 4, GL_FLOAT, GL_FALSE, 28 * 4, ctypes.c_void_p(24 * 4))
         #glVertexAttribDivisor(program.attr("t_global"), 1)
 
         self.instances = int(segmentsCount)
-
-        #init segment
-        sampling = 4
-        divisions = 4
-        vert = streamVert(sampling, divisions)
-        norm = streamNorm(sampling, divisions)
-        t = streamLocalT(sampling, divisions)
-
-        #init VBO for stream positions
-        self.posvbo = glGenBuffers(1)
-        glBindBuffer(GL_ARRAY_BUFFER, self.posvbo)
-        glBufferData(GL_ARRAY_BUFFER, vert.nbytes, vert, GL_STATIC_DRAW)
-
-        glEnableVertexAttribArray(program.attr("vertPos"))
-        glVertexAttribPointer(program.attr("vertPos"), 3, GL_FLOAT, GL_FALSE, 0, None)
-
-
-        #init VBO for stream normals
-        self.normvbo = glGenBuffers(1)
-        glBindBuffer(GL_ARRAY_BUFFER, self.normvbo)
-        glBufferData(GL_ARRAY_BUFFER, norm.nbytes, norm, GL_STATIC_DRAW)
-
-        glEnableVertexAttribArray(program.attr("vertNormal"))
-        glVertexAttribPointer(program.attr("vertNormal"), 3, GL_FLOAT, GL_FALSE, 0, None)
-
-        #init VBO for stream local time
-        self.timevbo = glGenBuffers(1)
-        glBindBuffer(GL_ARRAY_BUFFER, self.timevbo)
-        glBufferData(GL_ARRAY_BUFFER, t.nbytes, t, GL_STATIC_DRAW)
-
-        glEnableVertexAttribArray(program.attr("t_local"))
-        glVertexAttribPointer(program.attr("t_local"), 3, GL_FLOAT, GL_FALSE, 0, None)
-
-
-        self.instanceSize = int(vert.shape[0] / 3)
 
 
         glBindVertexArray(GL_NONE)
@@ -206,12 +207,15 @@ class Streamline:
 
 
     def draw(self, view, projection, settings):
+        glDisable(GL_CULL_FACE)
         self.program.use()
 
         glBindVertexArray(self.vao)
         self.program.setupBeforeDraw(view, projection, settings)
 
+        #print(self.instanceSize, self.instances)
         glDrawArraysInstanced(GL_TRIANGLES, 0, self.instanceSize, self.instances)
 
         glBindVertexArray(GL_NONE)
         self.program.unuse()
+        glEnable(GL_CULL_FACE)

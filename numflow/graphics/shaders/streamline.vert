@@ -22,7 +22,6 @@ uniform mat4 projection;
 uniform float amin;
 uniform float amax;
 
-
 out float cval;
 out vec3 color;
 
@@ -111,6 +110,20 @@ float applyModeLength(vec3 value){
 	return val;
 }
 
+float scaledMagnitude(vec3 value)
+{
+	float len = length(value);
+	return (len - amin) / (amax - amin);
+}
+
+
+float scaledMagnitude(float value)
+{
+	return (value - amin) / (amax - amin);
+}
+
+float scale = 0.05; 
+
 void main(){
 	//interpolate corresponding time factor (streamline parameter)
 	//float t = interpolate(t_local, t_global.x, t_global.y, t_global.z, t_global.w);
@@ -128,6 +141,8 @@ void main(){
 	vec3 tan1 = ltan1 * normalize(fieldValue2);
 
 	//interpolate actual values from precalculated local points
+	//vec3 position = fieldPosition1 * (1.0 - t_local) + fieldPosition2 * t_local;
+	//vec3 value = fieldValue1 * (1.0 - t_local) + fieldValue2 * t_local;
 	vec3 position = interpolateVec(t_local, fieldPosition1, fieldPosition2, tan0, tan1);
 	vec3 value = interpolateNorm(t_local, fieldPosition1, fieldPosition2, tan0, tan1);
 
@@ -142,23 +157,18 @@ void main(){
 
 	//transform vertex into place
 	mat4 mField = getRotationMat(value);
-	vec4 vertex = mField * vec4(vertPos, 1.0);
+	vec4 vertex = mField * vec4(vertPos * scale, 1.0);
 	vertex = vertex + vec4(position, 0.0);
 	vec4 vertex_normal = mField * vec4(vertNormal, 1.0);
 	
 	//shade
     vec3 light = vec3(0., 100., -100.);
 	color = phong(light, sigma, vertex.xyz, vertex_normal.xyz);
-	//color += float(appearance == 0) * vec3(1.0);
-
-	//rest of the coloring
-	//color *= colorfunc(sigma);
-	//color *= brightness;
 
 	//finalize transformation
 	gl_Position =  projection * view * vertex;
 	
-    cval = l;
+    cval = scaledMagnitude(l);
 	//check for depth drawing
 	//color += float(appearance == 2) * vec3(1.0 - gl_Position.z / farplane);
 	//fragColor = color;
