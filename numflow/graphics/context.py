@@ -40,8 +40,8 @@ class Context:
         glutKeyboardUpFunc(self.onKeyUp)
         self.resize(1920, 1080)
 
-        self.text = Text("example")
-        self.text2 = Text("example", color=[1, 0, 0])
+        #self.text = Text("example")
+        #self.text2 = Text("example", color=[1, 0, 0])
         #compiles programs, sets attributes, uniforms
         self.setupPrograms()
 
@@ -66,8 +66,8 @@ class Context:
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             self.app.draw()
 
-            self.text.renderText(0, 0, self.app.camera.width, self.app.camera.height)
-            self.text2.renderText(0, 10, self.app.camera.width, self.app.camera.height)
+            #self.text.renderText(0, 0, self.app.camera.width, self.app.camera.height)
+            #self.text2.renderText(0, 10, self.app.camera.width, self.app.camera.height)
             glutSwapBuffers()
             self.doDrawing = False
 

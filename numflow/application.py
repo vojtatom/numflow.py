@@ -164,7 +164,7 @@ class Application:
             streamline.draw(self.camera.view, self.camera.projection, self.settings)
 
         #draws the colormap strip on the side
-        self.colormap.draw(self.camera.width, self.camera.height)
+        self.colormap.draw(self.camera.width, self.camera.height, self.settings)
 
 
     def updateStats(self, values):

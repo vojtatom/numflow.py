@@ -34,16 +34,24 @@ class Colormap:
         glBindVertexArray(GL_NONE)
         self.program.unuse()
 
-        self.updateLabels(settings)
+        #labels 
+        self.bottom = Text(str(settings["min"]), fsize=25)
+        self.label_bottom_value = settings["min"]
+        self.top = Text(str(settings["max"]), fsize=25)
+        self.label_top_value = settings["max"]
     
 
     def updateLabels(self, settings):
-        #setup 2 labels
-        self.labels = []
+        if self.label_bottom_value != settings["min"]:
+            self.label_bottom_value = settings["min"]
+            self.bottom.updateText(str(self.label_bottom_value))
+
+        if self.label_top_value != settings["max"]:
+            self.label_top_value = settings["max"]
+            self.top.updateText(str(self.label_top_value))
 
 
-
-    def draw(self, screenwidth, screenheight):
+    def draw(self, screenwidth, screenheight, settings):
         self.program.use()
 
         glBindVertexArray(self.vao)
@@ -54,3 +62,9 @@ class Colormap:
 
         glBindVertexArray(GL_NONE)
         self.program.unuse()
+
+        #render labels
+        self.updateLabels(settings)
+        self.bottom.renderText(50, screenheight / 2, screenwidth, screenheight)
+        self.top.renderText(50, screenheight - 40, screenwidth, screenheight)
+            
