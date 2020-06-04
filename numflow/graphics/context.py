@@ -1,6 +1,6 @@
 import os
 import pygame
-import scipy.misc
+from imageio import imwrite
 
 import numpy as np
 from OpenGL.GL import *
@@ -47,6 +47,7 @@ class Context:
         self.textGamma = Text("gamma 1.0 - change U/I")
         self.textSave = Text("save screenshot C")
         self.textResize = Text("scale glyphs R")
+        self.viewText = Text("top view 7 - side view 3 - front view 1")
 
         #compiles programs, sets attributes, uniforms
         self.setupPrograms()
@@ -95,7 +96,8 @@ class Context:
             self.textGamma.renderText(0, 20, self.app.camera.width, self.app.camera.height)
             self.textSave.renderText(0, 40, self.app.camera.width, self.app.camera.height)
             self.textResize.renderText(0, 60, self.app.camera.width, self.app.camera.height)
-          
+            self.viewText.renderText(0, 80, self.app.camera.width, self.app.camera.height)
+            
             glutSwapBuffers()
             self.doDrawing = False
 
@@ -270,6 +272,7 @@ class Context:
 
 
     def saveScreen(self):
+
         pixel_data = np.zeros((3 * self.app.camera.width * self.app.camera.height), dtype=np.uint8)
 
         glReadBuffer(GL_FRONT)
@@ -278,4 +281,10 @@ class Context:
 
         pixel_data = np.flip(np.flipud(pixel_data.reshape((self.app.camera.height, self.app.camera.width, 3))), 2)
 
-        scipy.misc.imsave('screen.png', pixel_data)
+        i = 0
+        while True:
+            if os.path.exists(f"screen{i}.png"):
+                i += 1
+                continue
+            imwrite(f"screen{i}.png", pixel_data)
+            return

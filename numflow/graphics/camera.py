@@ -11,7 +11,7 @@ ROT_STEP = 0.1
 
 class Camera:
     def __init__(self, width, height):
-        self.pos = np.array([0, 0, 10], dtype=np.float32) 
+        self.pos = np.array([0, 0, 3], dtype=np.float32) 
         self.center = np.array([0, 0, 0], dtype=np.float32) 
         self.up = np.array([0, 1, 0], dtype=np.float32)
         self.width = width
@@ -27,24 +27,24 @@ class Camera:
 
     def front(self):
         dist = np.linalg.norm(self.center - self.pos)
-        self.pos = np.array([dist, 0, 0], dtype=np.float32) 
-        self.center = np.array([0, 0, 0], dtype=np.float32) 
+        self.pos = self.center + np.array([dist, 0, 0], dtype=np.float32) 
+        #self.center = np.array([0, 0, 0], dtype=np.float32) 
         self.up = np.array([0, 0, 1], dtype=np.float32) 
         self.recalc()
 
 
     def side(self):
         dist = np.linalg.norm(self.center - self.pos)
-        self.pos = np.array([0, dist, 0], dtype=np.float32) 
-        self.center = np.array([0, 0, 0], dtype=np.float32) 
+        self.pos = self.center + np.array([0, dist, 0], dtype=np.float32) 
+        #self.center = np.array([0, 0, 0], dtype=np.float32) 
         self.up = np.array([0, 0, 1], dtype=np.float32) 
         self.recalc()
 
 
     def top(self):
         dist = np.linalg.norm(self.center - self.pos)
-        self.pos = np.array([0, 0, dist], dtype=np.float32) 
-        self.center = np.array([0, 0, 0], dtype=np.float32) 
+        self.pos = self.center + np.array([0, 0, dist], dtype=np.float32) 
+        #self.center = np.array([0, 0, 0], dtype=np.float32) 
         self.up = np.array([0, 1, 0], dtype=np.float32) 
         self.recalc()
 
@@ -84,7 +84,7 @@ class Camera:
         size = np.linalg.norm(front)
         front = front / size
 
-        self.pos = self.center - front * (size + 1) 
+        self.pos = self.center - front * (size + 0.1) 
         self.recalc()
 
     def zoom_in(self):
@@ -92,7 +92,7 @@ class Camera:
         size = np.linalg.norm(front)
         front = front / size
 
-        self.pos = self.center - front * max(size - 1, 1) 
+        self.pos = self.center - front * max(size - 0.1, 0.1) 
         self.recalc()
 
     

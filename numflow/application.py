@@ -32,13 +32,13 @@ def regular_points(start, end, sampling):
 
 def random_points(start, end, dataset, numSamples):
     #TODO comments
-    if start == None:
+    if start is None:
         start = dataset.low
     else:
         start = np.array(start)
         start = np.amax([start, dataset.low], axis=0)
 
-    if end == None:
+    if end is None:
         end = dataset.high
     else:
         end = np.array(end)
@@ -101,19 +101,24 @@ class Application:
         boxCenter = 0.5 * (self.dataset.low + self.dataset.high)
         self.camera.set_center(boxCenter)
         self.boxes.append(box)
-
+        
         # create selection box
         lows = self.dataset.low
         highs = self.dataset.high
+
         # self.selection = Box(self.context.boxProgram, [lows[0]+2, lows[1]+2, lows[2]+2], [highs[0]-2, highs[1]-2, highs[2]-2])
         self.selection = Box(self.context.boxProgram, lows, highs)
         self.selection.color = np.array([1, 1, 1], dtype=np.float32)
         self.settings["selection"] = self.selection
 
+        #setup camera center
+        center = (highs + lows) / 2
+        self.camera.center = center
+
 
     def add_box(self, low=None, high=None):
-        low = self.dataset.low.copy() if low == None else np.amax([low, self.dataset.low], axis=0)
-        high = self.dataset.high.copy() if high == None else np.amin([high, self.dataset.high], axis=0)
+        low = self.dataset.low.copy() if low is None else np.amax([low, self.dataset.low], axis=0)
+        high = self.dataset.high.copy() if high is None else np.amin([high, self.dataset.high], axis=0)
         box = Box(self.context.boxProgram, low, high)
         self.boxes.append(box)
 
