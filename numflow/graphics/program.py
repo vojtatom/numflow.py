@@ -89,6 +89,10 @@ class Program:
             self.uniformf("min_thresh", settings["min_threshold"])
             self.uniformf("max_thresh", settings["max_threshold"])
 
+        if "selectedLow" in self.uniforms:
+            self.uniformVec3f("selectedLow", settings["selection"].low)
+            self.uniformVec3f("selectedHigh", settings["selection"].high)
+
         if "view" in self.uniforms:
             #glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, glm.value_ptr(viewMat))
             glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, viewMat)

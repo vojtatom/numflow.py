@@ -13,10 +13,11 @@ def copyVector(invec, outvec, inoffset, outoffset, veclen):
         outvec[outoffset + vi] = invec[inoffset + vi]
 
 class Streamline:
-    def __init__(self, program, positions, values, lengths, times):
+    def __init__(self, program, positions, values, lengths, times, thickness, transparency):
         self.program = program
-        self.thickness = 0.005
-        self.shadeMode = 1
+        self.thickness = thickness
+        self.shadeMode = 0
+        self.transparency = transparency
 
         #init buffers/geometry
         positions = np.ascontiguousarray(positions.flatten(), dtype=np.float32)
@@ -68,7 +69,6 @@ class Streamline:
         glVertexAttribPointer(program.attr("t_local"), 1, GL_FLOAT, GL_FALSE, 0, None)
         self.instanceSize = int(vert.shape[0] / 3)
 
-            
         #glyph positions
         self.streambuffer = glGenBuffers(1)
         glBindBuffer(GL_ARRAY_BUFFER, self.streambuffer)
@@ -215,6 +215,7 @@ class Streamline:
         self.program.setupBeforeDraw(view, projection, settings)
         self.program.uniformf("thickness", self.thickness)
         self.program.uniformi("shadeMode", self.shadeMode)
+        self.program.uniformf("transparency", self.transparency)
 
         #print(self.instanceSize, self.instances)
         glDrawArraysInstanced(GL_TRIANGLES, 0, self.instanceSize, self.instances)

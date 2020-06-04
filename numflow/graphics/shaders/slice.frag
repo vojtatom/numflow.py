@@ -3,6 +3,8 @@
 //out vec3 fcolor;
 in float ofvalues;
 
+uniform float transparency;
+
 vec3 colormap[8] = vec3[8]( vec3(0.18500126283629117,0.0,0.5300734481832133),
                             vec3(0.38464311940637147,0.0,0.6429409600399453),
                             vec3(0.5721456036395585,0.0,0.6501649022558448),
@@ -24,6 +26,6 @@ vec3 mapcolor(float val) {
 }
 
 void main() { 
-    gl_FragColor = vec4(mapcolor(ofvalues), 1.0); 
+    gl_FragColor = vec4(mapcolor(ofvalues), transparency); 
     //gl_FragColor = vec4(1.0); 
 } 

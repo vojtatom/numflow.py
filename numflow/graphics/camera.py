@@ -25,6 +25,30 @@ class Camera:
         self.recalc()
 
 
+    def front(self):
+        dist = np.linalg.norm(self.center - self.pos)
+        self.pos = np.array([dist, 0, 0], dtype=np.float32) 
+        self.center = np.array([0, 0, 0], dtype=np.float32) 
+        self.up = np.array([0, 0, 1], dtype=np.float32) 
+        self.recalc()
+
+
+    def side(self):
+        dist = np.linalg.norm(self.center - self.pos)
+        self.pos = np.array([0, dist, 0], dtype=np.float32) 
+        self.center = np.array([0, 0, 0], dtype=np.float32) 
+        self.up = np.array([0, 0, 1], dtype=np.float32) 
+        self.recalc()
+
+
+    def top(self):
+        dist = np.linalg.norm(self.center - self.pos)
+        self.pos = np.array([0, 0, dist], dtype=np.float32) 
+        self.center = np.array([0, 0, 0], dtype=np.float32) 
+        self.up = np.array([0, 1, 0], dtype=np.float32) 
+        self.recalc()
+
+
     def recalc(self):
         #view = glm.lookAt(self.pos, self.center, self.up)
         #proj = glm.perspective(45, self.width / self.height, 0.1, 1000)

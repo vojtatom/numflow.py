@@ -10,9 +10,18 @@ from .primitives import Primitive
 class Box(Primitive):
     def __init__(self, program, low, high):
         self.program = program
+        self.transparency = 1.0
+
         self.low = np.array(low, dtype=np.float32) 
+        self.min = np.array(low, dtype=np.float32)
         self.high = np.array(high, dtype=np.float32) 
+        self.max = np.array(high, dtype=np.float32)
         self.color = np.array([0.5, 0.8, 1], dtype=np.float32)
+
+        self.sel = 0 # def = left, then:
+        # bottom, back, right, top, front
+        self.selstep = 0.05
+        
         
         v = generateBox()
 
@@ -30,6 +39,32 @@ class Box(Primitive):
 
         glBindVertexArray(GL_NONE)
         self.program.unuse()
+
+
+    def changeSel(self):
+        self.sel = (self.sel + 1) % 6
+
+
+    def expand(self):
+        if self.sel < 3:
+            # changing low
+            val = self.low[self.sel]
+            self.low[self.sel] = val if (val - self.selstep < self.min[self.sel]) else val - self.selstep
+        else:
+            # changing high
+            val = self.high[self.sel - 3]
+            self.high[self.sel - 3] = val if (val + self.selstep > self.max[self.sel - 3]) else val + self.selstep
+
+
+    def contract(self):
+        if self.sel < 3:
+            # changing low
+            val = self.low[self.sel] 
+            self.low[self.sel] = val if (val + self.selstep > self.high[self.sel]) else val + self.selstep
+        else:
+            # changing high
+            val = self.high[self.sel - 3]
+            self.high[self.sel - 3] = val if (val - self.selstep < self.low[self.sel - 3]) else val - self.selstep
 
 
     def draw(self, view, projection, settings):

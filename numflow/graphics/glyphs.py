@@ -8,8 +8,10 @@ from .primitives import Primitive
 
 
 class Glyphs(Primitive):
-    def __init__(self, program, positions, values):
+    def __init__(self, program, positions, values, size, transparency):
         self.program = program
+        self.size = size
+        self.transparency = transparency
 
         glyph_vertices = np.ascontiguousarray(glyphVertCone(), dtype=np.float32) # vertices of a glyph
         glyph_normals = np.ascontiguousarray(glyphNormCone(), dtype=np.float32) # normals of a glyph
@@ -69,6 +71,8 @@ class Glyphs(Primitive):
         #glBindBuffer(GL_ARRAY_BUFFER, self.valvbo)
 
         self.program.setupBeforeDraw(view, projection, settings)
+        self.program.uniformf("size", self.size)
+        self.program.uniformf("transparency", self.transparency)
 
         #glDrawArrays(GL_TRIANGLES, 0, 60)
         glDrawArraysInstanced(GL_TRIANGLES, 0, self.numverts, self.numglyphs)

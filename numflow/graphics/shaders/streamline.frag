@@ -2,10 +2,15 @@
 
 in vec3 color;
 in float cval;
+in vec3 fpos;
 in float fvalue;
 
 uniform float min_thresh;
 uniform float max_thresh;
+uniform float transparency;
+
+uniform vec3 selectedLow;
+uniform vec3 selectedHigh;
 
 vec3 colormap[8] = vec3[8]( vec3(0.18500126283629117,0.0,0.5300734481832133),
                             vec3(0.38464311940637147,0.0,0.6429409600399453),
@@ -27,12 +32,24 @@ vec3 mapcolor(float val) {
     return colormap[bin_low] * (1.0 - fac) + colormap[bin_low + 1] * fac;
 }
 
+bool insideSelected()
+{
+    bool inside = true;
+    inside = inside && (selectedLow.x <= fpos.x); 
+    inside = inside && (selectedLow.y <= fpos.y); 
+    inside = inside && (selectedLow.z <= fpos.z); 
+    inside = inside && (selectedHigh.x >= fpos.x); 
+    inside = inside && (selectedHigh.y >= fpos.y); 
+    inside = inside && (selectedHigh.z >= fpos.z); 
+    return inside;
+}
+
 void main() { 
 
-    if (fvalue < min_thresh || fvalue > max_thresh)
+    if (fvalue < min_thresh || fvalue > max_thresh || !insideSelected())
         discard;
 
 
-    gl_FragColor = vec4(color * mapcolor(cval), 1.0); 
+    gl_FragColor = vec4(color * mapcolor(cval), transparency); 
     //gl_FragColor = vec4(1.0); 
 } 

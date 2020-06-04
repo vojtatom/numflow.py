@@ -5,7 +5,8 @@ from .load import load
 from .integrate import sstreamlines, cstreamlines
 
 from .exception import NumflowException
-from threading import Event
+from threading import Event, Thread
+import gc
 
 
 def regular_points(start, end, sampling):
@@ -59,8 +60,8 @@ class Application:
         self.glyphs = []
         self.streamlines = []
         self.dataset = False
+        self.renderThread = None
 
-        
         self.settings = {
             #minimal and maximal magnitudes
             "min": 0,
@@ -79,6 +80,11 @@ class Application:
 
     def load_dataset(self, file):
         #TODO comments
+
+        if self.dataset is not None:
+            self.dataset = None
+            gc.collect()
+
         self.dataset = load(file, mode='c')
         
         print(f"dataset {file} loaded")
@@ -93,8 +99,16 @@ class Application:
         self.camera.set_center(boxCenter)
         self.boxes.append(box)
 
+        # create selection box
+        lows = self.dataset.low
+        highs = self.dataset.high
+        # self.selection = Box(self.contex.boxProgram, [lows[0]+2, lows[1]+2, lows[2]+2], [highs[0]-2, highs[1]-2, highs[2]-2])
+        self.selection = Box(self.contex.boxProgram, lows, highs)
+        self.selection.color = np.array([1, 1, 1], dtype=np.float32)
+        self.settings["selection"] = self.selection
 
-    def add_glyphs(self, numSamples=2000, low=None, high=None):
+
+    def add_glyphs(self, numSamples=2000, low=None, high=None, size=1.0, transparency=1.0):
         #TODO comments
         if not self.dataset:
             raise NumflowException("Dataset needed.")
@@ -103,19 +117,19 @@ class Application:
 
         values = self.dataset(seed_points)
         self.updateStats(values)
-        glyphs = Glyphs(self.contex.glyphProgram, seed_points, values)
+        glyphs = Glyphs(self.contex.glyphProgram, seed_points, values, size, transparency)
         self.glyphs.append(glyphs)
 
 
-    def add_slice(self, slice_coord, axis="x", resolution=[20, 20]):
+    def add_slice(self, slice_coord, axis="x", resolution=[20, 20], low=None, high=None, transparency=1.0):
         #TODO comments
         if not self.dataset:
             raise NumflowException("Dataset needed.")
 
         axis_id = ["x", "y", "z"].index(axis)
 
-        start = self.dataset.low.copy()
-        end = self.dataset.high.copy()
+        start = self.dataset.low.copy() if low == None else np.amax([low, self.dataset.low], axis=0)
+        end = self.dataset.high.copy() if high == None else np.amin([high, self.dataset.high], axis=0)
         start[axis_id] = slice_coord
         end[axis_id] = slice_coord
         resolution.insert(axis_id, 1)
@@ -123,11 +137,11 @@ class Application:
         values = self.dataset(grid_points)
         self.updateStats(values)
 
-        layer = Layer(self.contex.sliceProgram, grid_points, values, resolution, axis_id, slice_coord)
+        layer = Layer(self.contex.sliceProgram, grid_points, values, resolution, axis_id, slice_coord, transparency)
         self.layers.append(layer)
 
 
-    def add_streamline(self, t0, t_bound, numSamples=10, low=None, high=None):
+    def add_streamline(self, t0, t_bound, numSamples=10, low=None, high=None, size=1.0, transparency=1.0):
         #TODO comments
         if not self.dataset:
             raise NumflowException("Dataset needed.")
@@ -137,32 +151,62 @@ class Application:
         abort = Event() #for compatibility...
         positions, values, lengths, times = cstreamlines(self.dataset, t0, t_bound, seed_points, abort)
         self.updateStats(values)
-        streamline = Streamline(self.contex.streamlineProgram, positions, values, lengths, times)
+        streamline = Streamline(self.contex.streamlineProgram, positions, values, lengths, times, size, transparency)
         self.streamlines.append(streamline)
 
     #------------------------------------------------------------------------------------------------
 
     def run(self):
         self.contex.runLoop()
+        #self.renderThread = Thread(target=self.contex.runLoop)
+        #self.renderThread.start()
 
 
-    def draw(self):
+    def draw_transparent(self):
         if self.camera == None:
             return
 
-        #single frame drawing, high level however
+        #draw transparent stuff
         for box in self.boxes:
-            box.draw(self.camera.view, self.camera.projection, self.settings)
+            if box.transparency < 1.0:
+                box.draw(self.camera.view, self.camera.projection, self.settings)
 
         for glyph in self.glyphs:
-            glyph.draw(self.camera.view, self.camera.projection, self.settings)
+            if glyph.transparency < 1.0:
+                glyph.draw(self.camera.view, self.camera.projection, self.settings)
         
         for layer in self.layers:
-            layer.draw(self.camera.view, self.camera.projection, self.settings)
+            if layer.transparency < 1.0:
+                layer.draw(self.camera.view, self.camera.projection, self.settings)
 
         for streamline in self.streamlines:
-            streamline.draw(self.camera.view, self.camera.projection, self.settings)
+            if streamline.transparency < 1.0:
+                streamline.draw(self.camera.view, self.camera.projection, self.settings)
 
+
+    def draw_opaque(self):
+        #draw opaque stuff
+        for box in self.boxes:
+            if box.transparency == 1.0:
+                box.draw(self.camera.view, self.camera.projection, self.settings)
+
+        for glyph in self.glyphs:
+            if glyph.transparency == 1.0:
+                glyph.draw(self.camera.view, self.camera.projection, self.settings)
+        
+        for layer in self.layers:
+            if layer.transparency == 1.0:
+                layer.draw(self.camera.view, self.camera.projection, self.settings)
+
+        for streamline in self.streamlines:
+            if streamline.transparency == 1.0:
+                streamline.draw(self.camera.view, self.camera.projection, self.settings)
+
+        # draw selection box
+        self.selection.draw(self.camera.view, self.camera.projection, self.settings)
+
+
+    def draw_colorbar(self):
         #draws the colormap strip on the side
         self.colormap.draw(self.camera.width, self.camera.height, self.settings)
 
@@ -177,10 +221,12 @@ class Application:
         self.settings["min"] = min(self.settings["min"], amin)
         self.settings["max"] = max(self.settings["max"], amax)
 
-        if self.settings["max"] < self.settings["max_threshold"]:
-            self.settings["max_threshold"] = self.settings["max"] 
+        #if self.settings["max"] < self.settings["max_threshold"]:
+        #    self.settings["max_threshold"] = self.settings["max"] 
 
         print(f"min, {amin}")
         print(f"max, {amax}")
         print(f"min thresh, {self.settings['min_threshold']}")
         print(f"max thresh, {self.settings['max_threshold']}")
+
+    

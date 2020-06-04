@@ -1,5 +1,6 @@
 import os
 import pygame
+import scipy.misc
 
 import numpy as np
 from OpenGL.GL import *
@@ -40,12 +41,13 @@ class Context:
         glutKeyboardUpFunc(self.onKeyUp)
         self.resize(1920, 1080)
 
-        #self.text = Text("example")
-        #self.text2 = Text("example", color=[1, 0, 0])
+        self.boxsides = { 0:"left", 1:"bottom", 2:"back", 3:"right", 4:"top", 5:"front" }
+        self.text = Text("selection side: left")
+
         #compiles programs, sets attributes, uniforms
         self.setupPrograms()
-
         glFinish()
+
 
 
     def runLoop(self):
@@ -63,16 +65,46 @@ class Context:
         #draw geometry
         if self.doDrawing:
             glFlush() 
+            
+            glEnable(GL_DEPTH_TEST)
+            glDepthMask(True)
+            
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-            self.app.draw()
+            
+            glDisable(GL_BLEND)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE)
+            #glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA)
 
-            #self.text.renderText(0, 0, self.app.camera.width, self.app.camera.height)
-            #self.text2.renderText(0, 10, self.app.camera.width, self.app.camera.height)
+            self.app.draw_opaque()
+            
+            glEnable(GL_BLEND)
+            glDepthMask(False)
+            
+            self.app.draw_transparent()
+
+            glDisable(GL_DEPTH_TEST)
+            glDisable(GL_BLEND)
+
+            self.app.draw_colorbar()
+            self.text.renderText(0, 0, self.app.camera.width, self.app.camera.height)
+          
             glutSwapBuffers()
             self.doDrawing = False
 
-        #done drawing
 
+    def switchSides(self):
+        # cycle selection box sides
+        self.app.selection.changeSel()
+        self.text.updateText("selection side: " + self.boxsides[self.app.selection.sel])
+        self.redraw()
+        
+
+    def moveSides(self, key):
+        if key == b'm': # expand side
+            self.app.selection.expand()
+        if key == b'n': # contract side
+            self.app.selection.contract()
+        self.redraw()
 
     def resize(self, w, h):
         if self.app.camera != None:
@@ -85,10 +117,10 @@ class Context:
         #left button
         if button == 0:
             self.mouseDown = (state == 0)
-        elif button == 3: #wheel up
+        elif button == 4: #wheel up
             self.app.camera.zoom_out()
             self.redraw()
-        elif button == 4: #wheel down
+        elif button == 3: #wheel down
             self.app.camera.zoom_in()
             self.redraw()
 
@@ -101,6 +133,24 @@ class Context:
 
     def onKey(self, key, x, y):
         self.keymap[key] = True
+
+        if key == b'1':
+            self.app.camera.front()
+        if key == b'3':
+            self.app.camera.side()
+        if key == b'7':
+            self.app.camera.top()
+        if key == b'c':
+            self.saveScreen()
+
+        if key == b's':
+            self.switchSides()
+        if key == b'm' or key == b'n':
+            self.moveSides(key)
+
+
+        self.redraw()
+
 
 
     def onKeyUp(self, key, x, y):
@@ -138,6 +188,8 @@ class Context:
         self.glyphProgram.addUniform("amax")
         self.glyphProgram.addUniform("view")
         self.glyphProgram.addUniform("projection")
+        self.glyphProgram.addUniform("size")
+        self.glyphProgram.addUniform("transparency")
 
         #slice program setup
         self.sliceProgram = Program(path("slice.vert"), path("slice.frag"))
@@ -149,6 +201,7 @@ class Context:
         self.sliceProgram.addUniform("normal")
         self.sliceProgram.addUniform("view")
         self.sliceProgram.addUniform("projection")
+        self.sliceProgram.addUniform("transparency")
 
         #streamline setup program
         self.streamlineProgram = Program(path("streamline.vert"), path("streamline.frag"))
@@ -173,6 +226,9 @@ class Context:
         self.streamlineProgram.addUniform("shadeMode")
         self.streamlineProgram.addUniform("view")
         self.streamlineProgram.addUniform("projection")
+        self.streamlineProgram.addUniform("transparency")
+        self.streamlineProgram.addUniform("selectedLow")
+        self.streamlineProgram.addUniform("selectedHigh")
 
 
         #colormap setup program
@@ -186,3 +242,15 @@ class Context:
     def timer(self, value):
         glutPostRedisplay()
         glutTimerFunc(16, self.timer, value + 1)
+
+
+    def saveScreen(self):
+        pixel_data = np.zeros((3 * self.app.camera.width * self.app.camera.height), dtype=np.uint8)
+
+        glReadBuffer(GL_FRONT)
+        glReadPixels(0, 0, self.app.camera.width, self.app.camera.height, GL_BGR, GL_UNSIGNED_BYTE, pixel_data)
+        glMemoryBarrier(GL_PIXEL_BUFFER_BARRIER_BIT)
+
+        pixel_data = np.flip(np.flipud(pixel_data.reshape((self.app.camera.height, self.app.camera.width, 3))), 2)
+
+        scipy.misc.imsave('screen.png', pixel_data)

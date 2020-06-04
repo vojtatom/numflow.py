@@ -27,6 +27,7 @@ uniform float thickness;
 out float cval;
 out vec3 color;
 out float fvalue;
+out vec3 fpos;
 
 //0 = phong
 //1 = shadowless
@@ -176,4 +177,5 @@ void main(){
 	
     cval = scaledMagnitude(l);
 	fvalue = l;
+	fpos = vertex.xyz;
 }

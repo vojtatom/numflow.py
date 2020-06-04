@@ -35,20 +35,22 @@ class Colormap:
         self.program.unuse()
 
         #labels 
-        self.bottom = Text(str(settings["min"]), fsize=25)
         self.label_bottom_value = settings["min"]
-        self.top = Text(str(settings["max"]), fsize=25)
         self.label_top_value = settings["max"]
+
+        self.labels = []
+        for l in range(5):
+            self.labels.append((l, Text(str("to be updated"), fsize=25)))
     
 
     def updateLabels(self, settings):
-        if self.label_bottom_value != settings["min"]:
+        if self.label_bottom_value != settings["min"] or self.label_top_value != settings["max"]:
             self.label_bottom_value = settings["min"]
-            self.bottom.updateText(str(self.label_bottom_value))
-
-        if self.label_top_value != settings["max"]:
             self.label_top_value = settings["max"]
-            self.top.updateText(str(self.label_top_value))
+
+            for i, t in self.labels:
+                fac = i / (len(self.labels) - 1)
+                t.updateText(str(f"{fac * self.label_bottom_value + (1 - fac) * self.label_top_value:.4f}"))
 
 
     def draw(self, screenwidth, screenheight, settings):
@@ -64,7 +66,14 @@ class Colormap:
         self.program.unuse()
 
         #render labels
+
+        self.label_bottom_pos = screenheight / 2
+        self.label_top_pos = screenheight - 40
+
+
         self.updateLabels(settings)
-        self.bottom.renderText(50, screenheight / 2, screenwidth, screenheight)
-        self.top.renderText(50, screenheight - 40, screenwidth, screenheight)
+        for i, t in self.labels:
+            fac = i / (len(self.labels) - 1)
+            t.renderText(50, fac * self.label_bottom_pos + (1 - fac) * self.label_top_pos, screenwidth, screenheight)
+
             

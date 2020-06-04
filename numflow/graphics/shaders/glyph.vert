@@ -14,8 +14,7 @@ uniform float amax;
 out vec3 fcolor;
 out float ofvalues;
 
-
-float size = 0.01;
+uniform float size;
 
 vec3 phong(vec3 light, vec3 ver_position, vec3 ver_normal){
     vec3 ret = vec3(0.0);
@@ -34,7 +33,7 @@ vec3 phong(vec3 light, vec3 ver_position, vec3 ver_normal){
 float scaledMagnitude(vec3 value)
 {
 	float len = length(value);
-	return pow((len - amin) / (amax - amin), 4);
+	return (len - amin) / (amax - amin);
 }
 
 mat4 getRotationMat(vec3 vector)
@@ -60,7 +59,7 @@ void main() {
 	float amag = scaledMagnitude(fvalues);
 
 	mat4 rot = getRotationMat(fvalues); // fvalues here
-	vec4 vertex = rot * vec4(pos * amag, 1.0) + vec4(shift, 0);
+	vec4 vertex = rot * vec4(pos * size, 1.0) + vec4(shift, 0);
 	gl_Position = projection * view * vertex;
 
 	vec3 light = vec3(0., 100., -100.);
