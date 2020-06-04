@@ -14,7 +14,7 @@ class Text:
 
 
 	def updateText(self, mytext):
-		glDeleteTextures(1, self.texture)
+		glDeleteTextures(1, GLuint(self.texture))
 		self.createTexture(mytext)
 
 

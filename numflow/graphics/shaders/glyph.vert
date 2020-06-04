@@ -13,8 +13,11 @@ uniform float amax;
 
 out vec3 fcolor;
 out float ofvalues;
+out vec3 fpos;
 
 uniform float size;
+uniform vec3 selectedLow;
+uniform vec3 selectedHigh;
 
 vec3 phong(vec3 light, vec3 ver_position, vec3 ver_normal){
     vec3 ret = vec3(0.0);
@@ -65,4 +68,5 @@ void main() {
 	vec3 light = vec3(0., 100., -100.);
 	fcolor = phong(light, vertex.xyz, normal);
 	ofvalues = amag;
+	fpos = vertex.xyz;
 } 

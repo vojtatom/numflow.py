@@ -59,6 +59,7 @@ class Colormap:
         glBindVertexArray(self.vao)
         self.program.uniformf("screenwidth", screenwidth)
         self.program.uniformf("screenheight", screenheight)
+        self.program.uniformf("gamma", settings["gamma"])
         
         glDrawArrays(GL_TRIANGLES, 0, 6)
 

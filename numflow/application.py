@@ -53,7 +53,7 @@ class Application:
         #init so it does not fall
         self.camera = None
 
-        self.contex = Context(self)
+        self.context = Context(self)
         self.camera = Camera(500, 500)
         self.boxes = []
         self.layers = []
@@ -68,10 +68,13 @@ class Application:
             "max": 0,
             #thresholds for filtering based on magnitude
             "min_threshold": 0,
-            "max_threshold": float(np.inf)
+            "max_threshold": float(np.inf),
+            #colorma manip
+            "gamma": 1.0,
+            "gamma_incr": 0.05
         }
         
-        self.colormap = Colormap(self.contex.colormapProgram, self.settings)
+        self.colormap = Colormap(self.context.colormapProgram, self.settings)
 
 
     #------------------------------------------------------------------------------------------------
@@ -94,7 +97,7 @@ class Application:
         print(f"    high       {self.dataset.high}")
 
         #add main bounding box to the visualization
-        box = Box(self.contex.boxProgram, self.dataset.low, self.dataset.high)
+        box = Box(self.context.boxProgram, self.dataset.low, self.dataset.high)
         boxCenter = 0.5 * (self.dataset.low + self.dataset.high)
         self.camera.set_center(boxCenter)
         self.boxes.append(box)
@@ -102,8 +105,8 @@ class Application:
         # create selection box
         lows = self.dataset.low
         highs = self.dataset.high
-        # self.selection = Box(self.contex.boxProgram, [lows[0]+2, lows[1]+2, lows[2]+2], [highs[0]-2, highs[1]-2, highs[2]-2])
-        self.selection = Box(self.contex.boxProgram, lows, highs)
+        # self.selection = Box(self.context.boxProgram, [lows[0]+2, lows[1]+2, lows[2]+2], [highs[0]-2, highs[1]-2, highs[2]-2])
+        self.selection = Box(self.context.boxProgram, lows, highs)
         self.selection.color = np.array([1, 1, 1], dtype=np.float32)
         self.settings["selection"] = self.selection
 
@@ -117,7 +120,7 @@ class Application:
 
         values = self.dataset(seed_points)
         self.updateStats(values)
-        glyphs = Glyphs(self.contex.glyphProgram, seed_points, values, size, transparency)
+        glyphs = Glyphs(self.context.glyphProgram, seed_points, values, size, transparency)
         self.glyphs.append(glyphs)
 
 
@@ -137,7 +140,7 @@ class Application:
         values = self.dataset(grid_points)
         self.updateStats(values)
 
-        layer = Layer(self.contex.sliceProgram, grid_points, values, resolution, axis_id, slice_coord, transparency)
+        layer = Layer(self.context.sliceProgram, grid_points, values, resolution, axis_id, slice_coord, transparency)
         self.layers.append(layer)
 
 
@@ -151,15 +154,31 @@ class Application:
         abort = Event() #for compatibility...
         positions, values, lengths, times = cstreamlines(self.dataset, t0, t_bound, seed_points, abort)
         self.updateStats(values)
-        streamline = Streamline(self.contex.streamlineProgram, positions, values, lengths, times, size, transparency)
+        streamline = Streamline(self.context.streamlineProgram, positions, values, lengths, times, size, transparency)
         self.streamlines.append(streamline)
+
+
+    def gamma(self, value):
+        #TODO comments
+        self.settings["gamma"] = max(value, 0)
+        self.context.text.updateText("gamma: " + self.settings["gamma"] + " - change with U/I")
 
     #------------------------------------------------------------------------------------------------
 
     def run(self):
-        self.contex.runLoop()
-        #self.renderThread = Thread(target=self.contex.runLoop)
+        self.context.runLoop()
+        #self.renderThread = Thread(target=self.context.runLoop)
         #self.renderThread.start()
+
+
+    def gamma_up(self):
+        self.settings["gamma"] += self.settings["gamma_incr"]
+        self.context.textGamma.updateText(f"gamma: {self.settings['gamma']:2f} - change with U/I")
+
+
+    def gamma_down(self):
+        self.settings["gamma"] = max(self.settings["gamma"] - self.settings["gamma_incr"], 0)
+        self.context.textGamma.updateText(f"gamma: {self.settings['gamma']:2f} - change with U/I")
 
 
     def draw_transparent(self):

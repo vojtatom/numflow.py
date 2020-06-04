@@ -85,6 +85,9 @@ class Program:
             self.uniformf("amin", settings["min"])
             self.uniformf("amax", settings["max"])
 
+        if "gamma" in self.uniforms:
+            self.uniformf("gamma", settings["gamma"])
+
         if "min_thresh" in self.uniforms:
             self.uniformf("min_thresh", settings["min_threshold"])
             self.uniformf("max_thresh", settings["max_threshold"])

@@ -11,6 +11,7 @@ uniform float amax;
 uniform vec3 normal;
 
 out vec3 fcolor;
+out vec3 fpos;
 out float ofvalues;
 
 //TODO improve phong, not working correctly
@@ -43,4 +44,5 @@ void main() {
 	vec3 light = vec3(0., 100., -100.);
 	fcolor = phong(light, pos, normal);
 	ofvalues = amag;
+	fpos = pos;
 } 

@@ -1,8 +1,12 @@
 #version 330
 
 in vec3 fcolor;
+in vec3 fpos;
 in float ofvalues;
 
+uniform float gamma;
+uniform vec3 selectedLow;
+uniform vec3 selectedHigh;
 uniform float transparency;
 
 vec3 colormap[8] = vec3[8]( vec3(0.18500126283629117,0.0,0.5300734481832133),
@@ -15,6 +19,7 @@ vec3 colormap[8] = vec3[8]( vec3(0.18500126283629117,0.0,0.5300734481832133),
                             vec3(0.894058310302958,0.9822535793047805,0.0810687655704728));
 
 vec3 mapcolor(float val) {
+    val = pow(val, gamma);
     int bin_low = int(val * 7);
 
     if (bin_low == 7)
@@ -24,8 +29,22 @@ vec3 mapcolor(float val) {
 
     return colormap[bin_low] * (1.0 - fac) + colormap[bin_low + 1] * fac;
 }
-
+bool insideSelected()
+{
+    bool inside = true;
+    inside = inside && (selectedLow.x <= fpos.x); 
+    inside = inside && (selectedLow.y <= fpos.y); 
+    inside = inside && (selectedLow.z <= fpos.z); 
+    inside = inside && (selectedHigh.x >= fpos.x); 
+    inside = inside && (selectedHigh.y >= fpos.y); 
+    inside = inside && (selectedHigh.z >= fpos.z); 
+    return inside;
+}
 
 void main() { 
+
+    if (!insideSelected())
+        discard;
+
     gl_FragColor = vec4(fcolor * mapcolor(ofvalues), transparency); 
 } 

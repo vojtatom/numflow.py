@@ -42,7 +42,9 @@ class Context:
         self.resize(1920, 1080)
 
         self.boxsides = { 0:"left", 1:"bottom", 2:"back", 3:"right", 4:"top", 5:"front" }
-        self.text = Text("selection side: left")
+        self.text = Text("selection side: left - move M/N, change side S")
+        self.textGamma = Text("gamma 1.0 - change U/I")
+        self.textSave = Text("save screenshot C")
 
         #compiles programs, sets attributes, uniforms
         self.setupPrograms()
@@ -86,7 +88,10 @@ class Context:
             glDisable(GL_BLEND)
 
             self.app.draw_colorbar()
+
             self.text.renderText(0, 0, self.app.camera.width, self.app.camera.height)
+            self.textGamma.renderText(0, 20, self.app.camera.width, self.app.camera.height)
+            self.textSave.renderText(0, 40, self.app.camera.width, self.app.camera.height)
           
             glutSwapBuffers()
             self.doDrawing = False
@@ -95,7 +100,7 @@ class Context:
     def switchSides(self):
         # cycle selection box sides
         self.app.selection.changeSel()
-        self.text.updateText("selection side: " + self.boxsides[self.app.selection.sel])
+        self.text.updateText("selection side: " + self.boxsides[self.app.selection.sel] + " - move M/N, change side S")
         self.redraw()
         
 
@@ -142,6 +147,11 @@ class Context:
             self.app.camera.top()
         if key == b'c':
             self.saveScreen()
+
+        if key == b'u':
+            self.app.gamma_up()
+        if key == b'i':
+            self.app.gamma_down()
 
         if key == b's':
             self.switchSides()
@@ -190,6 +200,9 @@ class Context:
         self.glyphProgram.addUniform("projection")
         self.glyphProgram.addUniform("size")
         self.glyphProgram.addUniform("transparency")
+        self.glyphProgram.addUniform("selectedLow")
+        self.glyphProgram.addUniform("selectedHigh")
+        self.glyphProgram.addUniform("gamma")
 
         #slice program setup
         self.sliceProgram = Program(path("slice.vert"), path("slice.frag"))
@@ -202,6 +215,9 @@ class Context:
         self.sliceProgram.addUniform("view")
         self.sliceProgram.addUniform("projection")
         self.sliceProgram.addUniform("transparency")
+        self.sliceProgram.addUniform("selectedLow")
+        self.sliceProgram.addUniform("selectedHigh")
+        self.sliceProgram.addUniform("gamma")
 
         #streamline setup program
         self.streamlineProgram = Program(path("streamline.vert"), path("streamline.frag"))
@@ -229,6 +245,7 @@ class Context:
         self.streamlineProgram.addUniform("transparency")
         self.streamlineProgram.addUniform("selectedLow")
         self.streamlineProgram.addUniform("selectedHigh")
+        self.streamlineProgram.addUniform("gamma")
 
 
         #colormap setup program
@@ -237,6 +254,7 @@ class Context:
         self.colormapProgram.addAttribute("pos")
         self.colormapProgram.addUniform("screenwidth")
         self.colormapProgram.addUniform("screenheight")
+        self.colormapProgram.addUniform("gamma")
 
 
     def timer(self, value):

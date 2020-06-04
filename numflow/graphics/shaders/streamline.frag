@@ -5,6 +5,7 @@ in float cval;
 in vec3 fpos;
 in float fvalue;
 
+uniform float gamma;
 uniform float min_thresh;
 uniform float max_thresh;
 uniform float transparency;
@@ -22,6 +23,7 @@ vec3 colormap[8] = vec3[8]( vec3(0.18500126283629117,0.0,0.5300734481832133),
                             vec3(0.894058310302958,0.9822535793047805,0.0810687655704728));
 
 vec3 mapcolor(float val) {
+    val = pow(val, gamma);
     int bin_low = int(val * 7);
 
     if (bin_low == 7)

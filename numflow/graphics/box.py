@@ -10,7 +10,7 @@ from .primitives import Primitive
 class Box(Primitive):
     def __init__(self, program, low, high):
         self.program = program
-        self.transparency = 1.0
+        self.transparency = 0.5
 
         self.low = np.array(low, dtype=np.float32) 
         self.min = np.array(low, dtype=np.float32)
