@@ -8,6 +8,8 @@ from .primitives import Primitive
 
 
 class Glyphs(Primitive):
+    resize = True
+    
     def __init__(self, program, positions, values, size, transparency):
         self.program = program
         self.size = size
@@ -73,6 +75,7 @@ class Glyphs(Primitive):
         self.program.setupBeforeDraw(view, projection, settings)
         self.program.uniformf("size", self.size)
         self.program.uniformf("transparency", self.transparency)
+        self.program.uniformi("resize", 1 if Glyphs.resize else 0)
 
         #glDrawArrays(GL_TRIANGLES, 0, 60)
         glDrawArraysInstanced(GL_TRIANGLES, 0, self.numverts, self.numglyphs)

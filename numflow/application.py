@@ -111,6 +111,13 @@ class Application:
         self.settings["selection"] = self.selection
 
 
+    def add_box(self, low=None, high=None):
+        low = self.dataset.low.copy() if low == None else np.amax([low, self.dataset.low], axis=0)
+        high = self.dataset.high.copy() if high == None else np.amin([high, self.dataset.high], axis=0)
+        box = Box(self.context.boxProgram, low, high)
+        self.boxes.append(box)
+
+
     def add_glyphs(self, numSamples=2000, low=None, high=None, size=1.0, transparency=1.0):
         #TODO comments
         if not self.dataset:

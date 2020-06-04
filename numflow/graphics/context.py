@@ -10,6 +10,7 @@ from OpenGL.GLUT import *
 
 from .program import Program
 from .text import Text
+from .glyphs import Glyphs
 
 
 class Context:
@@ -45,6 +46,7 @@ class Context:
         self.text = Text("selection side: left - move M/N, change side S")
         self.textGamma = Text("gamma 1.0 - change U/I")
         self.textSave = Text("save screenshot C")
+        self.textResize = Text("scale glyphs R")
 
         #compiles programs, sets attributes, uniforms
         self.setupPrograms()
@@ -92,6 +94,7 @@ class Context:
             self.text.renderText(0, 0, self.app.camera.width, self.app.camera.height)
             self.textGamma.renderText(0, 20, self.app.camera.width, self.app.camera.height)
             self.textSave.renderText(0, 40, self.app.camera.width, self.app.camera.height)
+            self.textResize.renderText(0, 60, self.app.camera.width, self.app.camera.height)
           
             glutSwapBuffers()
             self.doDrawing = False
@@ -152,6 +155,9 @@ class Context:
             self.app.gamma_up()
         if key == b'i':
             self.app.gamma_down()
+        if key == b'r':
+            #hotfix resize on r
+            Glyphs.resize = not Glyphs.resize
 
         if key == b's':
             self.switchSides()
@@ -203,6 +209,7 @@ class Context:
         self.glyphProgram.addUniform("selectedLow")
         self.glyphProgram.addUniform("selectedHigh")
         self.glyphProgram.addUniform("gamma")
+        self.glyphProgram.addUniform("resize")
 
         #slice program setup
         self.sliceProgram = Program(path("slice.vert"), path("slice.frag"))

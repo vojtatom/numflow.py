@@ -15,6 +15,8 @@ out vec3 fcolor;
 out float ofvalues;
 out vec3 fpos;
 
+uniform float gamma;
+uniform int resize;
 uniform float size;
 uniform vec3 selectedLow;
 uniform vec3 selectedHigh;
@@ -60,9 +62,13 @@ mat4 getRotationMat(vec3 vector)
 
 void main() { 
 	float amag = scaledMagnitude(fvalues);
+	vec3 tmppos = pos;
+
+	if (resize == 1)
+		tmppos = tmppos * pow(amag, gamma);
 
 	mat4 rot = getRotationMat(fvalues); // fvalues here
-	vec4 vertex = rot * vec4(pos * size, 1.0) + vec4(shift, 0);
+	vec4 vertex = rot * vec4(tmppos * size, 1.0) + vec4(shift, 0);
 	gl_Position = projection * view * vertex;
 
 	vec3 light = vec3(0., 100., -100.);
