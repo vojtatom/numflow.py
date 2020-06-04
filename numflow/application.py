@@ -1,6 +1,6 @@
 import numpy as np
 
-from .graphics import Box, Context, Camera, Glyphs, Layer, Streamline
+from .graphics import Box, Context, Camera, Glyphs, Layer, Streamline, Colormap
 from .load import load
 from .integrate import sstreamlines, cstreamlines
 
@@ -52,13 +52,14 @@ class Application:
         #init so it does not fall
         self.camera = None
 
-        self.gl = Context(self)
+        self.contex = Context(self)
         self.camera = Camera(500, 500)
         self.boxes = []
         self.layers = []
         self.glyphs = []
         self.streamlines = []
         self.dataset = False
+
         
         self.settings = {
             #minimal and maximal magnitudes
@@ -69,6 +70,8 @@ class Application:
             "max_threshold": float(np.inf)
         }
         
+        self.colormap = Colormap(self.contex.colormapProgram, self.settings)
+
 
     #------------------------------------------------------------------------------------------------
     # USER FUNCTIONS
@@ -85,7 +88,7 @@ class Application:
         print(f"    high       {self.dataset.high}")
 
         #add main bounding box to the visualization
-        box = Box(self.gl.boxProgram, self.dataset.low, self.dataset.high)
+        box = Box(self.contex.boxProgram, self.dataset.low, self.dataset.high)
         boxCenter = 0.5 * (self.dataset.low + self.dataset.high)
         self.camera.set_center(boxCenter)
         self.boxes.append(box)
@@ -99,9 +102,8 @@ class Application:
         seed_points = random_points(low, high, self.dataset, numSamples)
 
         values = self.dataset(seed_points)
-        print(values)
         self.updateStats(values)
-        glyphs = Glyphs(self.gl.glyphProgram, seed_points, values)
+        glyphs = Glyphs(self.contex.glyphProgram, seed_points, values)
         self.glyphs.append(glyphs)
 
 
@@ -121,7 +123,7 @@ class Application:
         values = self.dataset(grid_points)
         self.updateStats(values)
 
-        layer = Layer(self.gl.sliceProgram, grid_points, values, resolution, axis_id, slice_coord)
+        layer = Layer(self.contex.sliceProgram, grid_points, values, resolution, axis_id, slice_coord)
         self.layers.append(layer)
 
 
@@ -133,15 +135,15 @@ class Application:
         seed_points = random_points(low, high, self.dataset, numSamples)
 
         abort = Event() #for compatibility...
-        positions, values, lengths, times = sstreamlines(self.dataset, t0, t_bound, seed_points, abort)
+        positions, values, lengths, times = cstreamlines(self.dataset, t0, t_bound, seed_points, abort)
         self.updateStats(values)
-        streamline = Streamline(self.gl.streamlineProgram, positions, values, lengths, times)
+        streamline = Streamline(self.contex.streamlineProgram, positions, values, lengths, times)
         self.streamlines.append(streamline)
 
     #------------------------------------------------------------------------------------------------
 
     def run(self):
-        self.gl.runLoop()
+        self.contex.runLoop()
 
 
     def draw(self):
@@ -160,6 +162,9 @@ class Application:
 
         for streamline in self.streamlines:
             streamline.draw(self.camera.view, self.camera.projection, self.settings)
+
+        #draws the colormap strip on the side
+        self.colormap.draw(self.camera.width, self.camera.height)
 
 
     def updateStats(self, values):

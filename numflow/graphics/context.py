@@ -124,6 +124,8 @@ class Context:
         self.boxProgram.addUniform("low")
         self.boxProgram.addUniform("high")
         self.boxProgram.addUniform("color")
+        self.boxProgram.addUniform("view")
+        self.boxProgram.addUniform("projection")
 
         #glyph program setup
         self.glyphProgram = Program(path("glyph.vert"), path("glyph.frag"))
@@ -134,6 +136,8 @@ class Context:
         self.glyphProgram.addAttribute("shift")
         self.glyphProgram.addUniform("amin")
         self.glyphProgram.addUniform("amax")
+        self.glyphProgram.addUniform("view")
+        self.glyphProgram.addUniform("projection")
 
         #slice program setup
         self.sliceProgram = Program(path("slice.vert"), path("slice.frag"))
@@ -143,6 +147,8 @@ class Context:
         self.sliceProgram.addUniform("amin")
         self.sliceProgram.addUniform("amax")
         self.sliceProgram.addUniform("normal")
+        self.sliceProgram.addUniform("view")
+        self.sliceProgram.addUniform("projection")
 
         #streamline setup program
         self.streamlineProgram = Program(path("streamline.vert"), path("streamline.frag"))
@@ -164,7 +170,17 @@ class Context:
         self.streamlineProgram.addUniform("thickness")
         self.streamlineProgram.addUniform("min_thresh")
         self.streamlineProgram.addUniform("max_thresh")
+        self.streamlineProgram.addUniform("shadeMode")
+        self.streamlineProgram.addUniform("view")
+        self.streamlineProgram.addUniform("projection")
 
+
+        #colormap setup program
+        self.colormapProgram = Program(path("colormap.vert"), path("colormap.frag"))
+        self.colormapProgram.use()
+        self.colormapProgram.addAttribute("pos")
+        self.colormapProgram.addUniform("screenwidth")
+        self.colormapProgram.addUniform("screenheight")
 
 
     def timer(self, value):

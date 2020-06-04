@@ -48,10 +48,6 @@ class Program:
         self.attributes = {}
         self.uniforms = {}
 
-        #autoadd matrix uniforms
-        self.addUniform("view")
-        self.addUniform("projection")
-
 
     def readShader(self, fname):
         shader = open(fname, 'r').read()
@@ -93,11 +89,11 @@ class Program:
             self.uniformf("min_thresh", settings["min_threshold"])
             self.uniformf("max_thresh", settings["max_threshold"])
 
-
-        #glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, glm.value_ptr(viewMat))
-        glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, viewMat)
-        #glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, glm.value_ptr(projectionMat))
-        glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, projectionMat)
+        if "view" in self.uniforms:
+            #glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, glm.value_ptr(viewMat))
+            glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, viewMat)
+            #glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, glm.value_ptr(projectionMat))
+            glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, projectionMat)
 
 
     def uniformVec3f(self, name, value):
@@ -105,6 +101,9 @@ class Program:
 
     def uniformf(self, name, value):
         glUniform1f(self.unif(name), value)
+
+    def uniformi(self, name, value):
+        glUniform1i(self.unif(name), value)
 
     def __str__(self):
         return f"OpenGl program {self.name}"

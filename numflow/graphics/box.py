@@ -12,7 +12,7 @@ class Box(Primitive):
         self.program = program
         self.low = np.array(low, dtype=np.float32) 
         self.high = np.array(high, dtype=np.float32) 
-        self.color = np.array([1, 0, 1], dtype=np.float32)
+        self.color = np.array([0.5, 0.8, 1], dtype=np.float32)
         
         v = generateBox()
 

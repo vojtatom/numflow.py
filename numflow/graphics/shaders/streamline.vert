@@ -28,7 +28,9 @@ out float cval;
 out vec3 color;
 out float fvalue;
 
-
+//0 = phong
+//1 = shadowless
+uniform int shadeMode;
 
 /**
  * Create rotation matrix from field vector.
@@ -166,7 +168,8 @@ void main(){
 	
 	//shade
     vec3 light = vec3(0., 100., -100.);
-	color = phong(light, sigma, vertex.xyz, vertex_normal.xyz);
+	color = float(shadeMode == 0) * phong(light, sigma, vertex.xyz, vertex_normal.xyz);
+	color += float(shadeMode == 1) * vec3(1.0);
 
 	//finalize transformation
 	gl_Position =  projection * view * vertex;
