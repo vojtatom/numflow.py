@@ -65,7 +65,7 @@ class Application:
             "min": 0,
             "max": 0,
             #thresholds for filtering based on magnitude
-            "min_threshold": 1,
+            "min_threshold": 0,
             "max_threshold": float(np.inf)
         }
         
