@@ -12,6 +12,7 @@ class Box(Primitive):
         self.program = program
         self.low = np.array(low, dtype=np.float32) 
         self.high = np.array(high, dtype=np.float32) 
+        self.color = np.array([1, 0, 1], dtype=np.float32)
         
         v = generateBox()
 
@@ -40,6 +41,7 @@ class Box(Primitive):
         self.program.setupBeforeDraw(view, projection, settings)
         self.program.uniformVec3f("low", self.low)
         self.program.uniformVec3f("high", self.high)
+        self.program.uniformVec3f("color", self.color)
 
         #glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
         glDrawArrays(GL_LINES, 0, 24)

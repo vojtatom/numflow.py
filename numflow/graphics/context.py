@@ -123,6 +123,7 @@ class Context:
         self.boxProgram.addAttribute("pos")
         self.boxProgram.addUniform("low")
         self.boxProgram.addUniform("high")
+        self.boxProgram.addUniform("color")
 
         #glyph program setup
         self.glyphProgram = Program(path("glyph.vert"), path("glyph.frag"))
@@ -160,6 +161,9 @@ class Context:
         self.streamlineProgram.addAttribute("t_global")
         self.streamlineProgram.addUniform("amin")
         self.streamlineProgram.addUniform("amax")
+        self.streamlineProgram.addUniform("thickness")
+        self.streamlineProgram.addUniform("min_thresh")
+        self.streamlineProgram.addUniform("max_thresh")
 
 
 

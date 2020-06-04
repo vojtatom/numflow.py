@@ -45,6 +45,7 @@ def cstreamlines(dataset, t0, t_bound, starting_points, abort):
     #solve the integration inside C function from cnumflow
     starting_points = np.ascontiguousarray(np.array(starting_points, dtype=np.float32))
     positions, values, times, lengths = integrate3D(dataset.data, dataset.axis[0], dataset.axis[1], dataset.axis[2], starting_points, t0, t_bound)
+    cleanup_streamlines(positions, values, lengths, times)
     return positions, values, lengths, times
 
 
@@ -81,6 +82,7 @@ def sstreamlines(dataset, t0, t_bound, starting_points, abort):
     
     
     for i in range(starting_points.shape[0]):
+        print(f"integrating streamline {i}/{starting_points.shape[0]}", end='\r')
         sol = solve_ivp(interpolate, (t0, t_bound), starting_points[i])
 
         if positions is None:
@@ -98,5 +100,6 @@ def sstreamlines(dataset, t0, t_bound, starting_points, abort):
     values = dataset(positions)
     
     del interpolate
+    print("integration done")
     cleanup_streamlines(positions, values, lengths, times)
     return positions, values, lengths, times

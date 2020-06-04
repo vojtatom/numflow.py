@@ -149,7 +149,15 @@ float *interpolate_3d(const Dataset3D *dataset, const float *points, const int32
             c1[i] = c01[i] * (1.0 - y.fac) + c11[i] * y.fac;
 
             values[j * 3 + i] = c0[i] * (1.0 - z.fac) + c1[i] * z.fac;
+
+            //NaN protection
+            if (isnan(values[j * 3 + i]))
+                values[j * 3 + i] = 0;
+
+            //cout << values[j * 3 + i] << " " << flush;
         }
+        
+        //cout << endl;
     }
 
     return values;
@@ -199,6 +207,10 @@ void interpolate_3d(const Dataset3D *dataset, const float *points, float *values
         c1[i] = c01[i] * (1.0 - y.fac) + c11[i] * y.fac;
 
         values[i] = c0[i] * (1.0 - z.fac) + c1[i] * z.fac;
+
+        //NaN protection
+        if (isnan(values[i]))
+            values[i] = 0;
     }
 
     //cout << "    interp " << points[0] << " " << points[1] << " " << points[2] << endl;

@@ -60,10 +60,15 @@ class Application:
         self.streamlines = []
         self.dataset = False
         
-        self.stats = {
+        self.settings = {
+            #minimal and maximal magnitudes
             "min": 0,
-            "max": 0
+            "max": 0,
+            #thresholds for filtering based on magnitude
+            "min_threshold": 1,
+            "max_threshold": float(np.inf)
         }
+        
 
     #------------------------------------------------------------------------------------------------
     # USER FUNCTIONS
@@ -71,7 +76,7 @@ class Application:
 
     def load_dataset(self, file):
         #TODO comments
-        self.dataset = load(file)
+        self.dataset = load(file, mode='c')
         
         print(f"dataset {file} loaded")
         print(f"Dataset stats:")
@@ -94,6 +99,7 @@ class Application:
         seed_points = random_points(low, high, self.dataset, numSamples)
 
         values = self.dataset(seed_points)
+        print(values)
         self.updateStats(values)
         glyphs = Glyphs(self.gl.glyphProgram, seed_points, values)
         self.glyphs.append(glyphs)
@@ -127,7 +133,7 @@ class Application:
         seed_points = random_points(low, high, self.dataset, numSamples)
 
         abort = Event() #for compatibility...
-        positions, values, lengths, times = cstreamlines(self.dataset, t0, t_bound, seed_points, abort)
+        positions, values, lengths, times = sstreamlines(self.dataset, t0, t_bound, seed_points, abort)
         self.updateStats(values)
         streamline = Streamline(self.gl.streamlineProgram, positions, values, lengths, times)
         self.streamlines.append(streamline)
@@ -144,22 +150,33 @@ class Application:
 
         #single frame drawing, high level however
         for box in self.boxes:
-            box.draw(self.camera.view, self.camera.projection, self.stats)
+            box.draw(self.camera.view, self.camera.projection, self.settings)
 
         for glyph in self.glyphs:
-            glyph.draw(self.camera.view, self.camera.projection, self.stats)
+            glyph.draw(self.camera.view, self.camera.projection, self.settings)
         
         for layer in self.layers:
-            layer.draw(self.camera.view, self.camera.projection, self.stats)
+            layer.draw(self.camera.view, self.camera.projection, self.settings)
 
         for streamline in self.streamlines:
-            streamline.draw(self.camera.view, self.camera.projection, self.stats)
+            streamline.draw(self.camera.view, self.camera.projection, self.settings)
 
 
     def updateStats(self, values):
+        values[np.isnan(values)] = 0
+        values[np.isnan(values)] = 0
         lengths = np.linalg.norm(values, axis=1)
         amin = np.amin(lengths)
         amax = np.amax(lengths)
 
-        self.stats["min"] = min(self.stats["min"], amin)
-        self.stats["max"] = max(self.stats["max"], amax)
+
+        self.settings["min"] = min(self.settings["min"], amin)
+        self.settings["max"] = max(self.settings["max"], amax)
+
+        if self.settings["max"] < self.settings["max_threshold"]:
+            self.settings["max_threshold"] = self.settings["max"] 
+
+        print(f"min, {amin}")
+        print(f"max, {amax}")
+        print(f"min thresh, {self.settings['min_threshold']}")
+        print(f"max thresh, {self.settings['max_threshold']}")

@@ -15,7 +15,7 @@ def copyVector(invec, outvec, inoffset, outoffset, veclen):
 class Streamline:
     def __init__(self, program, positions, values, lengths, times):
         self.program = program
-
+        self.thickness = 0.005
 
         #init buffers/geometry
         positions = np.ascontiguousarray(positions.flatten(), dtype=np.float32)
@@ -212,6 +212,7 @@ class Streamline:
 
         glBindVertexArray(self.vao)
         self.program.setupBeforeDraw(view, projection, settings)
+        self.program.uniformf("thickness", self.thickness)
 
         #print(self.instanceSize, self.instances)
         glDrawArraysInstanced(GL_TRIANGLES, 0, self.instanceSize, self.instances)

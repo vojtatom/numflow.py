@@ -22,8 +22,13 @@ uniform mat4 projection;
 uniform float amin;
 uniform float amax;
 
+uniform float thickness;
+
 out float cval;
 out vec3 color;
+out float fvalue;
+
+
 
 /**
  * Create rotation matrix from field vector.
@@ -122,8 +127,6 @@ float scaledMagnitude(float value)
 	return (value - amin) / (amax - amin);
 }
 
-float scale = 0.05; 
-
 void main(){
 	//interpolate corresponding time factor (streamline parameter)
 	//float t = interpolate(t_local, t_global.x, t_global.y, t_global.z, t_global.w);
@@ -157,7 +160,7 @@ void main(){
 
 	//transform vertex into place
 	mat4 mField = getRotationMat(value);
-	vec4 vertex = mField * vec4(vertPos * scale, 1.0);
+	vec4 vertex = mField * vec4(vertPos * thickness, 1.0);
 	vertex = vertex + vec4(position, 0.0);
 	vec4 vertex_normal = mField * vec4(vertNormal, 1.0);
 	
@@ -169,7 +172,5 @@ void main(){
 	gl_Position =  projection * view * vertex;
 	
     cval = scaledMagnitude(l);
-	//check for depth drawing
-	//color += float(appearance == 2) * vec3(1.0 - gl_Position.z / farplane);
-	//fragColor = color;
+	fvalue = l;
 }

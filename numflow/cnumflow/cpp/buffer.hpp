@@ -37,7 +37,8 @@ struct Buffer
 
     void reserve(const size_t size)
     {
-        std::free(data);
+        delete [] data;
+        //std::free(data);
         //data = (T *)std::malloc(sizeof(T) * size);
         data = new T[size];
 

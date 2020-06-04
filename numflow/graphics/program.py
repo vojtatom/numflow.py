@@ -89,6 +89,11 @@ class Program:
             self.uniformf("amin", settings["min"])
             self.uniformf("amax", settings["max"])
 
+        if "min_thresh" in self.uniforms:
+            self.uniformf("min_thresh", settings["min_threshold"])
+            self.uniformf("max_thresh", settings["max_threshold"])
+
+
         #glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, glm.value_ptr(viewMat))
         glUniformMatrix4fv(self.uniforms["view"], 1, GL_FALSE, viewMat)
         #glUniformMatrix4fv(self.uniforms["projection"], 1, GL_FALSE, glm.value_ptr(projectionMat))
