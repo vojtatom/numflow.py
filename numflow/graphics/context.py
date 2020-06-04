@@ -1,4 +1,5 @@
 import os
+import pygame
 
 import numpy as np
 from OpenGL.GL import *
@@ -7,7 +8,7 @@ from OpenGL.GLUT import *
 #from OpenGL.GLUT.freeglut import *
 
 from .program import Program
-#from .text import Text
+from .text import Text
 
 
 class Context:
@@ -15,6 +16,9 @@ class Context:
         self.app = application
         self.boxProgram = 0
         self.glyphProgram = 0
+        
+        #for text drawing
+        pygame.font.init()
 
         name = b'Nice little window'
 
@@ -36,7 +40,8 @@ class Context:
         glutKeyboardUpFunc(self.onKeyUp)
         self.resize(1920, 1080)
 
-        #self.text = Text("example", 10, [1, 1, 1])
+        self.text = Text("example")
+        self.text2 = Text("example", color=[1, 0, 0])
         #compiles programs, sets attributes, uniforms
         self.setupPrograms()
 
@@ -61,7 +66,8 @@ class Context:
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             self.app.draw()
 
-            #self.text.renderText(10, 10)
+            self.text.renderText(0, 0, self.app.camera.width, self.app.camera.height)
+            self.text2.renderText(0, 10, self.app.camera.width, self.app.camera.height)
             glutSwapBuffers()
             self.doDrawing = False
 

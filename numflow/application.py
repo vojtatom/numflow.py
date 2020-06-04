@@ -2,7 +2,7 @@ import numpy as np
 
 from .graphics import Box, Context, Camera, Glyphs, Layer, Streamline
 from .load import load
-from .integrate import sstreamlines
+from .integrate import sstreamlines, cstreamlines
 
 from .exception import NumflowException
 from threading import Event
@@ -127,7 +127,7 @@ class Application:
         seed_points = random_points(low, high, self.dataset, numSamples)
 
         abort = Event() #for compatibility...
-        positions, values, lengths, times = sstreamlines(self.dataset, t0, t_bound, seed_points, abort)
+        positions, values, lengths, times = cstreamlines(self.dataset, t0, t_bound, seed_points, abort)
         self.updateStats(values)
         streamline = Streamline(self.gl.streamlineProgram, positions, values, lengths, times)
         self.streamlines.append(streamline)
