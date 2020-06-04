@@ -2,10 +2,10 @@ from numflow.application import Application
 
 if __name__ == "__main__":
     app = Application()
-    #app.load_dataset("test2.csv")
-    #app.load_dataset("el1_512_512_512.csv")
-    #app.load_dataset("el1.npy")
-    app.load_dataset("el1.fits")
+    app.load_dataset("test2.csv")
+    #faster loading
+    #app.load_dataset("dataset.fits")
+    
     #app.add_glyphs(numSamples=10000)
     app.add_slice(0, axis="z", resolution=[1000, 1000])
     #app.add_slice(15, axis="z")

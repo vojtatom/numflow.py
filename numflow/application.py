@@ -169,7 +169,6 @@ class Application:
         amin = np.amin(lengths)
         amax = np.amax(lengths)
 
-
         self.settings["min"] = min(self.settings["min"], amin)
         self.settings["max"] = max(self.settings["max"], amax)
 
