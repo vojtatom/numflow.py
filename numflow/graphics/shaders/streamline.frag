@@ -1,5 +1,6 @@
 #version 330
 
+
 in vec3 color;
 in float cval;
 in vec3 fpos;
@@ -46,12 +47,13 @@ bool insideSelected()
     return inside;
 }
 
+out vec4 FragColor;
+
 void main() { 
 
     if (fvalue < min_thresh || fvalue > max_thresh || !insideSelected())
         discard;
 
-
-    gl_FragColor = vec4(color * mapcolor(cval), transparency); 
+    FragColor = vec4(color * mapcolor(cval), transparency); 
     //gl_FragColor = vec4(1.0); 
 } 

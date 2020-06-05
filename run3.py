@@ -1,8 +1,8 @@
-from numflow.application import Application 
+from numflow import Visualization 
 import numpy as np
 
 if __name__ == "__main__":
-    app = Application()
+    app = Visualization()
     #app.load_dataset("test2.csv")
     
     #faster loading

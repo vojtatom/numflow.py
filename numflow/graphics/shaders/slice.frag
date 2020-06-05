@@ -1,5 +1,6 @@
 #version 330
 
+
 //out vec3 fcolor;
 in float ofvalues;
 in vec3 fpos;
@@ -42,10 +43,12 @@ bool insideSelected()
     return inside;
 }
 
+out vec4 FragColor;
+
 void main() { 
     if (!insideSelected())
         discard;
 
-    gl_FragColor = vec4(mapcolor(ofvalues), transparency); 
+    FragColor = vec4(mapcolor(ofvalues), transparency); 
     //gl_FragColor = vec4(1.0); 
 } 

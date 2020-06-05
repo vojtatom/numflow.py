@@ -1,130 +1,81 @@
 # VIZ
 
-Based on some [older code](https://github.com/vojtatom/numflow), written in Python/Cython/C++
+Simple visualization framework based on PyOpenGL and NumPy. Based on some [older code](https://github.com/vojtatom/numflow), written in Python/Cython/C++.
 
-Changes in `.cpp`, `.hpp`, `.pyx`, and `.pyd` requre recompilation of the numflow package, use attached makefile to do so (command `make python`), changes in `.py` files do not require compilation.
-Before commiting, please run `make clean` to remove unnecesary build files, I tried to include them all in gitignore, but something hight have slipped through.
-
-
-## Bugfixes
- * ad interpolace - v krajních bodech může dojít k tomu že to nebude interpolovat okay, pro vnitřní body datasetu to funguje dobře, problém je ve strojové přesnosti, takže je všechno ok.
-
-## TODO
- * udelat vetev
- * ~~opravit bug s interpolací~~
- * ~~opravit integraci~~
- * pospojovat kod
- * ~~kamera~~
- * vizualizace boxu
- * neco zkusit vykreslit?
+## Dependencies
+List of python dependencies:
     
+    numpy #matrices, linear algebra
+    scipy #backup integrator and interpolator, not really used in this project if everythong works well
+    cython #connecting python and c++
+    setuptools #compiling cython and c++
+    astropy #loading and saving .fits files
+    pyopengl #opengl
+    pyopengl_accelerate #opengl again
+    imageio #saving screenshots
+    pyrr #math for opengl
+    pygame #drawing text on the screen
 
-## Notes:
-půlnoční update: bude to ještě dost práce, nějaké problémy ala interaktivní kamera atd, jsou vyřešené, ale zbývá vyrobit samotnou vizualizaci. Kódu přibývá a *musí* se v tom udržovat nějaký objektový model, protože jinak není absolutně šance se v tom vyznat. Všechny kreslící věci jsou ve složce graphics uvnitř numflow. Pokračování zítra, uvidí se, co všechno stihnu, teoreticky už tobo tolik není
+There maybe some additional depenendencies, however those should be taken care of during the installation of the packages above. **Please note, that the OFFICIAL pyopengl and pyopengl_accelerate FOR WINDOWS are not currently maintained (or at least it seems so) and there are unofficial wheels for pyopengl and pyopengl_accelerate, which are up to date.** (We had the project running on windows during development). The unofficial distribution also includes GLUT dlls needed for the window management. If you are on Linux, there should be no problem, you can just install thy python packages from above (+ FreeGLUT and OpenGL stuff related to your platform). MacOS does not officially support OpenGL, sorry (although it should be possible to run the code with some minor tweaks related to opengl and glut on your mac).  
 
-## Test output:
+## Compilation and running
+There is makefile for Linux, the makefile runs the setup.py and compiles thy Cython/C++ stuff.  On Windows, please compile the code with python command `python3 setup.py build_ext --inplace` which will build all the stuff inplace. You can use e.g. Anaconda prompt for the compilation. 
 
-    numflow.load: input file parsed, now testing rectilinearity...
-    <numflow.dataset.RectilinearDataset object at 0x7f1a62383f98>
-    <numflow.dataset.ScipyRectilinearDataset object at 0x7f1a62383c18>
-    interpolation test
-    [[  1.6076945    0.70690924 -10.        ]]
-    [[  1.60769447   0.70690929 -10.        ]]
-    integration test
-    [[0. 0. 0.]]
-    [[  0.5          0.5         -1.        ]
-     [  0.57425774   0.62303523  -1.08555569]
-     [  1.85415391   1.2716405   -2.46705514]
-     [  3.07814109   1.00300262  -5.95366543]
-     [  3.5288892    0.73062094 -14.36779073]
-     [  3.57569312   0.70175401 -17.46485506]
-     [  3.61514065   0.67738617 -21.57237821]
-     [  3.61514065   0.67738617 -21.57237821]
-     [  3.61514065   0.67738617 -21.57237821]
-     [  3.61514065   0.67738617 -21.57237821]
-     [  5.           5.          -1.        ]
-     [  4.8046482    5.05301609  -1.11649873]
-     [  3.22376735   4.67156135  -3.27915611]
-     [  2.76879497   3.42280129  -8.15825173]
-     [  3.01662483   2.4202383  -14.54397294]
-     [  3.15955274   2.1306249  -17.49833942]
-     [  3.28215891   1.91324171 -20.42074237]
-     [  3.28215891   1.91324171 -20.42074237]
-     [  3.28215891   1.91324171 -20.42074237]
-     [  3.28215891   1.91324171 -20.42074237]]
-    [[  0.82745098   1.55232216  -0.99999996]
-     [  0.98219057   1.44485078  -1.08555566]
-     [  1.75505745   0.02928666  -2.46705514]
-     [  0.85989058  -0.46273546  -5.95366543]
-     [  0.27187427  -0.16758918 -14.36779073]
-     [  0.21029432  -0.1297934  -17.46485506]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]
-     [ -1.77557092   0.54764737  -0.99999996]
-     [ -1.76984243   0.41228891  -1.1164987 ]
-     [ -0.94177854  -0.99918768  -3.27915611]
-     [  0.07909516  -1.69469852  -8.15825173]
-     [  0.70928089  -1.60227995 -14.54397294]
-     [  0.83153448  -1.52574799 -17.49833942]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]]
-    [10 10]
-    [ 0.          0.08209202  0.9030122   1.78397826  2.66494432  2.86014594
-      3.25432829  3.64851065  7.59033421 20.          0.          0.11019766
-      1.18756941  2.09899614  2.67713969  2.86206899  3.14961777  3.43765094
-      6.31798256 20.        ]
-    (20,)
-    (20, 3) (20, 3)
-    [[  0.5          0.5         -1.        ]
-     [  0.5210646    0.5380434   -1.0250733 ]
-     [  0.7961869    0.8737525   -1.3131194 ]
-     [  1.7645414    1.2664602   -2.3199935 ]
-     [  2.9548655    1.0496151   -5.1896086 ]
-     [  3.4650865    0.75006735 -11.889021  ]
-     [  3.5666542    0.68795455 -17.362318  ]
-     [  3.5990393    0.6681754  -20.62603   ]
-     [  3.5990393    0.6681754  -20.62603   ]
-     [  3.5990393    0.6681754  -20.62603   ]
-     [  3.5990393    0.6681754  -20.62603   ]
-     [  5.           5.          -1.        ]
-     [  4.9249       5.022118    -1.0432303 ]
-     [  4.179525     5.1084504   -1.592877  ]
-     [  2.959175     4.369264    -4.5563827 ]
-     [  2.9285228    2.5613885  -13.893549  ]
-     [  3.1416066    2.1229377  -18.366158  ]
-     [  3.2440293    1.9435557  -20.82378   ]
-     [  3.2440293    1.9435557  -20.82378   ]
-     [  3.2440293    1.9435557  -20.82378   ]
-     [  3.2440293    1.9435557  -20.82378   ]]
-    [[  0.827451     1.5523221   -1.        ]
-     [  0.8738102    1.5201057   -1.0250733 ]
-     [  1.3528936    1.1881521   -1.3131194 ]
-     [  1.7599162    0.12032536  -2.3199935 ]
-     [  0.9998796   -0.43157434  -5.1896086 ]
-     [  0.34030002  -0.20828709 -11.889021  ]
-     [  0.20710489  -0.12653203 -17.362318  ]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]
-     [ -1.775571     0.5476474   -1.        ]
-     [ -1.7734175    0.4972627   -1.0432303 ]
-     [ -1.7472718   -0.12947416  -1.592877  ]
-     [ -0.70769864  -1.2330647   -4.5563827 ]
-     [  0.66507405  -1.6267236  -13.893549  ]
-     [  0.8473448   -1.5193496  -18.366158  ]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]
-     [  0.           0.           0.        ]]
-    [11 10]
-    [ 0.          0.02476414  0.27240553  0.8415613   1.646643    2.475587
-      2.8542733   3.1752079   3.4961424   6.7054877  20.          0.
-      0.04232192  0.4655411   1.5165104   2.6313925   2.9104774   3.1440234
-      3.3775694   5.71303    20.        ]
-    (21,)
-    (21, 3) (21, 3)
+## Using the numflow framework
+This fork of the numflow framework offers:
+
+* simple Python API simmilar to matplotlib package
+* C++ implementation of file readers for rectilinear datasets (supports `.csv`, `.npy`, and `.fits` file formats)
+* C++ implementation of trilinear interpolation
+* C++ implementation of RK45 adaptive integration routine
+* but mostly 3D visualization using slices, glyphs and streamlines
+
+How to use the numflow framework:
+
+    from numflow import Visualization 
+
+    vis = Visualization()
+    vis.load_dataset("el1_512_512_512.csv")
+    #or
+    #vis.load_dataset("el1_512_512_512.npy")
+    #or
+    #vis.load_dataset("el1_512_512_512.fits")
+
+    #add semi-transparent glyphs in the overall dataset
+    vis.add_glyphs(numSamples=10000, size=0.1, transparency=0.2)
+
+    #add highres planes positioned at axis_coord=0
+    vis.add_slice(0, axis="x", resolution=[1000, 1000], transparency=1.0)
+    vis.add_slice(0, axis="y", resolution=[1000, 1000], transparency=1.0)
+    vis.add_slice(0, axis="z", resolution=[1000, 1000], transparency=1.0)
+
+    #add streamlines into a subregion of the dataset and mark the region with a box
+    region_low = [-1, -1, -3]
+    region_high = [1, 1, 3]
+
+    vis.add_box(region_low, region_high)
+    vis.add_streamline(0, 1000, numSamples=100, size=0.05, low=region_low, high=region_high)
+
+    #shows the constructed visualization
+    vis.display()
+
+You can also find a handy information in the terminal, the numflow notifies about the dataset resolution and dimensions upon loading. 
+
+## Renderer navigation
+There is a number of ways how to interact with the renderer window:
+ * **C** - Captures the window contents and saves it as `screenX.png`, the images do not overwrite, instead the X is replaced with a higher number.
+ * **1** - Front view
+ * **3** - Side view
+ * **7** - Top view
+ * **U/I** - Increase/Decrease the gamma value transforming the colormap. The change is also visible in the colorbar on the left
+ * **M/N** - Shift the plane delimiting the rendered area
+ * **S** - Switch the active border of the rendered area - We know the application lacks any form of feedback showing which plane is active, we apologise, we simply run of time, although we know this should be improved e.g. by highlighting the active sqaure.
+ * **R** - Toggle magnitude mapping onto glyph size.
+
+
+## Developer notes
+Changes in `.cpp`, `.hpp`, `.pyx`, and `.pyd` requre recompilation of the numflow package, use attached makefile to do so (command `make`), changes in `.py` files do not require compilation. Before commiting, please run `make clean` to remove unnecesary build files, I tried to include them all in gitignore, but something might have slipped through.
+
+## Known bugs
+ * interpolation - sometimes due to rounding errors the values *exactly* at the border of the dataset will produce *out-of-dataset* values. This is not a critical bug, since the tiniest shift in the direction inside the dataset produces correct results. Has no effect at the output of the visualizatin.
+n

@@ -706,7 +706,7 @@ Dataset3D * construct_level_3d(const Dataset3D * ds, int32_t x, int32_t y, int32
     nds->dx = min(max(x, 1), ds->dx);
     nds->dy = min(max(y, 1), ds->dy);
     nds->dz = min(max(z, 1), ds->dz);
-    nds->data = new float[nds->dx * nds->dy * nds->dz]{};
+    nds->data = new float[nds->dx * nds->dy * nds->dz]();
     nds->ax = new float[nds->dx];
     nds->ay = new float[nds->dy];
     nds->az = new float[nds->dz];

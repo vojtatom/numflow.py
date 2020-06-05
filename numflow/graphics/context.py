@@ -31,6 +31,7 @@ class Context:
 
         glutInit()
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
+        #glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glutInitWindowSize(1920, 1080)
         glutCreateWindow(name)
         glutDisplayFunc(self.frame)
@@ -52,6 +53,7 @@ class Context:
         #compiles programs, sets attributes, uniforms
         self.setupPrograms()
         glFinish()
+
 
 
 

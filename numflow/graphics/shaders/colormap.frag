@@ -1,6 +1,7 @@
 #version 330
 
 
+
 in float val;
 uniform float gamma;
 
@@ -26,9 +27,10 @@ vec3 mapcolor(float val) {
     return colormap[bin_low] * (1.0 - fac) + colormap[bin_low + 1] * fac;
 }
 
+out vec4 FragColor;
 
 void main() { 
 
-    gl_FragColor = vec4(mapcolor(val), 1.0); 
+    FragColor = vec4(mapcolor(val), 1.0); 
     //gl_FragColor = vec4(1.0); 
 } 

@@ -32,7 +32,7 @@ def makeExtension(extName, cfiles):
 		# adding the '.' to include_dirs is CRUCIAL!!
 		include_dirs=[".", np.get_include()],
 		extra_compile_args=["-Wall"],
-		extra_link_args=['-O2', '-Wno-cpp'],
+		extra_link_args=['-O2', '-Wno-cpp', '-std=c++11'],
 		define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')],
 		language="c++"
 		)

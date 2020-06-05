@@ -1,5 +1,6 @@
 #version 330
 
+
 in vec2 pos;
 out float val;
 
