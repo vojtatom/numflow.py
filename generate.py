@@ -4,9 +4,9 @@ import numpy as np
 def field(x, y, z):
 	return [-y * z, x * z, 5 * z]
 
-gridx = np.linspace(-20, 20, num=60, endpoint=True) 
-gridy = np.linspace(-20, 20, num=60, endpoint=True) 
-gridz = np.linspace(-20, 20, num=60, endpoint=True)
+gridx = np.linspace(-1, 1, num=60, endpoint=True) 
+gridy = np.linspace(-1, 1, num=60, endpoint=True) 
+gridz = np.linspace(-1, 1, num=60, endpoint=True)
 
 data = ""
 with open("test2.csv", "wt") as file:	

@@ -21,6 +21,9 @@ There maybe some additional depenendencies, however those should be taken care o
 ## Compilation and running
 There is makefile for Linux, the makefile runs the setup.py and compiles thy Cython/C++ stuff.  On Windows, please compile the code with python command `python3 setup.py build_ext --inplace` which will build all the stuff inplace. You can use e.g. Anaconda prompt for the compilation. 
 
+## Documentation
+The python user api is documented using classical python docstrings, for more info please see [visualization.py](numflow/visualization.py). Please see [run.py](run.py) as an example of user-written code, or see the example bellow.
+
 ## Using the numflow framework
 This fork of the numflow framework offers:
 
@@ -35,7 +38,8 @@ How to use the numflow framework:
     from numflow import Visualization 
 
     vis = Visualization()
-    vis.load_dataset("el1_512_512_512.csv")
+    vis.load_dataset("test2.csv")
+    #vis.load_dataset("el1_512_512_512.csv")
     #or
     #vis.load_dataset("el1_512_512_512.npy")
     #or
@@ -59,7 +63,9 @@ How to use the numflow framework:
     #shows the constructed visualization
     vis.display()
 
-You can also find a handy information in the terminal, the numflow notifies about the dataset resolution and dimensions upon loading. 
+You can also find a handy information in the terminal, the numflow notifies about the dataset resolution and dimensions upon loading. The example above using the [test2.csv](test2.csv) dataset generated with [generate.py](generate.py) produces folowing visualization:
+
+<img src="screen.png" width=400 />
 
 ## Renderer navigation
 There is a number of ways how to interact with the renderer window:

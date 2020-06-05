@@ -9,7 +9,7 @@ vis.load_dataset("test2.csv")
 #vis.load_dataset("el1_512_512_512.fits")
 
 #add semi-transparent glyphs in the overall dataset
-vis.add_glyphs(numSamples=10000, size=0.1, transparency=0.2)
+vis.add_glyphs(numSamples=8000, size=0.05, transparency=0.6)
 
 #add highres planes positioned at axis_coord=0
 vis.add_slice(0, axis="x", resolution=[1000, 1000], transparency=1.0)
