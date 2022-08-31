@@ -1,0 +1,50 @@
+{% load staticfiles %}
+{% load date_tags %}
+{% with icons='visual/portal/icons/' %}
+
+<li>
+    <ol class="file dataset" id="{{ dataset.code }}" title="{{ dataset.title }}">
+        <li class="title dtrigger">{{ dataset.title }}</li>
+        <li class="status dtrigger">{{ dataset.status }}</li>
+        {% if dataset.time_created|is_today %}
+            <li class="time dtrigger">{{ dataset.time_created | date:'H:i' }} today</li>
+        {% else %}
+            <li class="time dtrigger">{{ dataset.time_created | date:'d M Y' }}</li>
+        {% endif %}
+        <li class="action edit" title="rename">
+                <img src="{% static icons|add:'/edit.svg' %}" alt="rename">
+        </li>
+        <li class="action copy tooltip" title="copy code">
+            <span class="tooltiptext">copy code</span>
+            <img src="{% static icons|add:'/code.svg' %}" alt="copy code">
+        </li>
+        <li class="action download" title="download">
+            <a href="{{ dataset.data.url }}" download>
+                <img src="{% static icons|add:'/download.svg' %}" alt="download" title="download">
+            </a>
+        </li>
+        <li class="action delete" title="delete">
+            <img src="{% static icons|add:'/delete.svg' %}" alt="delete" >
+        </li>
+    </ol>
+    <div class="detail">
+        <dl>
+            <dt>created</dt>
+            <dd>
+                {% if dataset.time_created|is_today %}
+                    {{ dataset.time_created | date:'H:i' }} today
+                {% else %}
+                    {{ dataset.time_created | date:'d M Y' }}
+                {% endif %}
+            </dd>
+            <dt>status</dt>
+            <dd>
+                {{ dataset.status }}
+            </dd>
+            <dt>description</dt>
+            <dd class="description">{{ dataset.description }}</dd>
+        </dl>
+    </div>
+</li>
+
+{% endwith %}

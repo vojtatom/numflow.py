@@ -1,0 +1,55 @@
+{% load staticfiles %}
+{% load date_tags %}
+{% with icons='visual/portal/icons/' %}
+
+<li>
+    <ol class="file notebook" id="{{ notebook.code }}" title="{{ notebook.title }}">
+        <li class="title dtrigger">{{ notebook.title }}</li>
+        {% if notebook.time_created|is_today %}
+            <li class="time dtrigger">{{ notebook.time_created | date:'H:i' }} today</li>
+        {% else %}
+            <li class="time dtrigger">{{ notebook.time_created | date:'d M Y' }}</li>
+        {% endif %}
+        <li class="action open" title="open">
+            <img src="{% static icons|add:'/enter.svg' %}" alt="edit">
+        </li>
+        <li class="action edit" title="rename">
+            <img src="{% static icons|add:'/edit.svg' %}" alt="rename">
+        </li>
+        <li class="action download" title="download">
+            <a href="/media/notebook/{{ notebook.code }}/data.docflow" download>
+                <img src="{% static icons|add:'/download.svg' %}" alt="download" title="download">
+            </a>
+        </li>
+        <li class="action canvas" title="canvas">
+            <a href="/canvas/{{ notebook.code }}">
+                <img src="{% static icons|add:'/3d.svg' %}" alt="canvas" title="canvas">
+            </a>
+        </li>
+        <li class="action delete" title="delete">
+            <img src="{% static icons|add:'/delete.svg' %}" alt="delete" >
+        </li>
+    </ol>
+    <div class="detail">
+        <dl>
+            <dt>created</dt>
+            <dd>
+                {% if notebook.time_created|is_today %}
+                    {{ notebook.time_created | date:'H:i' }} today
+                {% else %}
+                    {{ notebook.time_created | date:'d M Y' }}
+                {% endif %}
+            </dd>
+            <dt>modified</dt>
+            <dd>
+                {% if notebook.time_created|is_today %}
+                    {{ notebook.time_modified | date:'H:i' }} today
+                {% else %}
+                    {{ notebook.time_modified | date:'d M Y' }}
+                {% endif %}
+            </dd>
+        </dl>
+    </div>
+</li>
+
+{% endwith %}

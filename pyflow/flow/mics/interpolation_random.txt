@@ -1,0 +1,84 @@
+num points: 1, repetitions 1
+ctime: 0.00001, stime 0.00032, ratio 25.88874
+
+num points: 1, repetitions 10
+ctime: 0.00002, stime 0.00178, ratio 118.08713
+
+num points: 1, repetitions 100
+ctime: 0.00009, stime 0.01602, ratio 175.58035
+
+num points: 1, repetitions 1000
+ctime: 0.00084, stime 0.15400, ratio 183.80584
+
+num points: 1, repetitions 10000
+ctime: 0.00859, stime 1.56460, ratio 182.22566
+
+num points: 1, repetitions 100000
+ctime: 0.08785, stime 15.43018, ratio 175.63575
+
+num points: 1, repetitions 1000000
+ctime: 0.86729, stime 156.52390, ratio 180.47422
+
+num points: 10, repetitions 1
+ctime: 0.00002, stime 0.00023, ratio 14.30987
+
+num points: 10, repetitions 10
+ctime: 0.00003, stime 0.00176, ratio 57.57115
+
+num points: 10, repetitions 100
+ctime: 0.00020, stime 0.01791, ratio 91.15139
+
+num points: 10, repetitions 1000
+ctime: 0.00181, stime 0.17656, ratio 97.63048
+
+num points: 10, repetitions 10000
+ctime: 0.01745, stime 1.72315, ratio 98.72135
+
+num points: 10, repetitions 100000
+ctime: 0.18522, stime 16.97167, ratio 91.62992
+
+num points: 100, repetitions 1
+ctime: 0.00005, stime 0.00027, ratio 5.32978
+
+num points: 100, repetitions 10
+ctime: 0.00016, stime 0.00223, ratio 13.78061
+
+num points: 100, repetitions 100
+ctime: 0.00126, stime 0.02250, ratio 17.89221
+
+num points: 100, repetitions 1000
+ctime: 0.01306, stime 0.21703, ratio 16.62027
+
+num points: 100, repetitions 10000
+ctime: 0.11953, stime 2.19676, ratio 18.37826
+
+num points: 1000, repetitions 1
+ctime: 0.00035, stime 0.00088, ratio 2.50987
+
+num points: 1000, repetitions 10
+ctime: 0.00183, stime 0.00683, ratio 3.74265
+
+num points: 1000, repetitions 100
+ctime: 0.01601, stime 0.06341, ratio 3.96172
+
+num points: 1000, repetitions 1000
+ctime: 0.15957, stime 0.63504, ratio 3.97961
+
+num points: 10000, repetitions 1
+ctime: 0.00282, stime 0.00750, ratio 2.65564
+
+num points: 10000, repetitions 10
+ctime: 0.02532, stime 0.06880, ratio 2.71744
+
+num points: 10000, repetitions 100
+ctime: 0.25231, stime 0.68837, ratio 2.72823
+
+num points: 100000, repetitions 1
+ctime: 0.02722, stime 0.07286, ratio 2.67688
+
+num points: 100000, repetitions 10
+ctime: 0.26591, stime 0.79871, ratio 3.00371
+
+num points: 1000000, repetitions 1
+ctime: 0.28496, stime 0.76072, ratio 2.66958
+

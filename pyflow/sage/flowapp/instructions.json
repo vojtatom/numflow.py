@@ -1,0 +1,26 @@
+{
+	"main_script": "flowapp.js",
+	"icon": "icon.png",
+	"width": 1920,
+	"height": 1080,
+	"resize": "free",
+	"animation": true,
+	"load": {
+		"model": null,
+		"appstate": null
+	},
+	"dependencies": [
+		"scripts/gl-matrix.js",
+		"scripts/cookies.js",
+		"scripts/uuid.js",
+		"scripts/websocket.js",
+		"scripts/scripts.js",
+		"style.css"
+	],
+	"title": "Flow visualization",
+	"version": "0.0.2",
+	"description": "A WebGL thing to visualize 3D flows.",
+	"keywords": [ "webgl", "flow", "3d" ],
+	"author": "Vojtech Tomas <tomasvo1@fit.cvut.cz>",
+	"license": "SAGE2-Software-License"
+}

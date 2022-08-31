@@ -1,0 +1,39 @@
+{% load staticfiles %}
+{% load date_tags %}
+
+<div class="box terminal">
+		<form method="POST" action="/notebook/{{ code }}" id="notebook_form">
+			{% csrf_token %}
+			<dl class="notebook_form">
+				<dt>{{ form.title.label_tag }}</dt>
+				<dd class="title_menu">
+					{{ form.title }}
+					<button id="notebook_form_submit" type="submit">Save</button>
+				</dd>
+				{% for error in form.title.errors %}
+					<dd class="error">{{ error }}</dd>
+				{% endfor %}
+			</dl>
+		</form>
+	<ol id="terminal" class="scroll"></ol>
+	<form action="" id="commandline">
+		<input type="text" name="commandline" id="command" autocomplete="off" placeholder="type help to display help">
+		<button type="submit">Send</button>
+	</form>
+</div>
+
+<div class="box editor">
+	<input id="code" value="{{ code }}" style="display: none"/>
+	<div id="editor">
+		<dl id="help">
+			<dt>help</dt>
+			<dd>H</dd>
+			<dt class="hide-help">delete node or edge</dt>
+			<dd class="hide-help">D</dd>
+			<dt class="hide-help">add node</dt>
+			<dd class="hide-help">A</dd>
+			<dt class="hide-help">add edge</dt>
+			<dd class="hide-help">click on output and input ports</dd>
+		</dl>
+	</div>
+</div>

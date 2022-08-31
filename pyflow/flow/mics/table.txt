@@ -1,0 +1,94 @@
+\begin{table}[]
+	\centering
+	\resizebox{1.0\textwidth}{!}{
+	\begin{tabular}{@{}llllllllllllllll@{}}
+		\toprule \\		& & \multicolumn{14}{c}{repetitions}\\
+		& & \multicolumn{2}{c}{1} & \multicolumn{2}{c}{10} & \multicolumn{2}{c}{100} & \multicolumn{2}{c}{1000} & \multicolumn{2}{c}{10000} & \multicolumn{2}{c}{100000} & \multicolumn{2}{c}{1000000} \\ \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10} \cmidrule(lr){11-12} \cmidrule(lr){13-14} \cmidrule(lr){15-16} 
+		number of points & & SciPy     & Cython    & SciPy      & Cython    & SciPy      & Cython     & SciPy       & Cython     & SciPy       & Cython      & SciPy        & Cython      & SciPy         & Cython  \\\midrule
+	1 & times & 0.00 & 0.00& 0.00 & 0.00& 0.00 & 0.02& 0.00 & 0.15& 0.01 & 1.56& 0.09 & 15.43& 0.87 & 156.52\\
+	& ratio & \multicolumn{2}{l}{25.89}& \multicolumn{2}{l}{118.09}& \multicolumn{2}{l}{175.58}& \multicolumn{2}{l}{183.81}& \multicolumn{2}{l}{182.23}& \multicolumn{2}{l}{175.64}& \multicolumn{2}{l}{180.47}\\
+	10 & times & 0.00 & 0.00& 0.00 & 0.00& 0.00 & 0.02& 0.00 & 0.18& 0.02 & 1.72& 0.19 & 16.97& -- & --\\
+	& ratio & \multicolumn{2}{l}{14.31}& \multicolumn{2}{l}{57.57}& \multicolumn{2}{l}{91.15}& \multicolumn{2}{l}{97.63}& \multicolumn{2}{l}{98.72}& \multicolumn{2}{l}{91.63}& \multicolumn{2}{l}{--}\\
+	100 & times & 0.00 & 0.00& 0.00 & 0.00& 0.00 & 0.02& 0.01 & 0.22& 0.12 & 2.20& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{5.33}& \multicolumn{2}{l}{13.78}& \multicolumn{2}{l}{17.89}& \multicolumn{2}{l}{16.62}& \multicolumn{2}{l}{18.38}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	1000 & times & 0.00 & 0.00& 0.00 & 0.01& 0.02 & 0.06& 0.16 & 0.64& -- & --& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{2.51}& \multicolumn{2}{l}{3.74}& \multicolumn{2}{l}{3.96}& \multicolumn{2}{l}{3.98}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	10000 & times & 0.00 & 0.01& 0.03 & 0.07& 0.25 & 0.69& -- & --& -- & --& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{2.66}& \multicolumn{2}{l}{2.72}& \multicolumn{2}{l}{2.73}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	100000 & times & 0.03 & 0.07& 0.27 & 0.80& -- & --& -- & --& -- & --& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{2.68}& \multicolumn{2}{l}{3.00}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	1000000 & times & 0.28 & 0.76& -- & --& -- & --& -- & --& -- & --& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{2.67}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	\bottomrule \\
+	\end{tabular}}
+\end{table}
+
+
+\begin{table}[]
+	\centering
+	\resizebox{1.0\textwidth}{!}{
+	\begin{tabular}{@{}llllllllllllllll@{}}
+		\toprule \\		& & \multicolumn{14}{c}{repetitions}\\
+		& & \multicolumn{2}{c}{1} & \multicolumn{2}{c}{10} & \multicolumn{2}{c}{100} & \multicolumn{2}{c}{1000} & \multicolumn{2}{c}{10000} & \multicolumn{2}{c}{100000} & \multicolumn{2}{c}{1000000} \\ \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10} \cmidrule(lr){11-12} \cmidrule(lr){13-14} \cmidrule(lr){15-16} 
+		number of points & & SciPy     & Cython    & SciPy      & Cython    & SciPy      & Cython     & SciPy       & Cython     & SciPy       & Cython      & SciPy        & Cython      & SciPy         & Cython  \\\midrule
+	1 & times & 0.00 & 0.00& 0.00 & 0.00& 0.00 & 0.02& 0.00 & 0.15& 0.01 & 1.52& 0.08 & 15.04& 0.80 & 149.94\\
+	& ratio & \multicolumn{2}{l}{21.65}& \multicolumn{2}{l}{61.81}& \multicolumn{2}{l}{158.90}& \multicolumn{2}{l}{188.90}& \multicolumn{2}{l}{186.42}& \multicolumn{2}{l}{180.17}& \multicolumn{2}{l}{186.75}\\
+	10 & times & 0.00 & 0.00& 0.00 & 0.00& 0.00 & 0.02& 0.00 & 0.16& 0.01 & 1.58& 0.12 & 16.40& -- & --\\
+	& ratio & \multicolumn{2}{l}{14.96}& \multicolumn{2}{l}{81.39}& \multicolumn{2}{l}{124.42}& \multicolumn{2}{l}{130.59}& \multicolumn{2}{l}{132.14}& \multicolumn{2}{l}{135.44}& \multicolumn{2}{l}{--}\\
+	100 & times & 0.00 & 0.00& 0.00 & 0.00& 0.00 & 0.02& 0.01 & 0.20& 0.05 & 1.97& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{4.78}& \multicolumn{2}{l}{20.15}& \multicolumn{2}{l}{36.15}& \multicolumn{2}{l}{35.16}& \multicolumn{2}{l}{36.76}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	1000 & times & 0.00 & 0.00& 0.00 & 0.01& 0.01 & 0.06& 0.09 & 0.62& -- & --& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{2.99}& \multicolumn{2}{l}{5.71}& \multicolumn{2}{l}{7.08}& \multicolumn{2}{l}{7.15}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	10000 & times & 0.00 & 0.01& 0.02 & 0.07& 0.18 & 0.70& -- & --& -- & --& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{3.55}& \multicolumn{2}{l}{3.72}& \multicolumn{2}{l}{3.95}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	100000 & times & 0.02 & 0.07& 0.20 & 0.73& -- & --& -- & --& -- & --& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{3.57}& \multicolumn{2}{l}{3.75}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	1000000 & times & 0.20 & 0.78& -- & --& -- & --& -- & --& -- & --& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{3.86}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	\bottomrule \\
+	\end{tabular}}
+\end{table}
+
+
+\begin{table}[]
+	\centering
+	\resizebox{1.0\textwidth}{!}{
+	\begin{tabular}{@{}llllllllllllllll@{}}
+		\toprule \\		& & \multicolumn{14}{c}{repetitions}\\
+		& & \multicolumn{2}{c}{1} & \multicolumn{2}{c}{10} & \multicolumn{2}{c}{100} & \multicolumn{2}{c}{1000} & \multicolumn{2}{c}{10000} & \multicolumn{2}{c}{100000} & \multicolumn{2}{c}{1000000} \\ \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10} \cmidrule(lr){11-12} \cmidrule(lr){13-14} \cmidrule(lr){15-16} 
+		number of points & & SciPy     & Cython    & SciPy      & Cython    & SciPy      & Cython     & SciPy       & Cython     & SciPy       & Cython      & SciPy        & Cython      & SciPy         & Cython  \\\midrule
+	1 & times & 0.00 & 0.04& 0.00 & 0.22& 0.01 & 5.71\\
+	& ratio & \multicolumn{2}{l}{299.99}& \multicolumn{2}{l}{418.54}& \multicolumn{2}{l}{677.80}\\
+	10 & times & 0.00 & 0.27& 0.00 & 3.16& 0.03 & 26.12\\
+	& ratio & \multicolumn{2}{l}{702.11}& \multicolumn{2}{l}{884.21}& \multicolumn{2}{l}{950.00}\\
+	100 & times & 0.00 & 2.18& 0.03 & 23.73& 0.22 & 223.60\\
+	& ratio & \multicolumn{2}{l}{864.92}& \multicolumn{2}{l}{927.76}& \multicolumn{2}{l}{1034.14}\\
+	1000 & times & 0.03 & 24.55& 0.27 & 247.22& -- & --\\
+	& ratio & \multicolumn{2}{l}{897.68}& \multicolumn{2}{l}{925.23}& \multicolumn{2}{l}{--}\\
+	10000 & times & 0.28 & 244.01& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{877.44}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	\bottomrule \\
+	\end{tabular}}
+\end{table}
+
+
+\begin{table}[]
+	\centering
+	\resizebox{1.0\textwidth}{!}{
+	\begin{tabular}{@{}llllllllllllllll@{}}
+		\toprule \\		& & \multicolumn{14}{c}{repetitions}\\
+		& & \multicolumn{2}{c}{1} & \multicolumn{2}{c}{10} & \multicolumn{2}{c}{100} & \multicolumn{2}{c}{1000} & \multicolumn{2}{c}{10000} & \multicolumn{2}{c}{100000} & \multicolumn{2}{c}{1000000} \\ \cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){9-10} \cmidrule(lr){11-12} \cmidrule(lr){13-14} \cmidrule(lr){15-16} 
+		number of points & & SciPy     & Cython    & SciPy      & Cython    & SciPy      & Cython     & SciPy       & Cython     & SciPy       & Cython      & SciPy        & Cython      & SciPy         & Cython  \\\midrule
+	1 & times & 0.00 & 0.02& 0.00 & 0.21& 0.00 & 2.23\\
+	& ratio & \multicolumn{2}{l}{179.87}& \multicolumn{2}{l}{452.36}& \multicolumn{2}{l}{556.51}\\
+	10 & times & 0.00 & 0.26& 0.00 & 1.58& 0.02 & 26.66\\
+	& ratio & \multicolumn{2}{l}{977.40}& \multicolumn{2}{l}{1266.79}& \multicolumn{2}{l}{1648.98}\\
+	100 & times & 0.00 & 2.47& 0.01 & 24.78& 0.14 & 249.64\\
+	& ratio & \multicolumn{2}{l}{1324.99}& \multicolumn{2}{l}{1720.52}& \multicolumn{2}{l}{1795.53}\\
+	1000 & times & 0.02 & 26.37& 0.17 & 247.85& -- & --\\
+	& ratio & \multicolumn{2}{l}{1443.12}& \multicolumn{2}{l}{1474.39}& \multicolumn{2}{l}{--}\\
+	10000 & times & 0.17 & 260.67& -- & --& -- & --\\
+	& ratio & \multicolumn{2}{l}{1490.96}& \multicolumn{2}{l}{--}& \multicolumn{2}{l}{--}\\
+	\bottomrule \\
+	\end{tabular}}
+\end{table}

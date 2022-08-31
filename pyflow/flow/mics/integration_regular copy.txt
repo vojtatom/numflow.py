@@ -1,0 +1,36 @@
+num points: 1, repetitions 1
+ctime: 0.00010, stime 0.01802, ratio 179.87471
+
+num points: 1, repetitions 10
+ctime: 0.00046, stime 0.20687, ratio 452.35861
+
+num points: 1, repetitions 100
+ctime: 0.00401, stime 2.23296, ratio 556.50671
+
+num points: 10, repetitions 1
+ctime: 0.00027, stime 0.26167, ratio 977.39876
+
+num points: 10, repetitions 10
+ctime: 0.00125, stime 1.57818, ratio 1266.79357
+
+num points: 10, repetitions 100
+ctime: 0.01617, stime 26.66101, ratio 1648.97626
+
+num points: 100, repetitions 1
+ctime: 0.00187, stime 2.47309, ratio 1324.98771
+
+num points: 100, repetitions 10
+ctime: 0.01440, stime 24.77911, ratio 1720.52226
+
+num points: 100, repetitions 100
+ctime: 0.13903, stime 249.64000, ratio 1795.52527
+
+num points: 1000, repetitions 1
+ctime: 0.01827, stime 26.36834, ratio 1443.12486
+
+num points: 1000, repetitions 10
+ctime: 0.16811, stime 247.85455, ratio 1474.38598
+
+num points: 10000, repetitions 1
+ctime: 0.17483, stime 260.66776, ratio 1490.96445
+
