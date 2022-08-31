@@ -24,11 +24,11 @@ add_compile_options(-Wall -pedantic -g)
 #add_link_options(-fsanitize=address -shared-libasan -pthread)
 add_link_options(-pthread)
 
-pybind11_add_module(compute         src/cpp/compute.cpp
-                                    src/cpp/types.hpp 
-                                    src/cpp/csv.cpp 
-                                    src/cpp/csv.hpp
-                                    src/cpp/field.hpp
-                                    src/cpp/field.cpp)
+pybind11_add_module(compute         numflow/compute/compute.cpp
+                                    numflow/compute/types.hpp 
+                                    numflow/compute/csv.cpp 
+                                    numflow/compute/csv.hpp
+                                    numflow/compute/field.hpp
+                                    numflow/compute/field.cpp)
 
-install(TARGETS compute DESTINATION .)
+install(TARGETS compute LIBRARY DESTINATION numflow)

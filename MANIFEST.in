@@ -1,5 +1,2 @@
-include README.md LICENSE pybind11/LICENSE setup.py
-global-include CMakeLists.txt *.cmake *.pyi
-graft pybind11/include
-graft pybind11/tools
-graft src
+graft numflow
+include setup.py CMakeLists.txt pyproject.toml README.md
