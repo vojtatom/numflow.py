@@ -8,9 +8,9 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [tool.cibuildwheel]
-#test-command = "pytest {project}/tests"
-#test-skip = ["*universal2:arm64"]
-build = ["cp38-*", "cp39-*", "cp310-*"]
+test-command = "pytest {project}/tests"
+test-skip = ["*universal2:arm64"]
+build = ["cp39-*", "cp310-*"]
 build-verbosity = 1
 #test-requires = ["pytest"]
 
@@ -22,3 +22,8 @@ archs = ["auto64"]
 
 [tool.cibuildwheel.windows]
 archs = ["auto64"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "./src"
+]

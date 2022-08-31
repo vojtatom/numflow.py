@@ -1,8 +1,11 @@
 #pragma once
 #include "field.hpp"
+#include "types.hpp"
 
 
-void load_csv(const string & filename, vector<vector<vector<double>>> & field);
+//load csv file in format
+//x, y, z, valuex, valuey, valuez
+void load_csv(const string & filename, vector<pair<tvec3, tvec3>> & pos_val);
 
 
 

@@ -34,9 +34,6 @@ setup(
     include_package_data=True,
     url="https://github.com/vojtatom/numflow",
     python_requires='>=3.9',
-	install_requires= [
-		"vtk",
-	],
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",

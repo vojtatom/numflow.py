@@ -24,10 +24,10 @@ add_compile_options(-Wall -pedantic -O3)
 #add_link_options(-fsanitize=address -shared-libasan -pthread)
 add_link_options(-pthread)
 
-pybind11_add_module(compute         src/cpp/csv.cpp 
+pybind11_add_module(compute         src/cpp/compute.cpp
+                                    src/cpp/csv.cpp 
                                     src/cpp/csv.hpp
                                     src/cpp/field.hpp
-                                    src/cpp/field.cpp
-                                    )
+                                    src/cpp/field.cpp)
 
 install(TARGETS compute DESTINATION .)
