@@ -1,3 +1,0 @@
-num points: 1, repetitions 1
-ctime: 0.00566, stime 0.15757, ratio 27.81894
-
