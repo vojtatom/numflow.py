@@ -27,7 +27,7 @@ add_link_options(-pthread)
 pybind11_add_module(compute         src/cpp/csv.cpp 
                                     src/cpp/csv.hpp
                                     src/cpp/field.hpp
-                                    src/cpp/field.cpp,
+                                    src/cpp/field.cpp
                                     )
 
 install(TARGETS compute DESTINATION .)

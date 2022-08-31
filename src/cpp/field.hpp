@@ -12,7 +12,7 @@ public:
 
 class RectilinearField3D: public Field {
 public:
-    RectilinearField(const string & filename);
+    RectilinearField3D(const string & filename);
 
 protected:
     double dx, dy, dz;
