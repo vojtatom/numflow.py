@@ -8,6 +8,7 @@
         "random": "cpp",
         "unordered_map": "cpp",
         "iosfwd": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "stdexcept": "cpp"
     }
 }

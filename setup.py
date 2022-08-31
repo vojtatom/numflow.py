@@ -33,7 +33,7 @@ setup(
     cmake_install_dir="src/numflow",
     include_package_data=True,
     url="https://github.com/vojtatom/numflow",
-    python_requires='>=3.9',
+    python_requires='>=3.8',
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",

@@ -3,10 +3,10 @@
 #include <pybind11/functional.h>
 #include "field.hpp"
 
-#define TINYGLTF_IMPLEMENTATION
-#define STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "deps/gltf/tiny_gltf.h"
+//#define TINYGLTF_IMPLEMENTATION
+//#define STB_IMAGE_IMPLEMENTATION
+//#define STB_IMAGE_WRITE_IMPLEMENTATION
+//#include "deps/gltf/tiny_gltf.h"
 
 namespace py = pybind11;
 using namespace std;
@@ -50,6 +50,5 @@ using namespace std;
 
 PYBIND11_MODULE(compute, m) {
     py::class_<RectilinearField3D, std::shared_ptr<RectilinearField3D>>(m, "RectilinearField3D")
-        .def(py::init<const string &>())
-        .def_property_readonly("data", &RectilinearField3D::data);
+        .def(py::init<const string &>());
 }

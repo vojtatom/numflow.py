@@ -3,10 +3,7 @@
 #include <unordered_map>
 
 
-Field::Field() {
-}
-
-RectilinearField3D::RectilinearField3D(const string & filename) : Field() {
+RectilinearField3D::RectilinearField3D(const string & filename) {
     vector<pair<tvec3, tvec3>> pos_val;
     load_csv(filename, pos_val);
     if (!prepare_coord_field(pos_val))
@@ -101,16 +98,16 @@ bool RectilinearField3D::prepare_coord_field(vector<pair<tvec3, tvec3>> & pos_va
     return true;
 }
 
-vector<tfloat> RectilinearField3D::data() const {
+vector<tfloat> RectilinearField3D::get_data() const {
     vector<tfloat> fcopy;
-    for (const auto & x : field) {
-        for (const auto & y : x) {
-            for (const auto & z : y) {
-                fcopy.push_back(z.x);
-                fcopy.push_back(z.y);
-                fcopy.push_back(z.z);
-            }
-        }
-    }
+    //for (const auto & x : field) {
+    //    for (const auto & y : x) {
+    //        for (const auto & z : y) {
+    //            fcopy.push_back(z.x);
+    //            fcopy.push_back(z.y);
+    //            fcopy.push_back(z.z);
+    //        }
+    //    }
+    //}
     return fcopy;
 }

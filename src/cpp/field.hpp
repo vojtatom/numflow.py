@@ -1,20 +1,13 @@
 #pragma once
-#include <vector>
 #include "types.hpp"
 
 using namespace std;
 
 
-class Field {
-public:
-    Field();
-};
-
-
-class RectilinearField3D: public Field {
+class RectilinearField3D {
 public:
     RectilinearField3D(const string & filename);
-    vector<tfloat> data() const;
+    vector<tfloat> get_data() const;
 
 protected:
     bool prepare_coord_field(vector<pair<tvec3, tvec3>> & pos_val);

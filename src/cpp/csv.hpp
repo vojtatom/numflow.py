@@ -2,6 +2,7 @@
 #include "field.hpp"
 #include "types.hpp"
 
+using namespace std;
 
 //load csv file in format
 //x, y, z, valuex, valuey, valuez
