@@ -1,2 +1,2 @@
-graft numflow
+graft src
 include setup.py CMakeLists.txt pyproject.toml README.md
