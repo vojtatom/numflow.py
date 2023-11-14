@@ -2,6 +2,8 @@
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
 #include "field.hpp"
+#include "integrate.hpp"
+#include "interpolate.hpp"
 
 #define TINYGLTF_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
@@ -11,45 +13,18 @@
 namespace py = pybind11;
 using namespace std;
 
-
-
-//class PyField : public Field {
-//public:
-//    /* Inherit the constructors */
-//    using Field::Field;
-//
-//    /* Trampoline (need one for each virtual function) */
-//    /*virtual const char * type() const override {
-//        PYBIND11_OVERRIDE_PURE(
-//            const char *,// Return type
-//            BaseModel,// Parent class
-//            type,// Name of function in C++ (must match Python name)
-//            // Argument(s)
-//        );
-//    }*/
-//
-//    /* Trampoline (need one for each virtual function) */
-//    /*virtual const char * type() const override {
-//        PYBIND11_OVERRIDE(
-//            const char *,// Return type
-//            BaseModel,// Parent class
-//            type,// Name of function in C++ (must match Python name)
-//            // Argument(s)
-//        );
-//    }*/
-//};
-
-
-
-//class PyRectilinearField3D : public RectilinearField3D {
-//public:
-//    /* Inherit the constructors */
-//    using RectilinearField3D::RectilinearField3D;
-//};
-
-
-PYBIND11_MODULE(compute, m) {
+PYBIND11_MODULE(compute, m)
+{
     py::class_<RectilinearField3D, std::shared_ptr<RectilinearField3D>>(m, "RectilinearField3D")
-        .def(py::init<const string &>())
-        .def_property_readonly("data", &RectilinearField3D::get_data);
+        .def(py::init<const string &>());
+
+    py::class_<DataStreamlines, std::shared_ptr<DataStreamlines>>(m, "DataStreamlines")
+        .def(py::init<>())
+        .def_readwrite("y", &DataStreamlines::y)
+        .def_readwrite("f", &DataStreamlines::f)
+        .def_readwrite("t", &DataStreamlines::t)
+        .def_readwrite("l", &DataStreamlines::l);
+
+    m.def("interpolate_3d", &interpolate_3d);
+    m.def("integrate_3d", &integrate_3d);
 }

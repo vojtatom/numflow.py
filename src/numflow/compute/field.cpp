@@ -1,31 +1,38 @@
 #include "field.hpp"
 #include "csv.hpp"
 #include <unordered_map>
+#include <algorithm>
 
-
-RectilinearField3D::RectilinearField3D(const string & filename) {
+RectilinearField3D::RectilinearField3D(const string &filename)
+{
     vector<pair<tvec3, tvec3>> pos_val;
     load_csv(filename, pos_val);
     if (!prepare_coord_field(pos_val))
         throw runtime_error("Failed to prepare coordinate field");
 }
 
-
-bool test_all_counts_equal(const unordered_map<tfloat, size_t> & counts) {
+bool test_all_counts_equal(const unordered_map<tfloat, size_t> &counts, char axis)
+{
     if (counts.size() == 0)
         return false;
 
+    // size of the first element
     size_t size = counts.begin()->second;
-    for (const auto & p : counts) {
-        if (size != p.second) {
+    for (const auto &p : counts)
+    {
+        if (size != p.second)
+        {
+            cerr << "Counts are not equal, " << size << " != " << p.second << " on axis " << axis << " at " << p.first << endl;
             return false;
         }
     }
     return true;
 }
 
-void sort_by_positions(vector<pair<tvec3, tvec3>> & pos_val) {
-    sort(pos_val.begin(), pos_val.end(), [](const pair<tvec3, tvec3> & a, const pair<tvec3, tvec3> & b) {
+void sort_by_positions(vector<pair<tvec3, tvec3>> &pos_val)
+{
+    sort(pos_val.begin(), pos_val.end(), [](const pair<tvec3, tvec3> &a, const pair<tvec3, tvec3> &b)
+         {
         if (a.first.x == b.first.x) {
             if (a.first.y == b.first.y) {
                 return a.first.z < b.first.z;
@@ -34,15 +41,15 @@ void sort_by_positions(vector<pair<tvec3, tvec3>> & pos_val) {
             }
         } else {
             return a.first.x < b.first.x;
-        }
-    });
+        } });
 }
 
-
-bool RectilinearField3D::prepare_coord_field(vector<pair<tvec3, tvec3>> & pos_val) {
-    //count unique positions
+bool RectilinearField3D::prepare_coord_field(vector<pair<tvec3, tvec3>> &pos_val)
+{
+    // count unique positions
     unordered_map<tfloat, size_t> x, y, z;
-    for (auto & p : pos_val) {
+    for (auto &p : pos_val)
+    {
         if (x.find(p.first.x) == x.end())
             x[p.first.x] = 0;
         x[p.first.x]++;
@@ -54,60 +61,56 @@ bool RectilinearField3D::prepare_coord_field(vector<pair<tvec3, tvec3>> & pos_va
         z[p.first.z]++;
     }
 
-    //check if all counts are equal
-    if (!test_all_counts_equal(x) || !test_all_counts_equal(y) || !test_all_counts_equal(z)) {
+    // check if all counts are equal
+    if (!test_all_counts_equal(x, 'x') || !test_all_counts_equal(y, 'y') || !test_all_counts_equal(z, 'z'))
+    {
+        cerr << "Exiting, not all counts are equal" << endl;
         return false;
     }
 
-    //fill x, y, z coordinates
+    // fill x, y, z coordinates
     x_coords.resize(x.size());
     y_coords.resize(y.size());
     z_coords.resize(z.size());
-    for (const auto & p : x) {
+    for (const auto &p : x)
+    {
         x_coords[p.second] = p.first;
     }
 
-    for (const auto & p : y) {
+    for (const auto &p : y)
+    {
         y_coords[p.second] = p.first;
     }
 
-    for (const auto & p : z) {
+    for (const auto &p : z)
+    {
         z_coords[p.second] = p.first;
     }
 
-    //fill field
-    field.resize(x.size());
-    for (size_t i = 0; i < x.size(); i++) {
-        field[i].resize(y.size());
-        for (size_t j = 0; j < y.size(); j++) {
-            field[i][j].resize(z.size());
-        }
-    }
+    // fill field
+    velocities.resize(x.size() * y.size() * z.size());
+    dx = x.size();
+    dy = y.size();
+    dz = z.size();
 
-    //sort positions and values accordingly
+    // sort positions and values accordingly
     sort_by_positions(pos_val);
 
-    for (size_t i = 0; i < x.size(); i++) {
-        for (size_t j = 0; j < y.size(); j++) {
-            for (size_t k = 0; k < z.size(); k++) {
-                field[i][j][k] = pos_val[i * y.size() * z.size() + j * z.size() + k].second;
+    size_t out_i = 0;
+    tvec3 vec;
+    for (size_t i = 0; i < x.size(); i++)
+    {
+        for (size_t j = 0; j < y.size(); j++)
+        {
+            for (size_t k = 0; k < z.size(); k++)
+            {
+                vec = pos_val[i * y.size() * z.size() + j * z.size() + k].second;
+                velocities[out_i++] = vec.x;
+                velocities[out_i++] = vec.y;
+                velocities[out_i++] = vec.z;
             }
         }
     }
 
     return true;
-}
-
-vector<tfloat> RectilinearField3D::get_data() const {
-    vector<tfloat> fcopy;
-    //for (const auto & x : field) {
-    //    for (const auto & y : x) {
-    //        for (const auto & z : y) {
-    //            fcopy.push_back(z.x);
-    //            fcopy.push_back(z.y);
-    //            fcopy.push_back(z.z);
-    //        }
-    //    }
-    //}
-    return fcopy;
 }

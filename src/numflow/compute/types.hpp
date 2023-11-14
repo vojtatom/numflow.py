@@ -7,3 +7,9 @@
 using tvec3 = glm::highp_f32vec3;
 using tvec2 = glm::highp_f32vec2;
 using tfloat = float;
+
+enum LookUp
+{
+    ok,
+    outOfRange,
+};

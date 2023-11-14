@@ -3,20 +3,23 @@
 
 using namespace std;
 
-
-class RectilinearField3D {
+class RectilinearField3D
+{
 public:
-    RectilinearField3D(const string & filename);
-    vector<tfloat> get_data() const;
-
-protected:
-    bool prepare_coord_field(vector<pair<tvec3, tvec3>> & pos_val);
+    RectilinearField3D(const string &filename);
 
     tvec3 unit;
-    vector<tfloat> x_coords;
-    vector<tfloat> y_coords;
-    vector<tfloat> z_coords;
-    //in field, z is the fastest changing coordinate
-    vector<vector<vector<tvec3>>> field;
-};
 
+    // coordinates, formerly  *ax, *ay, *az;
+    vector<tfloat> x_coords, y_coords, z_coords;
+
+    // axis sizes
+    int32_t dx, dy, dz;
+
+    // in field, z is the fastest changing coordinate
+    // formerly *data;
+    vector<tfloat> velocities;
+
+protected:
+    bool prepare_coord_field(vector<pair<tvec3, tvec3>> &pos_val);
+};

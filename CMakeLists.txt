@@ -28,6 +28,10 @@ pybind11_add_module(compute         src/numflow/compute/compute.cpp
                                     src/numflow/compute/types.hpp 
                                     src/numflow/compute/csv.cpp 
                                     src/numflow/compute/csv.hpp
+                                    src/numflow/compute/integrate.cpp 
+                                    src/numflow/compute/integrate.hpp
+                                    src/numflow/compute/interpolate.cpp 
+                                    src/numflow/compute/interpolate.hpp
                                     src/numflow/compute/field.hpp
                                     src/numflow/compute/field.cpp)
 
