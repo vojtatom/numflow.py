@@ -254,3 +254,4 @@ Temporary Items
 # End of https://www.toptal.com/developers/gitignore/api/python,c++,cmake
 TOSORT
 _skbuild
+tests/testdata/*

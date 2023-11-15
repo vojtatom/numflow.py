@@ -11,3 +11,9 @@ def data_dir():
 def rectilinear_csv_data():
     dataset_path = os.path.join(data_dir(), 'rectilinear.csv')
     yield dataset_path
+    
+    
+@pytest.fixture(scope='function')
+def sun_csv_data():
+    dataset_path = os.path.join(data_dir(), 'sun.csv')
+    yield dataset_path

@@ -8,8 +8,6 @@ class RectilinearField3D
 public:
     RectilinearField3D(const string &filename);
 
-    tvec3 unit;
-
     // coordinates, formerly  *ax, *ay, *az;
     vector<tfloat> x_coords, y_coords, z_coords;
 

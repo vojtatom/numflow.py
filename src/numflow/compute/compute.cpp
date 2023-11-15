@@ -16,14 +16,21 @@ using namespace std;
 PYBIND11_MODULE(compute, m)
 {
     py::class_<RectilinearField3D, std::shared_ptr<RectilinearField3D>>(m, "RectilinearField3D")
-        .def(py::init<const string &>());
+        .def(py::init<const string &>())
+        .def_readonly("x_coords", &RectilinearField3D::x_coords)
+        .def_readonly("y_coords", &RectilinearField3D::y_coords)
+        .def_readonly("z_coords", &RectilinearField3D::z_coords)
+        .def_readonly("dx", &RectilinearField3D::dx)
+        .def_readonly("dy", &RectilinearField3D::dy)
+        .def_readonly("dz", &RectilinearField3D::dz)
+        .def_readonly("velocities", &RectilinearField3D::velocities);
 
     py::class_<DataStreamlines, std::shared_ptr<DataStreamlines>>(m, "DataStreamlines")
         .def(py::init<>())
-        .def_readwrite("y", &DataStreamlines::y)
-        .def_readwrite("f", &DataStreamlines::f)
-        .def_readwrite("t", &DataStreamlines::t)
-        .def_readwrite("l", &DataStreamlines::l);
+        .def_readonly("y", &DataStreamlines::y)
+        .def_readonly("f", &DataStreamlines::f)
+        .def_readonly("t", &DataStreamlines::t)
+        .def_readonly("l", &DataStreamlines::l);
 
     m.def("interpolate_3d", &interpolate_3d);
     m.def("integrate_3d", &integrate_3d);

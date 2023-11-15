@@ -69,26 +69,27 @@ bool RectilinearField3D::prepare_coord_field(vector<pair<tvec3, tvec3>> &pos_val
     }
 
     // fill x, y, z coordinates
-    x_coords.resize(x.size());
-    y_coords.resize(y.size());
-    z_coords.resize(z.size());
     for (const auto &p : x)
     {
-        x_coords[p.second] = p.first;
+        x_coords.push_back(p.first);
     }
 
     for (const auto &p : y)
     {
-        y_coords[p.second] = p.first;
+        y_coords.push_back(p.first);
     }
 
     for (const auto &p : z)
     {
-        z_coords[p.second] = p.first;
+        z_coords.push_back(p.first);
     }
 
+    sort(x_coords.begin(), x_coords.end());
+    sort(y_coords.begin(), y_coords.end());
+    sort(z_coords.begin(), z_coords.end());
+
     // fill field
-    velocities.resize(x.size() * y.size() * z.size());
+    velocities.resize(x.size() * y.size() * z.size() * 3);
     dx = x.size();
     dy = y.size();
     dz = z.size();
