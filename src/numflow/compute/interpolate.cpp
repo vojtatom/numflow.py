@@ -77,9 +77,8 @@ void index(const tfloat value, const vector<tfloat> &grid, marker &mark)
  *
  * @details This function performs trilinear interpolation on a 3D dataset at given points. The dataset is represented by a RectilinearField3D object, which contains arrays of x, y, and z coordinates, as well as an array of velocity values. The function first finds the indices of the grid points surrounding each input point using the index() function. It then performs trilinear interpolation on the velocity values at these grid points to obtain the interpolated value at the input point. If an input point is out of range of the dataset, or if any of the indices cannot be found, the function skips that point and moves on to the next one. The function returns a vector of interpolated values, with each value corresponding to the input point at the same index in the input points vector.
  */
-vector<tfloat> interpolate_3d(const shared_ptr<RectilinearField3D> dataset, const vector<tfloat> &points)
+void interpolate_3d_core(const shared_ptr<RectilinearField3D> dataset, const vector<tfloat> &points, tfloat *values)
 {
-    vector<tfloat> values = vector<tfloat>(points.size(), 0);
     const size_t count = points.size() / 3;
 
     int32_t zy = dataset->dy * dataset->dz;
@@ -133,8 +132,34 @@ vector<tfloat> interpolate_3d(const shared_ptr<RectilinearField3D> dataset, cons
 
         // cout << endl;
     }
+}
 
-    return values;
+py::array_t<tfloat> interpolate_3d(
+    const shared_ptr<RectilinearField3D> dataset,
+    const py::array_t<tfloat, py::array::c_style | py::array::forcecast> &points)
+{
+    py::buffer_info info = points.request();
+    if (info.ndim != 2)
+        throw std::runtime_error("Number of array dimensions passed to interpolate_3d must be 2");
+    if (info.shape[1] != 3)
+        throw std::runtime_error("Second dimension of array passed to interpolate_3dmust be 3");
+
+    // the data is passed as pointer so the vector does not own it
+    vector<tfloat> points_vec = vector<tfloat>((tfloat *)info.ptr, (tfloat *)info.ptr + info.shape[0] * info.shape[1]);
+
+    size_t size = points_vec.size();
+    tfloat *values = new tfloat[size];
+    interpolate_3d_core(dataset, points_vec, values);
+
+    // Create a numpy array that takes ownership of the data
+    py::capsule free_when_done(values, [](void *f)
+                               { delete[] reinterpret_cast<tfloat *>(f); });
+
+    return py::array_t<tfloat>(
+        {size},           // shape of the array
+        {sizeof(tfloat)}, // stride of the array
+        values,           // the data pointer
+        free_when_done);  // the capsule
 }
 
 /**

@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
+#include <pybind11/numpy.h>
 #include "field.hpp"
 #include "integrate.hpp"
 #include "interpolate.hpp"
@@ -13,17 +14,20 @@
 namespace py = pybind11;
 using namespace std;
 
+// TODO
+// https://pybind11.readthedocs.io/en/stable/advanced/pycpp/numpy.html
+
 PYBIND11_MODULE(compute, m)
 {
     py::class_<RectilinearField3D, std::shared_ptr<RectilinearField3D>>(m, "RectilinearField3D")
         .def(py::init<const string &>())
-        .def_readonly("x_coords", &RectilinearField3D::x_coords)
-        .def_readonly("y_coords", &RectilinearField3D::y_coords)
-        .def_readonly("z_coords", &RectilinearField3D::z_coords)
-        .def_readonly("dx", &RectilinearField3D::dx)
-        .def_readonly("dy", &RectilinearField3D::dy)
-        .def_readonly("dz", &RectilinearField3D::dz)
-        .def_readonly("velocities", &RectilinearField3D::velocities);
+        .def("x_coords", &RectilinearField3D::get_x_coords)
+        .def("y_coords", &RectilinearField3D::get_y_coords)
+        .def("z_coords", &RectilinearField3D::get_z_coords)
+        .def("dx", &RectilinearField3D::get_dx)
+        .def("dy", &RectilinearField3D::get_dy)
+        .def("dz", &RectilinearField3D::get_dz)
+        .def("velocities", &RectilinearField3D::get_velocities);
 
     py::class_<DataStreamlines, std::shared_ptr<DataStreamlines>>(m, "DataStreamlines")
         .def(py::init<>())

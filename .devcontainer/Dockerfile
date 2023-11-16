@@ -7,3 +7,6 @@ RUN apt-get update && \
     curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - && \
     apt-get install -y nodejs && \
     npm install -g npm
+
+# Install valgrind
+RUN apt-get install -y valgrind
