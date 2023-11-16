@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width" />
+
+<head>
+    <title>numflow</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="canvas/style/style.css">
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+    <script src="canvas/js/data_manager.js"></script>
+    <script src="canvas/js/externals/gl-matrix.js"></script>
+    <script src="canvas/js/graphics/shaders/base/shader_type.js"></script>
+    <script src="canvas/js/graphics/shaders/base/shader.js"></script>
+    <script src="canvas/js/graphics/shaders/base/program.js"></script>
+    <script src="canvas/js/graphics/shaders/base/methodprogram.js"></script>
+    <script src="canvas/js/graphics/shaders/box_program.js"></script>
+    <script src="canvas/js/graphics/shaders/glyph_program.js"></script>
+    <script src="canvas/js/graphics/shaders/stream_program.js"></script>
+    <script src="canvas/js/graphics/shaders/text_program.js"></script>
+    <script src="canvas/js/graphics/shaders/colorbar_program.js"></script>
+    <script src="canvas/js/graphics/shaders/layer_program.js"></script>
+    <script src="canvas/js/graphics/primitives/geometry.js"></script>
+    <script src="canvas/js/graphics/primitives/primitive.js"></script>
+    <script src="canvas/js/graphics/primitives/methodprimitive.js"></script>
+    <script src="canvas/js/graphics/primitives/unit_box.js"></script>
+    <script src="canvas/js/graphics/primitives/stream.js"></script>
+    <script src="canvas/js/graphics/primitives/box.js"></script>
+    <script src="canvas/js/graphics/primitives/glyphs.js"></script>
+    <script src="canvas/js/graphics/primitives/quad.js"></script>
+    <script src="canvas/js/graphics/primitives/layer.js"></script>
+    <script src="canvas/js/graphics/scenes/light.js"></script>
+    <script src="canvas/js/graphics/scenes/camera.js"></script>
+    <script src="canvas/js/graphics/scenes/scene.js"></script>
+    <script src="canvas/js/graphics/graphics.js"></script>
+    <script src="canvas/js/interface.js"></script>
+    <script src="canvas/js/math.js"></script>
+    <script src="canvas/js/ui/ui_base.js"></script>
+    <script src="canvas/js/ui/ui_fields.js"></script>
+    <script src="canvas/js/ui/ui_widget.js"></script>
+    <script src="canvas/js/ui/ui_scene.js"></script>
+    <script src="canvas/js/ui.js"></script>
+    <script src="canvas/js/flowapp.js"></script>
+    <script src="canvas/js/webapp.js"></script>
+</head>
+
+<body>
+    <div id="upload-flow">
+        <form>
+            <p>Upload <code>*.flow</code> file to visualize it. The file never leaves your computer and isn't uploaded
+                to the server.</p>
+            <input type="file" id="file" />
+            <label class="button" for="file">Select some files</label>
+        </form>
+    </div>
+    <canvas id="canvas"></canvas>
+</body>
+
+</html>
