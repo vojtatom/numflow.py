@@ -32,15 +32,15 @@ def test_glyph_kernel(rectilinear_csv_data: str):
     field = dataset_kernel(rectilinear_csv_data)
     points = points_kernel([0.1, 0.1, -10], [60, 60, -10], [10, 10, 1])
     glyphs = glyph_kernel(field, points)
-    assert len(glyphs) == 100 * 3
+    assert glyphs.shape == (100, 3)
     
     
 def test_streamline_kernel(rectilinear_csv_data: str):
     field = dataset_kernel(rectilinear_csv_data)
     points = points_kernel([0.1, 0.1, -10], [60, 60, -10], [10, 10, 1])
-    streamlines = stream_kernel(field, points.flatten(), 0, 10)
-    assert len(streamlines.l) == 100
-    assert len(streamlines.t) == sum(streamlines.l)
-    assert len(streamlines.y) == sum(streamlines.l) * 3
-    assert len(streamlines.f) == sum(streamlines.l) * 3
+    streamlines = stream_kernel(field, points, 0, 10)
+    assert len(streamlines.l()) == 100
+    assert len(streamlines.t()) == sum(streamlines.l())
+    assert len(streamlines.y()) == sum(streamlines.l()) * 3
+    assert len(streamlines.f()) == sum(streamlines.l()) * 3
     

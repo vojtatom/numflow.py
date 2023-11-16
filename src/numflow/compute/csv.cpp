@@ -21,7 +21,7 @@ void load_csv(const string &filename, vector<pair<tvec3, tvec3>> &pos_val)
             // loading this way to support NaNs and Infs loading
             vx = vy = vz = 0;
             ss >> vx >> comma >> vy >> comma >> vz;
-            pos_val.push_back(make_pair(tvec3(x, y, z), tvec3(vx, vy, vz)));
+            pos_val.push_back(make_pair(tvec3{x, y, z}, tvec3{vx, vy, vz}));
         }
     }
 }

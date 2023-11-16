@@ -145,21 +145,21 @@ py::array_t<tfloat> interpolate_3d(
         throw std::runtime_error("Second dimension of array passed to interpolate_3dmust be 3");
 
     // the data is passed as pointer so the vector does not own it
-    vector<tfloat> points_vec = vector<tfloat>((tfloat *)info.ptr, (tfloat *)info.ptr + info.shape[0] * info.shape[1]);
+    vector<tfloat> raw_points = vector<tfloat>((tfloat *)info.ptr, (tfloat *)info.ptr + info.shape[0] * info.shape[1]);
 
-    size_t size = points_vec.size();
+    size_t size = raw_points.size();
     tfloat *values = new tfloat[size];
-    interpolate_3d_core(dataset, points_vec, values);
+    interpolate_3d_core(dataset, raw_points, values);
 
     // Create a numpy array that takes ownership of the data
     py::capsule free_when_done(values, [](void *f)
                                { delete[] reinterpret_cast<tfloat *>(f); });
 
     return py::array_t<tfloat>(
-        {size},           // shape of the array
-        {sizeof(tfloat)}, // stride of the array
-        values,           // the data pointer
-        free_when_done);  // the capsule
+        {(size_t)(size / 3), (size_t)3},      // shape of the array
+        {3 * sizeof(tfloat), sizeof(tfloat)}, // C-style contiguous strides for double
+        values,                               // the data pointer
+        free_when_done);                      // the capsule
 }
 
 /**

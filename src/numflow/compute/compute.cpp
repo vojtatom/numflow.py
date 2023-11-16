@@ -6,16 +6,8 @@
 #include "integrate.hpp"
 #include "interpolate.hpp"
 
-#define TINYGLTF_IMPLEMENTATION
-#define STB_IMAGE_IMPLEMENTATION
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "deps/gltf/tiny_gltf.h"
-
 namespace py = pybind11;
 using namespace std;
-
-// TODO
-// https://pybind11.readthedocs.io/en/stable/advanced/pycpp/numpy.html
 
 PYBIND11_MODULE(compute, m)
 {
@@ -31,11 +23,11 @@ PYBIND11_MODULE(compute, m)
 
     py::class_<DataStreamlines, std::shared_ptr<DataStreamlines>>(m, "DataStreamlines")
         .def(py::init<>())
-        .def_readonly("y", &DataStreamlines::y)
-        .def_readonly("f", &DataStreamlines::f)
-        .def_readonly("t", &DataStreamlines::t)
-        .def_readonly("l", &DataStreamlines::l);
+        .def("y", &DataStreamlines::get_y)
+        .def("f", &DataStreamlines::get_f)
+        .def("t", &DataStreamlines::get_t)
+        .def("l", &DataStreamlines::get_l);
 
-    m.def("interpolate_3d", &interpolate_3d);
+    m.def("interpolate_3d", &interpolate_3d, py::return_value_policy::take_ownership);
     m.def("integrate_3d", &integrate_3d);
 }

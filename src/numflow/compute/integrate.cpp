@@ -251,8 +251,11 @@ struct RKSolver
 
 //-------------------------------------------------------------------------------
 
-shared_ptr<DataStreamlines> integrate_3d(const shared_ptr<RectilinearField3D> dataset, const vector<tfloat> &points,
-                                         const tfloat t0, const tfloat tbound)
+shared_ptr<DataStreamlines> integrate_3d_core(
+    const shared_ptr<RectilinearField3D> dataset,
+    const vector<tfloat> &points,
+    const tfloat t0,
+    const tfloat tbound)
 {
     // positions, values, times
     vector<tfloat> y, f, t;
@@ -310,3 +313,20 @@ shared_ptr<DataStreamlines> integrate_3d(const shared_ptr<RectilinearField3D> da
 }
 
 //-------------------------------------------------------------------------------
+
+shared_ptr<DataStreamlines> integrate_3d(
+    const shared_ptr<RectilinearField3D> dataset,
+    const py::array_t<tfloat, py::array::c_style | py::array::forcecast> &points,
+    const tfloat t0,
+    const tfloat tbound)
+{
+    py::buffer_info info = points.request();
+    if (info.ndim != 2)
+        throw std::runtime_error("Number of array dimensions passed to interpolate_3d must be 2");
+    if (info.shape[1] != 3)
+        throw std::runtime_error("Second dimension of array passed to interpolate_3dmust be 3");
+
+    // the data is passed as pointer so the vector does not own it
+    vector<tfloat> raw_points = vector<tfloat>((tfloat *)info.ptr, (tfloat *)info.ptr + info.shape[0] * info.shape[1]);
+    return integrate_3d_core(dataset, raw_points, t0, tbound);
+}

@@ -10,7 +10,12 @@
 		"vscode": {
 			"extensions": [
 				"ms-vscode.cpptools",
-				"ms-python.python"
+				"ms-python.python",
+				"mhutchie.git-graph",
+				"twxs.cmake",
+				"ms-python.vscode-pylance",
+				"donjayamanne.python-environment-manager",
+				"ms-vscode.cpptools-extension-pack"
 			]
 		}
 	}
