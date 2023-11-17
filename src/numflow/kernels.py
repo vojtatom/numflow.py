@@ -1,6 +1,6 @@
 import numpy as np
 
-from .compute import RectilinearField3D, interpolate_3d, integrate_3d, DataStreamlines
+from .compute import RectilinearField3D, interpolate_3d, integrate_3d
 from .exceptions import NumflowError
 
 
