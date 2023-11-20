@@ -19,16 +19,16 @@ struct DataStreamlines
     {
         return py::memoryview::from_buffer(
             y.data(),
-            {y.size()},
-            {sizeof(tfloat)});
+            {(size_t)y.size() / 3, (size_t)3},
+            {3 * sizeof(tfloat), sizeof(tfloat)});
     };
 
     py::memoryview get_f()
     {
         return py::memoryview::from_buffer(
             f.data(),
-            {f.size()},
-            {sizeof(tfloat)});
+            {(size_t)f.size() / 3, (size_t)3},
+            {3 * sizeof(tfloat), sizeof(tfloat)});
     };
 
     py::memoryview get_t()
@@ -46,7 +46,6 @@ struct DataStreamlines
             {l.size()},
             {sizeof(int32_t)});
     };
-
 };
 
 // integration

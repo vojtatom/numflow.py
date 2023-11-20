@@ -19,7 +19,8 @@ PYBIND11_MODULE(compute, m)
         .def("dx", &RectilinearField3D::get_dx)
         .def("dy", &RectilinearField3D::get_dy)
         .def("dz", &RectilinearField3D::get_dz)
-        .def("velocities", &RectilinearField3D::get_velocities);
+        .def("velocities", &RectilinearField3D::get_velocities)
+        .def("info", &RectilinearField3D::info);
 
     py::class_<DataStreamlines, std::shared_ptr<DataStreamlines>>(m, "DataStreamlines")
         .def(py::init<>())

@@ -86,6 +86,9 @@ void interpolate_3d_core(const shared_ptr<RectilinearField3D> dataset, const vec
     tfloat c00[3], c01[3], c10[3], c11[3], c0[3], c1[3];
     marker x, y, z;
 
+    // fill with zeros
+    memset(values, 0, count * 3 * sizeof(tfloat));
+
     for (int32_t j = 0; j < count; j++)
     {
         // get indicies
@@ -180,6 +183,9 @@ void interpolate_3d_single_point(const shared_ptr<RectilinearField3D> dataset, c
     int32_t zyx0, zyx1, zy0, zy1, zy0ind2, zy1ind2;
     tfloat c00[3], c01[3], c10[3], c11[3], c0[3], c1[3];
     marker x, y, z;
+
+    // fill with zeros
+    memset(out_values, 0, 3 * sizeof(tfloat));
 
     // get indicies
     index(points[0], dataset->x_coords, x);

@@ -48,6 +48,21 @@ def points_kernel(start: list[float], end: list[float], sampling: list[float]):
 
     return k
 
+def random_points_kernel(start: list[float], end: list[float], n: int):
+    """
+    Kernel producing randomly sampled seeding points. 
+    The seeding space is defined by bounding cuboid. 
+        :param start: near bottom left corner of the cuboid
+        :param end: far top right corner of the cuboid
+        :param n: number of points to generate
+    """
+
+    k = np.zeros((n, 3))
+    for i in range(3):
+        k[:, i] = np.random.uniform(start[i], end[i], n)
+
+    return k
+    
 
 def stream_kernel(data: RectilinearField3D, points: np.ndarray, t_0: float, t_bound: float): 
     """

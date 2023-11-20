@@ -41,10 +41,15 @@ enum SolverStatus
 
 struct RKSolver
 {
-    RKSolver(const shared_ptr<RectilinearField3D> _dataset, tfloat _t0, tfloat _tbound, const size_t _dims)
+    RKSolver(const shared_ptr<RectilinearField3D> _dataset, tfloat _t0, tfloat _tbound)
         : dataset(_dataset), order(4), n_stages(6),
           atol(1e-6), rtol(1e-3), t0(_t0), tbound(_tbound),
-          direction(tbound - t0 > 0 ? 1 : -1), dims(_dims), status(SolverStatus::ready){};
+          direction(tbound - t0 > 0 ? 1 : -1), dims(3), status(SolverStatus::ready)
+    {
+        cout << "RKSolver created" << endl;
+        cout << "t0 " << t0 << endl;
+        cout << "tbound " << tbound << endl;
+    };
 
     // Initial step of integration, sets up internal variables
     // and selects initial step value. In case solver was used previously,
@@ -268,7 +273,7 @@ shared_ptr<DataStreamlines> integrate_3d_core(
     const size_t point_count = points.size() / 3;
     l.reserve(point_count);
 
-    RKSolver solver(dataset, t0, tbound, 3);
+    RKSolver solver(dataset, t0, tbound);
     const tfloat *raw_points = points.data();
 
     // make streamline from each of the points

@@ -2,14 +2,16 @@ import numpy as np
 from numflow.exceptions import NumflowError
 from numpy.linalg import norm
 import base64
+from math import isclose
 
 def check_unique_spacing(unique_points: np.ndarray):
     if len(unique_points) == 1:
         return
     spacing = unique_points[1] - unique_points[0]
     for i in range(1, len(unique_points)):
-        if unique_points[i] - unique_points[i - 1] != spacing:
-            raise NumflowError("Spacing between points is not uniform")
+        if not isclose(unique_points[i] - unique_points[i - 1], spacing):
+            raise NumflowError(f"Spacing between points is not uniform, expected {spacing} but found {unique_points[i] - unique_points[i - 1]}")
+
 
 def layer_meta(layer: np.ndarray):
     """
@@ -42,7 +44,7 @@ def layer_meta(layer: np.ndarray):
     lx = len(x_unique) == 1
     ly = len(y_unique) == 1
     lz = len(z_unique) == 1
-    if (lx ^ ly ^ lz) and not (lx and ly and lz):
+    if not((lx ^ ly ^ lz) and not (lx and ly and lz)):
         raise ValueError("Layer must be a plane")
         
     check_unique_spacing(x_unique)

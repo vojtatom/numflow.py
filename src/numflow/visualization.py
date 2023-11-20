@@ -1,20 +1,21 @@
 import json
 import numpy as np
 from numpy.linalg import norm
+from numflow.encoder import CustomJSONEncoder
 from numflow.geometry import boundries, cleanup_streamline, layer_meta, serialize_array
 from numflow.dataset import Dataset
-from numflow.kernels import dataset_kernel, glyph_kernel, stream_kernel, points_kernel
+from numflow.kernels import glyph_kernel, stream_kernel
 from numflow.exceptions import NumflowError
 import base64
 
 defaultCM = {
-    'sampling': 3,
+    'sampling': 5,
     'colors': [
-        [0, 0, 1, 1], 
-        [1, 1, 1, 1], 
-        [1, 0, 0, 1], 
-        [0, 0, 0, 1],
-        [0, 0, 0, 1],
+        [68/255, 1/255, 84/255, 1],
+        [59/255, 82/255, 139/255, 1],
+        [33/255, 145/255, 140/255, 1], 
+        [94/255, 201/255, 98/255, 1], 
+        [253/255, 231/255, 37/255, 1], 
         ]
 }
 
@@ -233,4 +234,4 @@ class Visualization:
 
         content['stats'] = stats
         with open(file_name, 'w') as outfile:
-            json.dump(content, outfile, sort_keys=True, indent=4)
+            json.dump([content], outfile, sort_keys=True, indent=4, cls=CustomJSONEncoder)

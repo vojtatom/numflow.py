@@ -52,4 +52,11 @@ class Dataset:
             self.file_name = file_name
             self.data = dataset_kernel(file_name)
 
-  
+        def info(self):
+            """
+            Returns a string containing information about the dataset.
+
+            Returns:
+                str: A string containing information about the dataset.
+            """
+            return f"Dataset: {self.file_name}\n" + self.data.info()

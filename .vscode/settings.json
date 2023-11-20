@@ -81,5 +81,6 @@
         "iterator": "cpp",
         "utility": "cpp",
         "ranges": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": false
 }
