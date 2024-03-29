@@ -36,7 +36,7 @@ export function FlowPostPage() {
                 </a>{" "}
                 and <a href="https://www.asu.cas.cz">ASU CAS</a>, supervisor
                 Radek Richtr. The prototype was implemented using C++, Python,
-                JavaScript and WebGL (sadly no TypeScript, it was 2017).
+                JavaScript and WebGL.
             </p>
             <div className="images">
                 <img src={imgflow} alt="flow" />
