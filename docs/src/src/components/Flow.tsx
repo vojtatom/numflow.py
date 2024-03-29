@@ -63,7 +63,7 @@ export function FlowPostPage() {
                     preprocess the data in python using our own{" "}
                     <span className="math">numflow</span> package
                 </li>
-                <li>viusalize the data using interactive web app</li>
+                <li>visualize the data using interactive web app</li>
             </ol>
             <h2>
                 <span className="math">numflow</span> package
@@ -187,11 +187,10 @@ export function FlowPostPage() {
 
             <p>
                 The application was written in plain JavaScript and WebGL, no
-                libraries, no frameworks. It was a learning experience, and I
-                wanted to understand the underlying principles. The application
-                is capable of loading the JSON file and rendering the data. The
-                application ran in the browser as well as in distributed
-                environments such as SAGE2 wall.
+                libraries, no frameworks. It is capable of loading the JSON file
+                produced by <span className="math">numflow</span> package and
+                rendering the data. The application runs in the browser as well
+                as in distributed environments such as SAGE2 wall.
             </p>
 
             <div className="images">
@@ -202,9 +201,10 @@ export function FlowPostPage() {
             </p>
 
             <p>
-                The application also included a simple pipeline editor, where
-                the user could define the used layers and their appearance.
-                Combination of multiple data sources was also supported.
+                Now obsolete part of the application also included a simple
+                pipeline editor, where the user could define the used layers and
+                their appearance. Combination of multiple data sources was also
+                supported.
             </p>
 
             <h2>Additional outputs</h2>
