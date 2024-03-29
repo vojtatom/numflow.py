@@ -39,7 +39,7 @@ export function FlowPostPage() {
                 <ul className="links">
                     <li>links</li>
                     <li>
-                        <a href="https://github.com/vojtatom/numflow-py">
+                        <a href="https://github.com/vojtatom/numflow.py">
                             github repo
                         </a>
                     </li>
