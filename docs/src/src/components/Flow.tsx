@@ -20,13 +20,10 @@ export function FlowPostPage() {
                 2017 (update 2023), vector field visualization
             </p>
             <p>
-                I developed a prototype of{" "}
-                <strong>
-                    a framework for 3D visualization of vector field data
-                </strong>
-                . The main focus was the visualization of{" "}
-                <strong>plasma flow near solar surface</strong>. It was
-                originally a semestral project that I later developed into a{" "}
+                I developed a prototype of a framework for 3D visualization of
+                vector field data . The main focus was the visualization of
+                plasma flow near solar surface. It was originally a semestral
+                project that I later developed into a{" "}
                 <a href="https://dspace.cvut.cz/handle/10467/83382">
                     bachelor thesis
                 </a>{" "}
@@ -38,6 +35,21 @@ export function FlowPostPage() {
                 Radek Richtr. The prototype was implemented using C++, Python,
                 JavaScript and WebGL.
             </p>
+            <div className="projectItems">
+                <ul className="links">
+                    <li>links</li>
+                    <li>
+                        <a href="https://github.com/vojtatom/numflow-py">
+                            github repo
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://dspace.cvut.cz/handle/10467/83382">
+                            thesis
+                        </a>
+                    </li>
+                </ul>
+            </div>
             <div className="images">
                 <img src={imgflow} alt="flow" />
             </div>
@@ -69,7 +81,6 @@ export function FlowPostPage() {
                 convenient - the time spent on debuging various parsers was not
                 worth the time saved by using more efficient formats.
             </p>
-            <h3>Input format</h3>
             <p>
                 The package supports data aligned to rectiliner grids, however
                 the input format was just a list of positions and velocities:
@@ -86,7 +97,6 @@ export function FlowPostPage() {
                 <span>60.00, 60.00, -20.00, -0.61, -1.90, -20.00</span>
             </pre>
 
-            <h3>Visualizatoin methods</h3>
             <p>
                 I made a short{" "}
                 <a href="https://github.com/vojtatom/numflow.py/blob/main/sun-dataset.ipynb">
