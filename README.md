@@ -2,6 +2,8 @@
 
 C++ based tool for converting vector field data into models for rendering.
 
+I made a [blogpost describing the design, there are also some outputs, see more here!](https://vojtatom.github.io/numflow.py)
+
 ## Dev
 
 Developing the package on localhost is recommanded in devcontainer - see `.devcontainer` folder.
