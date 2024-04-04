@@ -1,21 +1,24 @@
-import { Post } from "./Post";
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.statically.io/gh/vojtatom/vojtatom/main/posts/post-4-4-2024.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <title>numflow.py - vojtatom</title>
+    </head>
 
-import imgflow from "../images/flow.png";
-import imgwholeimgtop from "../images/wholeimgtop.png";
-import imgrenderer from "../images/renderer.png";
-import imgpipeline from "../images/pipeline.png";
-import imgmediumA from "../images/mediumA.png";
-import imgmediumB from "../images/mediumB.png";
-import imgmediumC from "../images/mediumC.png";
-import imgglC from "../images/glC.png";
-import imgglA from "../images/glA.png";
-import imgglB from "../images/glB.png";
-
-export function FlowPostPage() {
-    return (
-        <Post clickableImages title="vojtatom - flow">
+    <body>
+        <main>
             <h1>Vector field visualization</h1>
-            <p className="subtitle">
+            <p class="subtitle">
                 by <a href="http://vojtatom.cz">Vojtěch Tomas (@vojtatom)</a>,
                 2017 (update 2023), vector field visualization
             </p>
@@ -23,20 +26,20 @@ export function FlowPostPage() {
                 I developed a prototype of a framework for 3D visualization of
                 vector field data . The main focus was the visualization of
                 plasma flow near solar surface. It was originally a semestral
-                project that I later developed into a{" "}
+                project that I later developed into a
                 <a href="https://dspace.cvut.cz/handle/10467/83382">
                     bachelor thesis
-                </a>{" "}
-                at FIT CTU in Prague in cooperation with{" "}
+                </a>
+                at FIT CTU in Prague in cooperation with
                 <a href="https://www.asu.cas.cz/~sdsa/svanda.html">
                     Michal Švanda
-                </a>{" "}
+                </a>
                 and <a href="https://www.asu.cas.cz">ASU CAS</a>, supervisor
                 Radek Richtr. The prototype was implemented using C++, Python,
                 JavaScript and WebGL.
             </p>
-            <div className="projectItems">
-                <ul className="links">
+            <div class="projectItems">
+                <ul class="links">
                     <li>links</li>
                     <li>
                         <a href="https://github.com/vojtatom/numflow.py">
@@ -50,28 +53,25 @@ export function FlowPostPage() {
                     </li>
                 </ul>
             </div>
-            <div className="images">
-                <img src={imgflow} alt="flow" />
+            <div class="images">
+                <img src="/flow.png" alt="flow" />
             </div>
-            <p className="figureDescription">
+            <p class="figureDescription">
                 visualization of plasma flow using streamlines and colored cut
                 plane
             </p>
             <p>The final workflow is straightforward:</p>
             <ol>
                 <li>
-                    preprocess the data in python using our own{" "}
-                    <span className="math">numflow</span> package
+                    preprocess the data in python using our own
+                    <span class="math">numflow</span> package
                 </li>
                 <li>visualize the data using interactive web app</li>
             </ol>
-            <h2>
-                <span className="math">numflow</span> package
-            </h2>
+            <h2><span class="math">numflow</span> package</h2>
             <p>
-                The <span className="math">numflow</span> package is mainly
-                written in C++ and Python, the interoperability is ensured by
-                pybind11.
+                The <span class="math">numflow</span> package is mainly written
+                in C++ and Python, the interoperability is ensured by pybind11.
             </p>
             <p>
                 As supprted input format, I explored several options including
@@ -85,118 +85,135 @@ export function FlowPostPage() {
                 The package supports data aligned to rectiliner grids, however
                 the input format was just a list of positions and velocities:
             </p>
-            {/* prettier-ignore */}
+            <!-- prettier-ignore -->
             <pre>
-                <span>x,     y,      z,      vx,    vy,    vz</span>
-                <span>0.10,  0.10,   0.50,   0.20,  1.99,  0.50</span>
-                <span>0.10,  0.10,  -0.58,   0.20,  1.99, -0.58</span>
-                <span>0.10,  0.10,  -1.66,   0.20,  1.99, -1.66</span>
-                <span>...</span>
-                <span>60.00, 60.00, -17.84, -0.61, -1.90, -17.84</span>
-                <span>60.00, 60.00, -18.92, -0.61, -1.90, -18.92</span>
-                <span>60.00, 60.00, -20.00, -0.61, -1.90, -20.00</span>
+                <code class="language-python">
+x,     y,      z,      vx,    vy,    vz
+0.10,  0.10,   0.50,   0.20,  1.99,  0.50
+0.10,  0.10,  -0.58,   0.20,  1.99, -0.58
+0.10,  0.10,  -1.66,   0.20,  1.99, -1.66
+...
+60.00, 60.00, -17.84, -0.61, -1.90, -17.84
+60.00, 60.00, -18.92, -0.61, -1.90, -18.92
+60.00, 60.00, -20.00, -0.61, -1.90, -20.00
+                </code>
             </pre>
 
             <p>
-                I made a short{" "}
-                <a href="https://github.com/vojtatom/numflow.py/blob/main/sun-dataset.ipynb">
+                I made a short
+                <a
+                    href="https://github.com/vojtatom/numflow.py/blob/main/sun-dataset.ipynb"
+                >
                     Python notebook with example pipeline
                 </a>
                 . The user can parse the data using the following code:
             </p>
-            {/* prettier-ignore */}
+            <!-- prettier-ignore -->
             <pre>
-                <span>from numflow import Dataset</span>
-                <span>field = Dataset("path/to/data.csv")</span>
-                <span>print(field.info())</span>
+                <code class="language-python">
+from numflow import Dataset
+field = Dataset("path/to/data.csv")
+print(field.info())
+                </code>
             </pre>
             <p>
                 The package then exposes a visualization object, that can be
                 used to preprocess the data:
             </p>
-            {/* prettier-ignore */}
+            <!-- prettier-ignore -->
             <pre>
-                <span>from numflow import Visualization, points, random_points</span>
-                <span>vis = Visualization()</span>
+                <code class="language-python">
+from numflow import Visualization, points, random_points
+vis = Visualization()
+                </code>
             </pre>
-            <div className="images">
-                <img src={imgwholeimgtop} alt="flow" />
+            <div class="images">
+                <img src="/wholeimgtop.png" alt="flow" />
             </div>
-            <p className="figureDescription">
+            <p class="figureDescription">
                 visualization of plasma flow using colored cut plane and
                 streamlines
             </p>
             <p>The user can then use the visualization object to add layers:</p>
-            {/* prettier-ignore */}
+            <!-- prettier-ignore -->
             <pre>
-                <span># generate 1000x1000 points on plane</span>
-                <span>layer_z = -10</span>
-                <span>layer = points([20, 20, layer_z], [590, 590, layer_z], [1000, 1000, 1])</span>
-                <span></span>
-                <span># use those points to add a color-mapped layer (cut) to the visualization</span>
-                <span>vis.layer(field, layer)</span>
+                <code class="language-python">
+# generate 1000x1000 points on plane
+layer_z = -10
+layer = points([20, 20, layer_z], [590, 590, layer_z], [1000, 1000, 1])
+
+# use those points to add a color-mapped layer (cut) to the visualization
+vis.layer(field, layer)
+                </code>
             </pre>
             <p>
                 One of the main features of the package is the ability to
                 compute streamlines - the package includes a custom RK4 solver
                 implemented in C++, which beats the performance of the SciPy
-                Python implementation by several orders of magnitude (see{" "}
+                Python implementation by several orders of magnitude (see
                 <a href="https://dspace.cvut.cz/handle/10467/83382">thesis</a>).
             </p>
-            {/* prettier-ignore */}
+            <!-- prettier-ignore -->
             <pre>
-                <span># generate 200x200 points on plane</span>
-                <span>layerS = points([20, 20, layer_z], [590, 590, layer_z], [200, 200, 1])</span>
-                <span></span>
-                <span># use those points as seeding points for streamlines</span>
-                <span>vis.streamlines(field, layerS, tbound=0.01, size=0.2, appearance='transparent', sampling=3, divisions=3)</span>
+                <code class="language-python">
+# generate 200x200 points on plane
+layerS = points([20, 20, layer_z], [590, 590, layer_z], [200, 200, 1])
+
+# use those points as seeding points for streamlines
+vis.streamlines(field, layerS, tbound=0.01, size=0.2, appearance='transparent', sampling=3, divisions=3)
+                </code>
             </pre>
-            <div className="images">
-                <img src={imgglC} alt="flow" />
+            <div class="images">
+                <img src="/mediumC.png" alt="flow" />
             </div>
-            <p className="figureDescription">
+            <p class="figureDescription">
                 visualization of plasma flow using glyphs
             </p>
             <p>
                 The package also includes a simple glyph interpolator. Note that
                 the seeding points are generated randomly:
             </p>
-            {/* prettier-ignore */}
+            <!-- prettier-ignore -->
             <pre>
-                <span># generate 200 * 200 * 10 random points on plane</span>
-                <span>randomS = random_points([20, 20, layer_z], [590, 590, layer_z], 200 * 200 * 10)</span>
-                <span></span>
-                <span># use those points as seeding points for glyphs</span>
-                <span>vis.glphys(field, randomS, size=0.2)</span>
+                <code class="language-python">
+# generate 200 * 200 * 10 random points on plane
+randomS = random_points([20, 20, layer_z], [590, 590, layer_z], 200 * 200 * 10)
+
+# use those points as seeding points for glyphs
+vis.glphys(field, randomS, size=0.2)
+                </code>
             </pre>
 
             <p>At the end, the pre-processed data gets saved to a JSON file:</p>
-            {/* prettier-ignore */}
+            <!-- prettier-ignore -->
             <pre>
-                <span>vis.save("path/to/output.json")</span>
+                <code class="language-python">
+vis.save("path/to/output.json")
+                </code>
             </pre>
 
             <h2>WebGL application</h2>
 
-            <div className="images">
-                <img src={imgrenderer} alt="flow" />
+            <div class="images">
+                <img src="/renderer.png" alt="flow" />
             </div>
-            <p className="figureDescription">
+            <p class="figureDescription">
                 WebGL application for visualization of plasma flow
             </p>
 
             <p>
                 The application was written in plain JavaScript and WebGL, no
                 libraries, no frameworks. It is capable of loading the JSON file
-                produced by <span className="math">numflow</span> package and
-                rendering the data. The application runs in the browser as well
-                as in distributed environments such as SAGE2 wall.
+                produced by
+                <span class="math">numflow</span> package and rendering the
+                data. The application runs in the browser as well as in
+                distributed environments such as SAGE2 wall.
             </p>
 
-            <div className="images">
-                <img src={imgpipeline} alt="flow" />
+            <div class="images">
+                <img src="/pipeline.png" alt="flow" />
             </div>
-            <p className="figureDescription">
+            <p class="figureDescription">
                 pipeline editor for defining the appearance of the layers
             </p>
 
@@ -209,45 +226,52 @@ export function FlowPostPage() {
 
             <h2>Additional outputs</h2>
 
-            <div className="imageGrid">
-                <img src={imgglA} alt="flow" />
-                <img src={imgglB} alt="flow" />
+            <div class="imageGrid">
+                <img src="/glA.png" alt="flow" />
+                <img src="/glB.png" alt="flow" />
             </div>
 
-            <div className="imageGrid">
-                <img src={imgmediumC} alt="flow" />
+            <div class="imageGrid">
+                <img src="/mediumC.png" alt="flow" />
             </div>
 
-            <div className="imageGrid">
-                <img src={imgmediumA} alt="flow" />
-                <img src={imgmediumB} alt="flow" />
+            <div class="imageGrid">
+                <img src="/mediumA.png" alt="flow" />
+                <img src="/mediumB.png" alt="flow" />
             </div>
 
             <h2>Conclusion</h2>
             <p>
                 If you are interested in the project, you can find the source
-                code on{" "}
+                code on
                 <a href="https://github.com/vojtatom/numflow.py">
                     GitHub (numflow.py)
-                </a>{" "}
-                and my bachelor thesis on{" "}
+                </a>
+                and my bachelor thesis on
                 <a href="https://dspace.cvut.cz/handle/10467/83382">
                     DSpace CVUT
                 </a>
-                . I intend to release the <span className="math">numflow</span>{" "}
+                . I intend to release the <span class="math">numflow</span>
                 package as a standalone library to PyPI (currently work in
                 progress - last update Dec 2023). Regarding the WebGL
-                application, the{" "}
-                <a href="https://github.com/vojtatom/numflow.py/tree/main/docs/app">
+                application, the
+                <a
+                    href="https://github.com/vojtatom/numflow.py/tree/main/docs/app"
+                >
                     source code
-                </a>{" "}
+                </a>
                 is available as well, since it is bare JavaScript, it still
                 works; however, I don't plan to maintain it. It would be
                 interesting to reimplement the application using modern tools
-                and libraries. Also mail me or tweet{" "}
+                and libraries. Also mail me or tweet
                 <a href="https://twitter.com/vojtatom">@vojtatom (me)</a> if you
                 decide to make something based on this!
             </p>
-        </Post>
-    );
-}
+        </main>
+        <footer>&copy; {new Date().getFullYear()} vojtatom.cz</footer>
+        <script src="https://cdn.statically.io/gh/vojtatom/vojtatom/main/posts/img-4-4-2024.js"></script>
+        <script>
+            hljs.highlightAll();
+        </script>
+    </body>
+</html>
