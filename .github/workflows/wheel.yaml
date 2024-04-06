@@ -53,9 +53,6 @@ jobs:
     name: Upload to PyPI
     needs: [make-wheels, make-sdist]
     runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: https://test.pypi.org/legacy/
     permissions:
       id-token: write
     steps:
@@ -79,3 +76,7 @@ jobs:
 
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_TEST_TOEKN }}
+          repository_url: https://test.pypi.org/legacy/
