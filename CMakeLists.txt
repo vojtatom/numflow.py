@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15...3.22)
+cmake_minimum_required(VERSION 2.8...3.13)
 project(numflow)
 set(CMAKE_CXX_STANDARD 14)
 #set(CMAKE_BUILD_TYPE Debug)
