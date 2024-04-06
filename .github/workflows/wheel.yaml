@@ -50,12 +50,17 @@ jobs:
           path: dist/*.tar.gz
 
   upload:
-    name: Checkout Artifacts
+    name: Upload to PyPI
     needs: [make-wheels, make-sdist]
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://test.pypi.org/legacy/
+    permissions:
+      id-token: write
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: dist
 
@@ -71,3 +76,6 @@ jobs:
           cd ..
           echo "* Prepared artifacts:"
           ls dist/
+
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
