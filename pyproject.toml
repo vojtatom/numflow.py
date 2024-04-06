@@ -13,7 +13,7 @@ test-command = "pytest {project}/tests"
 test-skip = ["*universal2:arm64"]
 build = ["cp39-*", "cp310-*"]
 build-verbosity = 1
-#test-requires = ["pytest"]
+test-requires = ["pytest, numpy"]
 
 [tool.cibuildwheel.macos]
 archs = ["universal2"]
