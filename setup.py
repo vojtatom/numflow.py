@@ -15,9 +15,9 @@ from setuptools import find_packages
 import pathlib
 
 # The directory containing this file
-#HERE = pathlib.Path(__file__).parent
+HERE = pathlib.Path(__file__).parent
 # The text of the README file
-#README = (HERE / "README.md").read_text()
+README = (HERE / "README.md").read_text()
 
 setup(
     name="numflow",
@@ -26,8 +26,8 @@ setup(
 	author_email="hello@vojtatom.cz",
     license="MIT",
     description="Transforming vector fields",
-    #long_description=README,
-    #long_description_content_type="text/markdown",
+    long_description=README,
+    long_description_content_type="text/markdown",
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     cmake_install_dir="src/numflow",
