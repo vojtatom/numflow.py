@@ -21,7 +21,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="numflow",
-    version="0.0.6",
+    version="1.0.0",
     author="Vojtěch Tomas",
 	author_email="hello@vojtatom.cz",
     license="MIT",
